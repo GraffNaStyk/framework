@@ -1,0 +1,32 @@
+{% extends layout %}
+
+{% block content %}
+
+  <div class="sufee-login d-flex align-content-center flex-wrap">
+    <div class="container">
+      <div class="login-content">
+        <div class="login-logo">
+          <a href="{{ adminUrl }}Login">
+            Graff Admin
+          </a>
+        </div>
+        <div class="login-form">
+          {% for msg in messages %}
+            <div class="alert alert-{{ color }}" role="alert">
+              {{ msg }}
+            </div>
+          {% endfor %}
+          {{ form_open('Login/check', 'post') }}
+          <label>Account</label>
+          {{ input('name', 'form-control mb-3') }}
+          <label>Password</label>
+          {{ input('password', 'form-control mb-3', 'password') }}
+          {{ csrf() }}
+          {{ form_submit('btn btn-success btn-flat m-b-30 m-t-30', 'Zaloguj') }}
+          {{ form_close() }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

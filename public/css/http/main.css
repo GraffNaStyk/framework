@@ -1,0 +1,8 @@
+nav.navbar, footer {
+  background: #fff!important;
+  box-shadow: 1px 3px 6px 1px hsla(0,0%,80%,.5);
+}
+
+body {
+  background: #fbfbfb;
+}

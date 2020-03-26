@@ -1,0 +1,14 @@
+
+
+namespace App\Model;
+
+use App\Db\Accessor;
+
+class CLASSNAME extends Accessor
+{
+    public static $nameTable = 'NAMETABLE';
+    public static $nameAlias = 'NAMEALIAS';
+    public static $recursive = 0;
+    public static $debug = 0;
+    public static $relations = [];
+}

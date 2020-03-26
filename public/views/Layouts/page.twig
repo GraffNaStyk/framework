@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="{{ base_url }}">
+  <base href="{{ base_url }}">
+  <title>{{ title }}</title>
+  {{ css|raw }}
+  <script>
+    let url = '{{ url }}';
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<a class="navbar-brand" href="{{ url }}">Graff PHP</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url }}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ url }}Example/form">Form</a>
+    </li>
+  </ul>
+</div>
+</nav>
+
+<div class="container mt-5">
+  {% for msg in messages %}
+    <div class="alert alert-{{ color }} mb-0">
+      {{ msg }}
+    </div>
+  {% endfor %}
+</div>
+
+<main id="main-page-wrapper" class="container d-flex justify-content-center align-items-center">
+  {% block content %}
+
+  {% endblock %}
+</main>
+
+<div id="modal" class="modal"></div>
+<footer>
+</footer>
+{{ js|raw }}
+</body>
+</html>

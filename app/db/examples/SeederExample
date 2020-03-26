@@ -1,0 +1,18 @@
+namespace App\Db\Structure;
+
+use App\Db\Architecture\Blueprint;
+
+class CLASSNAME
+{
+    public $table = '';
+    public $alias = 'CLASSNAME';
+    public function up(Blueprint $blueprint)
+    {
+        $blueprint->run();
+    }
+
+    public function down(Blueprint $blueprint)
+    {
+        $blueprint->clear();
+    }
+}
