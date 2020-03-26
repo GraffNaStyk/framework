@@ -8,44 +8,37 @@ if (session_status() == PHP_SESSION_NONE)
 
 function public_path($path = null)
 {
-    $fullPath = __DIR__ . '/public/'. $path;
-    return $fullPath;
+    return __DIR__ . '/public/'. $path;
 }
 
 function img_path($path = null)
 {
-    $fullPath = __DIR__ . '/public/img/'. $path;
-    return $fullPath;
+    return __DIR__ . '/public/img/'. $path;
 }
 
 function css_path($path = null)
 {
-    $fullPath = __DIR__ . '/public/css/'. $path;
-    return $fullPath;
+    return __DIR__ . '/public/css/'. $path;
 }
 
 function js_path($path = null)
 {
-    $fullPath = __DIR__ . '/public/js/'. $path;
-    return $fullPath;
+    return __DIR__ . '/public/js/'. $path;;
 }
 
 function view_path($path = null)
 {
-    $fullPath = __DIR__ . '/public/views/'. $path;
-    return $fullPath;
+    return __DIR__ . '/public/views/'. $path;
 }
 
 function app_path($path = null)
 {
-    $fullPath = __DIR__ . '/' . $path;
-    return $fullPath;
+    return __DIR__ . '/' . $path;
 }
 
 function storage_path($path = null)
 {
-    $fullPath = __DIR__ . '/storage/' . $path;
-    return $fullPath;
+    return __DIR__ . '/storage/' . $path;
 }
 
 function pd($item)
