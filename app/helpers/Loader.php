@@ -56,9 +56,9 @@ class Loader
     {
         $folder = Router::isAdmin() ? 'admin' : 'http';
 
-        $path = $ext == 'css' ?
-            css_path($folder.'/'.Router::getClass().'/'.Router::getAction().'.css') :
-            js_path($folder.'/'.Router::getClass().'/'.Router::getAction().'.js');
+        $path = $ext == 'css'
+            ? css_path($folder.'/'.Router::getClass().'/'.Router::getAction().'.css')
+            : js_path($folder.'/'.Router::getClass().'/'.Router::getAction().'.js');
 
         if(is_file($path)) {
             if($ext == 'css')
