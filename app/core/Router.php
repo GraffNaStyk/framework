@@ -180,7 +180,7 @@ class Router
 
     private function methodAllowedException(): void
     {
-        exit("This route is not supported by this method");
+        exit("Sometimes went wrong...");
     }
 
     public static function redirect(string $path, int $code = 302): void
