@@ -1,6 +1,6 @@
 <?php
 
-if(!file_exists('App/Config/app.php'))
+if(!file_exists('./app/config/app.php'))
     exit('No app config file');
 
 if (session_status() == PHP_SESSION_NONE)
@@ -60,4 +60,4 @@ function dd($item)
     die;
 }
 
-require_once './App/bootstrap.php';
+require_once './app/bootstrap.php';
