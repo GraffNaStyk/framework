@@ -38,21 +38,23 @@ export const render = (args) => {
     },
   }).then(res => res.text())
   .then(result => {
-    if (args.el) {
-      document.querySelector(args.el).innerHTML = result;
-    }
-    if(args.modal) {
-      let modal = document.getElementById('modal');
-      modal.classList.add('d-block');
-      modal.setAttribute('style', 'background: rgba(0,0,0,0.8)');
-      modal.innerHTML = result;
-
-      document.querySelector('button[data-dismiss="modal"]').onclick = () => {
-        modal.classList.remove('d-block');
-        modal.innerHTML = '';
-        modal.setAttribute('style', '');
-      };
-
+    if (args.el !== 'modal') {
+      document.querySelector(`[data-component="${args.el}"]`).innerHTML = result;
+    } else {
+      modal(result);
     }
   })
+};
+
+const modal = (result) => {
+  const modal = document.getElementById('modal');
+  modal.classList.add('d-block');
+  modal.setAttribute('style', 'background: rgba(0,0,0,0.8)');
+  modal.innerHTML = result;
+
+  document.querySelector('button[data-dismiss="modal"]').onclick = () => {
+    modal.classList.remove('d-block');
+    modal.innerHTML = '';
+    modal.setAttribute('style', '');
+  };
 };
