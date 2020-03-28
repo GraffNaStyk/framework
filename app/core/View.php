@@ -1,13 +1,10 @@
 <?php namespace App\Core;
 
 use App\Facades\TwigExt\TwigExt;
-use App\Helpers\Session;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 use Twig_Error;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
 require_once __DIR__ .'/../../vendor/autoload.php';
 
 class View
