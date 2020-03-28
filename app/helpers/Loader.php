@@ -7,11 +7,16 @@ class Loader
     public static function css()
     {
         $cssArr = glob(css_path('http/*.css'), GLOB_BRACE);
+
         $cssString = null;
         foreach ($cssArr as $key => $css)
             $cssString .= trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', $css).'">'.PHP_EOL);
 
         $cssString .= static::getFileForView('css');
+
+        $cssString .= self::getBootstrap('css');
+
+        $cssString .= self::getFontAwesome();
 
         return $cssString;
     }
@@ -25,6 +30,8 @@ class Loader
 
         $jsString .= static::getFileForView('js');
 
+        $jsString .= self::getBootstrap('js');
+
         return $jsString;
     }
 
@@ -36,6 +43,10 @@ class Loader
             $cssString .= trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', $css).'">'.PHP_EOL);
 
         $cssString .= static::getFileForView('css');
+
+        $cssString .= self::getBootstrap('css');
+
+        $cssString .= self::getFontAwesome();
 
         return $cssString;
     }
@@ -49,7 +60,32 @@ class Loader
 
         $jsString .= static::getFileForView('js');
 
+        $jsString .= self::getBootstrap('js');
+
+
         return $jsString;
+    }
+
+    private static function getBootstrap($ext)
+    {
+        $path = $ext == 'css'
+            ? css_path('bootstrap.css')
+            : js_path('bootstrap.js');
+
+        if(is_file($path)) {
+            if($ext == 'css')
+                return trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', $path).'">'.PHP_EOL);
+
+             return trim('<script src="'.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);
+        }
+        return '';
+    }
+
+    private static function getFontAwesome()
+    {
+        return is_file(css_path('font-awesome.min.css'))
+            ? trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', css_path('font-awesome.min.css')).'">'.PHP_EOL)
+            : null;
     }
 
     private static function getFileForView($ext)
@@ -64,6 +100,7 @@ class Loader
             if($ext == 'css')
                 return trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', $path).'">'.PHP_EOL);
             else return trim('<script type="module" src="'.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);
-        } else return '';
+        }
+        return '';
     }
 }
