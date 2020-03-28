@@ -40,9 +40,8 @@ class Db extends Builder
 
     public function where(array $where, string $type = 'where')
     {
-        if(empty($where)) {
+        if(empty($where))
             $where = [1,'=',1];
-        }
 
         $connector = $type == 'where' ? 'AND' : 'OR';
         $this->push('where', $where[0], $where[1], $where[2], $connector);
@@ -75,7 +74,7 @@ class Db extends Builder
         return $this;
     }
 
-    public function limit(int $limit = null)
+    public function limit($limit = null)
     {
         $this->limit = $limit;
         return $this;
