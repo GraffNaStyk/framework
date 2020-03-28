@@ -71,10 +71,7 @@ class Router
      {
         if (class_exists($controller) && method_exists($controller, self::$action)) {
 
-            $reflection = new ReflectionMethod($controller, self::$action);
-
-            if ($reflection->getNumberOfRequiredParameters() != count(self::$params))
-                self::http404();
+            $reflection = new \ReflectionMethod($controller, self::$action);
 
             $controller = new $controller();
 
@@ -86,10 +83,28 @@ class Router
             if (isset($params[0]->name) && $params[0]->name == 'request')
                 return $controller->{self::$action}($this->request);
 
-            return call_user_func_array([$controller, self::$action], self::$params);
+            if ($reflection->getNumberOfRequiredParameters() != count(self::$params))
+                self::http404();
+
+            return call_user_func_array([$controller, self::$action], $this->sanitize(self::$params));
         }
 
          self::http404();
+    }
+
+    private function sanitize($params)
+    {
+        foreach ($params as $key => $param) {
+            if(!is_null($param))
+                $param = trim($param);
+
+           if(!is_numeric($param))
+               $param = urldecode($param);
+
+            $params[$key] = $param;
+        }
+
+        return $params;
     }
 
     private function setRoutes(): array
@@ -222,6 +237,7 @@ class Router
 
     public static function http404(): void
     {
+        self::$admin = false;
         static::redirect('Index/http404');
     }
 
