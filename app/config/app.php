@@ -16,7 +16,7 @@ return [
     'dev' => true,
 
     /*
-     * @admin if variable admin is set to true, page automatic redirect to
+     * @admin if variable admin is set to true, application automatic redirect to
      * admin panel, page is offline
      */
     'admin' => false,
