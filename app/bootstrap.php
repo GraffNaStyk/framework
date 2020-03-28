@@ -41,10 +41,8 @@ spl_autoload_register(function ($class) {
 
     $className = rtrim($className, '/');
 
-    $path .= $className .'.php';
-
-    if(file_exists($path))
-        require_once $path;
+    if(file_exists($path . $className .'.php'))
+        require_once $path . $className .'.php';
 
     if(app['dev'] && ! file_exists($path))
         trigger_error('Cannot loaded file ' . $path . ', file not exist.', E_USER_ERROR);
