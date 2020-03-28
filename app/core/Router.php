@@ -72,9 +72,13 @@ class Router
         if (class_exists($controller) && method_exists($controller, self::$action)) {
 
             $reflection = new ReflectionMethod($controller, self::$action);
-            $params = $reflection->getParameters();
+
+            if ($reflection->getNumberOfRequiredParameters() != count(self::$params))
+                self::http404();
 
             $controller = new $controller();
+
+            $params = $reflection->getParameters();
 
             if (empty($params))
                 return $controller->{self::$action}();
@@ -82,13 +86,10 @@ class Router
             if (isset($params[0]->name) && $params[0]->name == 'request')
                 return $controller->{self::$action}($this->request);
 
-            if ($reflection->getNumberOfRequiredParameters() != count(self::$params))
-                self::http404();
-
             return call_user_func_array([$controller, self::$action], self::$params);
         }
 
-        self::redirect('Index/http404');
+         self::http404();
     }
 
     private function setRoutes(): array
