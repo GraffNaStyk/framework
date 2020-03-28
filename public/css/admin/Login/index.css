@@ -1,7 +1,15 @@
-a {
-  font-size: 48px;
+.login__wrapper {
+  background: #ffffff;
+  max-width: 480px;
+  margin: 0 auto;
+  border: 1px solid #c3c3c3;
+  border-radius: 4px;
+  padding: 25px;
 }
-
-a:hover {
-  color: white;
+.login-form {
+  width: 100%;
+}
+h4 {
+  font-size: 1.8em!important;
+  text-transform: uppercase;
 }
