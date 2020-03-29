@@ -28,6 +28,7 @@ document.querySelector('nav.top__nav i.fa-bars').onclick = () => {
 
 //global function for prevent a href if href is == #
 const prevent = (e) => {
+  //this is for i element when parent element is A
   if (e.target.parentElement.nodeName === 'A' && e.target.parentElement.href.split('/').pop() === '#') {
     e.preventDefault();
     return false;
@@ -40,4 +41,3 @@ const prevent = (e) => {
 Array.from(document.getElementsByTagName('a')).forEach((v) => {
   v.addEventListener('click', prevent)
 });
-
