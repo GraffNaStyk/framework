@@ -39,7 +39,10 @@ export const render = (args) => {
   }).then(res => res.text())
   .then(result => {
     if (args.el !== 'modal') {
-      document.querySelector(`[data-component="${args.el}"]`).innerHTML = result;
+      if(args.append)
+        document.querySelector(`[data-component="${args.el}"]`).innerHTML += result;
+      else
+        document.querySelector(`[data-component="${args.el}"]`).innerHTML = result;
     } else {
       modal(result);
     }
