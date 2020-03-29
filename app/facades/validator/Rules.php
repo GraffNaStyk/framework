@@ -58,4 +58,10 @@ class Rules
         if (json_last_error() != 0)
             return 'Field ' . $field . ' must be a json!';
     }
+
+    public static function match($item, $rule, $field)
+    {
+        if(preg_match("$rule", $item))
+            return 'Field ' . $field . ' is not valid';
+    }
 }
