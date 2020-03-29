@@ -21,10 +21,10 @@ class Request
                 Session::msg('Wrong token', 'danger');
                 Router::redirect('Dash/http404');
             }
-
-            Session::remove('csrf');
-            unset($this->post['csrf']);
         }
+
+        Session::remove('csrf');
+        unset($this->post['csrf']);
     }
 
     private function setMethod()
