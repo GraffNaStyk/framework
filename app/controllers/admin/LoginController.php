@@ -11,6 +11,9 @@ class LoginController extends AppController
 {
     public function __construct()
     {
+        if(Session::has('user'))
+            Router::redirect('Dash');
+
         $this->loadForAdmin();
         parent::__construct();
     }
@@ -18,7 +21,9 @@ class LoginController extends AppController
     public function index()
     {
         View::setLayout('login');
-        return View::render();
+        return View::render([
+            'title' => 'Panel Administracyjny - logowanie'
+        ]);
     }
 
     public function check(Request $request)
