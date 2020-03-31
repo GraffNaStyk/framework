@@ -11,11 +11,6 @@ function public_path($path = null)
     return __DIR__ . '/public/'. $path;
 }
 
-function img_path($path = null)
-{
-    return __DIR__ . '/public/img/'. $path;
-}
-
 function css_path($path = null)
 {
     return __DIR__ . '/public/css/'. $path;
