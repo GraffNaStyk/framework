@@ -130,21 +130,21 @@ class Db extends Builder
         return $this->execute()[0];
     }
 
-    public function join($table, $field, $comparison, $value)
+    public function join(array $join)
     {
-        $this->push('innerJoin', $field, $comparison, $value, 'INNER JOIN', $table);
+        $this->push('innerJoin', $join[1], $join[2], $join[3], 'INNER JOIN', $join[0]);
         return $this;
     }
 
-    public function leftJoin($table, $field, $comparison, $value)
+    public function leftJoin(array $join)
     {
-        $this->push('leftJoin', $field, $comparison, $value, 'LEFT JOIN', $table);
+        $this->push('leftJoin', $join[1], $join[2], $join[3], 'LEFT JOIN', $join[0]);
         return $this;
     }
 
-    public function rightJoin($table, $field, $comparison, $value)
+    public function rightJoin(array $join)
     {
-        $this->push('rightJoin', $field, $comparison, $value, 'RIGHT JOIN', $table);
+        $this->push('rightJoin', $join[1], $join[2], $join[3], 'RIGHT JOIN', $join[0]);
         return $this;
     }
 
