@@ -22,6 +22,7 @@ class TwigExt extends AbstractExtension
             $this->input(),
             $this->form_submit(),
             $this->csrf(),
+            $this->img()
         ];
     }
 
@@ -59,6 +60,13 @@ class TwigExt extends AbstractExtension
     {
         return new TwigFunction('form_submit', function($class = null, $value = 'Zapisz') {
             echo '<input class="'.$class.'" type="submit" value="'.$value.'">';
+        });
+    }
+
+    public function img()
+    {
+        return new TwigFunction('img', function($url) {
+            echo 'storage/'.$url;
         });
     }
 
