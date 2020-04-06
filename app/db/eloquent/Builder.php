@@ -81,6 +81,9 @@ abstract class Builder extends Field
 
     protected function buildSaveQuery()
     {
+        if(isset($this->data['id']))
+            unset($this->data['id']);
+
         $this->query = "INSERT INTO `{$this->table}` (";
 
         foreach ($this->data as $key => $field)

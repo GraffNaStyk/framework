@@ -178,7 +178,7 @@ class Db extends Builder
     {
         $this->data = $data;
 
-        if(isset($this->data['id']) || !empty($this->where['field'])) {
+        if(isset($this->data['id']) && !empty($this->data['id']) || !empty($this->where['field'])) {
             $this->buildUpdateQuery();
         } else {
             $this->buildSaveQuery();
