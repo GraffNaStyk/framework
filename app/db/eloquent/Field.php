@@ -89,6 +89,10 @@ abstract class Field
 
         $returnValues = '';
         if (is_array($this->values)) {
+
+            if(!in_array('id', $this->values))
+                array_push($this->values, 'id');
+
             foreach ($this->values as $val) {
                 $returnValues .= $this->checkHowToConnectValue(trim($val));
             }
