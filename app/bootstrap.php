@@ -1,9 +1,5 @@
 <?php
 
-use App\Core\View;
-use App\Facades\Csrf\Csrf;
-use App\Helpers\Session;
-
 ini_set('memory_limit', '-1');
 
 set_error_handler('error_handler');
@@ -19,7 +15,7 @@ function error_handler($errorNumber, $errorStr, $file, $line)
     echo '</div>';
 }
 
-define('app', require_once app_path('App/Config/app.php'));
+define('app', require_once app_path('app/config/app.php'));
 
 if(app['dev'] == true) {
     ini_set('display_errors', 1);
