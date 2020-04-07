@@ -1,5 +1,6 @@
 <?php namespace App\Core;
 
+use App\Helpers\Session;
 use ReflectionMethod;
 
 class Router
@@ -223,7 +224,11 @@ class Router
     {
         self::$url = $_SERVER['REQUEST_URI'];
 
-        self::$routerUrl = str_replace(app['url'], '', $_SERVER['REQUEST_URI']);
+        if(app['url'] != '/')
+            self::$routerUrl = str_replace(app['url'], '', $_SERVER['REQUEST_URI']);
+        else
+            self::$routerUrl = $_SERVER['REQUEST_URI'];
+
         self::$routerUrl = rtrim(self::$routerUrl, '/');
         self::$routerUrl = ltrim(self::$routerUrl, '/');
         self::$routerUrl = filter_var(self::$routerUrl, FILTER_SANITIZE_URL);
