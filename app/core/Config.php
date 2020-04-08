@@ -8,7 +8,7 @@ abstract class Config
 {
     public static function run()
     {
-        if(!file_exists(app_path('App/Config/.env')))
+        if(!file_exists(app_path('app/config/.env')))
             trigger_error('Cannot loaded environment file.', E_USER_ERROR);
 
         if(phpversion() < 7.2)
@@ -17,7 +17,7 @@ abstract class Config
         if(app['csrf'] && !Session::has('csrf') && ! View::isAjax())
             Csrf::generate();
 
-        define('ENV', require_once app_path('App/Config/.env'));
+        define('ENV', require_once app_path('app/config/.env'));
 
         Db::init(
             ENV['DB']
