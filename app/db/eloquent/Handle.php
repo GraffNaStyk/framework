@@ -1,6 +1,6 @@
 <?php namespace App\Db\Eloquent;
 
-class Handle
+abstract class Handle
 {
     public static function throwException($e)
     {

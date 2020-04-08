@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Db\Architecture;
+<?php namespace App\Db\Architecture;
 
 class Blueprint extends Core
 {

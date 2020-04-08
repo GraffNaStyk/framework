@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Core;
+<?php namespace App\Core;
 
 abstract class Url
 {
