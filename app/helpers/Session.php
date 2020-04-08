@@ -52,8 +52,10 @@ class Session
 
     public static function hasFlash($item)
     {
-        if(isset($_COOKIE[$item]) && !empty($_COOKIE[$item])) return true;
-        else return false;
+        if(isset($_COOKIE[$item]) && !empty($_COOKIE[$item]))
+            return true;
+
+         return false;
     }
 
     public static function removeFlash($item)
