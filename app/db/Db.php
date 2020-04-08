@@ -23,10 +23,18 @@ class Db extends Builder
     private static function connect()
     {
         if (!empty(self::$env['host'])) {
-            self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
-            self::$env = [];
-            self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            self::$db->query('set names utf8;');
+            try {
+                self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
+                self::$env = [];
+                self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::$db->query('set names utf8;');
+            } catch (\PDOException $e) {
+                if (app['dev'])
+                    pd("[Error code: {$e->getCode()}] <br> message: {$e->getMessage()}");
+                else
+                    pd(trigger_error("Cannot connect to database"));
+            }
+
         }
 
         return false;
