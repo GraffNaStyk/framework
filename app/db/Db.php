@@ -1,6 +1,7 @@
 <?php namespace App\Db;
 
 use App\Db\Eloquent\Builder;
+use App\Db\Eloquent\Handle;
 use PDO;
 
 class Db extends Builder
@@ -29,14 +30,10 @@ class Db extends Builder
                 self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$db->query('set names utf8;');
             } catch (\PDOException $e) {
-                if (app['dev'])
-                    pd("[Error code: {$e->getCode()}] <br> message: {$e->getMessage()}");
-                else
-                    pd(trigger_error("Cannot connect to database"));
+                trigger_error("Database connection error");
+                Handle::throwException($e);
             }
-
         }
-
         return false;
     }
 
@@ -158,18 +155,28 @@ class Db extends Builder
 
     private function execute()
     {
-        if(strpos($this->query, 'INSERT') !== FALSE || strpos($this->query, 'UPDATE') !== FALSE || strpos($this->query, 'DELETE') !== FALSE) {
+        if (strpos($this->query, 'INSERT') !== false || strpos($this->query, 'UPDATE') !== false || strpos($this->query, 'DELETE') !== false) {
+            try {
 
-            if(self::$db->prepare($this->query)->execute($this->data))
-                return true;
+                if (self::$db->prepare($this->query)->execute($this->data))
+                    return true;
 
+            } catch (\PDOException $e) {
+                Handle::throwException($e);
+            }
             return false;
 
         } else {
-            $stmt = self::$db->query($this->query);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
+            try {
 
+                $stmt = self::$db->query($this->query);
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            } catch (\PDOException $e) {
+                Handle::throwException($e);
+            }
+        }
+        return false;
     }
 
     public function lastId()
