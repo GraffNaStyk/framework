@@ -13,7 +13,7 @@ return [
      * @dev here tou can set developer mode to true or false, if developer mode
      * is set to true on page have all bugs
      */
-    'dev' => true,
+    'dev' => false,
 
     /*
      * @admin if variable admin is set to true, application automatic redirect to
@@ -25,5 +25,17 @@ return [
      *  @url this is a framework url, default u can set '/' if framework exist
      * in any sub folder need to add this path there to good working
     */
-    'url' => '/graff/'
+    'url' => '/graff/',
+
+    /*
+     *  @mail configuration using in framework to send mails.
+     *  If array values are empty mail are not configured.
+    */
+    'mail' => [
+        'smtp' => '',
+        'user' => '',
+        'password' => '',
+        'port' => '',
+        'to' => 'kontakt@graff-design.pl'
+    ]
 ];
