@@ -1,9 +1,0 @@
-{% extends layout %}
-
-{% block content %}
-  {{ form_open('Example/upload', 'post', 'multipart/form-data') }}
-  {{ input('asda', 'form-control', 'file') }}
-  {{ csrf() }}
-  {{ form_submit() }}
-  {{ form_close() }}
-{% endblock %}
