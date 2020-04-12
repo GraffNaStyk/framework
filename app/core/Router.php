@@ -120,7 +120,7 @@ class Router
                 $routes = explode('/', self::$routes[self::$routerUrl][0]);
             } else $routes = explode('/', self::$routerUrl);
 
-            if (in_array('admin', $routes)) {
+            if (in_array(app['cms'], $routes)) {
                 self::$admin = true;
                 array_shift($routes);
                 static::defaultController('Login');
