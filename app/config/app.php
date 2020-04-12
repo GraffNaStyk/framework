@@ -28,6 +28,12 @@ return [
     'url' => '/graff/',
 
     /*
+    * @cms_url is a calling url for go to management system for page, default is a admin like
+     *  www.page.pl/admin you can write here every link
+    */
+    'cms' => 'bocian',
+
+    /*
      *  @mail configuration using in framework to send mails.
      *  If array values are empty mail are not configured.
     */
