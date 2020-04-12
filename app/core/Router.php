@@ -27,10 +27,10 @@ class Router
 
     private $request;
 
-    private static $defaultController;
-
     public function __construct()
     {
+        self::setClass(app['controller']);
+        self::setAction(app['controller']);
         $this->request = new Request();
         $this->setRequestMethod();
         $this->setRoutes();
@@ -70,24 +70,24 @@ class Router
 
     private function create(string $controller)
      {
-        if (class_exists($controller) && method_exists($controller, self::$action)) {
+        if (class_exists($controller) && method_exists($controller, self::getAction())) {
 
-            $reflection = new \ReflectionMethod($controller, self::$action);
+            $reflection = new \ReflectionMethod($controller, self::getAction());
 
             $controller = new $controller();
 
             $params = $reflection->getParameters();
 
             if (empty($params))
-                return $controller->{self::$action}();
+                return $controller->{self::getAction()}();
 
             if (isset($params[0]->name) && $params[0]->name == 'request')
-                return $controller->{self::$action}($this->request);
+                return $controller->{self::getAction()}($this->request);
 
             if ($reflection->getNumberOfRequiredParameters() != count(self::$params))
                 self::http404();
 
-            return call_user_func_array([$controller, self::$action], $this->sanitize(self::$params));
+            return call_user_func_array([$controller, self::getAction()], $this->sanitize(self::$params));
         }
 
          self::http404();
@@ -112,6 +112,7 @@ class Router
     {
         $routes = [];
         $flagToRemoveRoute = true;
+
         if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
 
             $this->parseUrl();
@@ -123,33 +124,26 @@ class Router
             if (in_array(app['cms'], $routes)) {
                 self::$admin = true;
                 array_shift($routes);
-                static::defaultController('Login');
+                static::setClass('Login');
             }
 
             if (!empty($routes) && array_key_exists($routes[0], self::$routes) && !self::$admin) {
                 $flagToRemoveRoute = false;
                 $urlParams = explode('/', self::$routes[$routes[0]][0]);
-                self::$class = $urlParams[0];
-                self::$action = lcfirst($urlParams[1]);
+                self::setClass($urlParams[0]);
+                self::setAction(lcfirst($urlParams[1]));
             } else {
 
                 if (isset($routes[0]) && !empty($routes[0]))
-                    self::$class = ucfirst($routes[0]);
-                else
-                    self::$class = ucfirst(self::$defaultController);
+                    self::setClass(ucfirst($routes[0]));
 
                 if (isset($routes[1]) && !empty($routes[1])) {
                     if (strpos($routes[1], '?') !== false) {
                         $route = explode('?', $routes[1]);
-                        self::$action = lcfirst($route[0]);
-                    } else self::$action = lcfirst($routes[1]);
-                } else self::setAction('index');
+                        self::setAction(lcfirst($route[0]));
+                    } else self::setAction(lcfirst($routes[1]));
+                }
             }
-
-        } else {
-            self::$url = self::$defaultController . '/index';
-            self::setClass(self::$defaultController);
-            self::setAction('index');
         }
 
         if (isset($routes[0]))
@@ -175,24 +169,17 @@ class Router
 
     private function checkIsRequestMethodProvided(): void
     {
-        $url = self::$routerUrl ?? static::$defaultController;
-
-        if (isset(static::$routes[$url]))
-            if (static::$routes[$url][1] != $this->requestMethod)
+        if (isset(static::$routes[self::$routerUrl]))
+            if (static::$routes[self::$routerUrl][1] != $this->requestMethod)
                 $this->methodAllowedException();
 
         if (is_array(static::$routes)) {
             foreach (static::$routes as $key => $routeParams) {
-                if ($routeParams[0] === static::$class . '/' . static::$action || $routeParams[0] === static::$class)
+                if ($routeParams[0] === static::getClass() . '/' . static::getAction() || $routeParams[0] === static::getClass())
                     if ($routeParams[1] != $this->requestMethod)
                         $this->methodAllowedException();
             }
         }
-    }
-
-    public static function defaultController(string $controller = 'Index'): void
-    {
-        self::$defaultController = ucfirst($controller);
     }
 
     private function methodAllowedException(): void
@@ -243,7 +230,7 @@ class Router
     public static function http404(): void
     {
         self::$admin = false;
-        static::redirect('Index/http404');
+        static::redirect('index/http404');
     }
 
     public static function run(): self
