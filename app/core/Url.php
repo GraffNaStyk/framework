@@ -5,7 +5,7 @@ abstract class Url
     public static function get()
     {
         if (Router::isAdmin())
-            return app['url'] . 'admin/';
+            return app['url'] . app['cms'] . '/';
 
         return app['url'];
     }
