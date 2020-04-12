@@ -31,7 +31,7 @@ class Db extends Builder
                 self::$db->query('set names utf8;');
             } catch (\PDOException $e) {
                 trigger_error("Database connection error");
-                Handle::throwException($e);
+                Handle::throwException($e, 'DATABASE CONNECTION ERROR');
             }
         }
         return false;
@@ -162,7 +162,7 @@ class Db extends Builder
                     return true;
 
             } catch (\PDOException $e) {
-                Handle::throwException($e);
+                Handle::throwException($e, $this->query);
             }
             return false;
 
@@ -173,7 +173,7 @@ class Db extends Builder
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             } catch (\PDOException $e) {
-                Handle::throwException($e);
+                Handle::throwException($e, $this->query);
             }
         }
         return false;
