@@ -9,7 +9,7 @@ if(app['dev']) {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 } else {
-    ini_set('error_log', storage_path('logs/php_'.date('Y-m-d').'.log'));
+    ini_set('error_log', storage_path('private/logs/php_'.date('Y-m-d').'.log'));
     ini_set('log_errors', TRUE);
 }
 
