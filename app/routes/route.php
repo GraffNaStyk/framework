@@ -2,10 +2,7 @@
 
 use \App\Core\Router;
 
-Router::defaultController();
-
-Router::get('Index', 'dupa');
-Router::post('Example/delete', 'usun-postac');
-Router::get('Index/test', 'eluwina');
+Router::get('Contact/index', 'kontakt');
+Router::get('Realizations/index', 'realizacje');
 
 Router::run();
