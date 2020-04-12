@@ -2,25 +2,15 @@
 
 ini_set('memory_limit', '-1');
 
-set_error_handler('error_handler');
-
-function error_handler($errorNumber, $errorStr, $file, $line)
-{
-    echo '<div style="border: 1px solid hsla(0,0%,80%,.5); padding: 10px; font-size: 18px;
-    color: #282828; background: #fdfdfd; margin-bottom: 5px; border-radius: 5px;">';
-    echo "<b>Php:</b> [" . PHP_VERSION . " (" . PHP_OS . ")]<br />";
-    echo "<b>File:</b> [$file] <br />";
-    echo "<b>Line:</b> [$line] <br />";
-    echo "<b>Error:</b> [code: $errorNumber] $errorStr";
-    echo '</div>';
-}
-
 define('app', require_once app_path('app/config/app.php'));
 
-if(app['dev'] == true) {
+if(app['dev']) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+} else {
+    ini_set('error_log', storage_path('logs/php_'.date('Y-m-d').'.log'));
+    ini_set('log_errors', TRUE);
 }
 
 spl_autoload_register(function ($class) {
