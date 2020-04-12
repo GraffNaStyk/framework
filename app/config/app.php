@@ -31,7 +31,17 @@ return [
     * @cms_url is a calling url for go to management system for page, default is a admin like
      *  www.page.pl/admin you can write here every link
     */
-    'cms' => 'bocian',
+    'cms' => 'cms',
+
+    /*
+     *   @controller Set default controller for framework, current default controller is every item Index
+     */
+    'controller' => 'index',
+
+    /*
+     * @action Set default action for framework, current default action is every item Index
+     */
+    'action' => 'index',
 
     /*
      *  @mail configuration using in framework to send mails.

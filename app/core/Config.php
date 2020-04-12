@@ -19,8 +19,6 @@ abstract class Config
 
         define('ENV', require_once app_path('app/config/.env'));
 
-        Db::init(
-            ENV['DB']
-        );
+        Db::init(ENV['DB']);
     }
 }
