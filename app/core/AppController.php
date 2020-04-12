@@ -2,6 +2,7 @@
 
 use App\Helpers\Loader;
 use App\Helpers\Session;
+use App\Helpers\Storage;
 
 abstract class AppController
 {
@@ -9,8 +10,10 @@ abstract class AppController
 
     public function __construct()
     {
+        Storage::disk('private')->make('logs');
+
         if (app['admin'] && !Router::isAdmin())
-            Router::redirect('admin');
+            Router::redirect(app['cms']);
 
         View::set([
             'url' => Url::get(),
