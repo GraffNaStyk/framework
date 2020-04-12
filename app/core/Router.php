@@ -31,9 +31,11 @@ class Router
     {
         self::setClass(app['controller']);
         self::setAction(app['controller']);
+
         $this->request = new Request();
         $this->setRequestMethod();
         $this->setRoutes();
+
         $controller = !self::$admin ? self::$http : self::$cms;
         $this->create($controller .= ucfirst(self::$class) . 'Controller');
     }
@@ -124,25 +126,26 @@ class Router
             if (in_array(app['cms'], $routes)) {
                 self::$admin = true;
                 array_shift($routes);
+
+                self::$routerUrl = str_replace(app['cms'], '', self::$routerUrl);
+                self::$routerUrl = ltrim(self::$routerUrl, '/');
+
                 static::setClass('Login');
             }
 
-            if (!empty($routes) && array_key_exists($routes[0], self::$routes) && !self::$admin) {
+            if (!empty($routes) && array_key_exists($routes[0], self::$routes)) {
                 $flagToRemoveRoute = false;
                 $urlParams = explode('/', self::$routes[$routes[0]][0]);
                 self::setClass($urlParams[0]);
                 self::setAction(lcfirst($urlParams[1]));
+
             } else {
 
                 if (isset($routes[0]) && !empty($routes[0]))
                     self::setClass(ucfirst($routes[0]));
 
-                if (isset($routes[1]) && !empty($routes[1])) {
-                    if (strpos($routes[1], '?') !== false) {
-                        $route = explode('?', $routes[1]);
-                        self::setAction(lcfirst($route[0]));
-                    } else self::setAction(lcfirst($routes[1]));
-                }
+                if (isset($routes[1]) && !empty($routes[1]))
+                  self::setAction(lcfirst($routes[1]));
             }
         }
 
@@ -215,6 +218,9 @@ class Router
             self::$routerUrl = str_replace(app['url'], '', $_SERVER['REQUEST_URI']);
         else
             self::$routerUrl = $_SERVER['REQUEST_URI'];
+
+        //now we remove all query get string
+        self::$routerUrl = explode('?', self::$routerUrl)[0];
 
         self::$routerUrl = rtrim(self::$routerUrl, '/');
         self::$routerUrl = ltrim(self::$routerUrl, '/');
