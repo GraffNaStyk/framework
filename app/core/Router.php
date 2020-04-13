@@ -221,7 +221,6 @@ class Router
 
         //now we remove all query get string
         self::$routerUrl = explode('?', self::$routerUrl)[0];
-
         self::$routerUrl = rtrim(self::$routerUrl, '/');
         self::$routerUrl = ltrim(self::$routerUrl, '/');
         self::$routerUrl = filter_var(self::$routerUrl, FILTER_SANITIZE_URL);
