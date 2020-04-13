@@ -42,10 +42,10 @@ class TwigExt extends AbstractExtension
 
     public function form_open()
     {
-        return new TwigFunction('form_open', function($url, $method = 'post', $enctype = false) {
+        return new TwigFunction('form_open', function($url, $method = 'post', $enctype = false, $class = null) {
             $url = Url::get() . $url;
             $enctype = $enctype ? 'enctype="'.$enctype.'"' :'';
-            echo '<form action="'.$url.'" method="'.$method.'"'.$enctype.'>';
+            echo '<form action="'.$url.'" method="'.$method.'"'.$enctype.' class="'.$class.'">';
         });
     }
 
