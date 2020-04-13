@@ -1,0 +1,24 @@
+{% extends layout %}
+
+{% block content %}
+  <section class="mt-4">
+    <h1 class="left__line mb-4">Realizacje</h1>
+    <div class="realization__container">
+      {%  for realization in realizations %}
+        <a class="realization__item" target="_blank" href="{{ realization.page_url }}">
+          <div
+           class="realization__photo"
+           style="background-image: url('{{ img('public/'~realization.id~'/'~realization.id~'.jpg') }}')">
+          </div>
+          <div class="realization__description">
+            <h3 class="text-center">{{ realization.title }}</h3>
+            <p class="text-muted">
+             {{ realization.description }}
+            </p>
+            <span class="technologies">Technologie: {{ realization.technologies }}</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}
