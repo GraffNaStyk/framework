@@ -168,7 +168,7 @@ class Router
 
         if (is_array(static::$routes)) {
             foreach (static::$routes as $key => $routeParams) {
-                if ($routeParams[0] === static::getClass() . '/' . static::getAction() || $routeParams[0] === static::getClass())
+                if (ucfirst($routeParams[0]) === static::getClass() . '/' . static::getAction() || ucfirst($routeParams[0]) === static::getClass())
                     if ($routeParams[1] != $this->requestMethod)
                         $this->methodAllowedException();
             }
