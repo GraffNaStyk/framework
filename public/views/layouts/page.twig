@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta http-equiv="Content-Language" content="pl">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="index,follow,all">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="keywords" content="Strony internetowe, systemy CRM, strony wizytówki, sklepy internetowe">
+  <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
+  <base href="{{ base_url }}">
+  <title>{{ title }}</title>
+  {{ css|raw }}
+  <script>
+    let url = '{{ url }}';
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container">
+  <a class="navbar-brand" href="{{ url }}">Graff Design</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url }}realizacje">Rezalizacje</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url }}kontakt">Kontakt</a>
+      </li>
+    </ul>
+  </div>
+</div>
+</nav>
+
+{% if messages is not empty %}
+<div class="container mt-4">
+  {% for msg in messages %}
+    <div class="alert alert-{{ color }} mb-0">
+      {{ msg }}
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<main id="main-page-wrapper" class="container">
+  {% block content %}
+
+  {% endblock %}
+</main>
+
+<div id="modal" class="modal"></div>
+<footer class="py-2">
+  <div class="container">
+    <p class="m-0">&copy; Graff Design {{ "now"|date('Y') }}</p>
+  </div>
+</footer>
+{{ js|raw }}
+</body>
+</html>

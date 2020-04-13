@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
+  <base href="{{ base_url }}">
+  <title>{{ title }}</title>
+    {{ css|raw }}
+  <script>
+    let url = '{{ url }}';
+  </script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg top__nav justify-content-between">
+  <a href="{{ url }}dash" class="logo">Dashboard</a>
+  <div class="d-flex align-items-center">
+    <a href="#"><i class="fa fa-bars"></i></a>
+    <a href="#" data-toggle="tooltip" title="add"><i class="fa fa-plus"></i></a>
+    <a href="#" data-toggle="tooltip" title="profile"><i class="fa fa-user"></i></a>
+    <a href="{{ url }}Logout" data-toggle="tooltip" title="logout"> <i class="fa fa-power-off"></i> </a>
+  </div>
+</nav>
+
+<section class="grid">
+
+  <aside class="left-panel d-xl-flex">
+{#    <a href="{{ url }}realizations">Realizacje</a>#}
+
+    <a href="#" class="has__parent">Realizacje</a>
+    <div class="parent">
+      <a href="{{ url }}realizations/create">Nowa</a>
+      <a href="{{ url }}realizations">Lista</a>
+    </div>
+
+    <a href="#" class="has__parent">Klienci</a>
+    <div class="parent">
+      <a href="{{ url }}clients/create">nowy</a>
+      <a href="{{ url }}clients">Lista</a>
+    </div>
+
+  </aside>
+
+  <main class="right-panel">
+      {% for msg in messages %}
+        <div class="alert alert-{{ color }}" role="alert">
+          {{ msg }}
+        </div>
+      {% endfor %}
+
+      {% block content %}
+      {% endblock %}
+  </main>
+
+</section>
+
+<div id="error"></div>
+<div id="modals" class="modal" tabindex="-1" role="dialog"></div>
+  {{ js|raw }}
+
+</body>
+</html>
