@@ -5,7 +5,8 @@ use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 use Twig_Error;
-require_once __DIR__ .'/../../vendor/autoload.php';
+
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 class View
 {
@@ -13,7 +14,7 @@ class View
     public static $data = [];
     protected static $ext = '.twig';
     protected static $layout = 'page';
-    public static $viewFolder = null;
+    public static $dir = null;
     public static $view = null;
 
     public static function render(array $data = [])
@@ -30,27 +31,32 @@ class View
 
         self::$twig->addExtension(new Twig_Extension_Debug());
 
-        if(self::isAjax())
+        if (self::isAjax())
             self::setLayout('ajax');
 
-        static::registerFunction();
+        self::registerFunction();
 
-        self::$viewFolder  = Router::isAdmin() ? 'Admin' : 'Http';
+        self::$dir = Router::isAdmin() ? 'Admin' : 'Http';
 
-        self::$data['layout'] = 'Layouts/' . self::$layout . self::$ext;
+        self::set(['layout' => 'Layouts/' . self::$layout . self::$ext]);
 
-        $view = self::$view == null ? Router::getAction() : self::$view ;
+        self::$view = self::$view ?? Router::getAction();
 
-        self::$view = preg_split('/(?=[A-Z])/',$view);
-        self::$view = strtolower(implode('_', self::$view ));
-
-        if(!file_exists(view_path(self::$viewFolder . '/' . Router::getClass() . '/' . self::$view  . self::$ext)))
-            Router::redirect('');
+        self::$view = preg_split('/(?=[A-Z])/', self::$view);
+        self::$view = strtolower(implode('_', self::$view));
 
         try {
-            return self::$twig->display(self::$viewFolder . '/' . Router::getClass() . '/' . self::$view  . self::$ext , self::$data);
+            return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
         } catch (Twig_Error $e) {
-            pd($e->getMessage());
+            if (app['dev']) {
+                pd($e->getMessage());
+            } else {
+                $date = date('Y-m-d H:i:s');
+                file_put_contents(storage_path('private/logs/view_' . date('Y-m-d') . '.log'),
+                    "[Date {$date}] {$e->getMessage()}" . PHP_EOL .
+                    "---------------------------------------------" . PHP_EOL
+                    , FILE_APPEND);
+            }
         }
     }
 
@@ -63,7 +69,7 @@ class View
     }
 
 
-    public static function setLayout($layout): void
+    public static function setLayout(string $layout): void
     {
         self::$layout = $layout;
     }
