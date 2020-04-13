@@ -52,7 +52,7 @@ class View
                 pd($e->getMessage());
             } else {
                 $date = date('Y-m-d H:i:s');
-                file_put_contents(storage_path('private/logs/view_' . date('Y-m-d') . '.log'),
+                file_put_contents(storage_path('private/logs/view_' . date('d-m-Y') . '.log'),
                     "[Date {$date}] {$e->getMessage()}" . PHP_EOL .
                     "---------------------------------------------" . PHP_EOL
                     , FILE_APPEND);
