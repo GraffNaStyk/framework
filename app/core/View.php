@@ -36,9 +36,9 @@ class View
 
         self::registerFunction();
 
-        self::$dir = Router::isAdmin() ? 'Admin' : 'Http';
+        self::$dir = Router::isAdmin() ? 'admin' : 'http';
 
-        self::set(['layout' => 'Layouts/' . self::$layout . self::$ext]);
+        self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
 
         self::$view = self::$view ?? Router::getAction();
 
@@ -79,13 +79,13 @@ class View
         self::$view = $view;
     }
 
-    public static function set(array $data)
+    public static function set(array $data): void
     {
         foreach ($data as $key => $value)
             self::$data[$key] = $value;
     }
 
-    public static function registerFunction()
+    public static function registerFunction(): void
     {
         foreach (TwigExt::init()->getFunctions() as $fn) {
             self::$twig->addFunction($fn);
