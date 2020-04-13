@@ -22,29 +22,18 @@ abstract class AppController
             'color' => Session::getColor(),
         ]);
 
-        if ($vars = Session::collectProvidedData())
+        if($vars = Session::collectProvidedData())
             View::set($vars);
 
         Session::clearMsg();
     }
 
-    public function is($item, $range = null) {
-        if($range !== null) {
-            if(isset($item[$range]) && !empty($item[$range]))
-                return true;
-            else return false;
-        }
-        if(isset($item) && !empty($item))
-            return true;
-        else return false;
-    }
-
-    public function loadForAdmin()
+    public function loadForAdmin(): void
     {
         View::set(['css' => Loader::adminCss(), 'js' => Loader::adminJs()]);
     }
 
-    public function loadForPage()
+    public function loadForPage(): void
     {
         View::set(['css' => Loader::css(), 'js' => Loader::js()]);
     }
