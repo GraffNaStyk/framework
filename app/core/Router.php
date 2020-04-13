@@ -205,7 +205,7 @@ class Router
         self::$url = $_SERVER['REQUEST_URI'];
 
         if(app['url'] != '/')
-            self::$routerUrl = preg_replace("/.".app['url']."/", '', $_SERVER['REQUEST_URI'], 1);
+            self::$routerUrl = str_replace(app['url'], '', $_SERVER['REQUEST_URI']);
         else
             self::$routerUrl = $_SERVER['REQUEST_URI'];
 
