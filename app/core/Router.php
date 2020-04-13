@@ -123,16 +123,6 @@ class Router
                 $routes = explode('/', self::$routes[self::$routerUrl][0]);
             } else $routes = explode('/', self::$routerUrl);
 
-            if (in_array(app['cms'], $routes)) {
-                self::$admin = true;
-                array_shift($routes);
-
-                self::$routerUrl = str_replace(app['cms'], '', self::$routerUrl);
-                self::$routerUrl = ltrim(self::$routerUrl, '/');
-
-                static::setClass('Login');
-            }
-
             if (!empty($routes) && array_key_exists($routes[0], self::$routes)) {
                 $flagToRemoveRoute = false;
                 $urlParams = explode('/', self::$routes[$routes[0]][0]);
@@ -215,12 +205,21 @@ class Router
         self::$url = $_SERVER['REQUEST_URI'];
 
         if(app['url'] != '/')
-            self::$routerUrl = str_replace(app['url'], '', $_SERVER['REQUEST_URI']);
+            self::$routerUrl = preg_replace("/.".app['url']."/", '', $_SERVER['REQUEST_URI'], 1);
         else
             self::$routerUrl = $_SERVER['REQUEST_URI'];
 
         //now we remove all query get string
-        self::$routerUrl = explode('?', self::$routerUrl)[0];
+        self::$routerUrl = preg_replace('/\?.*/', '', self::$routerUrl);
+
+        //check if is calling admin panel
+        if(preg_match("/".app['cms']."/", self::$routerUrl)) {
+            self::$admin = true;
+            static::setClass('dash');
+            self::$routerUrl = preg_replace("/".app['cms']."/", '', self::$routerUrl, 1);
+        }
+
+        self::$routerUrl = trim(self::$routerUrl);
         self::$routerUrl = rtrim(self::$routerUrl, '/');
         self::$routerUrl = ltrim(self::$routerUrl, '/');
         self::$routerUrl = filter_var(self::$routerUrl, FILTER_SANITIZE_URL);
