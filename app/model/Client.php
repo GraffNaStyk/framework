@@ -1,8 +1,8 @@
 <?php namespace App\Model;
 
-use App\Db\Accessor;
+use App\Db\Model;
 
-class Client extends Accessor
+class Client extends Model
 {
     public static $table = 'clients';
 }
