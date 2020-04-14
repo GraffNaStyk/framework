@@ -180,12 +180,15 @@ class Router
         exit("Sometimes went wrong...");
     }
 
-    public static function redirect(string $path, int $code = 302): void
+    public static function redirect(string $path, int $code = 302, bool $direct = false): void
     {
         session_write_close();
         session_start();
 
-        header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::get() . $path, true, $code);
+        if($direct)
+            header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::base() . $path, true, $code);
+        else
+            header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::get() . $path, true, $code);
 
         exit;
     }
