@@ -25,6 +25,7 @@ class Request
 
         Session::remove('csrf');
         unset($this->post['csrf']);
+
     }
 
     private function setMethod()
@@ -99,8 +100,24 @@ class Request
         }
     }
 
+    public function remove($item)
+    {
+        $item = explode('.', $item);
+        if (isset($item[1])) {
+            unset($this->{$this->method}[$item[0]][$item[1]]);
+        } else {
+            unset($this->{$this->method}[$item[0]]);
+        }
+    }
+
+
     public function debug()
     {
         pd(['post' => $_POST, 'get' => $_GET]);
+    }
+
+    public function __destruct()
+    {
+        Session::checkIfDataHasBeenProvided($this->{$this->method});
     }
 }
