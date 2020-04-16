@@ -1,7 +1,7 @@
 <?php namespace App\Core;
 
-use App\Helpers\Session;
 use ReflectionMethod;
+use App\Facades\Url;
 
 class Router
 {
