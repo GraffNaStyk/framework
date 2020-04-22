@@ -18,6 +18,9 @@ abstract class Builder extends Field
     public function __construct($model)
     {
         $this->table = $model::$table;
+        if(isset($model::$id)) {
+            $this->hasId = true;
+        }
     }
 
     protected function buildWhere()

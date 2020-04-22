@@ -3,6 +3,8 @@ use stdClass;
 use ReflectionClass;
 abstract class Field
 {
+    public $hasId = false;
+
     protected function detectFieldType($field, $comparison)
     {
         if (!is_array($field) && strpos($field, 'CURDATE()') !== FALSE)
@@ -90,7 +92,7 @@ abstract class Field
         $returnValues = '';
         if (is_array($this->values)) {
 
-            if(!in_array('id', $this->values))
+            if(!in_array('id', $this->values) && $this->hasId)
                 array_push($this->values, 'id');
 
             foreach ($this->values as $val) {
@@ -103,20 +105,23 @@ abstract class Field
     protected function formatJoin($data)
     {
         $result = [];
-
-        foreach ($data as $key => $value) {
-            if($isValue = $this->checkIfIdExistInObject($result, $value['id'])) {
-                $result[$isValue[1]]['join'] = array_diff(array_map('json_encode',(array)$value), array_map('json_encode',(array)$isValue[0]));
-            } else $result[$key] = $value;
-        }
-
-        foreach ($result as $key => $value) {
-            if(isset($value['join'])) {
-                foreach ($value['join'] as $joinKey => $joins)
-                    $result[$key][$value]['join'][$joinKey] = json_decode($joins);
+        if(isset($data['id'])) {
+            foreach ($data as $key => $value) {
+                if($isValue = $this->checkIfIdExistInObject($result, $value['id'])) {
+                    $result[$isValue[1]]['join'] = array_diff(array_map('json_encode',(array)$value), array_map('json_encode',(array)$isValue[0]));
+                } else $result[$key] = $value;
             }
+
+            foreach ($result as $key => $value) {
+                if(isset($value['join'])) {
+                    foreach ($value['join'] as $joinKey => $joins)
+                        $result[$key][$value]['join'][$joinKey] = json_decode($joins);
+                }
+            }
+            return $result;
         }
-        return $result;
+
+        return $data;
     }
 
     protected function checkIfIdExistInObject($object, $id) {
