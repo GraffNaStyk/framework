@@ -7,10 +7,7 @@ class Url
 
     public static function get()
     {
-        if (Router::isAdmin())
-            return app['url'] . app['cms'] . '/';
-
-        return app['url'];
+        return app['url'] . Router::getAlias();
     }
 
     public static function base()
