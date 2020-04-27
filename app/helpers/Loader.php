@@ -6,7 +6,9 @@ class Loader
 {
     public static function css()
     {
-        $cssArr = glob(css_path('http/*.css'), GLOB_BRACE);
+        $folder = Router::getAlias() ?? 'http';
+
+        $cssArr = glob(css_path("$folder/*.css"), GLOB_BRACE);
 
         $cssString = null;
         foreach ($cssArr as $key => $css)
@@ -23,7 +25,9 @@ class Loader
 
     public static function js()
     {
-        $jsArr = glob(js_path('http/*.js'), GLOB_BRACE);
+        $folder = Router::getAlias() ?? 'http';
+
+        $jsArr = glob(js_path("$folder/*.js"), GLOB_BRACE);
         $jsString = null;
         foreach ($jsArr as $key => $js)
             $jsString .= trim('<script type="module" src="'.str_replace(app_path(), '', $js).'"></script>'.PHP_EOL);
@@ -31,37 +35,6 @@ class Loader
         $jsString .= static::getFileForView('js');
 
         $jsString .= self::getBootstrap('js');
-
-        return $jsString;
-    }
-
-    public static function adminCss()
-    {
-        $cssArr = glob(css_path('admin/*.css'), GLOB_BRACE);
-        $cssString = null;
-        foreach ($cssArr as $key => $css)
-            $cssString .= trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', $css).'">'.PHP_EOL);
-
-        $cssString .= static::getFileForView('css');
-
-        $cssString .= self::getBootstrap('css');
-
-        $cssString .= self::getFontAwesome();
-
-        return $cssString;
-    }
-
-    public static function adminJs()
-    {
-        $jsArr = glob(js_path('admin/*.js'), GLOB_BRACE);
-        $jsString = null;
-        foreach ($jsArr as $key => $js)
-            $jsString .= trim('<script type="text/javascript" src="'.str_replace(app_path(), '', $js).'"></script>'.PHP_EOL);
-
-        $jsString .= static::getFileForView('js');
-
-        $jsString .= self::getBootstrap('js');
-
 
         return $jsString;
     }
@@ -90,7 +63,7 @@ class Loader
 
     private static function getFileForView($ext)
     {
-        $folder = Router::isAdmin() ? 'admin' : 'http';
+        $folder = Router::getAlias() ?? 'http';
 
         $path = $ext == 'css'
             ? css_path($folder.'/'.Router::getClass().'/'.Router::getAction().'.css')
