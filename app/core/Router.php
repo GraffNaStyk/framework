@@ -1,23 +1,23 @@
 <?php namespace App\Core;
 
 use ReflectionMethod;
-use App\Facades\Url;
+use App\Facades\Url\Url;
 
 class Router
 {
     private static $params = [];
 
-    private static $http = 'App\\Controllers\\Http\\';
+    private static $aliases = [];
 
-    private static $cms = 'App\\Controllers\\Admin\\';
+    private static $provider = 'App\\Controllers\\Http\\';
 
-    private static $admin = false;
+    private static $class = 'Index';
 
-    private static $class = null;
-
-    private static $action = null;
+    private static $action = 'index';
 
     private static $routes = [];
+
+    private static $alias = null;
 
     private static $url = null;
 
@@ -29,15 +29,10 @@ class Router
 
     public function __construct()
     {
-        self::setClass(app['controller']);
-        self::setAction(app['controller']);
-
         $this->request = new Request();
         $this->setRequestMethod();
         $this->setRoutes();
-
-        $controller = !self::$admin ? self::$http : self::$cms;
-        $this->create($controller .= ucfirst(self::$class) . 'Controller');
+        $this->create(self::$provider . ucfirst(self::$class) . 'Controller');
     }
 
     public static function getClass(): string
@@ -60,14 +55,17 @@ class Router
         self::$action = lcfirst($action);
     }
 
+    public static function getAlias()
+    {
+        if(!is_null(self::$alias))
+            return self::$alias . '/';
+
+        return self::$alias;
+    }
+
     private function setRequestMethod(): void
     {
         $this->requestMethod = $this->request->getMethod();
-    }
-
-    public static function isAdmin(): string
-    {
-        return self::$admin;
     }
 
     private function create(string $controller)
@@ -177,7 +175,8 @@ class Router
 
     private function methodAllowedException(): void
     {
-        exit("Sometimes went wrong...");
+        http_response_code(405);
+        exit(require_once (view_path('errors/405.php')));
     }
 
     public static function redirect(string $path, int $code = 302, bool $direct = false): void
@@ -212,19 +211,24 @@ class Router
         else
             self::$routerUrl = $_SERVER['REQUEST_URI'];
 
-        //now we remove all query get string
         self::$routerUrl = preg_replace('/\?.*/', '', self::$routerUrl);
 
-        //check if is calling admin panel
-        if(preg_match("/".app['cms']."/", self::$routerUrl)) {
-            self::$admin = true;
-            static::setClass('dash');
-            self::$routerUrl = preg_replace("/".app['cms']."/", '', self::$routerUrl, 1);
+        foreach (self::$aliases as $key => $provider) {
+            preg_match("/(^$key$|^$key(\?|\/))/U", self::$routerUrl, $m);
+            $m = array_filter($m);
+
+            if (isset($m[0])) {
+                $m = strtolower(rtrim($m[0], '/'));
+                self::$routerUrl = preg_replace("/" . $m . "/", '', self::$routerUrl, 1);
+                self::$provider = $provider['ns'];
+                self::setClass($provider['base'] ?? 'Index');
+                self::$alias = $m;
+                break;
+            }
+
         }
 
-        self::$routerUrl = trim(self::$routerUrl);
-        self::$routerUrl = rtrim(self::$routerUrl, '/');
-        self::$routerUrl = ltrim(self::$routerUrl, '/');
+        self::$routerUrl = trim(self::$routerUrl, '/');
         self::$routerUrl = filter_var(self::$routerUrl, FILTER_SANITIZE_URL);
         self::$routerUrl = urldecode(self::$routerUrl);
     }
@@ -236,12 +240,21 @@ class Router
 
     public static function http404(): void
     {
-        self::$admin = false;
-        static::redirect('index/http404');
+        http_response_code(404);
+        exit(require_once (view_path('errors/404.php')));
     }
 
     public static function run(): self
     {
         return new self();
+    }
+
+    public static function group($alias, $function)
+    {
+        self::$aliases[$alias['prefix']] = [
+            'ns' => str_replace('.', '\\', $alias['as']) . '\\',
+            'base' => $alias['base'] ?? null
+        ];
+        $function();
     }
 }
