@@ -186,19 +186,18 @@ class Db extends Builder
 
     public function update(array $data)
     {
-        return $this->insert($data);
+        $this->data = $data;
+        $this->buildUpdateQuery();
+        if($this->execute())
+            return true;
+
+        return false;
     }
 
     public function insert(array $data)
     {
         $this->data = $data;
-
-        if(isset($this->data['id']) && !empty($this->data['id']) || !empty($this->where['field'])) {
-            $this->buildUpdateQuery();
-        } else {
-            $this->buildSaveQuery();
-        }
-
+        $this->buildSaveQuery();
         if($this->execute())
             return true;
 
@@ -236,6 +235,14 @@ class Db extends Builder
         $this->debug = true;
 
         return $this;
+    }
+
+    public static function raw($query)
+    {
+        if(self::$db->query($query))
+            return true;
+
+        return false;
     }
 
     private function develop()
