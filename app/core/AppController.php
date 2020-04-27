@@ -3,6 +3,7 @@
 use App\Helpers\Loader;
 use App\Helpers\Session;
 use App\Helpers\Storage;
+use App\Facades\Url\Url;
 
 abstract class AppController
 {
@@ -11,9 +12,6 @@ abstract class AppController
     public function __construct()
     {
         Storage::disk('private')->make('logs');
-
-        if (app['admin'] && !Router::isAdmin())
-            Router::redirect(app['cms']);
 
         View::set([
             'url' => Url::get(),
@@ -26,14 +24,10 @@ abstract class AppController
             View::set($vars);
 
         Session::clearMsg();
+        $this->resources();
     }
 
-    public function loadForAdmin(): void
-    {
-        View::set(['css' => Loader::adminCss(), 'js' => Loader::adminJs()]);
-    }
-
-    public function loadForPage(): void
+    public function resources(): void
     {
         View::set(['css' => Loader::css(), 'js' => Loader::js()]);
     }
