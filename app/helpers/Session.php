@@ -61,6 +61,7 @@ class Session
     public static function removeFlash($item)
     {
         unset($_COOKIE[$item]);
+        setcookie($item, false, -1, '/', $_SERVER['SERVER_NAME']);
     }
 
     public static function msg($items, $color = 'success')
