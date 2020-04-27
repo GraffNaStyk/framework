@@ -6,7 +6,7 @@ use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 use Twig_Error;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
+require_once vendor_path('autoload.php');
 
 class View
 {
@@ -25,6 +25,7 @@ class View
 
         self::$twig = new Twig_Environment($loader, [
             'debug' => true,
+            'cache' => storage_path('framework/views'),
         ]);
 
         self::$twig->addGlobal('session', $_SESSION);
@@ -36,7 +37,7 @@ class View
 
         self::registerFunction();
 
-        self::$dir = Router::isAdmin() ? 'admin' : 'http';
+        self::$dir = Router::getAlias() ?? 'http';
 
         self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
 
@@ -67,7 +68,6 @@ class View
 
         return false;
     }
-
 
     public static function setLayout(string $layout): void
     {

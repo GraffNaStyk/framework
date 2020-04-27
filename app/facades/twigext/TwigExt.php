@@ -1,7 +1,6 @@
 <?php namespace App\Facades\TwigExt;
 
-use App\Core\Router;
-use App\Core\Url;
+use App\Facades\Url\Url;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 use App\Helpers\Session;
@@ -51,8 +50,11 @@ class TwigExt extends AbstractExtension
 
     public function input()
     {
-        return new TwigFunction('input', function($name, $class = null, $type = 'text') {
-            echo '<input name="'.$name.'" class="'.$class.'" type="'.$type.'">';
+        return new TwigFunction('input', function($attr = []) {
+            $attr['type'] = $attr['type'] ?? 'text';
+            $attr['name'] = $attr['name'] ?? 'undefined';
+            $attr['class'] = $attr['class'] ?? '';
+            echo "<input name='{$attr['name']}' type='{$attr['type']}' class='{$attr['class']}' />";
         });
     }
 
@@ -63,17 +65,17 @@ class TwigExt extends AbstractExtension
         });
     }
 
-    public function img()
-    {
-        return new TwigFunction('img', function($url) {
-            echo 'storage/'.$url;
-        });
-    }
-
     public function form_close()
     {
         return new TwigFunction('form_close', function() {
             echo '</form>';
+        });
+    }
+
+    public function img()
+    {
+        return new TwigFunction('img', function($url) {
+            echo 'storage/public/'.$url;
         });
     }
 }

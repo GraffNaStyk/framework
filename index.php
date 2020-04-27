@@ -36,6 +36,11 @@ function storage_path($path = null)
     return __DIR__ . '/storage/' . $path;
 }
 
+function vendor_path($path = null)
+{
+    return __DIR__ . '/vendor/' . $path;
+}
+
 function pd($item)
 {
     print_r($item);
