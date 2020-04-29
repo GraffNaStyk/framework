@@ -3,7 +3,6 @@
 use App\Helpers\Loader;
 use App\Helpers\Session;
 use App\Helpers\Storage;
-use App\Facades\Url\Url;
 
 abstract class AppController
 {
@@ -14,8 +13,6 @@ abstract class AppController
         Storage::disk('private')->make('logs');
 
         View::set([
-            'url' => Url::get(),
-            'base_url' => Url::base(),
             'messages' => Session::getMsg(),
             'color' => Session::getColor(),
         ]);

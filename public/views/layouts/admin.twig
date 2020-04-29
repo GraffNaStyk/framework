@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
-  <base href="{{ base_url }}">
+  <base href="{{ base() }}">
   <title>{{ title }}</title>
     {{ css|raw }}
   <script>
-    let url = '{{ url }}';
+    let url = '{{ url() }}';
   </script>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-lg top__nav justify-content-between">
-  <a href="{{ url }}dash" class="logo">Dashboard</a>
+  <a href="{{ url('dash') }}" class="logo">Dashboard</a>
   <div class="d-flex align-items-center">
     <a href="#"><i class="fa fa-bars"></i></a>
     <a href="#" data-toggle="tooltip" title="add"><i class="fa fa-plus"></i></a>

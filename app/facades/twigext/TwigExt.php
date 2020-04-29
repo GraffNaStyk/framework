@@ -21,7 +21,9 @@ class TwigExt extends AbstractExtension
             $this->input(),
             $this->form_submit(),
             $this->csrf(),
-            $this->img()
+            $this->img(),
+            $this->url(),
+            $this->base()
         ];
     }
 
@@ -76,6 +78,20 @@ class TwigExt extends AbstractExtension
     {
         return new TwigFunction('img', function($url) {
             echo 'storage/public/'.$url;
+        });
+    }
+
+    public function url()
+    {
+        return new TwigFunction('url', function($url = null) {
+            echo Url::get() . $url;
+        });
+    }
+
+    public function base()
+    {
+        return new TwigFunction('base', function($url = null) {
+            echo Url::base() . $url;
         });
     }
 }

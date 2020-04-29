@@ -11,7 +11,7 @@ require_once vendor_path('autoload.php');
 class View
 {
     protected static $twig;
-    public static $data = [];
+    private static $data = [];
     protected static $ext = '.twig';
     protected static $layout = 'page';
     public static $dir = null;
@@ -40,11 +40,7 @@ class View
         self::$dir = Router::getAlias() ?? 'http';
 
         self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
-
-        self::$view = self::$view ?? Router::getAction();
-
-        self::$view = preg_split('/(?=[A-Z])/', self::$view);
-        self::$view = strtolower(implode('_', self::$view));
+        self::setViewFile();
 
         try {
             return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
@@ -59,6 +55,13 @@ class View
                     , FILE_APPEND);
             }
         }
+    }
+
+    private static function setViewFile(): void
+    {
+        self::$view = self::$view ?? Router::getAction();
+        self::$view = preg_split('/(?=[A-Z])/', self::$view);
+        self::$view = strtolower(implode('_', self::$view));
     }
 
     public static function isAjax(): bool
