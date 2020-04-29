@@ -2,23 +2,16 @@
 
 use App\Core\AppController;
 use App\Core\View;
-use App\Model\User;
 
 class IndexController extends AppController
 {
     public function __construct()
     {
-        View::set(['title' => 'Strona Główna']);
-        $this->loadForPage();
+        View::set(['title' => 'Graff Design - Strona Główna']);
         parent::__construct();
     }
 
     public function index()
-    {
-        return View::render();
-    }
-
-    public function test()
     {
         return View::render();
     }

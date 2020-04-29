@@ -21,16 +21,11 @@ class Router
 
     private static $url = null;
 
-    private static $routerUrl = null;
-
-    private $requestMethod;
-
     private $request;
 
     public function __construct()
     {
         $this->request = new Request();
-        $this->setRequestMethod();
         $this->setRoutes();
         $this->create(self::$provider . ucfirst(self::$class) . 'Controller');
     }
@@ -45,27 +40,19 @@ class Router
         return self::$action;
     }
 
-    public static function setClass(string $class): void
+    private static function setClass(string $class): void
     {
         self::$class = ucfirst($class);
     }
 
-    public static function setAction(string $action): void
+    private static function setAction(string $action): void
     {
         self::$action = lcfirst($action);
     }
 
     public static function getAlias()
     {
-        if(!is_null(self::$alias))
-            return self::$alias . '/';
-
         return self::$alias;
-    }
-
-    private function setRequestMethod(): void
-    {
-        $this->requestMethod = $this->request->getMethod();
     }
 
     private function create(string $controller)
@@ -117,9 +104,9 @@ class Router
 
             $this->parseUrl();
 
-            if (!empty(self::$routes) && array_key_exists(self::$routerUrl, self::$routes)) {
-                $routes = explode('/', self::$routes[self::$routerUrl][0]);
-            } else $routes = explode('/', self::$routerUrl);
+            if (!empty(self::$routes) && array_key_exists(self::$url, self::$routes)) {
+                $routes = explode('/', self::$routes[self::$url][0]);
+            } else $routes = explode('/', self::$url);
 
             if (!empty($routes) && array_key_exists($routes[0], self::$routes)) {
                 $flagToRemoveRoute = false;
@@ -150,30 +137,30 @@ class Router
 
     public static function post(string $route, string $as = null): void
     {
-        static::$routes[$as ?? $route] = [$route, 'post'];
+        self::$routes[$as ?? $route] = [$route, 'post'];
     }
 
     public static function get(string $route, string $as = null): void
     {
-        static::$routes[$as ?? $route] = [$route, 'get'];
+        self::$routes[$as ?? $route] = [$route, 'get'];
     }
 
     private function checkIsRequestMethodProvided(): void
     {
-        if (isset(static::$routes[self::$routerUrl]))
-            if (static::$routes[self::$routerUrl][1] != $this->requestMethod)
-                $this->methodAllowedException();
+        if (isset(self::$routes[self::$url]))
+            if (self::$routes[self::$url][1] !=  $this->request->getMethod())
+                $this->http405();
 
-        if (is_array(static::$routes)) {
-            foreach (static::$routes as $key => $routeParams) {
-                if (ucfirst($routeParams[0]) === static::getClass() . '/' . static::getAction() || ucfirst($routeParams[0]) === static::getClass())
-                    if ($routeParams[1] != $this->requestMethod)
-                        $this->methodAllowedException();
+        if (is_array(self::$routes)) {
+            foreach (self::$routes as $key => $routeParams) {
+                if (ucfirst($routeParams[0]) === self::getClass() . '/' . self::getAction() || ucfirst($routeParams[0]) === self::getClass())
+                    if ($routeParams[1] !=  $this->request->getMethod())
+                        $this->http405();
             }
         }
     }
 
-    private function methodAllowedException(): void
+    private function http405(): void
     {
         http_response_code(405);
         exit(require_once (view_path('errors/405.php')));
@@ -192,14 +179,9 @@ class Router
         exit;
     }
 
-    public static function debug(): void
-    {
-        print_r(['class' => self::getClass(), 'action' => self::getAction(), 'routes' => self::$routes]);
-    }
-
     public static function url(): string
     {
-        return self::$url;
+        return $_SERVER['REQUEST_URI'];
     }
 
     private function parseUrl(): void
@@ -207,19 +189,17 @@ class Router
         self::$url = $_SERVER['REQUEST_URI'];
 
         if(app['url'] != '/')
-            self::$routerUrl = str_replace(app['url'], '', $_SERVER['REQUEST_URI']);
-        else
-            self::$routerUrl = $_SERVER['REQUEST_URI'];
+            self::$url = str_replace(app['url'], '', self::$url);
 
-        self::$routerUrl = preg_replace('/\?.*/', '', self::$routerUrl);
+        self::$url = preg_replace('/\?.*/', '', self::$url);
 
         foreach (self::$aliases as $key => $provider) {
-            preg_match("/(^$key$|^$key(\?|\/))/U", self::$routerUrl, $m);
+            preg_match("/(^$key$|^$key(\?|\/))/U", self::$url, $m);
             $m = array_filter($m);
 
             if (isset($m[0])) {
                 $m = strtolower(rtrim($m[0], '/'));
-                self::$routerUrl = preg_replace("/" . $m . "/", '', self::$routerUrl, 1);
+                self::$url = preg_replace("/" . $m . "/", '', self::$url, 1);
                 self::$provider = $provider['ns'];
                 self::setClass($provider['base'] ?? 'Index');
                 self::$alias = $m;
@@ -227,10 +207,8 @@ class Router
             }
 
         }
-
-        self::$routerUrl = trim(self::$routerUrl, '/');
-        self::$routerUrl = filter_var(self::$routerUrl, FILTER_SANITIZE_URL);
-        self::$routerUrl = urldecode(self::$routerUrl);
+        self::$url = trim(self::$url, '/');
+        self::$url = filter_var(self::$url, FILTER_SANITIZE_URL);
     }
 
     private static function checkProtocol(): string

@@ -1,0 +1,41 @@
+.grid__contact__container {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  margin-top: 2rem;
+  grid-gap: 15px;
+}
+
+@media (max-width: 768px) {
+  .grid__contact__container {
+    grid-template-columns: 100%;
+  }
+}
+
+h3 {
+  font-weight: 200!important;
+}
+
+a.phone__call {
+  letter-spacing: 4px;
+  color: var(--black--color);
+  text-align: center;
+  display: block;
+  margin-top: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: .6s;
+  font-size: 1.1rem;
+}
+
+a.phone__call:before {
+  content: '\f095';
+  font-family: 'FontAwesome';
+  color: var(--maincolor);
+}
+
+a.phone__call:hover {
+  letter-spacing: 6px;
+  transition: .6s;
+  text-decoration: none;
+  color: var(--maincolor);
+}

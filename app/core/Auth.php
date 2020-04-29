@@ -4,9 +4,9 @@ use App\Helpers\Session;
 
 class Auth
 {
-    public static function guard()
+    public static function guard(): void
     {
         if(!Session::has('user'))
-            Router::redirect('Login');
+            Router::redirect('login');
     }
 }

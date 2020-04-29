@@ -1,0 +1,34 @@
+{% extends layout %}
+
+{% block content %}
+  <div class="card card-body">
+    <form action="{{ url }}Realizations/save" method="post" enctype="multipart/form-data">
+      <input
+       class="form-control my-2"
+       type="text" name="title"
+       placeholder="Tytuł"
+       value="{{ title }}">
+      <input
+       class="form-control my-2"
+       type="text"
+       name="page_url"
+       placeholder="Link"
+       value="{{ page_url }}">
+      <input
+       class="form-control my-2"
+       type="file"
+       name="image">
+      <textarea
+       class="form-control my-2"
+       name="description"
+       cols="30" rows="10">{{ description }}</textarea>
+      <input
+       class="form-control my-2"
+       type="text"
+       placeholder="Technologie"
+       name="technologies"
+      value="{{ technologies }}">
+      <input type="submit" value="Zapisz">
+    </form>
+  </div>
+{% endblock %}

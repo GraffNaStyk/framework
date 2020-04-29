@@ -10,8 +10,7 @@ class DashController extends AppController
     {
         parent::__construct();
         View::set(['title' => 'Panel Administracyjny']);
-        $this->loadForAdmin();
-        View::setLayout('admin');
+        View::layout('admin');
         Auth::guard();
     }
 

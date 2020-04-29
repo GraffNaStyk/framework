@@ -69,12 +69,12 @@ class View
         return false;
     }
 
-    public static function setLayout(string $layout): void
+    public static function layout(string $layout): void
     {
         self::$layout = $layout;
     }
 
-    public static function setView(string $view): void
+    public static function change(string $view): void
     {
         self::$view = $view;
     }

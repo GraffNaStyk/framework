@@ -6,7 +6,7 @@ use App\Facades\Csrf\Csrf;
 
 abstract class Config
 {
-    public static function run()
+    public static function run(): void
     {
         if(!file_exists(app_path('app/config/.env')))
             trigger_error('Cannot loaded environment file.', E_USER_ERROR);

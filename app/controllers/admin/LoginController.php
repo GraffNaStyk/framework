@@ -14,16 +14,13 @@ class LoginController extends AppController
         if(Session::has('user'))
             Router::redirect('Dash');
 
-        $this->loadForAdmin();
         parent::__construct();
     }
 
     public function index()
     {
-        View::setLayout('login');
-        return View::render([
-            'title' => 'Panel Administracyjny - logowanie'
-        ]);
+        View::layout('login');
+        return View::render(['title' => 'Panel Administracyjny - logowanie']);
     }
 
     public function check(Request $request)
@@ -32,12 +29,12 @@ class LoginController extends AppController
             if (password_verify($request->get('password'), $user['password'])) {
                 unset($user['password']);
                 Session::set(['user' => $user]);
-                Router::redirect('Dash');
+                Router::redirect('dash');
             }
             Session::msg('Błędne hasło', 'danger');
         } else
             Session::msg('Użytkownik nie istnieje', 'danger');
 
-        Router::redirect('Login');
+        Router::redirect('login');
     }
 }

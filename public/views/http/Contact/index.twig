@@ -1,0 +1,30 @@
+{% extends layout %}
+
+{% block content %}
+  <section class="mt-4">
+    <h1 class="left__line mb-4">Napisz do mnie</h1>
+    <div class="grid__contact__container">
+      <form id="contact__form">
+        <label for="name" class="form__label">
+          <span class="form__desc">Imię</span>
+          <input required class="form__styled" type="text" name="name">
+        </label>
+        <label for="email" class="form__label">
+          <span class="form__desc">Adres email</span>
+          <input
+           required class="form__styled" type="email" name="email">
+        </label>
+        <label for="text" class="area__label">
+          <span class="form__desc">Zapytanie</span>
+          <textarea class="form__styled__area mt-4" name="text" cols="30" rows="6"></textarea>
+        </label>
+        <input type="submit" class="form__accept" value="Wyślij">
+      </form>
+      <div>
+        <h3 class="text-center">Kontakt telefoniczny</h3>
+        <p class="text-center my-3">Pn - Pt 10 - 20</p>
+        <a class="phone__call" href="tel:731213741"> 731 213 741 </a>
+      </div>
+    </div>
+  </section>
+{% endblock %}

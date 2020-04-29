@@ -7,7 +7,8 @@ class Url
 
     public static function get()
     {
-        return app['url'] . Router::getAlias();
+        $url = Router::getAlias() ? Router::getAlias() . '/' : Router::getAlias();
+        return app['url'] . $url;
     }
 
     public static function base()

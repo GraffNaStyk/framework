@@ -11,9 +11,9 @@
       <h4 class="text-center text-muted">Graff PHP</h4>
       {{ form_open('Login/check', 'post') }}
       <label class="text-muted">Account</label>
-      {{ input('name', 'form-control mb-3') }}
+      {{ input({name: 'name', class: 'form-control mb-3'}) }}
       <label class="text-muted">Password</label>
-      {{ input('password', 'form-control mb-3', 'password') }}
+      {{ input({name: 'password', type: 'password', class: 'form-control mb-3'}) }}
       {{ csrf() }}
       {{ form_submit('btn btn-success btn-block', 'Zaloguj') }}
       {{ form_close() }}

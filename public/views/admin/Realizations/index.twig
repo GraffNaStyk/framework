@@ -1,0 +1,32 @@
+{% extends layout %}
+
+{% block content %}
+  <div class="card card-body">
+    <h3 class="text-center mb-3">Realizacje</h3>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Title</th>
+        <th scope="col">Link</th>
+        <th scope="col">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for realization in realizations %}
+      <tr>
+        <th scope="row">{{ realization.id }}</th>
+        <td>{{ realization.title }}</td>
+        <td><a href="{{ realization.page_url }}" target="_blank">Link</a></td>
+        <td>
+          <a href="{{ url }}Realizations/edit/{{ realization.id }}"> Edycja </a>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div data-component="realizations">
+
+  </div>
+{% endblock %}
