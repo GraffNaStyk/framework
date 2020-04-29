@@ -33,7 +33,7 @@ class View
         self::$twig->addExtension(new Twig_Extension_Debug());
 
         if (self::isAjax())
-            self::setLayout('ajax');
+            self::layout('ajax');
 
         self::registerFunction();
 
