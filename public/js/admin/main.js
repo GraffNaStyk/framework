@@ -1,14 +1,13 @@
-if(window.innerWidth > 991) {
-  document.getElementsByClassName('grid')[0].style.minHeight
-    = window.innerHeight
-    - document.getElementsByTagName('nav')[0].clientHeight + 'px';
-}
+document.getElementsByClassName( window.innerWidth > 991 ? 'grid' : 'right-panel')[0].style.minHeight
+  = window.innerHeight - document.getElementsByTagName('nav')[0].clientHeight + 'px';
 
 const menu = (e) => {
   if(e.target.nextElementSibling.classList.contains('d-flex')) {
     e.target.nextElementSibling.classList.remove('d-flex');
+    e.target.classList.remove('open');
   } else {
     e.target.nextElementSibling.classList.add('d-flex');
+    e.target.classList.add('open');
   }
 };
 

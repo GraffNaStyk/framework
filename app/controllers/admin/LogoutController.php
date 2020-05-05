@@ -8,6 +8,6 @@ class LogoutController
     public function index()
     {
         Session::destroy();
-        Router::redirect('Login');
+        Router::redirect('');
     }
 }

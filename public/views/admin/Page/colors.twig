@@ -1,0 +1,35 @@
+{% extends layout %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-2">
+      <form method="post" class="colors__config">
+        <div class="box">
+          <input type="color" name="maincolor" value="{{ maincolor }}">
+          <span>Kolor przewodni</span>
+        </div>
+        <div class="box">
+          <input type="color" name="headercolor" value="{{ headercolor }}">
+          <span>Kolor menu</span>
+        </div>
+        <div class="box">
+          <input type="color" name="footercolor" value="{{ footercolor }}">
+          <span>Kolor stopki</span>
+        </div>
+        <div class="box">
+          <input type="color" name="bgcolor" value="{{ bgcolor }}">
+          <span>Kolor Tła</span>
+        </div>
+        <div class="box">
+          <input type="color" name="textcolor" value="{{ textcolor }}">
+          <span>Kolor tekstu</span>
+        </div>
+        <input type="submit" value="Zapisz">
+      </form>
+    </div>
+    <div class="col-md-10">
+      <iframe src="{{ base() }}" frameborder="0"></iframe>
+    </div>
+  </div>
+
+{% endblock %}

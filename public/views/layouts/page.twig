@@ -9,15 +9,23 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="keywords" content="Graff PHP">
   <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
   <base href="{{ base() }}">
   <title>{{ title }}</title>
   {{ css|raw }}
+  <style>
+    :root{
+    {% for key,style in styles %}
+      --{{ key }}: {{ style }};
+    {% endfor %}
+    }
+  </style>
   <script>
-    let url = '{{ url() }}';
+    document.url = '{{ url() }}';
   </script>
 </head>
 <body>
-
+{{ cos }}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container">
   <a class="navbar-brand" href="{{ url() }}">Graff PHP</a>
@@ -28,17 +36,7 @@
   </div>
 </div>
 </nav>
-
-{% if messages is not empty %}
-<div class="container mt-4">
-  {% for msg in messages %}
-    <div class="alert alert-{{ color }} mb-0">
-      {{ msg }}
-    </div>
-  {% endfor %}
-</div>
-{% endif %}
-
+{% include('layouts/inc/alert.twig') %}
 <main id="main-page-wrapper" class="container justify-content-center align-items-center d-flex flex-column">
   {% block content %}
 

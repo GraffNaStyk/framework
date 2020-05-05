@@ -12,7 +12,7 @@ class LoginController extends AppController
     public function __construct()
     {
         if(Session::has('user'))
-            Router::redirect('Dash');
+            Router::redirect('dash');
 
         parent::__construct();
     }

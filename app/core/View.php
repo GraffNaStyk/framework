@@ -35,7 +35,7 @@ class View
         if (self::isAjax())
             self::layout('ajax');
 
-        self::registerFunction();
+        self::registerFunctions();
 
         self::$dir = Router::getAlias() ?? 'http';
 
@@ -55,6 +55,7 @@ class View
                     , FILE_APPEND);
             }
         }
+        return false;
     }
 
     private static function setViewFile(): void
@@ -84,11 +85,13 @@ class View
 
     public static function set(array $data): void
     {
-        foreach ($data as $key => $value)
+        foreach ($data as $key => $value) {
             self::$data[$key] = $value;
+        }
+
     }
 
-    public static function registerFunction(): void
+    public static function registerFunctions(): void
     {
         foreach (TwigExt::init()->getFunctions() as $fn) {
             self::$twig->addFunction($fn);

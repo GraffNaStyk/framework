@@ -1,0 +1,9 @@
+{% if messages is not empty %}
+  <div class="my-4" style="width: 360px;">
+    {% for msg in messages %}
+      <div class="alert alert-{{ color }} mb-0">
+        {{ msg }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

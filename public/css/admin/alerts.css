@@ -1,0 +1,16 @@
+.alert  {
+  min-width: 340px;
+  text-align: center;
+  color: white !important;
+  border: 1px solid #c8c8c8 !important;
+  border-radius: 0!important;
+  font-family: 'Nunito', sans-serif;
+}
+
+.alert-success {
+  background: #15a31c !important;
+}
+
+.alert-danger {
+  background: #a33334 !important;
+}

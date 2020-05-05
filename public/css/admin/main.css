@@ -1,3 +1,7 @@
+body {
+  font-family: 'Nunito', sans-serif !important;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 15% 85%;
@@ -24,51 +28,74 @@
   }
 }
 
+.is__active {
+  color: #fff;
+}
+
 .grid aside.left-panel {
-  background: #262626;
+  background: #2d2b32;
   flex-direction: column;
-  padding: 1rem;
 }
 
 .grid aside.left-panel a {
-  text-align: center;
-  padding: 0.4em 0;
-  color: white;
+  padding:  0.6em 0 0.6em 1em;
+  color: #c8c8c8;
   text-decoration: none;
   cursor: pointer;
   transition: .6s;
+  border-bottom: 1px solid #999999;
 }
 
-.grid aside.left-panel a:before {
-  content: '\f10c';
-  font-family: "FontAwesome";
-  float: left;
-}
-
-.grid aside.left-panel div.parent a:before {
+.grid aside.left-panel a.has__parent::after {
   content: '\f105';
-  font-family: "FontAwesome";
+  font-family: 'FontAwesome';
+  float: right;
+  position: relative;
+  right: .6rem;
+  width: 1.25em;
+}
+
+.grid aside.left-panel a.open {
+  color: white;
+}
+
+.grid aside.left-panel a.open::after {
+  content: '\f107';
+}
+
+.grid aside.left-panel a i {
   float: left;
+  line-height: 24px;
+  font-size: 1.2rem;
+  width: 1.25em;
+  margin-right: 1.3rem;
+  color: #c8c8c8;
 }
 
 .grid aside.left-panel a:hover {
-  text-shadow: 0 0 1px white;
+  color: #ffffff;
   transition: .6s;
 }
 
 .grid aside.left-panel div.parent {
   display: none;
   flex-direction: column;
-  padding-left: 1.3rem;
   font-size: .9rem;
+  background: #242229;
+}
+
+.grid aside.left-panel div.parent a {
+  padding: 0.6em 0 0.6em 2.7em;
+  border-left: 1px solid #999;
 }
 
 .grid main {
-  padding: 1rem;
+  padding: .5rem;
+  background: #e3e7f6;
 }
 
 nav.top__nav {
-  background: #262626;
+  background: #2d2b32;
   border-bottom: 1px solid white;
 }
 
@@ -100,4 +127,8 @@ nav.top__nav a.logo {
 
 .form-control {
   border-radius: 0 !important;
+}
+
+i.fa {
+  color: #c8c8c8!important;
 }

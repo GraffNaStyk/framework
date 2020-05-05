@@ -1,9 +1,9 @@
 <?php namespace App\Facades\TwigExt;
 
-use App\Facades\Url\Url;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
-use App\Helpers\Session;
+use App\Facades\Url\Url,
+    Twig\Extension\AbstractExtension,
+    Twig\TwigFunction,
+    App\Helpers\Session;
 
 class TwigExt extends AbstractExtension
 {
@@ -23,7 +23,8 @@ class TwigExt extends AbstractExtension
             $this->csrf(),
             $this->img(),
             $this->url(),
-            $this->base()
+            $this->base(),
+            $this->tooltip()
         ];
     }
 
@@ -56,7 +57,9 @@ class TwigExt extends AbstractExtension
             $attr['type'] = $attr['type'] ?? 'text';
             $attr['name'] = $attr['name'] ?? 'undefined';
             $attr['class'] = $attr['class'] ?? '';
-            echo "<input name='{$attr['name']}' type='{$attr['type']}' class='{$attr['class']}' />";
+            $attr['placeholder'] = $attr['placeholder'] ?? '';
+            $attr['required'] = $attr['required'] ?? '';
+            echo "<input name='{$attr['name']}' type='{$attr['type']}' class='{$attr['class']}' placeholder='{$attr['placeholder']}' {$attr['required']}/>";
         });
     }
 
@@ -92,6 +95,13 @@ class TwigExt extends AbstractExtension
     {
         return new TwigFunction('base', function($url = null) {
             echo Url::base() . $url;
+        });
+    }
+
+    public function tooltip()
+    {
+        return new TwigFunction('tooltip', function($text, $placement = 'top') {
+            echo 'data-toggle="tooltip" title="'.$text.'" data-placement="'.$placement.'"';
         });
     }
 }

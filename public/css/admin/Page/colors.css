@@ -1,0 +1,24 @@
+@import "../Components/box.css";
+
+iframe {
+  width: 100%;
+  height: 90vh;
+}
+
+input[type="color"] {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding:0;
+  margin-right: .5em;
+}
+
+input[type="submit"] {
+  color: #fff;
+  background: #127024;
+  width: 100%;
+  margin-bottom: .5rem;
+  border: none;
+  box-shadow: 0 0 1px 0 rgba(0,0,0,.6);
+  padding: .3rem 0 ;
+}

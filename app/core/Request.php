@@ -19,7 +19,7 @@ class Request
         if(!empty($this->post) && app['csrf'] && ! View::isAjax()) {
             if(! isset($this->post['csrf']) || ! Csrf::isValid($this->post['csrf'])) {
                 Session::msg('Wrong token', 'danger');
-                Router::redirect('Dash/http404');
+                Router::http404();
             }
         }
 
@@ -109,7 +109,6 @@ class Request
             unset($this->{$this->method}[$item[0]]);
         }
     }
-
 
     public function debug()
     {

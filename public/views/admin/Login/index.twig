@@ -1,22 +1,20 @@
 {% extends layout %}
 
 {% block content %}
-  <div class="d-flex justify-content-center align-items-center flex-column mt-5 login__wrapper">
-    <div class="login-form">
-      {% for msg in messages %}
-        <div class="alert alert-{{ color }}" role="alert">
-          {{ msg }}
-        </div>
-      {% endfor %}
-      <h4 class="text-center text-muted">Graff PHP</h4>
-      {{ form_open('Login/check', 'post') }}
-      <label class="text-muted">Account</label>
-      {{ input({name: 'name', class: 'form-control mb-3'}) }}
-      <label class="text-muted">Password</label>
-      {{ input({name: 'password', type: 'password', class: 'form-control mb-3'}) }}
+  <div class="d-flex justify-content-center align-items-center flex-column content">
+    {% include('layouts/inc/alert.twig') %}
+      <h4 class="text-center custom__title">Graff CMS</h4>
+      {{ form_open('Login/check', 'post', '', 'my__form') }}
+      <label>
+        <i class="fa fa-user"></i>
+        {{ input({name: 'name', placeholder: 'Podaj login'}) }}
+      </label>
+      <label>
+        <i class="fa fa-lock"></i>
+        {{ input({name: 'password', type: 'password', placeholder: 'Podaj hasło'}) }}
+      </label>
       {{ csrf() }}
-      {{ form_submit('btn btn-success btn-block', 'Zaloguj') }}
+      {{ form_submit('', 'Zaloguj') }}
       {{ form_close() }}
-    </div>
   </div>
 {% endblock %}

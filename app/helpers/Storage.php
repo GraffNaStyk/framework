@@ -83,9 +83,11 @@ class Storage
         exit;
     }
 
-    public static function remove($path = null) {
+    public static function remove($path = null)
+    {
         if(is_file(storage_path($path))) {
             unlink(storage_path($path));
+            return true;
         } elseif(!file_exists(storage_path($path))) {
             return false;
         } elseif(is_dir(storage_path($path))) {
@@ -95,9 +97,7 @@ class Storage
                 }
             }
             rmdir(storage_path($path));
-        } elseif(is_file(storage_path($path))) {
-            unlink(storage_path($path));
-        } else return false;
-        return true;
+        }
+        return false;
     }
 }

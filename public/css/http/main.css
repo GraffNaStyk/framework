@@ -1,11 +1,6 @@
-:root {
-  --maincolor : #11a4d1;
-  --black--color: rgba(0,0,0,.6);
-  --bgcolor: #fefefe;
-}
-
-h1,h2,h3,h4,h5,h6,p,a,span {
-  color: var(--black--color);
+h1,h2,h3,h4,h5,h6,p,a,span,b {
+  color: var(--textcolor);
+  font-family: 'Nunito', sans-serif;
 }
 
 .left__line {
@@ -20,12 +15,13 @@ h1,h2,h3,h4,h5,h6,p,a,span {
   right: 4px;
 }
 
-nav.navbar, footer {
-  background: #fff!important;
+nav.navbar {
+  background: var(--headercolor)!important;
   box-shadow: 1px 3px 6px 1px hsla(0,0%,80%,.5);
 }
 
 footer {
+  background: var(--footercolor)!important;
   border-top: 1px solid rgba(0,0,0,0.2);
 }
 
@@ -44,7 +40,7 @@ button.navbar-toggler {
 }
 
 .navbar-light .navbar-nav a.nav-link {
-  color: var(--black--color);
+  color: var(--textcolor);
   transition: .5s;
 }
 
@@ -96,7 +92,7 @@ button.navbar-toggler {
 .form__accept {
   border: 1px solid var(--maincolor);
   padding: .4rem 3rem;
-  color: var(--black--color);
+  color: var(--textcolor);
   background: transparent;
   margin-top: .4rem;
   transition: .6s;
