@@ -5,7 +5,7 @@ use App\Core\Response;
 use App\Core\View;
 use App\Db\Model;
 
-class PageController extends DashController
+class AppearanceController extends DashController
 {
     public function __construct()
     {
@@ -14,7 +14,9 @@ class PageController extends DashController
 
     public function colors()
     {
-       return View::render(Model::table('config')->where(['id', '=', 1])->findOrFail());
+       return View::render(
+           Model::table('config')->where(['id', '=', 1])->findOrFail()
+       );
     }
 
     public function store(Request $request)

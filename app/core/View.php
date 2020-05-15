@@ -32,9 +32,6 @@ class View
 
         self::$twig->addExtension(new Twig_Extension_Debug());
 
-        if (self::isAjax())
-            self::layout('ajax');
-
         self::registerFunctions();
 
         self::$dir = Router::getAlias() ?? 'http';

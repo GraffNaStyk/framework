@@ -31,10 +31,10 @@
   <aside class="left-panel d-xl-flex">
 {#    <a href="{{ url() }}"> <i class="fa fa-plane"></i> Dupa</a>#}
 
-    <a href="#" class="has__parent"> <i class="fa fa-sitemap"></i> Strona</a>
+    <a href="#" class="has__parent"> <i class="fa fa-paint-brush"></i> Strona</a>
     <div class="parent">
-      <a href="{{ url('page/colors') }}">Kolory</a>
-      <a href="{{ url('page/seo') }}">Seo</a>
+      <a href="{{ url('appearance/colors') }}">Kolory</a>
+      <a href="{{ url('appearance/seo') }}">Seo</a>
     </div>
 
     <a href="#" class="has__parent"> <i class="fa fa-lock"></i> Klienci</a>
@@ -58,8 +58,12 @@
 
 </section>
 
-<div id="error"></div>
-<div id="modals" class="modal" tabindex="-1" role="dialog"></div>
+<div id="modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
   {{ js|raw }}
 </body>
 </html>

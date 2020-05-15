@@ -11,7 +11,8 @@ return [
 
     /*
      *  @dev here tou can set developer mode to true or false, if developer mode
-     *  is set to true on page have all bugs
+     *  is set to true on page have all bugs, if not all logs send to
+     *  storage/private/logs like php or sql log.
      */
     'dev' => true,
 

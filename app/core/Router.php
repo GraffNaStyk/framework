@@ -137,12 +137,12 @@ class Router
 
     public static function post(string $route, string $as = null): void
     {
-        self::$routes[$as ?? $route] = [$route, 'post'];
+        self::$routes[$as ?? str_replace('@', '/', $route)] = [str_replace('@', '/', $route), 'post'];
     }
 
     public static function get(string $route, string $as = null): void
     {
-        self::$routes[$as ?? $route] = [$route, 'get'];
+        self::$routes[$as ?? str_replace('@', '/', $route)] = [str_replace('@', '/', $route), 'get'];
     }
 
     private function checkIsRequestMethodProvided(): void
@@ -234,5 +234,10 @@ class Router
             'base' => $alias['base'] ?? null
         ];
         $function();
+    }
+
+    public static function back()
+    {
+
     }
 }

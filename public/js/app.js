@@ -30,7 +30,7 @@ export const get = async (fetch_url) => {
 };
 
 export const render = (args) => {
-  return fetch(document.url + args.url, {
+  fetch(document.url + args.url, {
     method: 'GET',
     credentials: 'same-origin',
     headers: {
@@ -53,14 +53,14 @@ export const render = (args) => {
 const modal = (result) => {
   const modal = document.getElementById('modal');
   modal.classList.add('d-block');
-  modal.setAttribute('style', 'background: rgba(0,0,0,0.3)');
-  modal.innerHTML += result;
-
-  document.querySelector('button[data-dismiss="modal"]').onclick = () => {
+  modal.setAttribute('style', 'background: rgba(0,0,0,0.7)');
+  const content = document.querySelector('.modal-content');
+  content.innerHTML += result;
+  on('click', 'button[data-dismiss="modal"]', () => {
     modal.classList.remove('d-block');
-    modal.innerHTML = '';
+    content.innerHTML = '';
     modal.setAttribute('style', '');
-  };
+  });
 };
 
 export const response = (res, selector) => {
@@ -68,7 +68,7 @@ export const response = (res, selector) => {
   let max = Math.floor(150000);
   let rand = Math.floor(Math.random() * (max - min + 1)) + min;
 
-  document.querySelector(`${selector}`).insertAdjacentHTML('beforeBegin', `
+  document.querySelector(`${selector}`).insertAdjacentHTML('afterbegin', `
       <div data-${rand}="" class="alert alert-${res.class}" role="alert">
           ${res.msg}
         </div>
@@ -78,7 +78,12 @@ export const response = (res, selector) => {
   if(alert) {
     setTimeout(() => {
       alert.remove();
-    }, 3000)
+    }, 2000)
   }
+};
 
+export const on = (event, selector, fn) => {
+  Array.from(document.querySelectorAll(`${selector}`)).forEach((item) => {
+    item.addEventListener(`${event}`, eval(fn));
+  });
 };

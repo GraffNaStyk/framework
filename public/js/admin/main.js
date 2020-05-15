@@ -1,3 +1,5 @@
+import {on} from '../app.js';
+
 document.getElementsByClassName( window.innerWidth > 991 ? 'grid' : 'right-panel')[0].style.minHeight
   = window.innerHeight - document.getElementsByTagName('nav')[0].clientHeight + 'px';
 
@@ -11,19 +13,14 @@ const menu = (e) => {
   }
 };
 
-// enable all submenu functions
-Array.from(document.querySelectorAll('a.has__parent')).forEach((v) => {
-  v.addEventListener('click', menu)
-});
-
 //burger for show menu on mobile > 991
-document.querySelector('nav.top__nav i.fa-bars').onclick = () => {
+on('click', 'nav.top__nav i.fa-bars', () => {
   if(document.querySelector('.grid aside.left-panel').classList.contains('d-flex')) {
     document.querySelector('.grid aside.left-panel').classList.remove('d-flex');
   } else {
     document.querySelector('.grid aside.left-panel').classList.add('d-flex');
   }
-};
+});
 
 //global function for prevent a href if href is == #
 const prevent = (e) => {
@@ -37,6 +34,16 @@ const prevent = (e) => {
     e.preventDefault();
 };
 
-Array.from(document.getElementsByTagName('a')).forEach((v) => {
-  v.addEventListener('click', prevent)
-});
+on('click', 'a', prevent);
+// enable all submenu functions
+on('click', 'a.has__parent', menu);
+
+let selector;
+if(selector = document.querySelector('input[type="submit"]')) {
+  selector.onclick = (e) => {
+    e.target.disabled = true;
+    setTimeout(() => {
+      e.target.disabled = false;
+    }, 1400);
+  };
+}

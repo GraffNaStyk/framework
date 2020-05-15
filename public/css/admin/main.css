@@ -89,6 +89,10 @@ body {
   border-left: 1px solid #999;
 }
 
+.grid aside.left-panel div.parent a:hover {
+  padding-left: 3.3rem;
+}
+
 .grid main {
   padding: .5rem;
   background: #e3e7f6;
@@ -118,15 +122,6 @@ nav.top__nav a.logo {
   font-size: 1.4em;
   text-decoration: none;
   cursor: pointer;
-}
-
-.form-control:focus {
-  box-shadow:0 0 3px 0 #20c997 !important;
-  border-color: #ced4da!important;
-}
-
-.form-control {
-  border-radius: 0 !important;
 }
 
 i.fa {

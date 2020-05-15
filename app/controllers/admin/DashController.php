@@ -18,4 +18,9 @@ class DashController extends AppController
     {
         return View::render();
     }
+
+    public function modal()
+    {
+        return View::render();
+    }
 }

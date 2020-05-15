@@ -1,0 +1,41 @@
+.form-control:focus {
+  box-shadow:0 0 2px 0 #20c997 !important;
+  border-color: #ced4da!important;
+}
+
+.form-control {
+  border-radius: 0 !important;
+}
+
+label:not(:first-of-type) {
+  margin: 0 10px;
+}
+
+label:first-of-type {
+  margin: 0 10px 0 0;
+}
+
+
+input[type="color"] {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding:0;
+  margin-right: .5em;
+  width: 50%;
+}
+
+input[type="submit"] {
+  color: #212529;
+  background: transparent;
+  border: 1px solid #c8c8c8;
+  padding: .3rem;
+  transition: .6s;
+}
+
+input[type="submit"]:hover {
+  background: #949494;
+  color: white;
+  transition: .6s;
+}
+

@@ -6,8 +6,6 @@ use App\Helpers\Storage;
 
 abstract class AppController
 {
-    public static $modelAlias = 'App\\Model\\';
-
     public function __construct()
     {
         Storage::disk('private')->make('logs');
@@ -27,5 +25,10 @@ abstract class AppController
     public function resources(): void
     {
         View::set(['css' => Loader::css(), 'js' => Loader::js()]);
+    }
+
+    public function redirect($path, $code, $direct)
+    {
+        Router::redirect($path, $code, $direct);
     }
 }

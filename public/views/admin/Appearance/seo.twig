@@ -1,0 +1,24 @@
+{% extends layout %}
+
+{% block content %}
+  <section class="box d-flex flex-column p-3">
+    <h3 class="text-center">Podstawowe konfiguracje strony</h3>
+    <form class="d-flex align-items-start align-items-center">
+      <label for="">
+        Tytuł
+        <input type="text" class="form-control" name="title" value="{{ title }}">
+      </label>
+      <label for="">
+        Opis
+        <input type="text" class="form-control" name="description" value="{{ description }}">
+      </label>
+      <label for="">
+        Słowa klucze
+        <input type="text" class="form-control" name="keywords" value="{{ keywords }}">
+      </label>
+      <label for="">
+        <input type="submit" value="Zapisz">
+      </label>
+    </form>
+  </section>
+{% endblock %}
