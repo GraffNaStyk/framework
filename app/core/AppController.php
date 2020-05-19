@@ -27,8 +27,13 @@ abstract class AppController
         View::set(['css' => Loader::css(), 'js' => Loader::js()]);
     }
 
-    public function redirect($path, $code, $direct)
+    public function redirect($path, $code=302, $direct=false)
     {
         Router::redirect($path, $code, $direct);
+    }
+
+    public function response($response, $status=200, $headers=[])
+    {
+        return Response::json($response, $status, $headers);
     }
 }

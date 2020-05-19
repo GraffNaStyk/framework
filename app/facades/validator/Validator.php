@@ -31,7 +31,7 @@ class Validator
             $eachRule = explode('|', $rule);
             foreach ($eachRule as $rulesValue) {
                 $rulesValue = explode(':', $rulesValue);
-                static::$rules[$key][$rulesValue[0]] = isset($rulesValue[1]) ? $rulesValue[1] : $rulesValue[0];
+                static::$rules[$key][$rulesValue[0]] = $rulesValue[1] ?? $rulesValue[0];
             }
         }
     }
@@ -40,9 +40,12 @@ class Validator
     {
         foreach (static::$rules as $key => $item) {
             if(array_key_exists($key, $request)) {
-                foreach ($item as $fnName => $validateRule)
+                foreach ($item as $fnName => $validateRule) {
                     static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
-            } else static::$validatorErrors[] = 'Field ' . $key . ' is required !';
+                }
+            } else {
+                static::$validatorErrors[] = 'Field ' . $key . ' is required !';
+            }
         }
     }
 

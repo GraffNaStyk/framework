@@ -111,6 +111,7 @@ class Router
             if (!empty($routes) && array_key_exists($routes[0], self::$routes)) {
                 $flagToRemoveRoute = false;
                 $urlParams = explode('/', self::$routes[$routes[0]][0]);
+
                 self::setClass($urlParams[0]);
                 self::setAction(lcfirst($urlParams[1]));
 
@@ -137,12 +138,12 @@ class Router
 
     public static function post(string $route, string $as = null): void
     {
-        self::$routes[$as ?? str_replace('@', '/', $route)] = [str_replace('@', '/', $route), 'post'];
+        self::$routes[$as ?? route] = [$route, 'post'];
     }
 
     public static function get(string $route, string $as = null): void
     {
-        self::$routes[$as ?? str_replace('@', '/', $route)] = [str_replace('@', '/', $route), 'get'];
+        self::$routes[$as ?? $route] = [$route, 'get'];
     }
 
     private function checkIsRequestMethodProvided(): void
@@ -192,7 +193,6 @@ class Router
             self::$url = str_replace(app['url'], '', self::$url);
 
         self::$url = preg_replace('/\?.*/', '', self::$url);
-
         foreach (self::$aliases as $key => $provider) {
             preg_match("/(^$key$|^$key(\?|\/))/U", self::$url, $m);
             $m = array_filter($m);

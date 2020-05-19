@@ -64,22 +64,24 @@ const modal = (result) => {
 };
 
 export const response = (res, selector) => {
-  let min = Math.ceil(500);
-  let max = Math.floor(150000);
-  let rand = Math.floor(Math.random() * (max - min + 1)) + min;
+  res.msg.forEach((msg => {
+    let min = Math.ceil(500);
+    let max = Math.floor(150000);
+    let rand = Math.floor(Math.random() * (max - min + 1)) + min;
 
-  document.querySelector(`${selector}`).insertAdjacentHTML('afterbegin', `
-      <div data-${rand}="" class="alert alert-${res.class}" role="alert">
-          ${res.msg}
+    document.querySelector(`${selector}`).insertAdjacentHTML('afterbegin', `
+      <div data-${rand}="" class="alert alert-${res.ok ? 'success' : 'danger'}" role="alert">
+          ${msg}
         </div>
      `);
 
-  let alert = document.querySelector(`[data-${rand}=""]`);
-  if(alert) {
-    setTimeout(() => {
-      alert.remove();
-    }, 2000)
-  }
+    let alert = document.querySelector(`[data-${rand}=""]`);
+    if(alert) {
+      setTimeout(() => {
+        alert.remove();
+      }, 2000)
+    }
+  }))
 };
 
 export const on = (event, selector, fn) => {

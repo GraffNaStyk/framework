@@ -47,7 +47,7 @@ class Rules
 
     public static function date($item, $rule, $field)
     {
-        if (DateTime::createFromFormat('Y-m-d H:i:s', $item) == false) {
+        if (DateTime::createFromFormat($rule, $item) == false) {
             return 'Field ' . $field . ' must be a date!';
         }
     }

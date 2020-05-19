@@ -7,7 +7,7 @@ abstract class Response
         self::setHeaders($headers);
         self::setCode($status);
         echo json_encode($response, true);
-        return '';
+        die();
     }
 
     public static function send($response, $status = 200, $headers = [])
