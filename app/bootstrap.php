@@ -19,6 +19,7 @@ spl_autoload_register(function ($class) {
     $className = end($classArr);
 
     array_pop($classArr);
+    $classArr = array_map('strtolower', $classArr);
 
     $path = '';
     foreach ($classArr as $namespaces)
