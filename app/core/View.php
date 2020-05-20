@@ -1,10 +1,7 @@
 <?php namespace App\Core;
 
 use App\Facades\TwigExt\TwigExt;
-use Twig_Environment;
-use Twig_Extension_Debug;
-use Twig_Loader_Filesystem;
-use Twig_Error;
+use Twig;
 
 require_once vendor_path('autoload.php');
 
@@ -21,16 +18,16 @@ class View
     {
         self::set($data);
 
-        $loader = new Twig_Loader_Filesystem(view_path());
+        $loader = new Twig\Loader\FilesystemLoader(view_path());
 
-        self::$twig = new Twig_Environment($loader, [
+        self::$twig = new Twig\Environment($loader, [
             'debug' => true,
             'cache' => storage_path('framework/views'),
         ]);
 
         self::$twig->addGlobal('session', $_SESSION);
 
-        self::$twig->addExtension(new Twig_Extension_Debug());
+        self::$twig->addExtension(new Twig\Extension\DebugExtension());
 
         self::registerFunctions();
 

@@ -2,6 +2,10 @@
 
 ini_set('memory_limit', '-1');
 
+if(!file_exists(vendor_path('autoload.php'))) {
+    exit(require_once view_path('errors/install.php'));
+}
+
 define('app', require_once app_path('app/config/app.php'));
 
 if(app['dev']) {
@@ -14,7 +18,6 @@ if(app['dev']) {
 }
 
 spl_autoload_register(function ($class) {
-
     $classArr = explode('\\', $class);
     $className = end($classArr);
 
@@ -30,7 +33,7 @@ spl_autoload_register(function ($class) {
     if(file_exists($path . $className .'.php'))
         require_once $path . $className .'.php';
 
-    if(app['dev'] && ! file_exists($path))
+    if(app['dev'] && !file_exists($path))
         trigger_error('Cannot loaded file ' . $path . ', file not exist.', E_USER_ERROR);
 });
 
