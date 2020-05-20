@@ -1,0 +1,12 @@
+{
+    "name": "graff/vendor",
+    "type": "library",
+    "require": {
+        "twig/twig": "^3.0",
+        "symfony/var-dumper": "^5.1@RC",
+        "symfony/polyfill-mbstring": "^1.17",
+        "symfony/polyfill-ctype": "^1.17"
+    },
+    "license": "MIT",
+    "minimum-stability": "beta"
+}
