@@ -23,24 +23,6 @@ abstract class Builder extends Field
         }
     }
 
-    protected function buildWhere()
-    {
-        if (isset($this->where['field'][0])) {
-            $where = " WHERE (";
-            $iterator = 0;
-
-            foreach ($this->where['field'] as $key => $value) {
-                $connector = $this->where['connector'][$iterator + 1] ?? null;
-                $where .= "{$this->checkHowToConnectValue($this->where['field'][$iterator], true)} {$this->where['comparison'][$iterator]}";
-                $where .= " {$this->detectFieldType($this->where['value'][$iterator], $this->where['comparison'][$iterator])} {$connector} ";
-                ++$iterator;
-            }
-
-            return rtrim($where, ' ') . ')';
-        }
-        return '';
-    }
-
     protected function buildOrder()
     {
         return " ORDER BY {$this->checkHowToConnectValue($this->order['by'], true)} {$this->order['type']}";
@@ -116,12 +98,12 @@ abstract class Builder extends Field
 
         $this->query = rtrim($this->query, ', ');
 
-        $this->query .= $this->buildWhereForUpdate();
+        $this->query .= $this->buildWhereQuery();
 
         return true;
     }
 
-    protected function buildWhereForUpdate()
+    protected function buildWhereQuery()
     {
         if (isset($this->where['field'][0])) {
             $where = " WHERE ";
@@ -129,40 +111,14 @@ abstract class Builder extends Field
 
             foreach ($this->where['field'] as $key => $value) {
                 $connector = $this->where['connector'][$iterator + 1] ?? null;
-                $where .= "{$this->where['field'][$iterator]} {$this->where['comparison'][$iterator]}";
-                if(isset($this->data['id']))
-                    $where .= " {$this->where['value'][$iterator]} {$connector} ";
-                else {
-                    $where .= " :{$this->where['field'][$iterator]} {$connector} ";
-                    $this->data[$this->where['field'][$iterator]] = $this->where['value'][$iterator];
-                }
-
-                ++$iterator;
-            }
-
-            return rtrim($where, ' ');
-        }
-        return '';
-    }
-
-    protected function buildDeleteQuery()
-    {
-        if (isset($this->where['field'][0])) {
-            $where = " WHERE ";
-            $iterator = 0;
-
-            foreach ($this->where['field'] as $key => $value) {
-                $connector = $this->where['connector'][$iterator + 1] ?? null;
-                $where .= "{$this->where['field'][$iterator]} {$this->where['comparison'][$iterator]}";
-
-                $where .= " :{$this->where['field'][$iterator]} {$connector} ";
+                $where .= $this->where['field'][$iterator] . ' ' . $this->where['comparison'][$iterator];
+                $where .= ' :' . $this->where['field'][$iterator] . ' ' . $connector  . ' ';
                 $this->data[$this->where['field'][$iterator]] = $this->where['value'][$iterator];
                 ++$iterator;
             }
 
             return rtrim($where, ' ');
         }
-
         return '';
     }
 }

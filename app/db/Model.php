@@ -12,6 +12,11 @@ class Model
         return $model->$name($arguments[0] ?? $arguments);
     }
 
+    public function __call($name, $arguments)
+    {
+        // TODO: Implement __call() method.
+    }
+
     public static function table($table)
     {
         self::$table = $table;

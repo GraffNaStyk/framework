@@ -1,10 +1,10 @@
 <?php namespace App\Controllers\Admin;
 
-use App\Core\AppController;
+use App\Core\Controller;
 use App\Core\Auth;
 use App\Core\View;
 
-class DashController extends AppController
+class DashController extends Controller
 {
     public function __construct()
     {

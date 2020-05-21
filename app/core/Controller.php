@@ -4,7 +4,7 @@ use App\Helpers\Loader;
 use App\Helpers\Session;
 use App\Helpers\Storage;
 
-abstract class AppController
+abstract class Controller
 {
     public function __construct()
     {

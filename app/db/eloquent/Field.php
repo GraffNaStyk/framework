@@ -101,34 +101,4 @@ abstract class Field
         }
         return rtrim($returnValues, ', ');
     }
-
-    protected function formatJoin($data)
-    {
-        $result = [];
-        if(isset($data['id'])) {
-            foreach ($data as $key => $value) {
-                if($isValue = $this->checkIfIdExistInObject($result, $value['id'])) {
-                    $result[$isValue[1]]['join'] = array_diff(array_map('json_encode',(array)$value), array_map('json_encode',(array)$isValue[0]));
-                } else $result[$key] = $value;
-            }
-
-            foreach ($result as $key => $value) {
-                if(isset($value['join'])) {
-                    foreach ($value['join'] as $joinKey => $joins)
-                        $result[$key][$value]['join'][$joinKey] = json_decode($joins);
-                }
-            }
-            return $result;
-        }
-
-        return $data;
-    }
-
-    protected function checkIfIdExistInObject($object, $id) {
-        foreach ($object as $key => $value) {
-            if($value['id'] == $id)
-                return [$object[$key], $key];
-        }
-        return false;
-    }
 }

@@ -1,13 +1,13 @@
 <?php namespace App\Controllers\Admin;
 
-use App\Core\AppController;
+use App\Core\Controller;
 use App\Core\Request;
 use App\Core\View;
 use App\Facades\Validator\Validator;
 use App\Helpers\Session;
 use App\Model\User;
 
-class LoginController extends AppController
+class LoginController extends Controller
 {
     public function __construct()
     {

@@ -45,7 +45,7 @@ class Db extends Builder
 
     public function where(array $where, string $type = 'where')
     {
-        if(empty($where))
+        if(empty($where) === true)
             $where = [1,'=',1];
 
         $connector = $type == 'where' ? 'AND' : 'OR';
@@ -105,7 +105,7 @@ class Db extends Builder
             $this->query .= $this->buildJoin('rightJoin');
 
         if (!empty($this->where))
-            $this->query .= $this->buildWhere();
+            $this->query .= $this->buildWhereQuery();
 
         if (!empty($this->group))
             $this->query .= $this->buildGroup();
@@ -119,7 +119,7 @@ class Db extends Builder
         if($this->debug)
             $this->develop();
 
-        return $this->formatJoin($this->execute());
+        return $this->execute();
     }
 
     public function all()
@@ -133,6 +133,20 @@ class Db extends Builder
         $alias = is_array($alias) ? 'total' : $alias;
         $this->query = "SELECT count(*) as '$alias' from `{$this->table}`";
         return $this->execute()[0];
+    }
+
+    public function increment($column, $value)
+    {
+        $this->query = "UPDATE `{$this->table}` SET {$column} = {$column} + {$value} {$this->buildWhereQuery()}";
+
+        return $this->execute();
+    }
+
+    public function decrement($column, $value)
+    {
+        $this->query = "UPDATE `{$this->table}` SET {$column} = {$column} - {$value} {$this->buildWhereQuery()}";
+
+        return $this->execute();
     }
 
     public function join(array $join)
@@ -155,7 +169,7 @@ class Db extends Builder
 
     private function execute()
     {
-        if (strpos($this->query, 'INSERT') !== false || strpos($this->query, 'UPDATE') !== false || strpos($this->query, 'DELETE') !== false) {
+        if (preg_match('/^(INSERT|UPDATE|DELETE)/', $this->query)) {
             try {
 
                 if (self::$db->prepare($this->query)->execute($this->data))
@@ -169,7 +183,9 @@ class Db extends Builder
         } else {
             try {
 
-                $stmt = self::$db->query($this->query);
+                $stmt = self::$db->prepare($this->query);
+                $stmt->execute($this->data);
+
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             } catch (\PDOException $e) {
@@ -188,6 +204,7 @@ class Db extends Builder
     {
         $this->data = $data;
         $this->buildUpdateQuery();
+
         if($this->execute())
             return true;
 
@@ -198,6 +215,7 @@ class Db extends Builder
     {
         $this->data = $data;
         $this->buildSaveQuery();
+
         if($this->execute())
             return true;
 

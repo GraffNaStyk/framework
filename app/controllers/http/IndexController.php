@@ -1,16 +1,18 @@
 <?php namespace App\Controllers\Http;
 
-use App\Core\AppController;
+use App\Core\Controller;
 use App\Core\View;
-use App\Db\Model;
+use App\Model\Config;
 
-class IndexController extends AppController
+class IndexController extends Controller
 {
     public function __construct()
     {
         View::set([
             'title' => 'Graff Design - Strona Główna',
-            'styles' => Model::table('config')->select(['maincolor', 'footercolor', 'textcolor', 'headercolor', 'bgcolor'])->where(['id', '=', 1])->findOrFail()
+            'styles' => Config::select(['maincolor', 'footercolor', 'textcolor', 'headercolor', 'bgcolor'])
+                ->where(['id', '=', 1])
+                ->findOrFail()
         ]);
         parent::__construct();
     }

@@ -8,6 +8,14 @@ class Storage
 
     public static function disk($disk)
     {
+        if(!is_dir(storage_path('public/'))) {
+            mkdir(storage_path('public/'), 0775);
+        }
+
+        if(!is_dir(storage_path('private/'))) {
+            mkdir(storage_path('public/'), 0775);
+        }
+
         self::$disk = storage_path($disk);
         return new self();
     }
