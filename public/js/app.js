@@ -38,24 +38,29 @@ export const render = (args) => {
     },
   }).then(async (res) => res.text())
   .then(async result => {
+    const doc = new DOMParser().parseFromString(result, 'text/html');
     if (args.el !== 'modal') {
       if(args.append)
-        document.querySelector(`[data-component="${args.el}"]`).innerHTML += result;
+        document.querySelector(`[data-component="${args.el}"]`).innerHTML += doc.body.innerHTML;
       else {
-        document.querySelector(`[data-component="${args.el}"]`).innerHTML = result;
+        document.querySelector(`[data-component="${args.el}"]`).innerHTML = doc.body.innerHTML;
       }
     } else {
-      modal(result);
+      modal(doc.body);
     }
+    setTimeout(() => {
+      OnSubmitForms();
+    },80);
   })
 };
 
 const modal = (result) => {
+  console.log(result);
   const modal = document.getElementById('modal');
   modal.classList.add('d-block');
   modal.setAttribute('style', 'background: rgba(0,0,0,0.7)');
   const content = document.querySelector('.modal-content');
-  content.innerHTML += result;
+  content.innerHTML += result.innerHTML;
   on('click', 'button[data-dismiss="modal"]', () => {
     modal.classList.remove('d-block');
     content.innerHTML = '';
@@ -89,3 +94,36 @@ export const on = (event, selector, fn) => {
     item.addEventListener(`${event}`, eval(fn));
   });
 };
+
+export const callback = () => {
+  if(document.callback !== undefined) {
+    eval(document.callback)
+  } else {
+    setTimeout(() => {
+      document.location.reload();
+    },2100)
+  }
+}
+
+export const OnSubmitForms = () => {
+  on('submit', 'form', function (e)  {
+    e.preventDefault();
+    post({
+      url: e.target.dataset.action,
+      form: 'form'
+    }).then(res => {
+      let modalSelector = document.getElementById('modal');
+      if(res.ok && modalSelector.classList.contains('d-block')) {
+        setTimeout(() => {
+          document.querySelector('button[data-dismiss="modal"]').click()
+        },100);
+      }
+      if(res.ok === false && modalSelector.classList.contains('d-block')) {
+        response(res, '.modal-body')
+      } else {
+        response(res, '.right-panel')
+      }
+      callback();
+    })
+  });
+}

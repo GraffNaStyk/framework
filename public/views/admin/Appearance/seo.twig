@@ -3,18 +3,18 @@
 {% block content %}
   <section class="box d-flex flex-column p-3">
     <h3 class="text-center">Podstawowe konfiguracje strony</h3>
-    <form class="d-flex align-items-start align-items-center">
+    <form class="d-flex align-items-start align-items-center" method="post" data-action="appearance/store">
       <label for="">
         Tytuł
-        <input type="text" class="form-control" name="title" value="{{ title }}">
+        <input type="text" class="form-control" name="title" value="{{ config.title }}">
       </label>
       <label for="">
         Opis
-        <input type="text" class="form-control" name="description" value="{{ description }}">
+        <input type="text" class="form-control" name="description" value="{{ config.description }}">
       </label>
       <label for="">
         Słowa klucze
-        <input type="text" class="form-control" name="keywords" value="{{ keywords }}">
+        <input type="text" class="form-control" name="keywords" value="{{ config.keywords }}">
       </label>
       <label for="">
         <input type="submit" value="Zapisz">

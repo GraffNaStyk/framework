@@ -1,4 +1,4 @@
-import {on} from '../app.js';
+import * as  App from '../app.js';
 
 document.getElementsByClassName( window.innerWidth > 991 ? 'grid' : 'right-panel')[0].style.minHeight
   = window.innerHeight - document.getElementsByTagName('nav')[0].clientHeight + 'px';
@@ -14,7 +14,7 @@ const menu = (e) => {
 };
 
 //burger for show menu on mobile > 991
-on('click', 'nav.top__nav i.fa-bars', () => {
+App.on('click', 'nav.top__nav i.fa-bars', () => {
   if(document.querySelector('.grid aside.left-panel').classList.contains('d-flex')) {
     document.querySelector('.grid aside.left-panel').classList.remove('d-flex');
   } else {
@@ -34,11 +34,12 @@ const prevent = (e) => {
     e.preventDefault();
 };
 
-on('click', 'a', prevent);
+App.on('click', 'a', prevent);
 // enable all submenu functions
-on('click', 'a.has__parent', menu);
+App.on('click', 'a.has__parent', menu);
 
 let selector;
+
 if(selector = document.querySelector('input[type="submit"]')) {
   selector.onclick = (e) => {
     e.target.disabled = true;
@@ -47,3 +48,13 @@ if(selector = document.querySelector('input[type="submit"]')) {
     }, 1400);
   };
 }
+
+App.OnSubmitForms();
+
+App.on('click', '.render', (e) => {
+  e.preventDefault();
+  App.render({
+    url: e.target.dataset.url,
+    el: e.target.dataset.el
+  })
+});

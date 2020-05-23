@@ -2,7 +2,6 @@
 
 use App\Facades\Http\Request;
 use App\Facades\Http\View;
-use App\Db\Model;
 use App\Model\Config;
 
 class AppearanceController extends DashController
@@ -15,22 +14,22 @@ class AppearanceController extends DashController
     public function colors()
     {
        return View::render(
-           Model::table('config')->where(['id', '=', 1])->findOrFail()
+           Config::where(['id', '=', 1])->findOrFail()
        );
     }
 
     public function store(Request $request)
     {
         if(Config::where(['id', '=', 1])->update($request->all()))
-            return $this->response(['ok' => true, 'msg' => ['Kolory zaktualizowane pomyślnie']]);
+            return $this->response(['ok' => true, 'msg' => ['Dane zostały zapisane']]);
 
         return $this->response(['msg' => ['Wystąpił błąd'], 'ok' => false]);
     }
 
     public function seo()
     {
-        return View::render(
-            Model::table('config')->where(['id', '=', 1])->findOrFail()
-        );
+        return View::render([
+            'config' => Config::select(['description', 'title', 'keywords'])->where(['id', '=', 1])->findOrFail()
+        ]);
     }
 }
