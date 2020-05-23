@@ -1,6 +1,6 @@
 <?php namespace App\Helpers;
 
-use App\Core\Router;
+use App\Facades\Http\Router;
 
 class Loader
 {

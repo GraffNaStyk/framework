@@ -8,13 +8,14 @@ if(!file_exists(vendor_path('autoload.php'))) {
 
 define('app', require_once app_path('app/config/app.php'));
 
-if(app['dev']) {
+if ((bool) app['dev'] === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
-} else {
-    ini_set('error_log', storage_path('private/logs/php_'.date('d-m-Y').'.log'));
-    ini_set('log_errors', TRUE);
+}
+else {
+    ini_set('error_log', storage_path('private/logs/php_' . date('d-m-Y') . '.log'));
+    ini_set('log_errors', true);
 }
 
 spl_autoload_register(function ($class) {
@@ -33,10 +34,13 @@ spl_autoload_register(function ($class) {
     if(file_exists($path . $className .'.php'))
         require_once $path . $className .'.php';
 
-    if(app['dev'] && !file_exists($path))
+    if((bool) app['dev'] === true && !file_exists($path))
         trigger_error('Cannot loaded file ' . $path . ', file not exist.', E_USER_ERROR);
 });
 
 \App\Core\Config::run();
 
 require_once __DIR__.'/routes/route.php';
+
+
+

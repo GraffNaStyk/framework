@@ -1,11 +1,11 @@
 <?php namespace App\Controllers\Admin;
 
 use App\Core\Controller;
-use App\Core\Request;
-use App\Core\View;
 use App\Facades\Validator\Validator;
 use App\Helpers\Session;
 use App\Model\User;
+use App\Facades\Http\View;
+use App\Facades\Http\Request;
 
 class LoginController extends Controller
 {
@@ -34,7 +34,7 @@ class LoginController extends Controller
             if (password_verify($request->get('password'), $user['password'])) {
                 unset($user['password']);
                 Session::set(['user' => $user]);
-                $this->redirect('login');
+                $this->redirect('dash');
             }
             Session::msg('Błędne hasło', 'danger');
         }

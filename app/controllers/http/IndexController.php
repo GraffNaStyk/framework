@@ -1,7 +1,7 @@
 <?php namespace App\Controllers\Http;
 
 use App\Core\Controller;
-use App\Core\View;
+use App\Facades\Http\View;
 use App\Model\Config;
 
 class IndexController extends Controller

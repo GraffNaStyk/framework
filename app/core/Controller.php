@@ -3,6 +3,9 @@
 use App\Helpers\Loader;
 use App\Helpers\Session;
 use App\Helpers\Storage;
+use App\Facades\Http\View;
+use App\Facades\Http\Router;
+use App\Facades\Http\Response;
 
 abstract class Controller
 {

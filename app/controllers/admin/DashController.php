@@ -2,7 +2,7 @@
 
 use App\Core\Controller;
 use App\Core\Auth;
-use App\Core\View;
+use App\Facades\Http\View;
 
 class DashController extends Controller
 {

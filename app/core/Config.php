@@ -18,6 +18,9 @@ abstract class Config
             Csrf::generate();
 
         define('ENV', require_once app_path('app/config/.env'));
+        
+        if(empty(ENV['DB']) === true)
+            exit(require_once view_path('errors/db.php'));
 
         Db::init(ENV['DB']);
     }

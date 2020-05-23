@@ -1,15 +1,15 @@
-<?php namespace App\Core;
+<?php namespace App\Facades\Http;
 
 use App\Facades\TwigExt\TwigExt;
 use Twig;
 
 require_once vendor_path('autoload.php');
 
-class View
+final class View
 {
     protected static $twig;
-    private static $data = [];
-    protected static $ext = '.twig';
+    private static $data     = [];
+    protected static $ext    = '.twig';
     protected static $layout = 'page';
     public static $dir = null;
     public static $view = null;
@@ -38,7 +38,7 @@ class View
 
         try {
             return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
-        } catch (Twig_Error $e) {
+        } catch (Twig\Error\Error $e) {
             if (app['dev']) {
                 pd($e->getMessage());
             } else {

@@ -1,8 +1,9 @@
 <?php namespace App\Controllers\Admin;
 
-use App\Core\Request;
-use App\Core\View;
+use App\Facades\Http\Request;
+use App\Facades\Http\View;
 use App\Db\Model;
+use App\Model\Config;
 
 class AppearanceController extends DashController
 {
@@ -20,9 +21,7 @@ class AppearanceController extends DashController
 
     public function store(Request $request)
     {
-        $request->set('id', 1);
-
-        if(Model::table('config')->update($request->all()))
+        if(Config::where(['id', '=', 1])->update($request->all()))
             return $this->response(['ok' => true, 'msg' => ['Kolory zaktualizowane pomyślnie']]);
 
         return $this->response(['msg' => ['Wystąpił błąd'], 'ok' => false]);

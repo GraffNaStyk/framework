@@ -1,14 +1,14 @@
-<?php namespace App\Core;
+<?php namespace App\Facades\Http;
 
 use App\Facades\Csrf\Csrf;
 use App\Facades\Dotter\Get;
 use App\Facades\Dotter\Has;
 use App\Helpers\Session;
 
-class Request
+final class Request
 {
     protected $post = [];
-    protected $get = [];
+    protected $get  = [];
     protected $file = [];
     private $method = 'post';
 
@@ -87,16 +87,15 @@ class Request
 
     public function set($item, $data)
     {
-        $method = $this->method;
         $item = explode('.', $item);
         if (isset($item[3])) {
-            $this->$method[$item[0]][$item[1]][$item[2]][$item[3]] = $data;
+            $this->{$this->method}[$item[0]][$item[1]][$item[2]][$item[3]] = $data;
         } else if (isset($item[2])) {
-            $this->$method[$item[0]][$item[1]][$item[2]] = $data;
+            $this->{$this->method}[$item[0]][$item[1]][$item[2]] = $data;
         } else if (isset($item[1])) {
-            $this->$method[$item[0]][$item[1]] = $data;
+            $this->{$this->method}[$item[0]][$item[1]] = $data;
         } else {
-            $this->$method[$item[0]] = $data;
+            $this->{$this->method}[$item[0]] = $data;
         }
     }
 

@@ -1,6 +1,6 @@
 <?php namespace App\Facades\Url;
 
-use App\Core\Router;
+use App\Facades\Http\Router;
 
 class Url
 {

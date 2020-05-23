@@ -1,4 +1,4 @@
-<?php namespace App\Core;
+<?php namespace App\Facades\Http;
 
 abstract class Response
 {
@@ -15,7 +15,7 @@ abstract class Response
         self::setHeaders($headers);
         self::setCode($status);
         print_r($response);
-        return '';
+        die();
     }
 
     private static function setCode($code)

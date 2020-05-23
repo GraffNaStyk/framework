@@ -1,16 +1,19 @@
-<?php namespace App\Core;
+<?php namespace App\Facades\Http;
 
 use ReflectionMethod;
+use ReflectionClass;
 use App\Facades\Url\Url;
 
-class Router
+final class Router
 {
     private static $params = [];
 
     private static $aliases = [];
 
     private static $provider = 'App\\Controllers\\Http\\';
-
+    
+    private static $baseRouteProvider = null;
+    
     private static $class = 'Index';
 
     private static $action = 'index';
@@ -26,8 +29,9 @@ class Router
     public function __construct()
     {
         $this->request = new Request();
-        $this->setRoutes();
-        $this->create(self::$provider . ucfirst(self::$class) . 'Controller');
+        $this->parseUrl();
+        $this->setParams();
+        $this->create(self::$provider . self::getClass() . 'Controller');
     }
 
     public static function getClass(): string
@@ -54,33 +58,41 @@ class Router
     {
         return self::$alias;
     }
-
+    
     private function create(string $controller)
-     {
-        if (class_exists($controller) && method_exists($controller, self::getAction())) {
+    {
+        if (class_exists($controller)) {
+            
+            $reflectionClass = new ReflectionClass($controller);
 
-            $reflection = new \ReflectionMethod($controller, self::getAction());
-
+            if($reflectionClass->getMethod(self::getAction())->class != $controller)
+                self::http404();
+            
+            $reflection = new ReflectionMethod($controller, self::getAction());
+            
             $controller = new $controller();
-
+            
             $params = $reflection->getParameters();
 
-            if (empty($params))
+            if (empty($params)) {
                 return $controller->{self::getAction()}();
-
-            if (isset($params[0]->name) && $params[0]->name == 'request')
+            }
+            
+            if (isset($params[0]->name) && $params[0]->name == 'request') {
                 return $controller->{self::getAction()}($this->request);
-
-            if ($reflection->getNumberOfRequiredParameters() != count(self::$params))
+            }
+            
+            if ($reflection->getNumberOfRequiredParameters() != count(self::$params)) {
                 self::http404();
-
+            }
+            
             return call_user_func_array([$controller, self::getAction()], $this->sanitize(self::$params));
         }
-
-         self::http404();
+        
+        self::http404();
     }
 
-    private function sanitize($params)
+    private function sanitize(array $params):array
     {
         foreach ($params as $key => $param) {
             if(!is_null($param))
@@ -94,79 +106,72 @@ class Router
 
         return $params;
     }
-
-    private function setRoutes(): array
+    
+    public function setParams()
     {
-        $routes = [];
-        $flagToRemoveRoute = true;
+        $exist = false;
+        foreach (self::$routes as $key => $route) {
+            $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
+            if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
+                $exist = true;
+                if ((string) $this->request->getMethod() != (string) $route['method']) {
+                    $this->http405();
+                }
 
-        if (isset($_SERVER['REQUEST_URI']) && !empty($_SERVER['REQUEST_URI'])) {
-
-            $this->parseUrl();
-
-            if (!empty(self::$routes) && array_key_exists(self::$url, self::$routes)) {
-                $routes = explode('/', self::$routes[self::$url][0]);
-            } else $routes = explode('/', self::$url);
-
-            if (!empty($routes) && array_key_exists($routes[0], self::$routes)) {
-                $flagToRemoveRoute = false;
-                $urlParams = explode('/', self::$routes[$routes[0]][0]);
-
-                self::setClass($urlParams[0]);
-                self::setAction(lcfirst($urlParams[1]));
-
-            } else {
-
-                if (isset($routes[0]) && !empty($routes[0]))
-                    self::setClass(ucfirst($routes[0]));
-
-                if (isset($routes[1]) && !empty($routes[1]))
-                  self::setAction(lcfirst($routes[1]));
+                self::setClass($route['controller']);
+                self::setAction($route['action']);
+                
+                $matches = array_slice($matches, 1);
+  
+                foreach ($matches as $key2 => $value)
+                    self::$params[] = $matches[$key2][0];
+                
+                break;
             }
         }
-
-        if (isset($routes[0]))
-            unset($routes[0]);
-
-        if (isset($routes[1]) && $flagToRemoveRoute)
-            unset($routes[1]);
-
-        $this->checkIsRequestMethodProvided();
-
-        return self::$params = array_filter($routes, 'strlen');
+        self::setBasic($exist);
     }
-
-    public static function post(string $route, string $as = null): void
+    
+    private static function setBasic(bool $exist): void
     {
-        self::$routes[$as ?? route] = [$route, 'post'];
-    }
-
-    public static function get(string $route, string $as = null): void
-    {
-        self::$routes[$as ?? $route] = [$route, 'get'];
-    }
-
-    private function checkIsRequestMethodProvided(): void
-    {
-        if (isset(self::$routes[self::$url]))
-            if (self::$routes[self::$url][1] !=  $this->request->getMethod())
-                $this->http405();
-
-        if (is_array(self::$routes)) {
-            foreach (self::$routes as $key => $routeParams) {
-                if (ucfirst($routeParams[0]) === self::getClass() . '/' . self::getAction() || ucfirst($routeParams[0]) === self::getClass())
-                    if ($routeParams[1] !=  $this->request->getMethod())
-                        $this->http405();
+        //this case is for automaticly routes like controller/action when
+        if ((bool)$exist === false) {
+            $route = explode('/', self::$url);
+            if (self::$baseRouteProvider) {
+                self::setClass(self::$baseRouteProvider);
+            }
+            else {
+                if (!empty($route[0])) {
+                    self::setClass($route[0]);
+                }
+            }
+            
+            if (isset($route[1]) && !empty($route[1])) {
+                self::setAction($route[1]);
             }
         }
     }
 
-    private function http405(): void
+    public static function post(string $as, string $route): void
     {
-        http_response_code(405);
-        exit(require_once (view_path('errors/405.php')));
+        self::match($as, $route, 'post');
     }
 
+    public static function get(string $as, string $route): void
+    {
+        self::match($as, $route, 'get');
+    }
+    
+    private static function match(string $as, string $route, $method): void
+    {
+        $routes = explode('/', $route);
+        self::$routes[$as ?? $route] = [
+            'controller' => ucfirst($routes[0]),
+            'action' => $routes[1] ?? 'index',
+            'method' => $method
+        ];
+    }
+    
     public static function redirect(string $path, int $code = 302, bool $direct = false): void
     {
         session_write_close();
@@ -187,17 +192,13 @@ class Router
 
     private function parseUrl(): void
     {
-        self::$url = $_SERVER['REQUEST_URI'];
-
         if(app['url'] != '/')
-            self::$url = str_replace(app['url'], '', self::$url);
+            self::$url = str_replace(app['url'], '', self::url());
 
         self::$url = preg_replace('/\?.*/', '', self::$url);
+        
         foreach (self::$aliases as $key => $provider) {
-            preg_match("/(^$key$|^$key(\?|\/))/U", self::$url, $m);
-            $m = array_filter($m);
-
-            if (isset($m[0])) {
+            if(preg_match("/(^$key$|^$key(\?|\/))/U", self::$url, $m)) {
                 $m = strtolower(rtrim($m[0], '/'));
                 self::$url = preg_replace("/" . $m . "/", '', self::$url, 1);
                 self::$provider = $provider['ns'];
@@ -205,7 +206,6 @@ class Router
                 self::$alias = $m;
                 break;
             }
-
         }
         self::$url = trim(self::$url, '/');
         self::$url = filter_var(self::$url, FILTER_SANITIZE_URL);
@@ -218,8 +218,16 @@ class Router
 
     public static function http404(): void
     {
+        header("HTTP/1.0 404 Not Found");
         http_response_code(404);
         exit(require_once (view_path('errors/404.php')));
+    }
+    
+    private function http405(): void
+    {
+        header("HTTP/1.0 405 Method Not Allowed");
+        http_response_code(405);
+        exit(require_once (view_path('errors/405.php')));
     }
 
     public static function run(): self
@@ -227,17 +235,12 @@ class Router
         return new self();
     }
 
-    public static function group($alias, $function)
+    public static function group(array $alias, callable $function):void
     {
         self::$aliases[$alias['prefix']] = [
             'ns' => str_replace('.', '\\', $alias['as']) . '\\',
             'base' => $alias['base'] ?? null
         ];
         $function();
-    }
-
-    public static function back()
-    {
-
     }
 }

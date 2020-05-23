@@ -1,13 +1,14 @@
 <?php
 
-use \App\Core\Router;
+use App\Facades\Http\Router;
 
 Router::group(['prefix' => 'admin', 'as' => 'App.Controllers.Admin', 'base' => 'login'], function () {
-    Router::get('Dash/index', 'eluwina');
-    Router::get('Appearance/colors', 'dupa/cycuszki');
+    Router::get('eluwina', 'Dash/index');
+    Router::get('ustawienia/{id}/ustaw/{id2}', 'appearance/colors');
 });
 
-Router::get('Contact/index', 'kontakt');
-Router::get('Realizations/index', 'realizacje');
-Router::get('clients/index', 'klienci');
+Router::get('kontakt', 'index/contact');
+Router::get('realizacje', 'realizations/index');
+Router::get('klienci', 'clients/index');
+
 Router::run();
