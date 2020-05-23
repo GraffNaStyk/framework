@@ -58,3 +58,7 @@ App.on('click', '.render', (e) => {
     el: e.target.dataset.el
   })
 });
+
+App.on('click', '.profile', () => {
+  App.toggle('.user__profile', 'd-flex');
+})

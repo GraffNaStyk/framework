@@ -22,6 +22,7 @@
   align-items: center;
   border: 1px solid #c8c8c8;
   background: #323c48;
+  border-radius: 8px;
 }
 
 .my__form label i {
@@ -33,6 +34,7 @@
   line-height: 45px;
   border-right: 1px solid #c8c8c8;
   background: #212c38;
+  border-radius: 8px;
 }
 
 .my__form label input {

@@ -4,7 +4,7 @@
 }
 
 .form-control {
-  border-radius: 0 !important;
+  border-radius: 8px !important;
 }
 
 label:not(:first-of-type) {
@@ -31,6 +31,7 @@ input[type="submit"] {
   border: 1px solid #c8c8c8;
   padding: .3rem;
   transition: .6s;
+  border-radius: 8px !important;
 }
 
 input[type="submit"]:hover {

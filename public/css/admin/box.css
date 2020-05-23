@@ -5,3 +5,27 @@
   border-radius: 8px;
   box-shadow: 0 0 1px 0 rgba(0,0,0,.6);
 }
+
+.box__menu {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 1px 0 rgba(0,0,0,.6);
+}
+
+.box__menu * {
+  padding: .3rem .7rem;
+  transition: .6s;
+  border-radius: 4px;
+  text-align: center;
+  color: #212529;
+}
+
+.box__menu *:not(:last-child) {
+  border-bottom: 1px solid #f4f4f4;
+}
+
+.box__menu *:hover {
+  background: #949494;
+  color: #fff;
+  cursor: pointer;
+}

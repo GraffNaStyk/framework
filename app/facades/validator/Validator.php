@@ -3,7 +3,7 @@
 namespace App\Facades\Validator;
 
 use App\Helpers\Session;
-use App\Core\View;
+use App\Facades\Http\View;
 
 class Validator
 {

@@ -84,7 +84,7 @@ export const response = (res, selector) => {
     if(alert) {
       setTimeout(() => {
         alert.remove();
-      }, 2000)
+      }, 2500)
     }
   }))
 };
@@ -116,14 +116,23 @@ export const OnSubmitForms = () => {
       if(res.ok && modalSelector.classList.contains('d-block')) {
         setTimeout(() => {
           document.querySelector('button[data-dismiss="modal"]').click()
-        },100);
+        },300);
       }
       if(res.ok === false && modalSelector.classList.contains('d-block')) {
         response(res, '.modal-body')
       } else {
         response(res, '.right-panel')
+        callback();
       }
-      callback();
     })
   });
+}
+
+export const toggle = (el, by) => {
+  let selector = document.querySelector(`${el}`);
+  if(selector.classList.contains(`${by}`)) {
+    selector.classList.remove(`${by}`)
+  } else {
+    selector.classList.add(`${by}`)
+  }
 }

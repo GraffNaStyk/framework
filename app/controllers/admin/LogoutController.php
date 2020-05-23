@@ -1,6 +1,6 @@
 <?php namespace App\Controllers\Admin;
 
-use App\Core\Router;
+use App\Facades\Http\Router;
 use App\Helpers\Session;
 
 class LogoutController

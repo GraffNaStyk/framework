@@ -21,7 +21,11 @@
   <div class="d-flex align-items-center">
     <a href="#"><i class="fa fa-bars"></i></a>
     <a href="#" {{ tooltip('add') }} ><i class="fa fa-plus"></i></a>
-    <a href="#" {{ tooltip('profile') }}><i class="fa fa-user"></i></a>
+    <a href="#" {{ tooltip('profile') }} class="profile"><i class="fa fa-user"></i></a>
+    <div class="box__menu flex-column d-none user__profile" style="position: fixed; top: 45px;">
+      <div class="render" data-url="password/reset" data-el="modal">Resetuj hasło</div>
+      <a href="{{ url('profile') }}">Mój profil</a>
+    </div>b
     <a href="{{ url('logout') }}" {{ tooltip('logout') }}> <i class="fa fa-power-off"></i> </a>
   </div>
 </nav>
