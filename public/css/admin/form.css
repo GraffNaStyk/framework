@@ -5,6 +5,8 @@
 
 .form-control {
   border-radius: 8px !important;
+  padding: .6rem 1rem!important;
+  height: 100% !important;
 }
 
 label:not(:first-of-type) {
@@ -15,6 +17,10 @@ label:first-of-type {
   margin: 0 10px 0 0;
 }
 
+label span, div span {
+  margin-bottom: .5rem;
+  display: flex;
+}
 
 input[type="color"] {
   border: none;
@@ -25,17 +31,17 @@ input[type="color"] {
   width: 50%;
 }
 
-input[type="submit"] {
-  color: #212529;
+button, input[type="submit"] {
+  color: rgba(0,0,0,0.6);
   background: transparent;
   border: 1px solid #c8c8c8;
-  padding: .3rem;
+  padding: .6rem 1rem;
   transition: .6s;
   border-radius: 8px !important;
 }
 
-input[type="submit"]:hover {
-  background: #949494;
+button:hover, input[type="submit"]:hover {
+  background: #323c48;
   color: white;
   transition: .6s;
 }

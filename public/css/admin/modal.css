@@ -11,35 +11,16 @@
 .modal-content .modal-header,
 .modal-content .modal-body,
 .modal-content .modal-footer {
-  padding: .7rem;
+  padding: .8rem;
 }
 
 .modal-content .modal-header button {
   margin:0;
   padding:0;
-  font-size: 2.2rem;
+  font-size: 2.6rem;
   font-weight: 400;
 }
 
-.loader {
-  border: 10px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 10px solid #3498db;
-  width: 80px;
-  height: 80px;
-  position: relative;
-  top: 40%;
-  left: 48%;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
-
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.modal-content .modal-footer {
+  justify-content: flex-start;
 }

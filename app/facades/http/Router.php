@@ -63,9 +63,12 @@ final class Router
     {
         if (class_exists($controller)) {
             
+            if(!method_exists($controller, self::getAction()))
+                self::http404();
+            
             $reflectionClass = new ReflectionClass($controller);
 
-            if($reflectionClass->getMethod(self::getAction())->class != $controller)
+            if( $reflectionClass->getMethod(self::getAction())->class != $controller)
                 self::http404();
             
             $reflection = new ReflectionMethod($controller, self::getAction());

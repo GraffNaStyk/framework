@@ -44,13 +44,13 @@ class Validator
                     static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
                 }
             } else {
-                static::$validatorErrors[] = 'Field ' . $key . ' is required !';
+                static::$validatorErrors[] = 'Pole ' . $key . ' jest wymagane';
             }
         }
     }
 
     public static function getErrors(): array
     {
-        return static::$validatorErrors;
+        return array_values(static::$validatorErrors);
     }
 }

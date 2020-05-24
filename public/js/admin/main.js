@@ -38,17 +38,6 @@ App.on('click', 'a', prevent);
 // enable all submenu functions
 App.on('click', 'a.has__parent', menu);
 
-let selector;
-
-if(selector = document.querySelector('input[type="submit"]')) {
-  selector.onclick = (e) => {
-    e.target.disabled = true;
-    setTimeout(() => {
-      e.target.disabled = false;
-    }, 1400);
-  };
-}
-
 App.OnSubmitForms();
 
 App.on('click', '.render', (e) => {
@@ -59,6 +48,6 @@ App.on('click', '.render', (e) => {
   })
 });
 
-App.on('click', '.profile', () => {
-  App.toggle('.user__profile', 'd-flex');
+App.on('click', '[data-menu="toggle"]', (e) => {
+  App.toggle(e.target.dataset.target, 'd-flex');
 })

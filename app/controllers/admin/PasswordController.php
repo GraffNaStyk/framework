@@ -15,7 +15,7 @@ class PasswordController extends DashController
         parent::__construct();
     }
     
-    public function reset()
+    public function index()
     {
         return View::render();
     }
@@ -32,3 +32,4 @@ class PasswordController extends DashController
         return $this->response(['ok' => true, 'msg' => ['Hasło zostało zresetowane']]);
     }
 }
+

@@ -14,7 +14,6 @@ class LoginController extends Controller
         if (Session::has('user')) {
             $this->redirect('dash');
         }
-
         parent::__construct();
     }
 

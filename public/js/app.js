@@ -2,7 +2,7 @@ export const post = async (args) => {
   let data;
 
   if(args.form)
-    data = new FormData(document.querySelector(args.form));
+    data = new FormData(args.form);
 
   if(args.data) {
     data = new FormData();
@@ -38,15 +38,14 @@ export const render = (args) => {
     },
   }).then(async (res) => res.text())
   .then(async result => {
-    const doc = new DOMParser().parseFromString(result, 'text/html');
     if (args.el !== 'modal') {
       if(args.append)
-        document.querySelector(`[data-component="${args.el}"]`).innerHTML += doc.body.innerHTML;
+        document.querySelector(`[data-component="${args.el}"]`).innerHTML += result;
       else {
-        document.querySelector(`[data-component="${args.el}"]`).innerHTML = doc.body.innerHTML;
+        document.querySelector(`[data-component="${args.el}"]`).innerHTML = result;
       }
     } else {
-      modal(doc.body);
+      modal(result);
     }
     setTimeout(() => {
       OnSubmitForms();
@@ -55,17 +54,18 @@ export const render = (args) => {
 };
 
 const modal = (result) => {
-  console.log(result);
   const modal = document.getElementById('modal');
   modal.classList.add('d-block');
   modal.setAttribute('style', 'background: rgba(0,0,0,0.7)');
   const content = document.querySelector('.modal-content');
-  content.innerHTML += result.innerHTML;
+  content.innerHTML += result;
+
   on('click', 'button[data-dismiss="modal"]', () => {
     modal.classList.remove('d-block');
     content.innerHTML = '';
     modal.setAttribute('style', '');
   });
+
 };
 
 export const response = (res, selector) => {
@@ -110,13 +110,13 @@ export const OnSubmitForms = () => {
     e.preventDefault();
     post({
       url: e.target.dataset.action,
-      form: 'form'
+      form: e.target
     }).then(res => {
       let modalSelector = document.getElementById('modal');
       if(res.ok && modalSelector.classList.contains('d-block')) {
         setTimeout(() => {
           document.querySelector('button[data-dismiss="modal"]').click()
-        },300);
+        },500);
       }
       if(res.ok === false && modalSelector.classList.contains('d-block')) {
         response(res, '.modal-body')

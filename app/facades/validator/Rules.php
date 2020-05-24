@@ -8,12 +8,12 @@ class Rules
 {
     public static function min($item, $rule, $field)
     {
-        if (strlen($item) < $rule) return $field . ' jest za krótkie';
+        if (strlen($item) < $rule) return 'Pole ' . $field . ' jest za krótkie';
     }
 
     public static function max($item, $rule, $field)
     {
-        if (strlen($item) > $rule) return $field . ' jest za długie';
+        if (strlen($item) > $rule) return 'Pole ' . $field . ' jest za długie';
     }
 
     public static function required($item, $rule, $field)

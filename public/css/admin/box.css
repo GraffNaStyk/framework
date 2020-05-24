@@ -10,6 +10,10 @@
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 0 1px 0 rgba(0,0,0,.6);
+  position: fixed;
+  top: 45px;
+  right: 30px;
+  width: 150px;
 }
 
 .box__menu * {
@@ -17,7 +21,7 @@
   transition: .6s;
   border-radius: 4px;
   text-align: center;
-  color: #212529;
+  color: rgba(0,0,0,0.6);
 }
 
 .box__menu *:not(:last-child) {
@@ -25,7 +29,6 @@
 }
 
 .box__menu *:hover {
-  background: #949494;
-  color: #fff;
+  color: rgba(0,0,0,0.6);
   cursor: pointer;
 }
