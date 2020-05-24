@@ -63,6 +63,11 @@ body {
   content: '\f107';
 }
 
+.grid aside.left-panel a.active {
+  font-weight: bold;
+  background: rgba(255,255,255,0.1);
+}
+
 .grid aside.left-panel a i {
   float: left;
   line-height: 24px;

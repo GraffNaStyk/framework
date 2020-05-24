@@ -13,7 +13,8 @@
   position: fixed;
   top: 45px;
   right: 30px;
-  width: 150px;
+  min-width: 150px;
+  z-index: 150;
 }
 
 .box__menu * {

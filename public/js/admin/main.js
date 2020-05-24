@@ -51,3 +51,10 @@ App.on('click', '.render', (e) => {
 App.on('click', '[data-menu="toggle"]', (e) => {
   App.toggle(e.target.dataset.target, 'd-flex');
 })
+
+localStorage.setItem('url', window.location.pathname)
+
+let el = document.querySelector(`a[href='${localStorage.getItem('url')}']`);
+el.classList.add('active');
+el.parentElement.classList.add('d-flex');
+el.parentElement.previousElementSibling.classList.add('open');
