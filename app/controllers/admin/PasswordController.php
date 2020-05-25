@@ -24,7 +24,7 @@ class PasswordController extends DashController
     {
         if(!Validator::make($request->all(), [
             'password' => 'required|min:6'
-        ])) return $this->response(['ok' => false, 'msg' => Validator::getErrors()]);
+        ])) return $this->response(['ok' => false, 'msg' => Validator::getErrors()], 400);
         
         User::where(['id' ,'=', Session::get('user.id')])
             ->update(['password' => password_hash($request->get('password'), PASSWORD_BCRYPT)]);

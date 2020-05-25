@@ -68,7 +68,7 @@ final class Router
             
             $reflectionClass = new ReflectionClass($controller);
 
-            if( $reflectionClass->getMethod(self::getAction())->class != $controller)
+            if($reflectionClass->getMethod(self::getAction())->class != $controller)
                 self::http404();
             
             $reflection = new ReflectionMethod($controller, self::getAction());
@@ -77,17 +77,14 @@ final class Router
             
             $params = $reflection->getParameters();
 
-            if (empty($params)) {
+            if (empty($params))
                 return $controller->{self::getAction()}();
-            }
             
-            if (isset($params[0]->name) && $params[0]->name == 'request') {
+            if (isset($params[0]->name) && $params[0]->name == 'request')
                 return $controller->{self::getAction()}($this->request);
-            }
             
-            if ($reflection->getNumberOfRequiredParameters() != count(self::$params)) {
+            if ($reflection->getNumberOfRequiredParameters() != count(self::$params))
                 self::http404();
-            }
             
             return call_user_func_array([$controller, self::getAction()], $this->sanitize(self::$params));
         }

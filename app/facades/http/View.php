@@ -84,6 +84,11 @@ final class View
         }
 
     }
+    
+    public static function getData()
+    {
+        return self::$data;
+    }
 
     public static function registerFunctions(): void
     {

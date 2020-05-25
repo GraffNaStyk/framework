@@ -11,7 +11,7 @@
   <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
   <base href="{{ base() }}">
-  <title>{{ title }}</title>
+  <title>{{ page.title }}</title>
   {{ css|raw }}
   <style>
     :root{
@@ -25,7 +25,6 @@
   </script>
 </head>
 <body>
-{{ cos }}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container">
   <a class="navbar-brand" href="{{ url() }}">Graff PHP</a>
@@ -39,14 +38,13 @@
 {% include('layouts/inc/alert.twig') %}
 <main id="main-page-wrapper" class="container justify-content-center align-items-center d-flex flex-column">
   {% block content %}
-
   {% endblock %}
 </main>
 
 <div id="modal" class="modal"></div>
 <footer class="py-2">
   <div class="container">
-    <p class="m-0">&copy; Graff Design {{ "now"|date('Y') }}</p>
+    <p class="m-0">&copy; Graff PHP {{ "now"|date('Y') }}</p>
   </div>
 </footer>
 {{ js|raw }}

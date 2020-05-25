@@ -9,7 +9,7 @@ class IndexController extends Controller
     public function __construct()
     {
         View::set([
-            'title' => 'Graff Design - Strona Główna',
+            'page' => ['title' => 'Graff Design - Strona Główna'],
             'styles' => Config::select(['maincolor', 'footercolor', 'textcolor', 'headercolor', 'bgcolor'])
                 ->where(['id', '=', 1])
                 ->findOrFail()

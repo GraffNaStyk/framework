@@ -23,13 +23,13 @@ class AppearanceController extends DashController
         if(Config::where(['id', '=', 1])->update($request->all()))
             return $this->response(['ok' => true, 'msg' => ['Dane zostały zapisane']]);
 
-        return $this->response(['ok' => false, 'msg' => ['Wystąpił błąd']]);
+        return $this->response(['ok' => false, 'msg' => ['Wystąpił błąd']], 400);
     }
 
     public function seo()
     {
-        return View::render([
-            'config' => Config::select(['description', 'title', 'keywords'])->where(['id', '=', 1])->findOrFail()
-        ]);
+        return View::render(
+            Config::select(['description', 'title', 'keywords'])->where(['id', '=', 1])->findOrFail()
+        );
     }
 }
