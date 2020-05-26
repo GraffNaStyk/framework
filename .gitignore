@@ -2,3 +2,4 @@
 storage/*
 vendor/*
 composer.lock
+app/config/.env
