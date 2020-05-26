@@ -13,7 +13,7 @@ class Storage
         }
 
         if(!is_dir(storage_path('private/'))) {
-            mkdir(storage_path('public/'), 0775);
+            mkdir(storage_path('private/'), 0775);
         }
 
         self::$disk = storage_path($disk);
