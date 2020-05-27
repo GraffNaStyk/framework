@@ -40,8 +40,11 @@ abstract class Field
 
     protected function checkHowToConnectValue($val, $trim = false)
     {
-        if(strpos($val, 'CASE'))
-            return $val;
+        if(strpos($val, 'CASE') !== false)
+            return $val .', ';
+    
+        if(strpos($val, 'CONCAT') !== false)
+            return $val .', ';
 
         //case when you write (table.field as tablefield)
         if (strpos($val, '.') && strpos($val = strtolower($val), ' as ')) {

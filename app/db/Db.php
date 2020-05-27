@@ -254,15 +254,7 @@ class Db extends Builder
 
         return $this;
     }
-
-    public static function raw($query)
-    {
-        if(self::$db->query($query))
-            return true;
-
-        return false;
-    }
-
+    
     private function develop()
     {
         print_r([
