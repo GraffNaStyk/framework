@@ -4,5 +4,5 @@ use App\Db\Model;
 
 class Client extends Model
 {
-    public static $table = 'clients';
+    public static string $table = 'clients';
 }

@@ -4,6 +4,11 @@ use App\Facades\Http\Router;
 
 class Loader
 {
+    protected static array $loaded = [
+        'css' => ['bootstrap', 'slim-select'],
+        'js' => ['bootstrap', 'slim-select'],
+    ];
+    
     public static function css()
     {
         $folder = Router::getAlias() ?? 'http';
@@ -15,11 +20,12 @@ class Loader
             $cssString .= trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', $css).'">'.PHP_EOL);
 
         $cssString .= static::getFileForView('css');
-
-        $cssString .= self::getBootstrap('css');
+        
+        foreach (self::$loaded['css'] as $val)
+            $cssString .= self::getFile($val, 'css');
 
         $cssString .= self::getFontAwesome();
-
+ 
         return $cssString;
     }
 
@@ -28,22 +34,24 @@ class Loader
         $folder = Router::getAlias() ?? 'http';
 
         $jsArr = glob(js_path("$folder/*.js"), GLOB_BRACE);
+
         $jsString = null;
         foreach ($jsArr as $key => $js)
             $jsString .= trim('<script type="module" src="'.str_replace(app_path(), '', $js).'"></script>'.PHP_EOL);
 
         $jsString .= static::getFileForView('js');
-
-        $jsString .= self::getBootstrap('js');
+    
+        foreach (self::$loaded['js'] as $val)
+            $jsString .= self::getFile($val, 'js');
 
         return $jsString;
     }
 
-    private static function getBootstrap($ext)
+    private static function getFile($name, $ext)
     {
         $path = $ext == 'css'
-            ? css_path('bootstrap.css')
-            : js_path('bootstrap.js');
+            ? css_path($name.'.css')
+            : js_path($name.'.js');
 
         if(is_file($path)) {
             if($ext == 'css')

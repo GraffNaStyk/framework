@@ -6,9 +6,9 @@ use PDO;
 
 class Db extends Builder
 {
-    private static $env;
-    private static $db;
-    private $debug = false;
+    private static array $env;
+    private static object $db;
+    private bool $debug = false;
 
     public function __construct($model)
     {
@@ -23,7 +23,7 @@ class Db extends Builder
 
     private static function connect()
     {
-        if (!empty(self::$env['host'])) {
+        if (empty(self::$env['host']) === false) {
             try {
                 self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
                 self::$env = [];
@@ -35,6 +35,12 @@ class Db extends Builder
             }
         }
         return false;
+    }
+    
+    public static function table($table)
+    {
+        $table = ucfirst($table);
+        return new self("App\\Model\\{$table}");
     }
 
     public function select($values = '*')
@@ -236,7 +242,7 @@ class Db extends Builder
     {
         $result = $this->get();
 
-        if(empty($result))
+        if(empty($result) === true)
             return false;
 
         if(isset($result[1]))
@@ -257,7 +263,7 @@ class Db extends Builder
     
     private function develop()
     {
-        print_r([
+        pd([
             'Query' => $this->query,
             'Data' => $this->data,
             'Where' => $this->where,

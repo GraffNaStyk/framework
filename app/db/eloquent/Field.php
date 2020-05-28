@@ -3,7 +3,7 @@ use stdClass;
 use ReflectionClass;
 abstract class Field
 {
-    public $hasId = false;
+    public bool $hasId = false;
 
     protected function detectFieldType($field, $comparison)
     {
@@ -45,6 +45,9 @@ abstract class Field
     
         if(strpos($val, 'CONCAT') !== false)
             return $val .', ';
+    
+        if(strpos($val, 'SELECT') !== false)
+            return $val .', ';
 
         //case when you write (table.field as tablefield)
         if (strpos($val, '.') && strpos($val = strtolower($val), ' as ')) {
@@ -79,7 +82,7 @@ abstract class Field
 
     private function checkIfValueIsStar($val)
     {
-        return $val == '*' ? $val : "`{$this->trim($val)}`";
+        return $val[0] == '*' ? $val : "`{$this->trim($val)}`";
     }
 
     protected function trim($value)

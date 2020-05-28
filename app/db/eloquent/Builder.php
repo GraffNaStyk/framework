@@ -2,17 +2,17 @@
 
 abstract class Builder extends Field
 {
-    protected $where = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+    protected array $where = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
     protected $values = '*';
-    public $table;
-    protected $query;
-    protected $order = ['by' => '', 'type' => 'ASC'];
-    protected $limit = '';
-    protected $group = '';
-    protected $distinct = false;
-    protected $innerJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-    protected $leftJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-    protected $rightJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+    public string $table;
+    protected string $query;
+    protected array $order = ['by' => '', 'type' => 'ASC'];
+    protected string $limit = '';
+    protected string $group = '';
+    protected bool $distinct = false;
+    protected array $innerJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+    protected array $leftJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+    protected array $rightJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
     protected $data;
 
     public function __construct($model)
@@ -43,8 +43,10 @@ abstract class Builder extends Field
         $iterator = 0;
         $join = '';
         if (!empty($this->$table)) {
-            foreach ($this->$table['field'] as $key => $value) {
-                $join .= " {$this->$table['connector'][$iterator]} `{$this->$table['table'][$iterator]}` ON {$this->checkHowToConnectValue($this->$table['field'][$iterator], true)} {$this->$table['comparison'][$iterator]} {$this->checkHowToConnectValue($this->$table['value'][$iterator], true)} ";
+            foreach ((array) $this->$table['field'] as $key => $value) {
+                $join .= " {$this->$table['connector'][$iterator]} `{$this->$table['table'][$iterator]}` ON
+                           {$this->checkHowToConnectValue($this->$table['field'][$iterator], true)}
+                           {$this->$table['comparison'][$iterator]} {$this->checkHowToConnectValue($this->$table['value'][$iterator], true)} ";
                 ++$iterator;
             }
 

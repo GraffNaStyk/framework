@@ -4,10 +4,5 @@ use App\Db\Model;
 
 class Config extends Model
 {
-    public static $table = 'config';
-
-    public static function getHeaderColor()
-    {
-        Db::raw("SELECT U.COS, U.KTOS FROM {self::$table} ");
-    }
+    public static string $table = 'config';
 }

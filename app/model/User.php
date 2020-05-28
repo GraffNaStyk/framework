@@ -4,5 +4,5 @@ use App\Db\Model;
 
 class User extends Model
 {
-    public static $table = 'users';
+    public static string $table = 'users';
 }

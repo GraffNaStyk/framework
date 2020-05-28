@@ -25,6 +25,6 @@ class Csrf
 
     public static function isValid($csrf)
     {
-        return Session::get('csrf') === $csrf ? true : false;
+        return (string) Session::get('csrf') === $csrf ? true : false;
     }
 }

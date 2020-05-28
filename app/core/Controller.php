@@ -1,5 +1,6 @@
 <?php namespace App\Core;
 
+use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
 use App\Helpers\Session;
 use App\Helpers\Storage;
@@ -32,11 +33,26 @@ abstract class Controller
 
     public function redirect($path, $code=302, $direct=false)
     {
-        Router::redirect($path, $code, $direct);
+        return Router::redirect($path, $code, $direct);
     }
 
     public function response($response, $status=200, $headers=[])
     {
         return Response::json($response, $status, $headers);
+    }
+    
+    public function set(array $data):void
+    {
+        View::set($data);
+    }
+    
+    public function render(array $data = [])
+    {
+        return View::render($data);
+    }
+    
+    public function validate(array $request, array $rules)
+    {
+        return Validator::make($request, $request);
     }
 }

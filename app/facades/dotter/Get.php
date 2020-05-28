@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Facades\Dotter;
+<?php namespace App\Facades\Dotter;
 
 class Get
 {

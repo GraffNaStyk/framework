@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class Storage
 {
-    private static $disk;
+    private static string $disk;
 
     public static function disk($disk)
     {

@@ -2,8 +2,8 @@
 
 class Faker
 {
-    private static $letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'w', 'x', 'y', 'z'];
-    private static $numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    private static array $letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'w', 'x', 'y', 'z'];
+    private static array $numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 
     public static function string(int $length = 0): string
     {

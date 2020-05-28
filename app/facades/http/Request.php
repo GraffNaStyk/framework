@@ -7,10 +7,10 @@ use App\Helpers\Session;
 
 final class Request
 {
-    protected $post = [];
-    protected $get  = [];
-    protected $file = [];
-    private $method = 'post';
+    protected array $post = [];
+    protected array $get  = [];
+    protected array $file = [];
+    private string $method = 'post';
 
     public function __construct()
     {

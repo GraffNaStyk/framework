@@ -7,12 +7,12 @@ require_once vendor_path('autoload.php');
 
 final class View
 {
-    protected static $twig;
-    private static $data     = [];
-    protected static $ext    = '.twig';
-    protected static $layout = 'page';
-    public static $dir = null;
-    public static $view = null;
+    protected static object $twig;
+    private static array $data     = [];
+    protected static string $ext    = '.twig';
+    protected static string $layout = 'page';
+    public static ?string $dir = null;
+    public static ?string $view = null;
 
     public static function render(array $data = [])
     {
@@ -55,8 +55,8 @@ final class View
     private static function setViewFile(): void
     {
         self::$view = self::$view ?? Router::getAction();
-        self::$view = preg_split('/(?=[A-Z])/', self::$view);
-        self::$view = strtolower(implode('_', self::$view));
+        $name = preg_split('/(?=[A-Z])/', self::$view);
+        self::$view = strtolower(implode('_', $name));
     }
 
     public static function isAjax(): bool

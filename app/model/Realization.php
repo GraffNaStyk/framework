@@ -4,5 +4,5 @@ use App\Db\Model;
 
 class Realization extends Model
 {
-    public static $table = 'realizations';
+    public static string $table = 'realizations';
 }

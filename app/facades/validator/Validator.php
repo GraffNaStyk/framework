@@ -7,8 +7,8 @@ use App\Facades\Http\View;
 
 class Validator
 {
-    protected static $rules = [];
-    private static $validatorErrors = [];
+    protected static array $rules = [];
+    private static array $validatorErrors = [];
 
     public static function make($request, array $rules): bool
     {

@@ -6,25 +6,25 @@ use App\Facades\Url\Url;
 
 final class Router
 {
-    private static $params = [];
+    private static array $params = [];
 
-    private static $aliases = [];
+    private static array $aliases = [];
 
-    private static $provider = 'App\\Controllers\\Http\\';
+    private static string $provider = 'App\\Controllers\\Http\\';
     
-    private static $baseRouteProvider = null;
+    private static ?string $baseRouteProvider = null;
     
-    private static $class = 'Index';
+    private static string $class = 'Index';
 
-    private static $action = 'index';
+    private static string $action = 'index';
 
-    private static $routes = [];
+    private static array $routes = [];
 
-    private static $alias = null;
+    private static ?string $alias = null;
 
-    private static $url = null;
+    private static string $url;
 
-    private $request;
+    private object $request;
 
     public function __construct()
     {

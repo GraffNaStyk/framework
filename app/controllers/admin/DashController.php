@@ -3,6 +3,7 @@
 use App\Core\Controller;
 use App\Core\Auth;
 use App\Facades\Http\View;
+use App\Model\User;
 
 class DashController extends Controller
 {
@@ -17,5 +18,10 @@ class DashController extends Controller
     public function index()
     {
         return View::render();
+    }
+    
+    public function users()
+    {
+        return $this->response(User::select('*')->get());
     }
 }
