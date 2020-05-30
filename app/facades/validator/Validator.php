@@ -44,7 +44,7 @@ class Validator
                     static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
                 }
             } else {
-                static::$validatorErrors[] = 'Pole ' . $key . ' jest wymagane';
+                static::$validatorErrors[] = ['msg' => 'Pole jest wymagane', 'field' => $key];
             }
         }
     }

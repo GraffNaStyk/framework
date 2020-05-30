@@ -53,6 +53,6 @@ abstract class Controller
     
     public function validate(array $request, array $rules)
     {
-        return Validator::make($request, $request);
+        return Validator::make($request, $rules);
     }
 }

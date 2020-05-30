@@ -26,7 +26,8 @@ class LoginController extends Controller
     public function check(Request $request)
     {
         if(!Validator::make($request->all(), [
-            'name' => 'string|required|min:3'
+            'name' => 'string|required|min:3',
+            'password' => 'string|required|min:3',
         ])) $this->redirect('login');
         
         if ($user = User::select(['name', 'id', 'password'])->where(['name', '=', $request->get('name')])->findOrFail()) {

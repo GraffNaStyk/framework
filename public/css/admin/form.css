@@ -9,17 +9,16 @@
   height: 100% !important;
 }
 
-label:not(:first-of-type) {
-  margin: 0 10px;
-}
-
-label:first-of-type {
-  margin: 0 10px 0 0;
-}
-
 label span, div span {
   margin-bottom: .5rem;
   display: flex;
+}
+
+div.form__grid label {
+  position: relative;
+  width: 100%;
+  display: flex!important;
+  flex-direction: column;
 }
 
 input[type="color"] {
@@ -28,7 +27,7 @@ input[type="color"] {
   cursor: pointer;
   padding:0;
   margin-right: .5em;
-  width: 50%;
+  width: 100%;
 }
 
 button, input[type="submit"] {
@@ -38,6 +37,7 @@ button, input[type="submit"] {
   padding: .6rem 1rem;
   transition: .6s;
   border-radius: 8px !important;
+  width: 200px;
 }
 
 button:hover, input[type="submit"]:hover {
@@ -46,3 +46,11 @@ button:hover, input[type="submit"]:hover {
   transition: .6s;
 }
 
+.form__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-auto-flow: dense;
+  max-width:100%;
+  list-style: none;
+  grid-gap: 10px;
+}

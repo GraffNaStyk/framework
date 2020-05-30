@@ -14,3 +14,37 @@
 .alert-danger {
   background: #dd1c1e !important;
 }
+
+span.err {
+  position: absolute;
+  top: 57%;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+span.err img {
+  width: 20px;
+}
+
+[tooltip]:before {
+  content: attr(tooltip);
+  position: absolute;
+  opacity: 0;
+  transition: all 0.15s ease;
+  padding: 10px;
+  color: black;
+  border-radius: 8px;
+  width: 200px;
+}
+
+[tooltip]:hover:before {
+  opacity: 1;
+  background: #f6f6f6;
+  margin-left: 25px;
+  top: -50px;
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+  pointer-events: none;
+  z-index: 500;
+}

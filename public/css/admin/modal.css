@@ -21,6 +21,14 @@
   font-weight: 400;
 }
 
+.modal-header button {
+  width: auto;
+}
+
+.modal-footer button, .modal-footer input[type="submit"] {
+  width: 130px;
+}
+
 .modal-content .modal-footer {
   justify-content: flex-start;
 }

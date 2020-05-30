@@ -33,7 +33,7 @@
 
 <section class="grid">
 
-  <aside class="left-panel d-xl-flex">
+  <aside class="left-panel d-flex">
     <a href="{{ url() }}"> <i class="fa fa-plane"></i> Dupa</a>
 
     <a href="#" class="has__parent"> <i class="fa fa-paint-brush"></i> Strona</a>
@@ -44,7 +44,7 @@
 
     <a href="#" class="has__parent"> <i class="fa fa-lock"></i> Klienci</a>
     <div class="parent">
-      <a href="{{ url() }}">nowy</a>
+      <a href="{{ url('clients') }}">nowy</a>
       <a href="{{ url() }}">Lista</a>
     </div>
 
@@ -53,7 +53,7 @@
   <main class="right-panel">
       {% for msg in messages %}
         <div class="alert alert-{{ color }}" role="alert">
-          {{ msg }}
+         {{ msg.field }} {{ msg.msg }}
         </div>
       {% endfor %}
 

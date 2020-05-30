@@ -7,16 +7,17 @@
       </button>
     </div>
     <div class="modal-body">
-      <div>
-        <span>Nowe hasło</span>
-        <input class="form-control" type="text" name="password">
+      <div class="form__grid">
+        {{ input({
+          label: 'Nowe hasło',
+          class: 'form-control',
+          type: 'text',
+          name: 'password'
+        }) }}
       </div>
     </div>
     <div class="modal-footer">
       <input type="submit" value="Save changes">
     </div>
   </form>
-  <script>
-    console.log('dupa');
-  </script>
 {% endblock %}

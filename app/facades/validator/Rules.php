@@ -8,47 +8,51 @@ class Rules
 {
     public static function min($item, $rule, $field)
     {
-        if (strlen($item) < $rule) return 'Pole ' . $field . ' jest za krótkie';
+        if (strlen($item) < $rule)
+            return ['msg' => 'Pole jest za krótkie', 'field'=> $field];
     }
 
     public static function max($item, $rule, $field)
     {
-        if (strlen($item) > $rule) return 'Pole ' . $field . ' jest za długie';
+        if (strlen($item) > $rule)
+        return ['msg' => 'Pole jest za długie', 'field'=> $field];
     }
 
     public static function required($item, $rule, $field)
     {
-        return !isset($item) || empty($item) ? 'Pole ' . $field . ' jest wymagane' : '';
+        if( !isset($item) || empty($item) ) {
+            return ['msg' => 'Pole jest wymagane', 'field'=> $field];
+        }
     }
 
     public static function email($item, $rule, $field)
     {
         if (!filter_var($item, FILTER_VALIDATE_EMAIL))
-            return 'Pole ' . $field . ' musi być typu email';
+            return ['msg' => 'Pole musi być typu email', 'field'=> $field];
     }
 
     public static function string($item, $rule, $field)
     {
         if (is_numeric($item))
-            return 'Pole ' . $field . ' musi składać się tylko z liter';
+            return ['msg' => 'Pole musi składać się tylko z liter', 'field'=> $field];
     }
 
     public static function int($item, $rule, $field)
     {
         if (!is_numeric($item))
-            return 'Pole ' . $field . ' musi składać się tylko z liczb';
+            return ['msg' => 'Pole musi składać się tylko z liczb', 'field'=> $field];
     }
 
     public static function moreThanZero($item, $rule, $field)
     {
         if ($item < 0 || $item == 0)
-            return 'Pole ' . $field . ' musi być większe niż zero';
+            return ['msg' => 'Pole musi być większe niż zero', 'field'=> $field];
     }
 
     public static function date($item, $rule, $field)
     {
         if (DateTime::createFromFormat($rule, $item) == false) {
-            return 'Pole ' . $field . ' musi być datą';
+            return ['msg' => 'Zły format daty', 'field'=> $field];
         }
     }
 
@@ -56,12 +60,12 @@ class Rules
     {
         json_decode($item);
         if (json_last_error() != 0)
-            return 'Pole ' . $field . ' musi być jsonem';
+            return ['msg' => 'Pole musi być jsonem', 'field'=> $field];
     }
 
     public static function match($item, $rule, $field)
     {
         if(preg_match("$rule", $item))
-            return 'Pole ' . $field . ' jest niepoprawne';
+            return ['msg' => 'Pole jest niepoprawne', 'field'=> $field];
     }
 }

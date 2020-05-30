@@ -2,7 +2,7 @@
   <div class="my-4" style="width: 360px;">
     {% for msg in messages %}
       <div class="alert alert-{{ color }} mb-2">
-        {{ msg }}
+        [{{ msg.field }}] {{ msg.msg }}
       </div>
     {% endfor %}
   </div>

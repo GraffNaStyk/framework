@@ -62,7 +62,7 @@ final class Router
     private function create(string $controller)
     {
         if (class_exists($controller)) {
-            
+
             if(!method_exists($controller, self::getAction()))
                 self::http404();
             
@@ -135,7 +135,7 @@ final class Router
     private static function setBasic(bool $exist): void
     {
         //this case is for automaticly routes like controller/action when
-        if ((bool)$exist === false) {
+        if ((bool) $exist === false) {
             $route = explode('/', self::$url);
             if (self::$baseRouteProvider) {
                 self::setClass(self::$baseRouteProvider);
