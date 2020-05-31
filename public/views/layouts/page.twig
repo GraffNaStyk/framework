@@ -13,13 +13,15 @@
   <base href="{{ base() }}">
   <title>{{ page.title }}</title>
   {{ css|raw }}
-  <style>
-    :root{
-    {% for key,style in styles %}
-      --{{ key }}: {{ style }};
-    {% endfor %}
-    }
-  </style>
+  {% if styles is iterable %}
+    <style>
+      :root{
+      {% for key,style in styles %}
+        --{{ key }}: {{ style }};
+      {% endfor %}
+      }
+    </style>
+  {% endif %}
   <script>
     document.url = '{{ url() }}';
   </script>

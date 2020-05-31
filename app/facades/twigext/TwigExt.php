@@ -21,7 +21,7 @@ class TwigExt extends AbstractExtension
             $this->img(),
             $this->url(),
             $this->base(),
-            $this->tooltip()
+            $this->tooltip(),
         ];
     }
 

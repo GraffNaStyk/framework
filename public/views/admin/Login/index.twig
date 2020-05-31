@@ -7,11 +7,11 @@
     <form action="{{ url('login/check') }}" method="post" class="my__form">
       <label>
         <i class="fa fa-user"></i>
-        <input name="name" type="name" placeholder="Podaj login">
+        <input name="name" type="name" placeholder="Podaj login" value="{{ name }}">
       </label>
       <label>
         <i class="fa fa-lock"></i>
-        <input name="password" type="password" placeholder="Podaj hasło">
+        <input name="password" type="password" placeholder="Podaj hasło" value="{{ password }}">
       </label>
       {{ csrf() }}
       <input type="submit" value="Zaloguj">

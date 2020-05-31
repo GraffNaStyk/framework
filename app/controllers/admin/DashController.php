@@ -22,6 +22,6 @@ class DashController extends Controller
     
     public function users()
     {
-        return $this->response(User::select('*')->get());
+        return $this->response(User::select(['name', 'id'])->get());
     }
 }
