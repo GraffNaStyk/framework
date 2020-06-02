@@ -4,7 +4,7 @@ class Model
 {
     public static function __callStatic($name, $arguments)
     {
-        $model = new Db(get_called_class());
-        return $model->$name($arguments[0] ?? $arguments);
+        $db = new Db(get_called_class());
+        return $db->$name($arguments[0] ?? $arguments);
     }
 }

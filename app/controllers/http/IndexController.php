@@ -1,6 +1,7 @@
 <?php namespace App\Controllers\Http;
 
 use App\Core\Controller;
+use App\Db\Db;
 use App\Model\Config;
 
 class IndexController extends Controller

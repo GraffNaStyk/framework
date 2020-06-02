@@ -1,5 +1,6 @@
 <?php namespace App\Facades\TwigExt;
 
+use App\Facades\Http\View;
 use App\Facades\Url\Url,
     Twig\Extension\AbstractExtension,
     Twig\TwigFunction,
@@ -22,6 +23,7 @@ class TwigExt extends AbstractExtension
             $this->url(),
             $this->base(),
             $this->tooltip(),
+            $this->component(),
         ];
     }
 
@@ -82,6 +84,15 @@ class TwigExt extends AbstractExtension
     {
         return new TwigFunction('tooltip', function($text, $placement = 'top') {
             echo 'data-toggle="tooltip" title="'.$text.'" data-placement="'.$placement.'"';
+        });
+    }
+    
+    public function component()
+    {
+        return new TwigFunction('component', function($name, $variables = []) {
+            View::setDirectly();
+            View::change($name);
+            View::render($variables);
         });
     }
 }

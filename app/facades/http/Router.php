@@ -164,6 +164,7 @@ final class Router
     
     private static function match(string $as, string $route, $method): void
     {
+        $route = str_replace('@', '/', $route);
         $routes = explode('/', $route);
         self::$routes[$as ?? $route] = [
             'controller' => ucfirst($routes[0]),

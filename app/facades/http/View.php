@@ -7,37 +7,44 @@ require_once vendor_path('autoload.php');
 
 final class View
 {
-    protected static object $twig;
+    protected static $twig;
     private static array $data     = [];
     protected static string $ext    = '.twig';
     protected static string $layout = 'page';
     public static ?string $dir = null;
     public static ?string $view = null;
+    public static bool $directly = false;
+    protected static $loader;
 
     public static function render(array $data = [])
     {
         self::set($data);
-
-        $loader = new Twig\Loader\FilesystemLoader(view_path());
-
-        self::$twig = new Twig\Environment($loader, [
-            'debug' => true,
-            'cache' => storage_path('framework/views'),
-        ]);
-
-        self::$twig->addGlobal('session', $_SESSION);
-
-        self::$twig->addExtension(new Twig\Extension\DebugExtension());
-
-        self::registerFunctions();
-
+        
+        if(self::$loader instanceof  Twig\Loader\FilesystemLoader === false) {
+            self::$loader = new Twig\Loader\FilesystemLoader(view_path());
+        }
+        
+        if(self::$twig instanceof  Twig\Environment === false) {
+            self::$twig = new Twig\Environment(self::$loader, [
+                'debug' => true,
+                'cache' => storage_path('framework/views'),
+            ]);
+        
+            self::$twig->addGlobal('session', $_SESSION);
+            self::registerFunctions();
+        }
+        
         self::$dir = Router::getAlias() ?? 'http';
 
         self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
         self::setViewFile();
 
         try {
-            return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
+            if(self::$directly) {
+                return self::$twig->display('/components/'.self::$view. self::$ext, self::$data);
+            } else {
+                return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
+            }
         } catch (Twig\Error\Error $e) {
             if (app['dev']) {
                 pd($e->getMessage());
@@ -56,7 +63,7 @@ final class View
     {
         self::$view = self::$view ?? Router::getAction();
         $name = preg_split('/(?=[A-Z])/', self::$view);
-        self::$view = strtolower(implode('_', $name));
+        self::$view = strtolower(implode('-', $name));
     }
 
     public static function isAjax(): bool
@@ -82,12 +89,16 @@ final class View
         foreach ($data as $key => $value) {
             self::$data[$key] = $value;
         }
-
     }
     
     public static function getData()
     {
         return self::$data;
+    }
+    
+    public static function setDirectly()
+    {
+        self::$directly = true;
     }
 
     public static function registerFunctions(): void

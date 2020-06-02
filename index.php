@@ -3,7 +3,7 @@
 if(!file_exists(__DIR__.'/app/config/app.php'))
     exit('No app config file');
 
-if (session_status() == PHP_SESSION_NONE)
+if (session_status() === PHP_SESSION_NONE)
     session_start();
 
 function public_path($path = null)

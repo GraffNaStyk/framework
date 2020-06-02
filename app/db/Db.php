@@ -36,12 +36,6 @@ class Db extends Builder
         }
         return false;
     }
-    
-    public static function table($table)
-    {
-        $table = ucfirst($table);
-        return new self("App\\Model\\{$table}");
-    }
 
     public function select($values = '*')
     {
@@ -259,6 +253,11 @@ class Db extends Builder
         $this->debug = true;
 
         return $this;
+    }
+    
+    public function query($query)
+    {
+        self::$db->exec($query);
     }
     
     private function develop()

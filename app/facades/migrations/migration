@@ -1,0 +1,18 @@
+namespace App\Db\Migrate;
+
+use App\Facades\Migrations\Schema;
+
+class CLASSNAME
+{
+       public string $model = 'MODEL';
+
+       public function up(Schema $schema)
+       {
+           $schema->run();
+       }
+
+       public function down(Schema $schema)
+       {
+           $schema->clear();
+       }
+}

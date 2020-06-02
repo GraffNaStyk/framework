@@ -40,7 +40,10 @@ spl_autoload_register(function ($class) {
 
 \App\Core\Config::run();
 
-require_once __DIR__.'/routes/route.php';
+if(php_sapi_name() !== 'cli') {
+    require_once __DIR__.'/routes/route.php';
+}
+
 
 
 
