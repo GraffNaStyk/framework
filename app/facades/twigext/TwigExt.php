@@ -18,6 +18,7 @@ class TwigExt extends AbstractExtension
         return [
             $this->print(),
             $this->input(),
+            $this->select(),
             $this->csrf(),
             $this->img(),
             $this->url(),
@@ -56,6 +57,50 @@ class TwigExt extends AbstractExtension
                 $inputText .= $key.'="'.$value.'"';
     
             echo $html . '<input ' . $inputText. '/> </label>';
+        });
+    }
+    
+    public function select()
+    {
+        return new TwigFunction('select', function($attr = []) {
+            if(isset($attr['label'])) {
+                $html = '<label><span>'.$attr['label'].'</span>';
+            } else {
+                $html = '<label>';
+            }
+            
+            unset($attr['label']);
+            $select = '';
+            $url = '';
+            $data = '';
+            $multiple = '<option data-placeholder="true"></option>';
+            
+            if(isset($attr['data']) && empty($attr['data']) === false) {
+                foreach ($attr['data'] as $key => $value) {
+                    $selected = $value['value'] == $attr['selected'] ? 'selected' : '';
+                    $data .= '<option value="'.$value['value'].'" '.$selected.'>'.$value['text'].'</option>';
+                }
+                unset($attr['data']);
+            }
+            
+            if(isset($attr['multiple'])) {
+                $multiple = 'multiple';
+            }
+            
+            if(isset($attr['url'])) {
+                $url = 'data-url="'.$attr['url'].'"';
+                unset($attr['url']);
+            }
+            
+            $select .= '<select name="'.$attr['name'].'" data-select="slim" '.$url.' '.$multiple.'>';
+            
+            if($data != '') {
+                $select .= $data . '</select>';
+            } else {
+                $select .= '</select>';
+            }
+            
+            echo $html . $select . '</label>';
         });
     }
     

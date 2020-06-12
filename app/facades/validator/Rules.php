@@ -62,10 +62,13 @@ class Rules
         if (json_last_error() != 0)
             return ['msg' => 'Pole musi być jsonem', 'field'=> $field];
     }
-
+    
     public static function match($item, $rule, $field)
     {
-        if(preg_match("$rule", $item))
+        preg_match("$rule", $item, $m);
+        
+        if(empty($m) === true) {
             return ['msg' => 'Pole jest niepoprawne', 'field'=> $field];
+        }
     }
 }

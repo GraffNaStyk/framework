@@ -8,6 +8,10 @@ if(isset($argv[1]) && (string) $argv[1] === 'make') {
     $migration = file_get_contents(__DIR__.'/app/facades/migrations/migration');
     $migration = str_replace('CLASSNAME', 'Migration_'.date('Y_m_d__H_i'), $migration);
     $migration = str_replace('MODEL', $argv[2], $migration);
+    
+    if(!is_dir(__DIR__.'/app/db/migrate/'))
+        mkdir(__DIR__.'/app/db/migrate/', 0775, true);
+    
     file_put_contents(__DIR__.'/app/db/migrate/Migration_'.date('Y_m_d__H_i').'.php', "<?php ".$migration);
     
     if(file_exists(__DIR__.'/app/model/'.ucfirst($argv[2]).'.php') === false) {

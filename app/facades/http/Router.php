@@ -82,8 +82,8 @@ final class Router
             
             if (isset($params[0]->name) && $params[0]->name == 'request')
                 return $controller->{self::getAction()}($this->request);
-            
-            if ($reflection->getNumberOfRequiredParameters() != count(self::$params))
+    
+            if ($reflection->getNumberOfRequiredParameters() > count(self::$params))
                 self::http404();
             
             return call_user_func_array([$controller, self::getAction()], $this->sanitize(self::$params));
@@ -110,19 +110,23 @@ final class Router
     public function setParams()
     {
         $exist = false;
+        
         foreach (self::$routes as $key => $route) {
+            self::$params = [];
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
             if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
+                
                 $exist = true;
+                
                 if ((string) $this->request->getMethod() != (string) $route['method']) {
                     $this->http405();
                 }
-
+                
                 self::setClass($route['controller']);
                 self::setAction($route['action']);
                 
                 $matches = array_slice($matches, 1);
-  
+                
                 foreach ($matches as $key2 => $value)
                     self::$params[] = $matches[$key2][0];
                 
@@ -149,6 +153,10 @@ final class Router
             if (isset($route[1]) && !empty($route[1])) {
                 self::setAction($route[1]);
             }
+            unset($route[0], $route[1]);
+            
+            foreach ($route as $key2 => $value)
+                self::$params[] = $value;
         }
     }
 

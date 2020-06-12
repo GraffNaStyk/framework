@@ -127,11 +127,12 @@ class Db extends Builder
         $this->query = "SELECT * FROM  `{$this->table}`";
         return $this->execute();
     }
-
-    public function count($alias)
+    
+    public function count($data = [])
     {
-        $alias = is_array($alias) ? 'total' : $alias;
-        $this->query = "SELECT count(*) as '$alias' from `{$this->table}`";
+        $field = $data[0] ?? '*';
+        $alias = $data[1] ?? 'total';
+        $this->query = "SELECT count($field) as '$alias' from `{$this->table}` {$this->buildWhereQuery()}";
         return $this->execute()[0];
     }
 
@@ -166,28 +167,26 @@ class Db extends Builder
         $this->push('rightJoin', $join[1], $join[2], $join[3], 'RIGHT JOIN', $join[0]);
         return $this;
     }
-
+    
     private function execute()
     {
+        $this->setData();
         if (preg_match('/^(INSERT|UPDATE|DELETE)/', $this->query)) {
             try {
-
-                if (self::$db->prepare($this->query)->execute($this->data))
+                if (self::$db->prepare($this->query)->execute($this->data)) {
                     return true;
-
+                }
             } catch (\PDOException $e) {
                 Handle::throwException($e, $this->query);
             }
             return false;
-
-        } else {
+            
+        }
+        else {
             try {
-
                 $stmt = self::$db->prepare($this->query);
                 $stmt->execute($this->data);
-
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
             } catch (\PDOException $e) {
                 Handle::throwException($e, $this->query);
             }
@@ -221,14 +220,14 @@ class Db extends Builder
 
         return false;
     }
-
+    
     public function delete()
     {
-        $this->query = "DELETE FROM `{$this->table}` {$this->buildDeleteQuery()}";
-
+        $this->query = "DELETE FROM `{$this->table}` {$this->buildWhereQuery()}";
+        
         if($this->execute())
             return true;
-
+        
         return false;
     }
 

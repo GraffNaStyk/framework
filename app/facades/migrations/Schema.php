@@ -135,9 +135,9 @@ class Schema extends Blueprint
         return $this;
     }
     
-    public function alter($field, $type, $isNull=false, $where=null)
+    public function alter($field, $type, $isNull=false, $default=null, $where=null)
     {
-        $null = $isNull ? 'NOT NULL' : 'DEFAULT NULL';
+        $null = $isNull ? 'NOT NULL ' : 'DEFAULT NULL' . $default;
         $this->alter[] = 'ALTER TABLE `'. $this->table . '` ADD `'.$field.'` '.$type.' '.$this->length[$type].' '.$null.' '.$where.';';
         return $this;
     }

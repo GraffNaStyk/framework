@@ -49,6 +49,7 @@ export const render = (args) => {
     }
     setTimeout(() => {
       OnSubmitForms();
+      RefreshSelects();
     },80);
   })
 };
@@ -106,9 +107,14 @@ export const on = (event, selector, fn) => {
   });
 };
 
-export const callback = (ok=false) => {
+export const callback = (ok=false, to = null) => {
+  console.log(to);
   if(document.callback !== undefined) {
     eval(document.callback)
+  } else if (to !== null) {
+    setTimeout(() => {
+      document.location.href = document.url + to;
+    },2100)
   } else if (ok) {
     setTimeout(() => {
       document.location.reload();
@@ -139,6 +145,38 @@ export const OnSubmitForms = () => {
   });
 }
 
+const RefreshSelects = () => {
+  const selectors = document.querySelectorAll('[data-select="slim"]');
+  if(selectors) {
+    Array.from(selectors).forEach((value => {
+      if(value.dataset.url !== undefined) {
+        new SlimSelect({
+          select: value,
+          allowDeselect: true,
+          deselectLabel: '<span class="red">✖</span>',
+          searchingText: 'Wyszukaj...',
+          ajax: (search, callback) => {
+            if (search.length < 3) {
+              callback('Need 3 characters')
+              return
+            }
+            get(`${value.dataset.url}`).then(res => {
+              callback(res);
+            })
+          }
+        })
+      } else {
+        new SlimSelect({
+          select: value,
+          allowDeselect: true,
+          deselectLabel: '<span class="red">✖</span>',
+          searchingText: 'Wyszukaj...',
+        })
+      }
+    }))
+  }
+}
+
 export const toggle = (el, by) => {
   let selector = document.querySelector(`${el}`);
   if(selector.classList.contains(`${by}`)) {
@@ -146,4 +184,9 @@ export const toggle = (el, by) => {
   } else {
     selector.classList.add(`${by}`)
   }
+}
+
+export const toggleActive = (target, el) => {
+  document.querySelectorAll(`${el}`).forEach(el => el.classList.remove('active'));
+  target.target.classList.add('active');
 }

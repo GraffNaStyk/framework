@@ -65,62 +65,90 @@ abstract class Builder extends Field
         array_push($this->$arrayName['value'], !is_array($value) ? trim($value) : $value);
         array_push($this->$arrayName['connector'], $connector);
     }
-
+    
     protected function buildSaveQuery()
     {
         if(isset($this->data['id']))
             unset($this->data['id']);
-
+        
         $this->query = "INSERT INTO `{$this->table}` (";
-
-        foreach ($this->data as $key => $field)
-            $this->query .= "{$key}, ";
-
+        
+        foreach ($this->data as $key => $field) {
+            if ((string) $field !== '') {
+                $this->query .= "{$key}, ";
+            }
+        }
+        
         $this->query = rtrim($this->query, ', ') .") VALUES (";
-
-        foreach ($this->data as $key => $field)
-            $this->query .= ":$key, ";
-
+        
+        foreach ($this->data as $key => $field) {
+            if ((string) $field !== '') {
+                $this->query .= ":$key, ";
+            }
+        }
+        
         $this->query = rtrim($this->query, ', ') .")";
-
+        
         return true;
     }
-
+    
     protected function buildUpdateQuery()
     {
         $this->query = "UPDATE `{$this->table}` SET ";
-
+        
         if(array_key_exists('id', $this->data))
             $this->push('where', 'id', '=', ':id', 'AND');
-
+    
         foreach ($this->data as $key => $value) {
             if($key == 'id') continue;
-            $this->query .= "{$key} = :{$key}, ";
+            if ((string) $value !== '') {
+                $this->query .= "{$key} = :{$key}, ";
+            }
         }
-
+        
         $this->query = rtrim($this->query, ', ');
-
+        
         $this->query .= $this->buildWhereQuery();
-
+        
         return true;
     }
-
+    
     protected function buildWhereQuery()
     {
         if (isset($this->where['field'][0])) {
             $where = " WHERE ";
             $iterator = 0;
-
+            
             foreach ($this->where['field'] as $key => $value) {
                 $connector = $this->where['connector'][$iterator + 1] ?? null;
                 $where .= $this->where['field'][$iterator] . ' ' . $this->where['comparison'][$iterator];
-                $where .= ' :' . $this->where['field'][$iterator] . ' ' . $connector  . ' ';
-                $this->data[$this->where['field'][$iterator]] = $this->where['value'][$iterator];
+                if((string) $key === 'id' || (string) $value === 'id') {
+                    $this->where['field'][$iterator] = str_replace('.', '__', $this->where['field'][$iterator]);
+                    $where .= " {$this->where['value'][$iterator]} {$connector} ";
+                }
+                else {
+                    $this->where['field'][$iterator] = str_replace('.', '__', $this->where['field'][$iterator]);
+                    $where .= " :{$this->where['field'][$iterator]} {$connector} ";
+                    $this->data[$this->where['field'][$iterator]] = $this->where['value'][$iterator];
+                }
                 ++$iterator;
             }
-
+            
             return rtrim($where, ' ');
         }
         return '';
+    }
+    
+    protected function setData()
+    {
+        if(is_array($this->data)) {
+            foreach ($this->data as $key => $value) {
+                if(is_null($value) || (string) $value === '') {
+                    $this->data[$key] = null;
+                } else {
+                    $this->data[$key] = $value;
+                }
+            }
+        }
     }
 }

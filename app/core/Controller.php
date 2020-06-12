@@ -48,11 +48,47 @@ abstract class Controller
     
     public function render(array $data = [])
     {
-        return View::render($data);
+        if(empty($data) === false)
+            return View::render($data);
+        
+        return View::render();
     }
     
     public function validate(array $request, array $rules)
     {
         return Validator::make($request, $rules);
+    }
+    
+    public function errors()
+    {
+        return Validator::getErrors();
+    }
+    
+    public function ip()
+    {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        
+        return $ip;
+    }
+    
+    public function action()
+    {
+        return Router::getAction();
+    }
+    
+    public function class()
+    {
+        return Router::getClass();
+    }
+    
+    public function params()
+    {
+        return Router::getParams();
     }
 }
