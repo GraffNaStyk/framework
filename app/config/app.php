@@ -21,16 +21,22 @@ return [
      *  in any sub folder need to add this path there to good working
     */
     'url' => '/graff/',
-
+    
+    /*
+     *  @cache_view disable or enable view caching
+     */
+    'cache_view' => false,
+    
     /*
      *  @mail configuration using in framework to send mails.
      *  If array values are empty mail are not configured.
-    */
+     */
     'mail' => [
-        'smtp' => '',
-        'user' => '',
-        'password' => '',
-        'port' => '',
-        'to' => 'kontakt@graff-design.pl'
-    ]
+        'smtp' => 's109.linuxpl.com',
+        'user' => 'kontakt@graff-design.pl',
+        'password' => '[1E@iL12@6@t$2K',
+        'port' => '465',
+        'from' => 'kontakt@graff-design.pl',
+        'fromName' => ''
+    ],
 ];

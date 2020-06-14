@@ -53,4 +53,9 @@ function dd($item)
     die;
 }
 
+function app($key)
+{
+    return app[$key];
+}
+
 require_once __DIR__.'/app/bootstrap.php';

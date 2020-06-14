@@ -2,9 +2,9 @@
 
 class Schema extends Blueprint
 {
-    public function __construct($model)
+    public function __construct($model, $store=false)
     {
-        parent::__construct($model);
+        parent::__construct($model, $store);
     }
     
     public function tinyint($name, $length = null)
@@ -153,5 +153,10 @@ class Schema extends Blueprint
         $this->trigger[] = ' CREATE TRIGGER `' . $name . '` ' . $when . ' ' . $action . ' ON `' .
             $this->table .'` FOR EACH ROW BEGIN ' . PHP_EOL .
             $body . ';'. PHP_EOL . ' END;';
+    }
+    
+    public function query($query)
+    {
+        $this->queries[] = $query;
     }
 }

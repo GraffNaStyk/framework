@@ -22,7 +22,7 @@ final class Router
 
     private static ?string $alias = null;
 
-    private static string $url;
+    private static string $url = '';
 
     private object $request;
 
@@ -184,26 +184,28 @@ final class Router
     public static function redirect(string $path, int $code = 302, bool $direct = false): void
     {
         session_write_close();
-        session_start();
-
+        
         if($direct)
             header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::base() . $path, true, $code);
         else
             header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::get() . $path, true, $code);
-
+        
         exit;
     }
-
+    
     public static function url(): string
     {
         return $_SERVER['REQUEST_URI'];
     }
-
+    
     private function parseUrl(): void
     {
-        if(app['url'] != '/')
+        if(app['url'] != '/') {
             self::$url = str_replace(app['url'], '', self::url());
-
+        } else {
+            self::$url = self::url();
+        }
+        
         self::$url = preg_replace('/\?.*/', '', self::$url);
         
         foreach (self::$aliases as $key => $provider) {

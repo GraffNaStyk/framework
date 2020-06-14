@@ -23,12 +23,14 @@ final class View
         if(self::$loader instanceof  Twig\Loader\FilesystemLoader === false) {
             self::$loader = new Twig\Loader\FilesystemLoader(view_path());
         }
-        
+    
         if(self::$twig instanceof  Twig\Environment === false) {
-            self::$twig = new Twig\Environment(self::$loader, [
-                'debug' => true,
-                'cache' => storage_path('framework/views'),
-            ]);
+            $config['debug'] = true;
+            if((bool) app['cache_view'] === true) {
+                $config['cache'] = storage_path('framework/views');
+            }
+        
+            self::$twig = new Twig\Environment(self::$loader, $config);
         
             self::$twig->addGlobal('session', $_SESSION);
             self::registerFunctions();
@@ -38,25 +40,16 @@ final class View
 
         self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
         self::setViewFile();
-
-        try {
-            if(self::$directly) {
-                return self::$twig->display('/components/'.self::$view. self::$ext, self::$data);
-            } else {
+    
+        if(self::$directly) {
+            return self::$twig->display('/components/'.self::$view. self::$ext, self::$data);
+        } else {
+            if(file_exists(view_path(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext))) {
                 return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
-            }
-        } catch (Twig\Error\Error $e) {
-            if (app['dev']) {
-                pd($e->getMessage());
             } else {
-                $date = date('Y-m-d H:i:s');
-                file_put_contents(storage_path('private/logs/view_' . date('d-m-Y') . '.log'),
-                    "[Date {$date}] {$e->getMessage()}" . PHP_EOL .
-                    "---------------------------------------------" . PHP_EOL
-                    , FILE_APPEND);
+                exit(require_once view_path('errors/view-not-found.php'));
             }
         }
-        return false;
     }
 
     private static function setViewFile(): void
@@ -89,6 +82,11 @@ final class View
         foreach ($data as $key => $value) {
             self::$data[$key] = $value;
         }
+    }
+    
+    public static function getName()
+    {
+        return self::$view;
     }
     
     public static function getData()

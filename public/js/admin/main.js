@@ -39,13 +39,22 @@ App.on('click', 'a', prevent);
 App.on('click', 'a.has__parent', menu);
 
 App.OnSubmitForms();
+App.RefreshSelects();
 
 App.on('click', '.render', (e) => {
   e.preventDefault();
-  App.render({
-    url: e.target.dataset.url,
-    el: e.target.dataset.el
-  })
+  e.stopPropagation()
+  if(e.target.classList.contains('fa')) {
+    App.render({
+      url: e.target.parentElement.dataset.url,
+      el: e.target.parentElement.dataset.el
+    })
+  } else {
+    App.render({
+      url: e.target.dataset.url,
+      el: e.target.dataset.el
+    })
+  }
 });
 
 App.on('click', '[data-menu="toggle"]', (e) => {

@@ -145,11 +145,11 @@ export const OnSubmitForms = () => {
   });
 }
 
-const RefreshSelects = () => {
+export const RefreshSelects = () => {
   const selectors = document.querySelectorAll('[data-select="slim"]');
   if(selectors) {
     Array.from(selectors).forEach((value => {
-      if(value.dataset.url !== undefined) {
+      if(value.dataset.url !== undefined && value.dataset.ssid === undefined) {
         new SlimSelect({
           select: value,
           allowDeselect: true,
@@ -165,7 +165,7 @@ const RefreshSelects = () => {
             })
           }
         })
-      } else {
+      } else if (value.dataset.ssid === undefined){
         new SlimSelect({
           select: value,
           allowDeselect: true,
