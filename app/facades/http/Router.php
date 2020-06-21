@@ -79,9 +79,15 @@ final class Router
 
             if (empty($params))
                 return $controller->{self::getAction()}();
-            
-            if (isset($params[0]->name) && $params[0]->name == 'request')
+    
+            if (isset($params[0]->name) && $params[0]->name == 'request') {
+                if(empty(self::$params) === false) {
+                    foreach (self::$params as $key => $value) {
+                        $this->request->set('param_'.$key, $value);
+                    }
+                }
                 return $controller->{self::getAction()}($this->request);
+            }
     
             if ($reflection->getNumberOfRequiredParameters() > count(self::$params))
                 self::http404();

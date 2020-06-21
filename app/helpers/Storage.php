@@ -43,7 +43,7 @@ class Storage
             $this->make($destination);
 
             $destination  = self::$disk . $destination;
-            $destination .= $as ? strtolower($as) : strtolower($file['name']);
+            $destination .= $as ? strtolower($as).'.'.pathinfo($file['name'], PATHINFO_EXTENSION) : strtolower($file['name']);
 
             if(move_uploaded_file($file['tmp_name'], $destination))
                 return true;
