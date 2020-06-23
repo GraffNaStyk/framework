@@ -9,6 +9,7 @@ class Db extends Builder
     private static array $env;
     private static object $db;
     private bool $debug = false;
+    private static string $dbName;
 
     public function __construct($model)
     {
@@ -26,6 +27,7 @@ class Db extends Builder
         if (empty(self::$env['host']) === false) {
             try {
                 self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
+                self::$dbName = self::$env['dbname'];
                 self::$env = [];
                 self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$db->query('set names utf8;');
@@ -35,6 +37,11 @@ class Db extends Builder
             }
         }
         return false;
+    }
+    
+    public function getDbName()
+    {
+        return self::$dbName;
     }
 
     public function select($values = '*')
@@ -256,7 +263,11 @@ class Db extends Builder
     
     public function query($query)
     {
-        self::$db->exec($query);
+        $stmt = self::$db->prepare($query);
+        $stmt->execute();
+        if (preg_match('/^(SELECT)/', $query)) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
     }
     
     private function develop()

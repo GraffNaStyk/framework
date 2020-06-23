@@ -125,22 +125,36 @@ export const callback = (ok=false, to = null) => {
 export const OnSubmitForms = () => {
   on('submit', 'form', function (e)  {
     e.preventDefault();
+    e.stopImmediatePropagation();
     post({
       url: e.target.dataset.action,
       form: e.target
     }).then(res => {
-      let modalSelector = document.getElementById('modal');
-      if(res.ok && modalSelector.classList.contains('d-block')) {
-        setTimeout(() => {
-          document.querySelector('button[data-dismiss="modal"]').click()
-        },500);
-      }
-      if(res.ok === false && modalSelector.classList.contains('d-block')) {
-        response(res, '.modal-body')
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        return res.json().then(res => {
+          let modalSelector = document.getElementById('modal');
+          if(res.ok && modalSelector.classList.contains('d-block')) {
+            setTimeout(() => {
+              document.querySelector('button[data-dismiss="modal"]').click()
+            },500);
+          }
+          if(res.ok === false && modalSelector.classList.contains('d-block')) {
+            response(res, '.modal-body')
+          } else {
+            response(res, '.right-panel')
+          }
+          callback(res.ok, res.to ?? res.to);
+        });
       } else {
-        response(res, '.right-panel')
+        return res.text().then(res => {
+          document.querySelector(`[data-component="${e.target.dataset.el}"]`).innerHTML = res;
+          setTimeout(() => {
+            OnSubmitForms();
+            RefreshSelects();
+          },80);
+        });
       }
-      callback(res.ok);
     })
   });
 }

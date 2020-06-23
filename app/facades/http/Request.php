@@ -47,11 +47,11 @@ final class Request
 
         $this->sanitize();
     }
-
+    
     private function sanitize()
     {
         foreach ($this->{$this->method} as $key => $item)
-            $this->{$this->method}[$key] = $item ?? trim($item);
+            $this->{$this->method}[$key] = !is_array($item) ? trim($item) : $item;
     }
 
     public function getMethod()

@@ -75,7 +75,7 @@ class Schema extends Blueprint
     
     public function null()
     {
-        $this->tableFields[$this->currentKey] = str_replace(' NOT NULL', ' DEFAULT NULL', $this->tableFields[$this->currentKey]);
+        $this->tableFields[$this->currentKey] = str_replace(' NOT NULL', ' NULL DEFAULT NULL', $this->tableFields[$this->currentKey]);
         return $this;
     }
     
@@ -158,5 +158,15 @@ class Schema extends Blueprint
     public function query($query)
     {
         $this->queries[] = $query;
+    }
+    
+    public function hasColumn(string $table, string $name)
+    {
+        $result = $this->db->query('SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table.'" AND COLUMN_NAME = "'.$name.'" AND TABLE_SCHEMA = "'.$this->db->getDbName().'"');
+        if (empty($result) === false) {
+            return true;
+        }
+        
+        return false;
     }
 }

@@ -53,7 +53,7 @@ class Blueprint
     {
         $this->lastCalled = $fnName;
         $this->currentFieldName = '`'.$name.'`';
-        $this->tableFields[] = '`'.$name.'`' . ' ' . $this->lastCalled .($length ? '(' . $length . ')' : $this->length[$this->lastCalled]). $this->notNull;
+        $this->tableFields[] = '`'.$name.'`' . ' ' . $this->lastCalled . ' ' .($length ? '(' . $length . ')' : $this->length[$this->lastCalled]). ' ' . $this->notNull;
         $this->currentKey = $this->lastKey();
     }
     
@@ -98,21 +98,32 @@ class Blueprint
     protected function storeMigration()
     {
         $name = 'dump_'.date('Y_m_d__H_i').'.sql';
-        file_put_contents(app_path('app/db/migrate/'.$name), $this->sql.PHP_EOL.PHP_EOL, FILE_APPEND);
+        file_put_contents(app_path('app/db/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);
         
         if(!empty($this->trigger)) {
             foreach ($this->trigger as $trigger)
-                file_put_contents(app_path('app/db/migrate/'.$name), $trigger.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/db/migrate/'.$name), $trigger.';'.PHP_EOL, FILE_APPEND);
         }
         
         if(!empty($this->alter)) {
             foreach ($this->alter as $alter)
-                file_put_contents(app_path('app/db/migrate/'.$name), $alter.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/db/migrate/'.$name), $alter.';'.PHP_EOL, FILE_APPEND);
         }
         
         if(!empty($this->queries)) {
             foreach ($this->queries as $query)
-                file_put_contents(app_path('app/db/migrate/'.$name), $query.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/db/migrate/'.$name), $query.';'.PHP_EOL, FILE_APPEND);
         }
+    }
+    
+    public function hasColumn(string $table, string $name)
+    {
+        $result = $this->db->fetch('SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table.'" AND COLUMN_NAME = "'.$name.'" AND TABLE_SCHEMA = "'.$this->db->getDbName().'"');
+        
+        if (empty($result) === false) {
+            return true;
+        }
+        
+        return false;
     }
 }
