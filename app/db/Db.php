@@ -49,21 +49,30 @@ class Db extends Builder
         $this->values = $values;
         return $this;
     }
-
-    public function where(array $where, string $type = 'where')
+    
+    public function where(array $where)
     {
         if(empty($where) === true)
             $where = [1,'=',1];
-
-        $connector = $type == 'where' ? 'AND' : 'OR';
-        $this->push('where', $where[0], $where[1], $where[2], $connector);
-
+        
+        if(is_array($where[0])) {
+            foreach ($where as $key => $value) {
+                $this->push('where', $value[0], $value[1], $value[2], $value[3] ?? 'AND');
+            }
+        } else {
+            $this->push('where', $where[0], $where[1], $where[2], $where[3] ?? 'AND');
+        }
+        
         return $this;
     }
-
+    
     public function orWhere(array $where)
     {
-        $this->where($where, 'orWhere');
+        if(isset($where[3]) === false) {
+            $where[3] = 'OR';
+        }
+        
+        $this->where($where);
         return $this;
     }
 
@@ -272,8 +281,14 @@ class Db extends Builder
     
     private function develop()
     {
+        $statement = $this->query;
+        foreach ($this->data as $key => $item) {
+            $statement = str_replace(':'.$key, "'".$item."'", $statement);
+        }
+        
         pd([
-            'Query' => $this->query,
+            'Query' => $statement,
+            'RawQuery' => $this->query,
             'Data' => $this->data,
             'Where' => $this->where,
             'Join' => [

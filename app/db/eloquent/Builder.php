@@ -14,7 +14,8 @@ abstract class Builder extends Field
     protected array $leftJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
     protected array $rightJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
     protected $data;
-
+    private array $specialVariables = ['CURDATE()'];
+    
     public function __construct($model)
     {
         $this->table = $model::$table;
@@ -118,18 +119,22 @@ abstract class Builder extends Field
         if (isset($this->where['field'][0])) {
             $where = " WHERE ";
             $iterator = 0;
-            
+    
             foreach ($this->where['field'] as $key => $value) {
                 $connector = $this->where['connector'][$iterator + 1] ?? null;
                 $where .= $this->where['field'][$iterator] . ' ' . $this->where['comparison'][$iterator];
-                if((string) $key === 'id' || (string) $value === 'id') {
-                    $this->where['field'][$iterator] = str_replace('.', '__', $this->where['field'][$iterator]);
+                
+                if($this->isSpecialVariable($this->where['value'][$iterator])) {
                     $where .= " {$this->where['value'][$iterator]} {$connector} ";
-                }
-                else {
-                    $this->where['field'][$iterator] = str_replace('.', '__', $this->where['field'][$iterator]);
-                    $where .= " :{$this->where['field'][$iterator]} {$connector} ";
-                    $this->data[$this->where['field'][$iterator]] = $this->where['value'][$iterator];
+                } else {
+                    if((string) $key === 'id' || (string) $value === 'id') {
+                        $this->where['field'][$iterator] = str_replace('.', '__', $this->where['field'][$iterator]);
+                        $where .= " {$this->where['value'][$iterator]} {$connector} ";
+                    } else {
+                        $this->where['field'][$iterator] = str_replace('.', '__', $this->where['field'][$iterator]);
+                        $where .= " :{$this->where['field'][$iterator]} {$connector} ";
+                        $this->data[$this->where['field'][$iterator]] = $this->where['value'][$iterator];
+                    }
                 }
                 ++$iterator;
             }
@@ -150,5 +155,10 @@ abstract class Builder extends Field
                 }
             }
         }
+    }
+    
+    private function isSpecialVariable($value)
+    {
+        return in_array($value, $this->specialVariables);
     }
 }
