@@ -32,11 +32,11 @@ return [
      *  If array values are empty mail are not configured.
      */
     'mail' => [
-        'smtp' => 's109.linuxpl.com',
-        'user' => 'kontakt@graff-design.pl',
-        'password' => '[1E@iL12@6@t$2K',
-        'port' => '465',
-        'from' => 'kontakt@graff-design.pl',
+        'smtp' => '',
+        'user' => '',
+        'password' => '',
+        'port' => '',
+        'from' => '',
         'fromName' => ''
     ],
 ];
