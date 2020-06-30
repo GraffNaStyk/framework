@@ -24,7 +24,7 @@ class Db extends Builder
 
     private static function connect()
     {
-        if (empty(self::$env['host']) === false) {
+        if (empty(self::$env) === false) {
             try {
                 self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
                 self::$dbName = self::$env['dbname'];
