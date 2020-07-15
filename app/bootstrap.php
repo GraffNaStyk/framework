@@ -21,20 +21,20 @@ else {
 spl_autoload_register(function ($class) {
     $classArr = explode('\\', $class);
     $className = end($classArr);
-
+    
     array_pop($classArr);
     $classArr = array_map('strtolower', $classArr);
-
+    
     $path = '';
     foreach ($classArr as $namespaces)
         $path .= $namespaces.'/';
-
+    
     $className = rtrim($className, '/');
 
-    if(file_exists($path . $className .'.php'))
-        require_once $path . $className .'.php';
-
-    if((bool) app['dev'] === true && !file_exists($path))
+    if(path(file_exists($path . $className .'.php')))
+        require_once path($path . $className .'.php');
+    
+    if((bool) app['dev'] === true && !path(file_exists($path)))
         trigger_error('Cannot loaded file ' . $path . ', file not exist.', E_USER_ERROR);
 });
 

@@ -7,7 +7,7 @@ use PDO;
 class Db extends Builder
 {
     private static array $env;
-    private static object $db;
+    private static ?object $db = null;
     private bool $debug = false;
     private static string $dbName;
 
@@ -26,11 +26,13 @@ class Db extends Builder
     {
         if (empty(self::$env) === false) {
             try {
-                self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
-                self::$dbName = self::$env['dbname'];
-                self::$env = [];
-                self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                self::$db->query('set names utf8;');
+                if(self::$db === null) {
+                    self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
+                    self::$dbName = self::$env['dbname'];
+                    self::$env = [];
+                    self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    self::$db->query('set names utf8;');
+                }
             } catch (\PDOException $e) {
                 trigger_error("Database connection error");
                 Handle::throwException($e, 'DATABASE CONNECTION ERROR');

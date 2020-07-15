@@ -16,7 +16,7 @@ export const post = async (args) => {
       "X-Fetch-Header": "fetchApi",
     },
     body: data
-  }).then(res => res.json())
+  });
 };
 
 export const get = async (fetch_url) => {
@@ -108,7 +108,6 @@ export const on = (event, selector, fn) => {
 };
 
 export const callback = (ok=false, to = null) => {
-  console.log(to);
   if(document.callback !== undefined) {
     eval(document.callback)
   } else if (to !== null) {

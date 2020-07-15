@@ -7,10 +7,12 @@ use App\Helpers\Session;
 
 final class Request
 {
-    protected array $post = [];
-    protected array $get  = [];
-    protected array $file = [];
-    private string $method = 'post';
+    protected array $post    = [];
+    protected array $get     = [];
+    protected array $delete  = [];
+    protected array $put     = [];
+    protected array $file    = [];
+    private string $method   = 'post';
 
     public function __construct()
     {
@@ -35,13 +37,21 @@ final class Request
         }
 
         switch ($_SERVER['REQUEST_METHOD']) {
-            case $_SERVER['REQUEST_METHOD'] == 'POST':
+            case (string) $_SERVER['REQUEST_METHOD'] === 'POST':
                 $this->method = 'post';
                 $this->post = $_POST;
                 break;
-            case $_SERVER['REQUEST_METHOD'] == 'GET':
+            case (string) $_SERVER['REQUEST_METHOD'] === 'GET':
                 $this->method = 'get';
                 $this->get = $_GET;
+                break;
+            case (string) $_SERVER['REQUEST_METHOD'] === 'DELETE':
+                $this->method = 'delete';
+                $this->delete = json_decode(file_get_contents('php://input'));
+                break;
+            case (string) $_SERVER['REQUEST_METHOD'] === 'PUT':
+                $this->method = 'put';
+                $this->put = json_decode(file_get_contents('php://input'));
                 break;
         }
 
@@ -50,8 +60,11 @@ final class Request
     
     private function sanitize()
     {
-        foreach ($this->{$this->method} as $key => $item)
-            $this->{$this->method}[$key] = !is_array($item) ? trim($item) : $item;
+        foreach ($this->{$this->method} as $key => $item) {
+            $tmp = !is_array($item) ? trim($item) : $item;
+            $tmp = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $tmp);
+            $this->{$this->method}[$key] = $tmp;
+        }
     }
 
     public function getMethod()

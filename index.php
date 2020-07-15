@@ -1,4 +1,6 @@
 <?php
+header("Access-Control-Allow-Credentials: true");
+header('Access-Control-Allow-Origin: *');
 
 if(!file_exists(__DIR__.'/app/config/app.php'))
     exit('No app config file');
@@ -39,6 +41,11 @@ function storage_path($path = null)
 function vendor_path($path = null)
 {
     return __DIR__ . '/vendor/' . $path;
+}
+
+function path($path = null)
+{
+    return __DIR__ . '/' . $path;
 }
 
 function pd($item)

@@ -39,4 +39,10 @@ return [
         'from' => '',
         'fromName' => ''
     ],
+    
+    /*
+     *  @model-provider its a defined namespace to all used models for
+     *  dynamic function used model with full path
+     */
+    'model-provider' => 'App\\Model\\'
 ];

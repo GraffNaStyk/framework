@@ -30,6 +30,6 @@ class ClientsController extends DashController
         
         Client::insert($request->all());
 
-        return $this->response(['ok' => true, 'msg' => ['Użytkownik dodane']], 201);
+        return $this->response(['ok' => true, 'msg' => ['Użytkownik dodany']], 201);
     }
 }

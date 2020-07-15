@@ -14,7 +14,7 @@ final class View
     public static ?string $dir = null;
     public static ?string $view = null;
     public static bool $directly = false;
-    protected static $loader;
+    protected static ?object $loader = null;
 
     public static function render(array $data = [])
     {
@@ -61,7 +61,7 @@ final class View
 
     public static function isAjax(): bool
     {
-        if (isset($_SERVER['HTTP_X_FETCH_HEADER']) && strtolower($_SERVER['HTTP_X_FETCH_HEADER']) == 'fetchapi')
+        if (isset($_SERVER['HTTP_X_FETCH_HEADER']) && (string) strtolower($_SERVER['HTTP_X_FETCH_HEADER']) === 'fetchapi')
             return true;
 
         return false;

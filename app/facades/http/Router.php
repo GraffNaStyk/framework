@@ -1,5 +1,6 @@
 <?php namespace App\Facades\Http;
 
+use App\Helpers\Session;
 use ReflectionMethod;
 use ReflectionClass;
 use App\Facades\Url\Url;
@@ -31,6 +32,7 @@ final class Router
         $this->request = new Request();
         $this->parseUrl();
         $this->setParams();
+        Session::set(['previous_url' => self::getClass().'/'.self::getAction()]);
         $this->create(self::$provider . self::getClass() . 'Controller');
     }
 
@@ -106,8 +108,10 @@ final class Router
 
            if(!is_numeric($param))
                $param = urldecode($param);
+    
+           $param = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $param);
 
-            $params[$key] = $param;
+           $params[$key] = $param;
         }
 
         return $params;
@@ -124,7 +128,7 @@ final class Router
                 
                 $exist = true;
                 
-                if ((string) $this->request->getMethod() != (string) $route['method']) {
+                if ((string) $this->request->getMethod() !== (string) $route['method']) {
                     $this->http405();
                 }
                 
@@ -149,8 +153,7 @@ final class Router
             $route = explode('/', self::$url);
             if (self::$baseRouteProvider) {
                 self::setClass(self::$baseRouteProvider);
-            }
-            else {
+            } else {
                 if (!empty($route[0])) {
                     self::setClass($route[0]);
                 }
@@ -259,5 +262,13 @@ final class Router
             'base' => $alias['base'] ?? null
         ];
         $function();
+    }
+    
+    public static function back()
+    {
+        if (Session::has('previous_url')) {
+            self::redirect(Session::get('previous_url'));
+        }
+        self::redirect('');
     }
 }
