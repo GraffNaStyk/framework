@@ -1,4 +1,5 @@
-<?php namespace App\Db\Eloquent;
+<?php
+namespace App\Db\Eloquent;
 
 abstract class Handle
 {

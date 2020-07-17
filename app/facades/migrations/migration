@@ -1,3 +1,4 @@
+
 namespace App\Db\Migrate;
 
 use App\Facades\Migrations\Schema;

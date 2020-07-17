@@ -1,19 +1,32 @@
-<?php namespace App\Db\Eloquent;
+<?php
+namespace App\Db\Eloquent;
 
 abstract class Builder extends Field
 {
     protected array $where = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+    
     protected $values = '*';
+    
     public string $table;
+    
     protected string $query;
+    
     protected array $order = ['by' => '', 'type' => 'ASC'];
+    
     protected string $limit = '';
+    
     protected string $group = '';
+    
     protected bool $distinct = false;
+    
     protected array $innerJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+    
     protected array $leftJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+    
     protected array $rightJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-    protected $data;
+    
+    protected ?array $data= null;
+    
     private array $specialVariables = ['CURDATE()'];
     
     public function __construct($model)

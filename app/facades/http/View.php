@@ -1,4 +1,5 @@
-<?php namespace App\Facades\Http;
+<?php
+namespace App\Facades\Http;
 
 use App\Facades\TwigExt\TwigExt;
 use Twig;
@@ -7,24 +8,31 @@ require_once vendor_path('autoload.php');
 
 final class View
 {
-    protected static $twig;
-    private static array $data     = [];
-    protected static string $ext    = '.twig';
+    protected static ?object $twig = null;
+    
+    private static array $data = [];
+    
+    protected static string $ext = '.twig';
+    
     protected static string $layout = 'page';
+    
     public static ?string $dir = null;
+    
     public static ?string $view = null;
+    
     public static bool $directly = false;
+    
     protected static ?object $loader = null;
 
     public static function render(array $data = [])
     {
         self::set($data);
         
-        if(self::$loader instanceof  Twig\Loader\FilesystemLoader === false) {
+        if (self::$loader instanceof  Twig\Loader\FilesystemLoader === false) {
             self::$loader = new Twig\Loader\FilesystemLoader(view_path());
         }
     
-        if(self::$twig instanceof  Twig\Environment === false) {
+        if (self::$twig instanceof  Twig\Environment === false) {
             $config['debug'] = true;
             if((bool) app['cache_view'] === true) {
                 $config['cache'] = storage_path('framework/views');
@@ -41,22 +49,18 @@ final class View
         self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
         self::setViewFile();
     
-        if(self::$directly) {
+        if (self::$directly) {
             return self::$twig->display('/components/'.self::$view. self::$ext, self::$data);
-        } else {
-            if(file_exists(view_path(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext))) {
-                return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
-            } else {
-                exit(require_once view_path('errors/view-not-found.php'));
-            }
+        } else if (file_exists(view_path(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext))) {
+            return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
         }
+        exit(require_once view_path('errors/view-not-found.php'));
     }
 
     private static function setViewFile(): void
     {
         self::$view = self::$view ?? Router::getAction();
-        $name = preg_split('/(?=[A-Z])/', self::$view);
-        self::$view = strtolower(implode('-', $name));
+        self::$view = strtolower(implode('-', preg_split('/(?=[A-Z])/', self::$view)));
     }
 
     public static function isAjax(): bool

@@ -3,7 +3,10 @@
 use App\Core\Controller;
 use App\Core\Auth;
 use App\Facades\Http\View;
-use App\Model\User;
+use App\Model\ {
+    Correspondence,
+    User
+};
 
 class DashController extends Controller
 {

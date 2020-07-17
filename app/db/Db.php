@@ -7,8 +7,11 @@ use PDO;
 class Db extends Builder
 {
     private static array $env;
+    
     private static ?object $db = null;
+    
     private bool $debug = false;
+    
     private static string $dbName;
 
     public function __construct($model)
@@ -26,7 +29,7 @@ class Db extends Builder
     {
         if (empty(self::$env) === false) {
             try {
-                if(self::$db === null) {
+                if (self::$db === null) {
                     self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
                     self::$dbName = self::$env['dbname'];
                     self::$env = [];
@@ -176,7 +179,14 @@ class Db extends Builder
 
     public function leftJoin(array $join)
     {
-        $this->push('leftJoin', $join[1], $join[2], $join[3], 'LEFT JOIN', $join[0]);
+        if (is_array($join[0]) === true) {
+           foreach ($join as $item) {
+               $this->push('leftJoin', $item[1], $item[2], $item[3], 'LEFT JOIN', $item[0]);
+           }
+        } else {
+            $this->push('leftJoin', $join[1], $join[2], $join[3], 'LEFT JOIN', $join[0]);
+        }
+        
         return $this;
     }
 
@@ -198,9 +208,7 @@ class Db extends Builder
                 Handle::throwException($e, $this->query);
             }
             return false;
-            
-        }
-        else {
+        } else {
             try {
                 $stmt = self::$db->prepare($this->query);
                 $stmt->execute($this->data);

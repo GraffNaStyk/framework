@@ -7,14 +7,18 @@ class Session
 {
     public static function set($items)
     {
-        foreach ($items as $key => $item)
+        foreach ($items as $key => $item) {
             $_SESSION[$key] = $item;
+        }
     }
 
-    public static function get($item)
+    public static function get($item = null)
     {
-        $item = explode('.', $item);
-        return Get::check($_SESSION, $item);
+        if ($item === null) {
+            return $_SESSION;
+        }
+        
+        return Get::check($_SESSION, explode('.', $item));
     }
 
     public static function all($key = null)
@@ -24,13 +28,7 @@ class Session
 
     public static function has($item)
     {
-        $item = explode('.', $item);
-        return Has::check($_SESSION, $item);
-    }
-
-    public static function destroy()
-    {
-        return session_destroy();
+        return Has::check($_SESSION, explode('.', $item));
     }
 
     public static function remove($item)
@@ -45,17 +43,16 @@ class Session
 
     public static function getFlash($item = null)
     {
-        if(!isset($_COOKIE[$item])) return false;
-        if($item == null) return $_COOKIE;
-        else return $_COOKIE[$item];
+        if($item === null) {
+            return $_COOKIE;
+        }
+        
+        return Get::check($_COOKIE, $item);
     }
 
     public static function hasFlash($item)
     {
-        if(isset($_COOKIE[$item]) && !empty($_COOKIE[$item]))
-            return true;
-
-         return false;
+        return Has::check($_COOKIE, explode('.', $item));
     }
 
     public static function removeFlash($item)
@@ -104,10 +101,14 @@ class Session
 
     public static function collectProvidedData()
     {
-
         if(isset($_SESSION['unused'])) {
             return $_SESSION['unused'];
         }
         return null;
+    }
+    
+    public static function destroy()
+    {
+        session_destroy();
     }
 }

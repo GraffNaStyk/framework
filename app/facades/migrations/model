@@ -1,3 +1,4 @@
+
 namespace App\Model;
 
 use App\Db\Model;

@@ -49,18 +49,18 @@
   </aside>
 
   <main class="right-panel">
-      {% for msg in messages %}
-        <div class="alert alert-{{ color }}" role="alert">
-          {% if msg.field %}
-            [{{ msg.field }}] {{ msg.msg }}
-          {% else %}
-            {{ msg }}
-          {% endif %}
-        </div>
-      {% endfor %}
+    {% for msg in messages %}
+      <div class="alert alert-{{ color }}" role="alert">
+        {% if msg.field %}
+          [{{ msg.field }}] {{ msg.msg }}
+        {% else %}
+          {{ msg }}
+        {% endif %}
+      </div>
+    {% endfor %}
 
-      {% block content %}
-      {% endblock %}
+    {% block content %}
+    {% endblock %}
   </main>
 
 </section>

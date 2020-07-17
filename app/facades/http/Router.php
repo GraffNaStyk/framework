@@ -1,4 +1,5 @@
-<?php namespace App\Facades\Http;
+<?php
+namespace App\Facades\Http;
 
 use App\Helpers\Session;
 use ReflectionMethod;
@@ -11,7 +12,7 @@ final class Router
 
     private static array $aliases = [];
 
-    private static string $provider = 'App\\Controllers\\Http\\';
+    private static string $provider = '';
     
     private static ?string $baseRouteProvider = null;
     
@@ -29,6 +30,7 @@ final class Router
 
     public function __construct()
     {
+        self::$provider = app['http-provider'];
         $this->request = new Request();
         $this->parseUrl();
         $this->setParams();
@@ -63,7 +65,7 @@ final class Router
     
     private function create(string $controller)
     {
-        if (class_exists($controller)) {
+        if (class_exists($controller) === true) {
 
             if(!method_exists($controller, self::getAction()))
                 self::http404();
@@ -153,10 +155,8 @@ final class Router
             $route = explode('/', self::$url);
             if (self::$baseRouteProvider) {
                 self::setClass(self::$baseRouteProvider);
-            } else {
-                if (!empty($route[0])) {
-                    self::setClass($route[0]);
-                }
+            } else if (!empty($route[0])) {
+                self::setClass($route[0]);
             }
             
             if (isset($route[1]) && !empty($route[1])) {
@@ -179,13 +179,13 @@ final class Router
         self::match($as, $route, 'get');
     }
     
-    private static function match(string $as, string $route, $method): void
+    private static function match(string $as, string $route, string $method): void
     {
         $route = str_replace('@', '/', $route);
         $routes = explode('/', $route);
         self::$routes[$as ?? $route] = [
             'controller' => ucfirst($routes[0]),
-            'action' => $routes[1] ?? 'index',
+            'action' => strtolower($routes[1]) ?? 'index',
             'method' => $method
         ];
     }
@@ -193,11 +193,11 @@ final class Router
     public static function redirect(string $path, int $code = 302, bool $direct = false): void
     {
         session_write_close();
-        
-        if($direct)
+        if ($direct) {
             header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::base() . $path, true, $code);
-        else
+        } else {
             header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::get() . $path, true, $code);
+        }
         
         exit;
     }

@@ -1,4 +1,5 @@
-<?php namespace App\Facades\Http;
+<?php
+namespace App\Facades\Http;
 
 abstract class Response
 {
@@ -28,9 +29,7 @@ abstract class Response
         if(!empty($headers) && !headers_sent()) {
             foreach ($headers as $key => $header)
                 header("$key: $header");
-        }
-
-        else if (!headers_sent()) {
+        } else if (!headers_sent()) {
             header('Content-Type: application/json');
             header("Cache-Control: no-cache, must-revalidate");
             header("Allow: GET");

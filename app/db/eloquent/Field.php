@@ -1,6 +1,9 @@
-<?php namespace App\Db\Eloquent;
+<?php
+namespace App\Db\Eloquent;
+
 use stdClass;
 use ReflectionClass;
+
 abstract class Field
 {
     public bool $hasId = false;

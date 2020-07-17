@@ -1,4 +1,5 @@
-<?php namespace App\Facades\Csrf;
+<?php
+namespace App\Facades\Csrf;
 
 use App\Facades\Faker\Faker;
 use App\Helpers\Session;

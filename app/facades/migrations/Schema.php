@@ -1,4 +1,5 @@
-<?php namespace App\Facades\Migrations;
+<?php
+namespace App\Facades\Migrations;
 
 class Schema extends Blueprint
 {

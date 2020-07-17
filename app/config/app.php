@@ -44,5 +44,11 @@ return [
      *  @model-provider its a defined namespace to all used models for
      *  dynamic function used model with full path
      */
-    'model-provider' => 'App\\Model\\'
+    'model-provider' => 'App\\Model\\',
+    
+    /*
+     *  @http-provider its a defined namespace to default controllers
+     *  called by user
+     */
+    'http-provider' => 'App\\Controllers\\Http\\'
 ];
