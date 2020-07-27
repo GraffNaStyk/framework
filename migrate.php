@@ -1,16 +1,17 @@
 <?php
 
-if (php_sapi_name() !== 'cli') {
+if ((string) php_sapi_name() !== 'cli') {
     header('location: index.php');
 }
 
-if(isset($argv[1]) && (string) $argv[1] === 'make') {
+if (isset($argv[1]) && (string) $argv[1] === 'make') {
     $migration = file_get_contents(__DIR__.'/app/facades/migrations/migration');
     $migration = str_replace('CLASSNAME', 'Migration_'.date('Y_m_d__H_i'), $migration);
     $migration = str_replace('MODEL', $argv[2], $migration);
     
-    if(!is_dir(__DIR__.'/app/db/migrate/'))
+    if (!is_dir(__DIR__.'/app/db/migrate/')) {
         mkdir(__DIR__.'/app/db/migrate/', 0775, true);
+    }
     
     file_put_contents(__DIR__.'/app/db/migrate/Migration_'.date('Y_m_d__H_i').'.php', "<?php ".$migration);
     
@@ -22,12 +23,22 @@ if(isset($argv[1]) && (string) $argv[1] === 'make') {
     }
 }
 
-if(isset($argv[1]) && ((string) $argv[1] === 'up' || (string) $argv[1] === 'down')) {
+if (isset($argv[1]) && ((string) $argv[1] === 'up' || (string) $argv[1] === 'down')) {
     require_once __DIR__.'/index.php';
+    if (is_dir(__DIR__.'/storage/private/db/') === false) {
+        mkdir(__DIR__.'/storage/private/db/', 0775, true);
+    }
+    
+    if (is_file(__DIR__.'/storage/private/db/migration.json') === false) {
+       file_put_contents(__DIR__.'/storage/private/db/migration.json', '');
+       chmod(__DIR__.'/storage/private/db/migration.json', 0775);
+    }
+    
+    $migrationContent = json_decode(file_get_contents(__DIR__.'/storage/private/db/migration.json'), true);
     foreach (glob(__DIR__.'/app/db/migrate/Migration_*.php') as $migration) {
         $migration = 'App\\Db\\Migrate\\'.basename(str_replace('.php','', $migration));
         $migration = new $migration();
-        if($argv[1] === 'up') {
+        if((string) $argv[1] === 'up') {
             $migration->up(new \App\Facades\Migrations\Schema('App\\Model\\'.$migration->model));
         } else {
             $migration->down(new \App\Facades\Migrations\Schema('App\\Model\\'.$migration->model));
@@ -35,7 +46,7 @@ if(isset($argv[1]) && ((string) $argv[1] === 'up' || (string) $argv[1] === 'down
     }
 }
 
-if(isset($argv[1]) && ((string) $argv[1] === 'dump')) {
+if (isset($argv[1]) && ((string) $argv[1] === 'dump')) {
     require_once __DIR__.'/index.php';
     foreach (glob(__DIR__.'/app/db/migrate/Migration_*.php') as $migration) {
         $migration = 'App\\Db\\Migrate\\'.basename(str_replace('.php','', $migration));
