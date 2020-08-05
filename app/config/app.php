@@ -50,5 +50,18 @@ return [
      *  @http-provider its a defined namespace to default controllers
      *  called by user
      */
-    'http-provider' => 'App\\Controllers\\Http\\'
+    'http-provider' => 'App\\Controllers\\Http\\',
+    
+    /*
+     *  Always loaded libraries css / js from main css / js drectory
+     *
+     */
+    'is_loaded' => [
+        'css' => [
+            'bootstrap', 'slim-select', 'alerts', 'box', 'buttons', 'form', 'modal', 'table'
+        ],
+        'js' => [
+            'bootstrap', 'slim-select'
+        ]
+    ]
 ];

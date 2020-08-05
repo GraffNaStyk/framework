@@ -1,12 +1,10 @@
-<?php namespace App\Controllers\Admin;
+<?php
+namespace App\Controllers\Admin;
 
 use App\Core\Controller;
 use App\Core\Auth;
 use App\Facades\Http\View;
-use App\Model\ {
-    Correspondence,
-    User
-};
+use App\Model\User;
 
 class DashController extends Controller
 {

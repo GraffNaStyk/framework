@@ -65,7 +65,7 @@ class Blueprint
             $this->otherImplementation = rtrim($this->otherImplementation, ', ');
             $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields . ', ' . $this->otherImplementation . $this->endSql;
     
-            if($this->store) {
+            if($this->store === true) {
                 $this->storeMigration();
                 return true;
             }

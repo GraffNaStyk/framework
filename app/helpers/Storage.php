@@ -20,14 +20,27 @@ class Storage
         return new self();
     }
 
-    public function put($file, $content)
+    public function put($file, $content, $replace = false)
     {
-        if(!is_file(self::$disk.'/'.$file)) {
-            if(file_put_contents(self::$disk.'/'.$file, $content))
-                return true;
+        if ($replace === true) {
+            $this->putFile($file, $content);
+            return true;
+        }
+        
+        if (!is_file(self::$disk.'/'.$file)) {
+            $this->putFile($file, $content);
+            return true;
         }
 
         return false;
+    }
+    
+    protected function putFile($file, $content)
+    {
+        if (file_put_contents(self::$disk.'/'.$file, $content)) {
+            chmod(self::$disk.'/'.$file, 0775);
+            return true;
+        }
     }
 
     public function upload($file, $destination = '/', $as = null)
@@ -96,9 +109,9 @@ class Storage
         if(is_file(storage_path($path))) {
             unlink(storage_path($path));
             return true;
-        } elseif(!file_exists(storage_path($path))) {
+        } else if(!file_exists(storage_path($path))) {
             return false;
-        } elseif(is_dir(storage_path($path))) {
+        } else if(is_dir(storage_path($path))) {
             foreach(scandir(storage_path($path)) as $file) {
                 if ($file != '.' && $file != '..') {
                     self::remove($path.'/'.$file);

@@ -1,8 +1,10 @@
-<?php namespace App\Core;
+<?php
+namespace App\Core;
 
 use App\Db\Db;
 use App\Helpers\Session;
 use App\Facades\Csrf\Csrf;
+use App\Helpers\Loader;
 
 abstract class Config
 {
@@ -21,7 +23,8 @@ abstract class Config
     
         if(empty(array_filter(ENV['DB'])) === true)
             exit(require_once view_path('errors/db.php'));
-
+        
+        Loader::set();
         Db::init(ENV['DB']);
     }
 }

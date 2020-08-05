@@ -29,12 +29,10 @@ spl_autoload_register(function ($class) {
         $path .= $namespaces.'/';
     
     $className = rtrim($className, '/');
-
-    if (path(file_exists($path . $className .'.php')))
-        require_once path($path . $className .'.php');
     
-    if ((bool) app['dev'] === true && !path(file_exists($path)))
-        trigger_error('Cannot loaded file ' . $path . ', file not exist.', E_USER_ERROR);
+    if ((bool) file_exists(path($path . $className .'.php')) === true) {
+        require_once path($path . $className .'.php');
+    }
 });
 
 \App\Core\Config::run();
