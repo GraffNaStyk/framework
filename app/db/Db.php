@@ -12,6 +12,8 @@ class Db extends Builder
     
     private bool $debug = false;
     
+    private bool $first = false;
+    
     private static string $dbName;
 
     public function __construct($model)
@@ -105,6 +107,11 @@ class Db extends Builder
         $this->limit = $limit;
         return $this;
     }
+    
+    public function first()
+    {
+        $this->first = true;
+    }
 
     public function get()
     {
@@ -179,14 +186,7 @@ class Db extends Builder
 
     public function leftJoin(array $join)
     {
-        if (is_array($join[0]) === true) {
-           foreach ($join as $item) {
-               $this->push('leftJoin', $item[1], $item[2], $item[3], 'LEFT JOIN', $item[0]);
-           }
-        } else {
-            $this->push('leftJoin', $join[1], $join[2], $join[3], 'LEFT JOIN', $join[0]);
-        }
-        
+        $this->push('leftJoin', $join[1], $join[2], $join[3], 'LEFT JOIN', $join[0]);
         return $this;
     }
 
@@ -212,6 +212,9 @@ class Db extends Builder
             try {
                 $stmt = self::$db->prepare($this->query);
                 $stmt->execute($this->data);
+                if ($this->first === true) {
+                    return $stmt->fetch(PDO::FETCH_ASSOC);
+                }
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch (\PDOException $e) {
                 Handle::throwException($e, $this->query);

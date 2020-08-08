@@ -15,7 +15,7 @@ abstract class Response
     {
         self::setHeaders($headers);
         self::setCode($status);
-        print_r($response);
+        echo $response;
         die();
     }
 
@@ -23,7 +23,7 @@ abstract class Response
     {
         http_response_code($code);
     }
-
+    
     private static function setHeaders($headers = [])
     {
         if(!empty($headers) && !headers_sent()) {

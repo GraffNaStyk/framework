@@ -10,4 +10,9 @@ class Auth
         if(!Session::has('user'))
             Router::redirect('login');
     }
+    
+    public static function isLocalhost()
+    {
+        return in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) ? true : false;
+    }
 }

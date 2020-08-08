@@ -32,7 +32,7 @@ abstract class Builder extends Field
     public function __construct($model)
     {
         $this->table = $model::$table;
-        if(isset($model::$id)) {
+        if(isset($model::$id) === true) {
             $this->hasId = true;
         }
     }
@@ -71,8 +71,9 @@ abstract class Builder extends Field
 
     protected function push($arrayName, $field, $comparison, $value, $connector, $table = null)
     {
-        if($table)
+        if ($table !== null) {
             array_push($this->$arrayName['table'], trim($table));
+        }
 
         array_push($this->$arrayName['field'], trim($field));
         array_push($this->$arrayName['comparison'], trim($comparison));
@@ -114,7 +115,9 @@ abstract class Builder extends Field
             $this->push('where', 'id', '=', ':id', 'AND');
     
         foreach ($this->data as $key => $value) {
-            if($key == 'id') continue;
+            if ((string) $key === 'id') {
+                continue;
+            }
             if ((string) $value !== '') {
                 $this->query .= "{$key} = :{$key}, ";
             }
@@ -140,7 +143,7 @@ abstract class Builder extends Field
                 if($this->isSpecialVariable($this->where['value'][$iterator])) {
                     $where .= " {$this->where['value'][$iterator]} {$connector} ";
                 } else {
-                    if((string) $key === 'id' || (string) $value === 'id') {
+                    if ((string) $key === 'id' || (string) $value === 'id') {
                         $this->where['field'][$iterator] = str_replace('.', '__', $this->where['field'][$iterator]);
                         $where .= " {$this->where['value'][$iterator]} {$connector} ";
                     } else {
@@ -161,7 +164,7 @@ abstract class Builder extends Field
     {
         if(is_array($this->data)) {
             foreach ($this->data as $key => $value) {
-                if(is_null($value) || (string) $value === '') {
+                if(is_null($value) === true || (string) $value === '') {
                     $this->data[$key] = null;
                 } else {
                     $this->data[$key] = $value;

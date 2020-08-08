@@ -32,17 +32,18 @@ span.err img {
   position: absolute;
   opacity: 0;
   transition: all 0.15s ease;
-  padding: 10px;
+  padding: 2px 8px;
   color: black;
   border-radius: 8px;
+  box-shadow: 0 0 3px 0 black;
   width: 200px;
 }
 
 [tooltip]:hover:before {
   opacity: 1;
-  background: #f6f6f6;
-  margin-left: 25px;
-  top: -50px;
+  background: #fbfbfb;
+  margin-left: 20px;
+  top: -25px;
 }
 
 [tooltip]:not([tooltip-persistent]):before {

@@ -19,6 +19,7 @@ if ($migration->do('up') === true) {
     exit();
 }
 
+
 if ($migration->do('down') === true) {
     $migration->down();
     exit();
