@@ -13,7 +13,7 @@ class Blueprint
     protected array $alter = [];
     protected array $queries = [];
     protected bool $store = false;
-    
+
     protected array $length = [
         'tinyint' => '(2)',
         'smallint' => '(4)',
@@ -28,7 +28,7 @@ class Blueprint
         'longText' => '',
         'timestamp' => ' '
     ];
-    
+
     protected string $currentKey = '';
     protected string $currentFieldName = '';
     protected string $lastCalled;
@@ -36,19 +36,21 @@ class Blueprint
     protected string $foreign = '';
     protected object $db;
     protected array $trigger = [];
-    
+
+    use TableSystem;
+
     public function __construct($model, $store=false)
     {
         $this->db = new Db($model);
         $this->table = $this->db->table;
         $this->store = $store;
     }
-    
+
     private function lastKey()
     {
         return array_keys($this->tableFields)[count($this->tableFields)-1];
     }
-    
+
     public function generate($name, $fnName, $length = null)
     {
         $this->lastCalled = $fnName;
@@ -56,7 +58,7 @@ class Blueprint
         $this->tableFields[] = '`'.$name.'`' . ' ' . $this->lastCalled . ' ' .($length ? '(' . $length . ')' : $this->length[$this->lastCalled]). ' ' . $this->notNull;
         $this->currentKey = $this->lastKey();
     }
-    
+
     public function run()
     {
         if(!empty($this->tableFields)) {
@@ -64,66 +66,57 @@ class Blueprint
             $fields = rtrim($fields, ',');
             $this->otherImplementation = rtrim($this->otherImplementation, ', ');
             $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields . ', ' . $this->otherImplementation . $this->endSql;
-    
+
             if($this->store === true) {
                 $this->storeMigration();
                 return true;
             }
-            
+
             $this->db->query($this->sql);
             $this->foreign ?? $this->model->query($this->foreign);
         }
-        
+
         if(!empty($this->trigger)) {
             foreach ($this->trigger as $trigger)
                 $this->db->query($trigger);
         }
-    
+
         if(!empty($this->alter)) {
             foreach ($this->alter as $alter)
                 $this->db->query($alter);
         }
-    
+
         if(!empty($this->queries)) {
             foreach ($this->queries as $query)
                 $this->db->query($query);
         }
     }
-    
+
     public function clear()
     {
-        $this->db->query('DROP TABLE ' . $this->table);
+        if ($this->hasTable($this->table) === true) {
+            $this->db->query('DROP TABLE ' . $this->table);
+        }
     }
-    
+
     protected function storeMigration()
     {
         $name = 'dump_'.date('Y_m_d__H_i').'.sql';
         file_put_contents(app_path('app/db/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);
-        
+
         if(!empty($this->trigger)) {
             foreach ($this->trigger as $trigger)
                 file_put_contents(app_path('app/db/migrate/'.$name), $trigger.';'.PHP_EOL, FILE_APPEND);
         }
-        
+
         if(!empty($this->alter)) {
             foreach ($this->alter as $alter)
                 file_put_contents(app_path('app/db/migrate/'.$name), $alter.';'.PHP_EOL, FILE_APPEND);
         }
-        
+
         if(!empty($this->queries)) {
             foreach ($this->queries as $query)
                 file_put_contents(app_path('app/db/migrate/'.$name), $query.';'.PHP_EOL, FILE_APPEND);
         }
-    }
-    
-    public function hasColumn(string $table, string $name)
-    {
-        $result = $this->db->fetch('SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "'.$table.'" AND COLUMN_NAME = "'.$name.'" AND TABLE_SCHEMA = "'.$this->db->getDbName().'"');
-        
-        if (empty($result) === false) {
-            return true;
-        }
-        
-        return false;
     }
 }
