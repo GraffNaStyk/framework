@@ -1,3 +1,5 @@
+let loader = `<div class="preloader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>`;
+
 export const post = async (args) => {
   let data;
 
@@ -20,7 +22,6 @@ export const post = async (args) => {
 };
 
 export const get = async (fetch_url) => {
-  console.log(document.url + fetch_url);
   return await fetch(document.url + fetch_url, {
     method: 'GET',
     credentials: 'same-origin',
@@ -31,6 +32,8 @@ export const get = async (fetch_url) => {
 };
 
 export const render = (args) => {
+  insertLoader();
+  preloader();
   fetch(document.url + args.url, {
     method: 'GET',
     credentials: 'same-origin',
@@ -114,7 +117,7 @@ export const on = (event, selector, fn) => {
   });
 };
 
-export const callback = (ok=false, to = null) => {
+export const callback = (ok= false, to = null) => {
   if(document.callback !== undefined) {
     eval(document.callback)
   } else if (to !== null && ok) {
@@ -130,10 +133,11 @@ export const callback = (ok=false, to = null) => {
 
 export const OnSubmitForms = () => {
   on('submit', 'form',  (e) => {
+    insertLoader();
+    preloader();
     if(e.target.dataset.action) {
       e.preventDefault();
       e.stopImmediatePropagation();
-
       post({
         url: e.target.dataset.action,
         form: e.target
@@ -174,7 +178,6 @@ export const RefreshSelects = () => {
   if (selectors) {
     Array.from(selectors).forEach((value => {
       if(value.dataset.url !== undefined && value.dataset.ssid === undefined) {
-        console.log(value.dataset.url);
         new SlimSelect({
           select: value,
           allowDeselect: true,
@@ -216,16 +219,14 @@ export const toggleActive = (target, el) => {
   target.target.classList.add('active');
 }
 
-
 export const preloader =  () => {
   let loader = document.querySelector('.preloader');
-  loader.style.opacity = 1;
-  let interval = setInterval(function () {
-    if (loader.style.opacity > 0) {
-      loader.style.opacity -= 0.1;
-    } else {
-      loader.remove();
-      clearInterval(interval);
-    }
-  }, 100);
+  loader.style.opacity = .9;
+  setTimeout(() => {
+    loader.remove();
+  }, 400)
 }
+
+const insertLoader = () => {
+  document.body.insertAdjacentHTML('beforebegin', loader);
+};
