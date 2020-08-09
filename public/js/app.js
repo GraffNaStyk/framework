@@ -20,6 +20,7 @@ export const post = async (args) => {
 };
 
 export const get = async (fetch_url) => {
+  console.log(document.url + fetch_url);
   return await fetch(document.url + fetch_url, {
     method: 'GET',
     credentials: 'same-origin',
@@ -170,9 +171,10 @@ export const OnSubmitForms = () => {
 
 export const RefreshSelects = () => {
   const selectors = document.querySelectorAll('[data-select="slim"]');
-  if(selectors) {
+  if (selectors) {
     Array.from(selectors).forEach((value => {
       if(value.dataset.url !== undefined && value.dataset.ssid === undefined) {
+        console.log(value.dataset.url);
         new SlimSelect({
           select: value,
           allowDeselect: true,
@@ -212,4 +214,18 @@ export const toggle = (el, by) => {
 export const toggleActive = (target, el) => {
   document.querySelectorAll(`${el}`).forEach(el => el.classList.remove('active'));
   target.target.classList.add('active');
+}
+
+
+export const preloader =  () => {
+  let loader = document.querySelector('.preloader');
+  loader.style.opacity = 1;
+  let interval = setInterval(function () {
+    if (loader.style.opacity > 0) {
+      loader.style.opacity -= 0.1;
+    } else {
+      loader.remove();
+      clearInterval(interval);
+    }
+  }, 100);
 }

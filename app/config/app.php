@@ -58,7 +58,7 @@ return [
      */
     'is_loaded' => [
         'css' => [
-            'bootstrap', 'slim-select', 'alerts', 'box', 'buttons', 'form', 'modal', 'table'
+            'bootstrap', 'slim-select', 'alerts', 'box', 'buttons', 'form', 'modal', 'table', 'loader'
         ],
         
         'js' => [

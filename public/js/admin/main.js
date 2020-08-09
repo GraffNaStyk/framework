@@ -38,8 +38,10 @@ App.on('click', 'a', prevent);
 // enable all submenu functions
 App.on('click', 'a.has__parent', menu);
 
-App.OnSubmitForms();
-App.RefreshSelects();
+setTimeout(() => {
+  App.OnSubmitForms();
+  App.RefreshSelects();
+}, 80);
 
 App.on('click', '.render', (e) => {
   e.preventDefault();
@@ -72,3 +74,7 @@ if(window.innerWidth > 991) {
 } else {
   document.querySelector('aside.left-panel').classList.remove('d-flex');
 }
+
+window.onload = (() => {
+  App.preloader();
+});

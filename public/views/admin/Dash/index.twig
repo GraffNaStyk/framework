@@ -6,9 +6,10 @@
   <button class="render" data-url="dash/modal" data-el="modal">Modal</button>
   <button class="render" data-url="dash/modal" data-el="cycuszki">Component</button>
   <div data-component="cycuszki"></div>
-  {{ print(session) }}
-  <select name="name" data-select="slim">
-  </select>
-  {{ component('select', {data: users}) }}
+  {{ select({
+    name: 'user',
+    url: 'dupa/jasiu',
+    label: 'Wybierz pracownika'
+  }) }}
 </div>
 {% endblock %}

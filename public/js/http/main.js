@@ -18,3 +18,7 @@ App.on('click', '.render', (e) => {
 App.on('click', '[data-menu="toggle"]', (e) => {
   App.toggle(e.target.dataset.target, 'd-flex');
 });
+
+window.onload = (() => {
+  App.preloader();
+});

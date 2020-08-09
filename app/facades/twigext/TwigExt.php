@@ -45,17 +45,21 @@ class TwigExt extends AbstractExtension
     public function input()
     {
         return new TwigFunction('input', function($attr = []) {
-            if(isset($attr['label'])) {
-                $html = '<label><span>'.$attr['label'].'</span>';
-            } else {
-                $html = '<label>';
+            $html = '';
+            if($attr['type'] !== 'hidden') {
+                if(isset($attr['label'])) {
+                    $html = '<label><span>'.$attr['label'].'</span>';
+                } else {
+                    $html = '<label>';
+                }
             }
+            
             unset($attr['label']);
             $inputText = '';
             
             foreach ($attr as $key => $value)
                 $inputText .= $key.'="'.$value.'"';
-    
+            
             echo $html . '<input ' . $inputText. '/> </label>';
         });
     }
@@ -70,14 +74,18 @@ class TwigExt extends AbstractExtension
             }
             
             unset($attr['label']);
+            $selected = '';
             $select = '';
             $url = '';
-            $data = '';
-            $multiple = '<option data-placeholder="true"></option>';
+            $data = '<option data-placeholder="true"></option>';
+            $multiple = '';
             
             if(isset($attr['data']) && empty($attr['data']) === false) {
                 foreach ($attr['data'] as $key => $value) {
-                    $selected = $value['value'] == $attr['selected'] ? 'selected' : '';
+                    if (isset($attr['selected'])) {
+                        $selected = $value['value'] == $attr['selected'] ? 'selected' : '';
+                    }
+                    
                     $data .= '<option value="'.$value['value'].'" '.$selected.'>'.$value['text'].'</option>';
                 }
                 unset($attr['data']);
