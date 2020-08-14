@@ -1,6 +1,5 @@
 <?php
-header("Access-Control-Allow-Credentials: true");
-header('Access-Control-Allow-Origin: *');
+header("Content-Type: text/html; charset=utf-8");
 
 if(!file_exists(__DIR__.'/app/config/app.php'))
     exit('No app config file');

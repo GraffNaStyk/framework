@@ -6,17 +6,17 @@ use App\Helpers\Storage;
 class Migration
 {
     protected static array $argv = [];
-    
+
     protected static array $canDo = [
         'make', 'up', 'down', 'dump'
     ];
-    
+
     public static function dispatch(&$argv)
     {
         self::$argv = $argv;
         return new self();
     }
-    
+
     public function do(string $what): bool
     {
         if (in_array($what, self::$canDo) === true
@@ -24,22 +24,22 @@ class Migration
         ) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     public function make()
     {
         $migration = file_get_contents(app_path('app/facades/migrations/migration'));
-        $migration = str_replace('CLASSNAME', 'Migration_'.date('Y_m_d__H_i'), $migration);
+        $migration = str_replace('CLASSNAME', 'Migration_'.self::$argv[2].'_'.date('Y_m_d__H_i'), $migration);
         $migration = str_replace('MODEL', self::$argv[2], $migration);
-    
+
         if (is_dir(app_path('app/db/migrate/')) === false) {
             mkdir(app_path('app/db/migrate/'), 0775, true);
         }
-    
-        file_put_contents(app_path('app/db/migrate/Migration_'.date('Y_m_d__H_i').'.php'), "<?php ".$migration);
-    
+
+        file_put_contents(app_path('app/db/migrate/Migration_'.self::$argv[2].'_'.date('Y_m_d__H_i').'.php'), "<?php ".$migration);
+
         if(file_exists(app_path('app/model/'.ucfirst(self::$argv[2]).'.php')) === false) {
             $model = file_get_contents(app_path('app/facades/migrations/model'));
             $model = str_replace('CLASSNAME', ucfirst(self::$argv[2]), $model);
@@ -47,7 +47,7 @@ class Migration
             file_put_contents(app_path('app/model/'.ucfirst(self::$argv[2]).'.php'), "<?php ".$model);
         }
     }
-    
+
     public function up(bool $isDump = false)
     {
         $this->makeJsonFile();
@@ -63,10 +63,10 @@ class Migration
         }
         Storage::disk('private')->put('db/migrations.json', json_encode($migrationContent), true);
     }
-    
+
     public function down()
     {
-        $this->makeJsonFile();
+        $this->makeJsonFile(true);
         foreach (glob(app_path('app/db/migrate/Migration_*.php')) as $migration) {
             $migration = 'App\\Db\\Migrate\\'.basename(str_replace('.php','', $migration));
             $migration = new $migration();
@@ -74,15 +74,15 @@ class Migration
         }
         Storage::disk('private')->remove('db/migrations.json');
     }
-    
+
     public function dump()
     {
         $this->up(true);
     }
-    
-    private function makeJsonFile()
+
+    private function makeJsonFile($replace=false)
     {
         Storage::disk('private')->make('db');
-        Storage::disk('private')->put('db/migrations.json', '{}');
+        Storage::disk('private')->put('db/migrations.json', '{}', $replace);
     }
 }

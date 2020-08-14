@@ -7,13 +7,13 @@ use PDO;
 class Db extends Builder
 {
     private static array $env;
-    
+
     private static ?object $db = null;
-    
+
     private bool $debug = false;
-    
+
     private bool $first = false;
-    
+
     private static string $dbName;
 
     public function __construct($model)
@@ -25,6 +25,22 @@ class Db extends Builder
     {
         self::$env = $env;
         self::connect();
+    }
+
+    public function setTable($model)
+    {
+        $this->where = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+        $this->values = '*';
+        $this->query;
+        $this->order = ['by' => '', 'type' => 'ASC'];
+        $this->limit = '';
+        $this->group = '';
+        $this->distinct = false;
+        $this->innerJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+        $this->leftJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+        $this->rightJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+        $this->data = [];
+        $this->table = $model::$table;
     }
 
     private static function connect()
@@ -45,7 +61,7 @@ class Db extends Builder
         }
         return false;
     }
-    
+
     public function getDbName()
     {
         return self::$dbName;
@@ -56,12 +72,12 @@ class Db extends Builder
         $this->values = $values;
         return $this;
     }
-    
+
     public function where(array $where)
     {
         if(empty($where) === true)
             $where = [1,'=',1];
-        
+
         if(is_array($where[0])) {
             foreach ($where as $key => $value) {
                 $this->push('where', $value[0], $value[1], $value[2], $value[3] ?? 'AND');
@@ -69,16 +85,16 @@ class Db extends Builder
         } else {
             $this->push('where', $where[0], $where[1], $where[2], $where[3] ?? 'AND');
         }
-        
+
         return $this;
     }
-    
+
     public function orWhere(array $where)
     {
         if(isset($where[3]) === false) {
             $where[3] = 'OR';
         }
-        
+
         $this->where($where);
         return $this;
     }
@@ -107,10 +123,11 @@ class Db extends Builder
         $this->limit = $limit;
         return $this;
     }
-    
+
     public function first()
     {
         $this->first = true;
+        return $this;
     }
 
     public function get()
@@ -155,7 +172,7 @@ class Db extends Builder
         $this->query = "SELECT * FROM  `{$this->table}`";
         return $this->execute();
     }
-    
+
     public function count($data = [])
     {
         $field = $data[0] ?? '*';
@@ -195,7 +212,7 @@ class Db extends Builder
         $this->push('rightJoin', $join[1], $join[2], $join[3], 'RIGHT JOIN', $join[0]);
         return $this;
     }
-    
+
     private function execute()
     {
         $this->setData();
@@ -249,14 +266,14 @@ class Db extends Builder
 
         return false;
     }
-    
+
     public function delete()
     {
         $this->query = "DELETE FROM `{$this->table}` {$this->buildWhereQuery()}";
-        
+
         if($this->execute())
             return true;
-        
+
         return false;
     }
 
@@ -282,7 +299,7 @@ class Db extends Builder
 
         return $this;
     }
-    
+
     public function query($query)
     {
         $stmt = self::$db->prepare($query);
@@ -291,14 +308,14 @@ class Db extends Builder
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
-    
+
     private function develop()
     {
         $statement = $this->query;
         foreach ($this->data as $key => $item) {
             $statement = str_replace(':'.$key, "'".$item."'", $statement);
         }
-        
+
         pd([
             'Query' => $statement,
             'RawQuery' => $this->query,
