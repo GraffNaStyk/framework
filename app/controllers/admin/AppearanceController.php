@@ -28,6 +28,7 @@ class AppearanceController extends DashController
        if(Config::where(['id', '=', 1])->update($request->all()))
            return $this->response(['ok' => true, 'msg' => ['Dane zostały zapisane']]);
 
+       
         return $this->response(['ok' => false, 'msg' => ['Wystąpił błąd']], 400);
     }
 
