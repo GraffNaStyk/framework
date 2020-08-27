@@ -11,7 +11,7 @@ define('app', require_once app_path('app/config/app.php'));
 if ((bool) app['dev'] === true) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+    error_reporting(E_ERROR | E_PARSE);
 } else {
     ini_set('error_log', storage_path('private/logs/php_' . date('d-m-Y') . '.log'));
     ini_set('log_errors', true);

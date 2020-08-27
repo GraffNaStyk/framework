@@ -47,16 +47,20 @@ function path($path = null)
     return __DIR__ . '/' . $path;
 }
 
-function pd($item)
+function pd($item, $die = false)
 {
+    echo '<pre>';
     print_r($item);
-    die;
+    echo '</pre>';
+    if($die) die();
 }
 
-function dd($item)
+function dd($item, $die = false)
 {
+    echo '<pre>';
     var_dump($item);
-    die;
+    echo '</pre>';
+    if($die) die();
 }
 
 function app($key)

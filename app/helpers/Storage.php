@@ -4,6 +4,50 @@ namespace App\Helpers;
 
 class Storage
 {
+    private $mimes = [
+        'txt' => 'text/plain',
+        'css' => 'text/css',
+        'json' => 'application/json',
+        'xml' => 'application/xml',
+        'swf' => 'application/x-shockwave-flash',
+        'flv' => 'video/x-flv',
+        // images
+        'png' => 'image/png',
+        'jpe' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'jpg' => 'image/jpeg',
+        'gif' => 'image/gif',
+        'bmp' => 'image/bmp',
+        'ico' => 'image/vnd.microsoft.icon',
+        'tiff' => 'image/tiff',
+        'tif' => 'image/tiff',
+        'svg' => 'image/svg+xml',
+        'svgz' => 'image/svg+xml',
+        // archives
+        'zip' => 'application/zip',
+        'rar' => 'application/x-rar-compressed',
+        // audio/video
+        'mp3' => 'audio/mpeg',
+        'qt' => 'video/quicktime',
+        'mov' => 'video/quicktime',
+        // adobe
+        'pdf' => 'application/pdf',
+        'ai' => 'application/postscript',
+        'eps' => 'application/postscript',
+        'ps' => 'application/postscript',
+        // ms office
+        'doc' => 'application/msword',
+        'rtf' => 'application/rtf',
+        'xls' => 'application/vnd.ms-excel',
+        'ppt' => 'application/vnd.ms-powerpoint',
+        'docx' => 'application/msword',
+        'xlsx' => 'application/vnd.ms-excel',
+        'pptx' => 'application/vnd.ms-powerpoint',
+        // open office
+        'odt' => 'application/vnd.oasis.opendocument.text',
+        'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+    ];
+    
     private static string $disk;
 
     public static function disk($disk)
@@ -45,12 +89,11 @@ class Storage
 
     public function upload($file, $destination = '/', $as = null)
     {
-
         if(!isset($file['name']) || empty($file['name'])) {
             Session::msg(['Upload failed! file not exist!'], 'danger');
             return false;
         }
-
+        
         if ($file['error'] === UPLOAD_ERR_OK) {
 
             $this->make($destination);
@@ -58,9 +101,13 @@ class Storage
             $destination  = self::$disk . $destination;
             $destination .= $as ? strtolower($as).'.'.pathinfo($file['name'], PATHINFO_EXTENSION) : strtolower($file['name']);
 
-            if(move_uploaded_file($file['tmp_name'], $destination))
-                return true;
-
+            if(move_uploaded_file($file['tmp_name'], $destination)) {
+                if ($this->checkFile($destination) === true) {
+                    return true;
+                }
+                return false;
+            }
+            
             return false;
         } else {
             Session::msg(['Upload failed! '. $file['name'] . ' is corrupted.', 'danger']);
@@ -96,8 +143,9 @@ class Storage
             header('Content-Length: ' . filesize(self::$disk. '/' .$file));
             header("Content-Transfer-Encoding: Binary");
             header("Cache-control: private");
-            while (!feof($fd))
+            while (!feof($fd)) {
                 echo fread($fd, 2048);
+            }
         }
         ob_flush();
         fclose($fd);
@@ -106,12 +154,12 @@ class Storage
 
     public static function remove($path = null)
     {
-        if(is_file(storage_path($path))) {
+        if (is_file(storage_path($path))) {
             unlink(storage_path($path));
             return true;
-        } else if(!file_exists(storage_path($path))) {
+        } else if (!file_exists(storage_path($path))) {
             return false;
-        } else if(is_dir(storage_path($path))) {
+        } else if (is_dir(storage_path($path))) {
             foreach(scandir(storage_path($path)) as $file) {
                 if ($file != '.' && $file != '..') {
                     self::remove($path.'/'.$file);
@@ -120,5 +168,18 @@ class Storage
             rmdir(storage_path($path));
         }
         return false;
+    }
+    
+    private function checkFile($destination)
+    {
+        $pathInfo = pathinfo($destination);
+        if (isset($this->mimes[$pathInfo['extension']]) === true
+            && (string) $this->mimes[$pathInfo['extension']] === (string) mime_content_type ($destination)
+        ) {
+            return true;
+        } else {
+            self::remove(str_replace(storage_path(), '', $destination));
+            return false;
+        }
     }
 }
