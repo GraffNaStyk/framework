@@ -11,5 +11,14 @@
     url: 'dupa/jasiu',
     label: 'Wybierz pracownika'
   }) }}
+  <form data-action="dash/upload">
+    {{ input({
+      type: 'file',
+      name: 'file'
+    }) }}
+    {{ input({
+      type: 'submit'
+    }) }}
+  </form>
 </div>
 {% endblock %}

@@ -37,19 +37,19 @@ final class Request
         }
 
         switch ($_SERVER['REQUEST_METHOD']) {
-            case (string) $_SERVER['REQUEST_METHOD'] === 'POST':
+            case 'POST':
                 $this->method = 'post';
                 $this->post = $_POST;
                 break;
-            case (string) $_SERVER['REQUEST_METHOD'] === 'GET':
+            case 'GET':
                 $this->method = 'get';
                 $this->get = $_GET;
                 break;
-            case (string) $_SERVER['REQUEST_METHOD'] === 'DELETE':
+            case 'DELETE':
                 $this->method = 'delete';
                 $this->delete = json_decode(file_get_contents('php://input'));
                 break;
-            case (string) $_SERVER['REQUEST_METHOD'] === 'PUT':
+            case 'PUT':
                 $this->method = 'put';
                 $this->put = json_decode(file_get_contents('php://input'));
                 break;

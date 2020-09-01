@@ -3,7 +3,9 @@ namespace App\Controllers\Admin;
 
 use App\Core\Controller;
 use App\Core\Auth;
+use App\Facades\Http\Request;
 use App\Facades\Http\View;
+use App\Helpers\Storage;
 use App\Model\User;
 
 class DashController extends Controller
@@ -24,5 +26,10 @@ class DashController extends Controller
     public function users()
     {
         return $this->response(User::select(['name as text', 'id as value'])->get());
+    }
+    
+    public function upload(Request $request)
+    {
+        Storage::disk('public')->upload($request->file('file'));
     }
 }

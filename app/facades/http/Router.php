@@ -72,7 +72,7 @@ final class Router
             
             $reflectionClass = new ReflectionClass($controller);
 
-            if($reflectionClass->getMethod(self::getAction())->class != $controller)
+            if((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller)
                 self::http404();
             
             $reflection = new ReflectionMethod($controller, self::getAction());
@@ -127,7 +127,6 @@ final class Router
             self::$params = [];
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
             if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
-                
                 $exist = true;
                 
                 if ((string) $this->request->getMethod() !== (string) $route['method']) {
@@ -193,12 +192,12 @@ final class Router
     public static function redirect(string $path, int $code = 302, bool $direct = false): void
     {
         session_write_close();
+
         if ($direct) {
             header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::base() . $path, true, $code);
         } else {
             header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::get() . $path, true, $code);
         }
-        
         exit;
     }
     
@@ -209,7 +208,7 @@ final class Router
     
     private function parseUrl(): void
     {
-        if(app['url'] != '/') {
+        if((string) app['url'] !== '/') {
             self::$url = str_replace(app['url'], '', self::url());
         } else {
             self::$url = self::url();
@@ -255,20 +254,12 @@ final class Router
         return new self();
     }
 
-    public static function group(array $alias, callable $function):void
+    public static function group(array $alias, callable $function): void
     {
         self::$aliases[$alias['prefix']] = [
             'ns' => str_replace('.', '\\', $alias['as']) . '\\',
             'base' => $alias['base'] ?? null
         ];
         $function();
-    }
-    
-    public static function back()
-    {
-        if (Session::has('previous_url')) {
-            self::redirect(Session::get('previous_url'));
-        }
-        self::redirect('');
     }
 }

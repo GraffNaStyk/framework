@@ -13,7 +13,7 @@ class Hash
         return ['string' => $password, 'hash' => password_hash($password, PASSWORD_BCRYPT, ['cost' => $cost])];
     }
     
-    public static function crypt(string $password, $cost = 12):string
+    public static function crypt(string $password, int $cost = 12):string
     {
         return password_hash($password, PASSWORD_BCRYPT, ['cost' => $cost]);
     }

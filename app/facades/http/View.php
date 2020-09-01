@@ -49,7 +49,7 @@ final class View
         self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
         self::setViewFile();
     
-        if (self::$directly) {
+        if ((bool) self::$directly === true) {
             return self::$twig->display('/components/'.self::$view. self::$ext, self::$data);
         } else if (file_exists(view_path(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext))) {
             return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
@@ -88,17 +88,12 @@ final class View
         }
     }
     
-    public static function getName()
+    public static function getName(): string
     {
         return self::$view;
     }
     
-    public static function getData()
-    {
-        return self::$data;
-    }
-    
-    public static function setDirectly()
+    public static function setDirectly(): void
     {
         self::$directly = true;
     }

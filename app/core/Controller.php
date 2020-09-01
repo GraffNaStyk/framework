@@ -73,9 +73,4 @@ abstract class Controller
     {
         return Router::getClass();
     }
-    
-    public function params()
-    {
-        return Router::getParams();
-    }
 }
