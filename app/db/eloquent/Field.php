@@ -6,8 +6,6 @@ use ReflectionClass;
 
 abstract class Field
 {
-    public bool $hasId = false;
-
     protected function detectFieldType($field, $comparison)
     {
         if (!is_array($field) && strpos($field, 'CURDATE()') !== FALSE)
@@ -95,7 +93,7 @@ abstract class Field
 
     protected function prepareValues()
     {
-        if ($this->values == '*')
+        if ($this->values === '*')
             return $this->values;
 
         $returnValues = '';

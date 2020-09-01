@@ -3,31 +3,7 @@ namespace App\Db\Eloquent;
 
 abstract class Builder extends Field
 {
-    protected array $where = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-    
-    protected $values = '*';
-    
-    public string $table;
-    
-    protected string $query;
-    
-    protected array $order = ['by' => '', 'type' => 'ASC'];
-    
-    protected string $limit = '';
-    
-    protected string $group = '';
-    
-    protected bool $distinct = false;
-    
-    protected array $innerJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-    
-    protected array $leftJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-    
-    protected array $rightJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-    
-    protected ?array $data= null;
-    
-    private array $specialVariables = ['CURDATE()'];
+    use Variables;
     
     public function __construct($model)
     {
@@ -83,8 +59,9 @@ abstract class Builder extends Field
     
     protected function buildSaveQuery()
     {
-        if(isset($this->data['id']))
+        if(isset($this->data['id'])) {
             unset($this->data['id']);
+        }
         
         $this->query = "INSERT INTO `{$this->table}` (";
         
@@ -152,6 +129,7 @@ abstract class Builder extends Field
                         $this->data[$this->where['field'][$iterator]] = $this->where['value'][$iterator];
                     }
                 }
+                
                 ++$iterator;
             }
             

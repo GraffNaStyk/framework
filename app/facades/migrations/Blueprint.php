@@ -1,4 +1,5 @@
-<?php namespace App\Facades\Migrations;
+<?php
+namespace App\Facades\Migrations;
 
 use App\Db\Db;
 

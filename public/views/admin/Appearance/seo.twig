@@ -5,10 +5,11 @@
     <form method="post" data-action="appearance/store">
       <div class="form__grid">
         {{ input({
+          type: 'text',
           class: 'form-control',
-          name: 'title',
-          label: 'Tytuł',
-          value: title
+          name: 'name',
+          label: 'Nazwa',
+          value: config.name
         }) }}
 
         {{ input({
@@ -22,7 +23,7 @@
           class: 'form-control',
           name: 'keywords',
           label: 'Słowa klucze',
-          value: keywords
+          value: config.keywords
         }) }}
       </div>
       {{ input({

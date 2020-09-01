@@ -2,19 +2,12 @@
 
 use App\Db\Eloquent\Builder;
 use App\Db\Eloquent\Handle;
+use App\Db\Eloquent\Variables;
 use PDO;
 
 class Db extends Builder
 {
-    private static array $env;
-
-    private static ?object $db = null;
-
-    private bool $debug = false;
-
-    private bool $first = false;
-
-    private static string $dbName;
+    use Variables;
 
     public function __construct($model)
     {
@@ -26,23 +19,7 @@ class Db extends Builder
         self::$env = $env;
         self::connect();
     }
-
-    public function setTable($model)
-    {
-        $this->where = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-        $this->values = '*';
-        $this->query;
-        $this->order = ['by' => '', 'type' => 'ASC'];
-        $this->limit = '';
-        $this->group = '';
-        $this->distinct = false;
-        $this->innerJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-        $this->leftJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-        $this->rightJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
-        $this->data = [];
-        $this->table = $model::$table;
-    }
-
+    
     private static function connect()
     {
         if (empty(self::$env) === false) {
@@ -75,10 +52,11 @@ class Db extends Builder
 
     public function where(array $where)
     {
-        if(empty($where) === true)
+        if(empty($where) === true) {
             $where = [1,'=',1];
+        }
 
-        if(is_array($where[0])) {
+        if(is_array($where[0]) === true) {
             foreach ($where as $key => $value) {
                 $this->push('where', $value[0], $value[1], $value[2], $value[3] ?? 'AND');
             }

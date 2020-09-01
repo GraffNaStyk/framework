@@ -5,7 +5,7 @@ if ((string) php_sapi_name() !== 'cli') {
     header('location: index.php');
 }
 
-require_once 'index.php';
+require_once __DIR__.'/index.php';
 
 $migration = Migration::dispatch($argv);
 
@@ -19,13 +19,12 @@ if ($migration->do('up') === true) {
     exit();
 }
 
-
 if ($migration->do('down') === true) {
     $migration->down();
     exit();
 }
 
-if ($migration->do('dump')) {
+if ($migration->do('dump') === true) {
     $migration->dump();
     exit();
 }
