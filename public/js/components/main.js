@@ -22,7 +22,7 @@ App.on('click', 'nav.top__nav i.fa-bars', () => {
   }
 });
 
-//global function for prevent a href if href is == #
+//global function for prevent a href if href is === #
 const prevent = (e) => {
   //this is for i element when parent element is A
   if (e.target.parentElement.nodeName === 'A' && e.target.parentElement.href.split('/').pop() === '#') {
@@ -63,12 +63,12 @@ App.on('click', '[data-menu="toggle"]', (e) => {
   App.toggle(e.target.dataset.target, 'd-flex');
 })
 
-if(window.innerWidth > 991) {
+if (window.innerWidth > 991) {
   localStorage.setItem('url', window.location.pathname)
   let el = document.querySelector(`a[href='${localStorage.getItem('url')}']`);
   el.classList.add('active');
   el.parentElement.classList.add('d-flex');
-  if(el.parentElement.previousElementSibling) {
+  if (el.parentElement.previousElementSibling) {
     el.parentElement.previousElementSibling.classList.add('open');
   }
 } else {

@@ -7,26 +7,22 @@ use App\Helpers\Session;
 
 final class Request
 {
-    protected array $post    = [];
-    protected array $get     = [];
-    protected array $delete  = [];
-    protected array $put     = [];
     protected array $file    = [];
     private string $method   = 'post';
-
+    protected array $data    = [];
+    
     public function __construct()
     {
         $this->setMethod();
 
-        if(!empty($this->post) && app['csrf'] && ! View::isAjax()) {
-            if(! isset($this->post['csrf']) || ! Csrf::isValid($this->post['csrf'])) {
-                Session::msg('Wrong token', 'danger');
+        if(!empty($this->data) && app['csrf'] && ! View::isAjax()) {
+            if(! isset($this->data['csrf']) || ! Csrf::isValid($this->data['csrf'])) {
                 Router::http404();
             }
         }
 
         Session::remove('csrf');
-        unset($this->post['csrf']);
+        unset($this->data['csrf']);
 
     }
 
@@ -39,32 +35,72 @@ final class Request
         switch ($_SERVER['REQUEST_METHOD']) {
             case 'POST':
                 $this->method = 'post';
-                $this->post = $_POST;
+                $this->data = $_POST;
                 break;
             case 'GET':
                 $this->method = 'get';
-                $this->get = $_GET;
+                $this->data = $_GET;
                 break;
             case 'DELETE':
                 $this->method = 'delete';
-                $this->delete = json_decode(file_get_contents('php://input'));
+                $this->data = json_decode(file_get_contents('php://input'));
                 break;
             case 'PUT':
                 $this->method = 'put';
-                $this->put = json_decode(file_get_contents('php://input'));
+                $this->data = json_decode(file_get_contents('php://input'));
                 break;
         }
-
-        $this->sanitize();
     }
     
-    private function sanitize()
+    public function setData(array $data)
     {
-        foreach ($this->{$this->method} as $key => $item) {
-            $tmp = !is_array($item) ? trim($item) : $item;
-            $tmp = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $tmp);
-            $this->{$this->method}[$key] = $tmp;
+        $this->data = $data;
+    }
+    
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function sanitize()
+    {
+        foreach ($this->data as $key => $item) {
+            if (is_array($item) === true) {
+                $this->data[$key] = $this->reSanitize($item);
+            } else {
+                if ($item !== null && $item !== '') {
+                    $item = trim($item);
+                }
+                
+                if (!is_numeric($item)) {
+                    $item = urldecode($item);
+                }
+                
+                $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
+                $this->data[$key] = trim($item);
+            }
         }
+    }
+    
+    public function reSanitize(array $data)
+    {
+        foreach ($data as $key => $item) {
+            if (is_array($item) === true) {
+                $this->reSanitize($item);
+            } else {
+                if ($item !== null && $item !== '') {
+                    $item = trim($item);
+                }
+            
+                if (!is_numeric($item)) {
+                    $item = urldecode($item);
+                }
+            
+                $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
+                $data[$key] = trim($item);
+            }
+        }
+        return $data;
     }
 
     public function getMethod()
@@ -75,14 +111,14 @@ final class Request
     public function get($item = null)
     {
         if($item == null)
-            return $this->{$this->method};
+            return $this->data;
 
-        return Get::check($this->{$this->method}, explode('.', $item));
+        return Get::check($this->data, explode('.', $item));
     }
 
     public function all()
     {
-        return $this->{$this->method};
+        return $this->data;
     }
 
     public function file($file = null)
@@ -95,20 +131,20 @@ final class Request
 
     public function has($item)
     {
-        return Has::check($this->{$this->method}, explode('.', $item));
+        return Has::check($this->data, explode('.', $item));
     }
 
     public function set($item, $data)
     {
         $item = explode('.', $item);
         if (isset($item[3])) {
-            $this->{$this->method}[$item[0]][$item[1]][$item[2]][$item[3]] = $data;
+            $this->data[$item[0]][$item[1]][$item[2]][$item[3]] = $data;
         } else if (isset($item[2])) {
-            $this->{$this->method}[$item[0]][$item[1]][$item[2]] = $data;
+            $this->data[$item[0]][$item[1]][$item[2]] = $data;
         } else if (isset($item[1])) {
-            $this->{$this->method}[$item[0]][$item[1]] = $data;
+            $this->data[$item[0]][$item[1]] = $data;
         } else {
-            $this->{$this->method}[$item[0]] = $data;
+            $this->data[$item[0]] = $data;
         }
     }
 
@@ -116,9 +152,9 @@ final class Request
     {
         $item = explode('.', $item);
         if (isset($item[1])) {
-            unset($this->{$this->method}[$item[0]][$item[1]]);
+            unset($this->data[$item[0]][$item[1]]);
         } else {
-            unset($this->{$this->method}[$item[0]]);
+            unset($this->data[$item[0]]);
         }
     }
 
@@ -129,6 +165,6 @@ final class Request
 
     public function __destruct()
     {
-        Session::checkIfDataHasBeenProvided($this->{$this->method});
+        Session::checkIfDataHasBeenProvided($this->data);
     }
 }

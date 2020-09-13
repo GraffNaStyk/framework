@@ -63,10 +63,15 @@ class Loader
             : js_path($name.'.js');
         
         if(is_file($path)) {
-            if($ext == 'css')
+            if($ext === 'css') {
                 return trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', $path).'">'.PHP_EOL);
+            }
             
-            return trim('<script src="'.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);
+            if ((string) $name === 'app') {
+                return trim('<script type="module" src="'.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);
+            } else {
+                return trim('<script src="'.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);
+            }
         }
         return '';
     }
@@ -86,10 +91,12 @@ class Loader
             ? css_path($folder.'/'.Router::getClass().'/'.Router::getAction().'.css')
             : js_path($folder.'/'.Router::getClass().'/'.Router::getAction().'.js');
         
-        if(is_file($path)) {
-            if($ext == 'css')
+        if(is_file($path) === true ) {
+            if($ext === 'css') {
                 return trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', $path).'">'.PHP_EOL);
-            else return trim('<script type="module" src="'.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);
+            } else {
+                return trim('<script type="module" src="'.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);
+            }
         }
         return '';
     }

@@ -81,14 +81,13 @@ final class Router
             
             $params = $reflection->getParameters();
 
-            if (empty($params))
+            if (empty($params) === true)
                 return $controller->{self::getAction()}();
     
-            if (isset($params[0]->name) && $params[0]->name == 'request') {
+            if (isset($params[0]->name) && (string) $params[0]->name === 'request') {
                 if(empty(self::$params) === false) {
-                    foreach (self::$params as $key => $value) {
-                        $this->request->set('param_'.$key, $value);
-                    }
+                    $this->request->setData((array) self::$params);
+                    $this->request->sanitize();
                 }
                 return $controller->{self::getAction()}($this->request);
             }
@@ -96,33 +95,19 @@ final class Router
             if ($reflection->getNumberOfRequiredParameters() > count(self::$params))
                 self::http404();
             
-            return call_user_func_array([$controller, self::getAction()], $this->sanitize(self::$params));
+            $this->request->setData((array) self::$params);
+            $this->request->sanitize();
+            
+            return call_user_func_array([$controller, self::getAction()], $this->request->getData());
         }
         
         self::http404();
-    }
-
-    private function sanitize(array $params):array
-    {
-        foreach ($params as $key => $param) {
-            if(!is_null($param))
-                $param = trim($param);
-
-           if(!is_numeric($param))
-               $param = urldecode($param);
-    
-           $param = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $param);
-
-           $params[$key] = $param;
-        }
-
-        return $params;
     }
     
     public function setParams()
     {
         $exist = false;
-        
+
         foreach (self::$routes as $key => $route) {
             self::$params = [];
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
@@ -226,6 +211,7 @@ final class Router
                 break;
             }
         }
+        
         self::$url = trim(self::$url, '/');
         self::$url = filter_var(self::$url, FILTER_SANITIZE_URL);
     }

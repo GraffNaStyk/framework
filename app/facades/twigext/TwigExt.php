@@ -1,10 +1,10 @@
 <?php namespace App\Facades\TwigExt;
 
 use App\Facades\Http\View;
-use App\Facades\Url\Url,
-    Twig\Extension\AbstractExtension,
-    Twig\TwigFunction,
-    App\Helpers\Session;
+use App\Facades\Url\Url;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
+use App\Helpers\Session;
 
 class TwigExt extends AbstractExtension
 {
@@ -38,7 +38,9 @@ class TwigExt extends AbstractExtension
     public function print()
     {
         return new TwigFunction('print', function($item) {
+            echo '<pre>';
             print_r($item);
+            echo '</pre>';
         });
     }
     
@@ -67,7 +69,7 @@ class TwigExt extends AbstractExtension
     public function select()
     {
         return new TwigFunction('select', function($attr = []) {
-            if(isset($attr['label'])) {
+            if (isset($attr['label'])) {
                 $html = '<label><span>'.$attr['label'].'</span>';
             } else {
                 $html = '<label>';
@@ -80,7 +82,7 @@ class TwigExt extends AbstractExtension
             $data = '<option data-placeholder="true"></option>';
             $multiple = '';
             
-            if(isset($attr['data']) && empty($attr['data']) === false) {
+            if (isset($attr['data']) && empty($attr['data']) === false) {
                 foreach ($attr['data'] as $key => $value) {
                     if (isset($attr['selected'])) {
                         $selected = $value['value'] == $attr['selected'] ? 'selected' : '';
@@ -91,18 +93,18 @@ class TwigExt extends AbstractExtension
                 unset($attr['data']);
             }
             
-            if(isset($attr['multiple'])) {
+            if (isset($attr['multiple'])) {
                 $multiple = 'multiple';
             }
             
-            if(isset($attr['url'])) {
+            if (isset($attr['url'])) {
                 $url = 'data-url="'.$attr['url'].'"';
                 unset($attr['url']);
             }
             
             $select .= '<select name="'.$attr['name'].'" data-select="slim" '.$url.' '.$multiple.'>';
             
-            if($data != '') {
+            if($data !== '') {
                 $select .= $data . '</select>';
             } else {
                 $select .= '</select>';

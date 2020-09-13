@@ -7,8 +7,9 @@ class Auth
 {
     public static function guard(): void
     {
-        if(!Session::has('user'))
+        if (!Session::has('user')) {
             Router::redirect('login');
+        }
     }
     
     public static function isLocalhost(): bool

@@ -12,13 +12,25 @@
     label: 'Wybierz pracownika'
   }) }}
   <form data-action="dash/upload">
-    {{ input({
-      type: 'file',
-      name: 'file'
-    }) }}
-    {{ input({
-      type: 'submit'
-    }) }}
+   <div class="form__grid">
+     {{ input({
+       type: 'file',
+       name: 'file'
+     }) }}
+     {{ input({
+       class: 'form-control',
+       type: 'text',
+       name: 'user[name]'
+     }) }}
+     {{ input({
+       class: 'form-control',
+       type: 'text',
+       name: 'user[surname]'
+     }) }}
+     {{ input({
+       type: 'submit'
+     }) }}
+   </div>
   </form>
 </div>
 {% endblock %}

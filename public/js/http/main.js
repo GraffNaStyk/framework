@@ -1,4 +1,4 @@
-import * as App from "../app.js";
+import * as App from '../app.js';
 
 document.getElementById('main-page-wrapper').style.minHeight
   = window.innerHeight
