@@ -31,7 +31,7 @@ abstract class Controller
         View::set(['css' => Loader::css(), 'js' => Loader::js()]);
     }
 
-    public function redirect($path, $code=302, $direct=false)
+    public function redirect(?string $path, int $code=302, bool $direct=false)
     {
         return Router::redirect($path, $code, $direct);
     }

@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Helpers;
 
 class Storage
 {
-    private $mimes = [
+    private array $mimes = [
         'txt' => 'text/plain',
         'css' => 'text/css',
         'json' => 'application/json',

@@ -1,4 +1,5 @@
-<?php namespace App\Facades\Url;
+<?php
+namespace App\Facades\Url;
 
 use App\Facades\Http\Router;
 
@@ -8,7 +9,7 @@ class Url
     public static function get()
     {
         $url = Router::getAlias() ? Router::getAlias() . '/' : Router::getAlias();
-        return app['url'] . $url;
+        return app['url'].$url;
     }
 
     public static function base()
