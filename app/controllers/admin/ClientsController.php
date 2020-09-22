@@ -16,6 +16,11 @@ class ClientsController extends DashController
         return $this->render();
     }
     
+    public function add(?int $id = null)
+    {
+        echo 'eluwina';
+    }
+    
     public function store(Request $request)
     {
         if(!$this->validate($request->all(), [

@@ -78,25 +78,26 @@ final class Router
             $reflection = new ReflectionMethod($controller, self::getAction());
             
             $controller = new $controller();
-            
+
             $params = $reflection->getParameters();
 
             if (empty($params) === true)
                 return $controller->{self::getAction()}();
+            
+            if (empty(self::$params) == false) {
+                foreach (self::$params as $key => $param) {
+                    $this->request->set($key, $param);
+                }
+            }
+
+            $this->request->sanitize();
     
             if (isset($params[0]->name) && (string) $params[0]->name === 'request') {
-                if(empty(self::$params) === false) {
-                    $this->request->setData((array) self::$params);
-                    $this->request->sanitize();
-                }
                 return $controller->{self::getAction()}($this->request);
             }
     
             if ($reflection->getNumberOfRequiredParameters() > count(self::$params))
                 self::http404();
-            
-            $this->request->setData((array) self::$params);
-            $this->request->sanitize();
             
             return call_user_func_array([$controller, self::getAction()], $this->request->getData());
         }

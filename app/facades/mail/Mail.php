@@ -2,6 +2,7 @@
 namespace App\Facades\Mail;
 
 use App\Core\Auth;
+use App\Facades\Url\Url;
 
 require_once vendor_path('autoload.php');
 
@@ -55,7 +56,7 @@ class Mail
     
     public function send()
     {
-        if(Auth::isLocalhost() === false)
+        if(Url::isLocalhost() === false)
             return self::$mailer->send($this->message);
     }
 }

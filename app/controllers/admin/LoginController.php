@@ -30,15 +30,17 @@ class LoginController extends Controller
             'password' => 'string|required|min:3',
         ])) $this->redirect('login');
         
-        if ($user = User::select(['name', 'id', 'password'])->where(['name', '=', $request->get('name')])->findOrFail()) {
+        if ($user = User::select(['name', 'id', 'password'])
+            ->where(['name', '=', $request->get('name')])
+            ->findOrFail()
+        ) {
             if (password_verify($request->get('password'), $user['password'])) {
                 unset($user['password']);
                 Session::set(['user' => $user]);
                 $this->redirect('dash');
             }
             Session::msg('Błędne hasło', 'danger');
-        }
-        else {
+        } else {
             Session::msg('Użytkownik nie istnieje', 'danger');
         }
 

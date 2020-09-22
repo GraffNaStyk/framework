@@ -16,11 +16,11 @@ class Url
         return app['url'];
     }
 
-    public static function segment($string, $offset, $delimiter = '/')
+    public static function segment($string, $offset, $delimiter = '/'): ?string
     {
         $string = explode($delimiter, $string);
 
-        if($offset == 'end' || $offset == 'last')
+        if($offset === 'end' || $offset === 'last')
             return end($string);
 
         if(isset($string[$offset]))
@@ -29,15 +29,16 @@ class Url
         return false;
     }
 
-    public static function link(string $link):string
+    public static function link(string $link): string
     {
         $link = strtolower(trim(preg_replace('~[^\\pL\d]+~u', '-', $link)));
-
         $link = iconv('utf-8', 'us-ascii//TRANSLIT', $link);
-
         $link = preg_replace('~[^-\w]+~', '', $link);
-
         return substr($link, 0, -1);
     }
-
+    
+    public static function isLocalhost(): bool
+    {
+        return in_array(getenv('REMOTE_ADDR'), ['127.0.0.1', '::1']) ? true : false;
+    }
 }

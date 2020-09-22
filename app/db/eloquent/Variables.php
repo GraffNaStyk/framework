@@ -43,7 +43,7 @@ trait Variables
     
     protected function reconstruct($model)
     {
-        $this->where = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+        $this->where  = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
         $this->values = '*';
         $this->query;
         $this->order = ['by' => '', 'type' => 'ASC'];

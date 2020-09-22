@@ -18,19 +18,24 @@
        name: 'file'
      }) }}
      {{ input({
+       label: 'text',
+       placeholder: 'text',
        class: 'form-control',
        type: 'text',
        name: 'user[name]'
      }) }}
      {{ input({
+       label: 'tttt',
        class: 'form-control',
        type: 'text',
        name: 'user[surname]'
      }) }}
-     {{ input({
-       type: 'submit'
-     }) }}
    </div>
+    {{ input({
+      type: 'submit',
+      value: 'Zapisz',
+      class: 'mt-3'
+    }) }}
   </form>
 </div>
 {% endblock %}
