@@ -1,7 +1,6 @@
 <?php
 namespace App\Facades\Mail;
 
-use App\Core\Auth;
 use App\Facades\Url\Url;
 
 require_once vendor_path('autoload.php');

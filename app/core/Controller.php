@@ -36,12 +36,12 @@ abstract class Controller
         return Router::redirect($path, $code, $direct);
     }
 
-    public function response($response, $status=200, $headers=[])
+    public function response(array $response, int $status=200, array $headers=[])
     {
         return Response::json($response, $status, $headers);
     }
     
-    public function set(array $data):void
+    public function set(array $data): void
     {
         View::set($data);
     }
