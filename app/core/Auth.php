@@ -12,4 +12,9 @@ class Auth
             Router::redirect('login');
         }
     }
+    
+    public static function middleware(string $class, int $rights)
+    {
+        pd([$class, $rights], true);
+    }
 }

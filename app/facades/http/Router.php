@@ -1,6 +1,7 @@
 <?php
 namespace App\Facades\Http;
 
+use App\Core\Auth;
 use App\Helpers\Session;
 use ReflectionMethod;
 use ReflectionClass;
@@ -112,7 +113,13 @@ final class Router
         foreach (self::$routes as $key => $route) {
             self::$params = [];
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
+            
             if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
+
+                if (! Auth::middleware($route['controller'], $route['rights'])) {
+                    self::redirect(Url::base());
+                }
+                
                 $exist = true;
                 
                 if ((string) $this->request->getMethod() !== (string) $route['method']) {
@@ -136,42 +143,52 @@ final class Router
     private static function setBasic(bool $exist): void
     {
         //this case is for automaticly routes like controller/action when
-        if ((bool) $exist === false) {
+        if ((bool)$exist === false) {
             $route = explode('/', self::$url);
             if (self::$baseRouteProvider) {
                 self::setClass(self::$baseRouteProvider);
-            } else if (!empty($route[0])) {
-                self::setClass($route[0]);
             }
-            
+            else {
+                if (!empty($route[0])) {
+                    self::setClass($route[0]);
+                }
+            }
+        
             if (isset($route[1]) && !empty($route[1])) {
                 self::setAction($route[1]);
             }
             unset($route[0], $route[1]);
-            
+        
             foreach ($route as $key2 => $value)
                 self::$params[] = $value;
+        
+            self::match('',
+                self::getClass() . '@' . self::getAction(),
+                getenv('REQUEST_METHOD'),
+                4
+            );
         }
     }
 
-    public static function post(string $as, string $route): void
+    public static function post(string $as, string $route, int $rights = 4): void
     {
-        self::match($as, $route, 'post');
+        self::match($as, $route, 'post', $rights);
     }
 
-    public static function get(string $as, string $route): void
+    public static function get(string $as, string $route, int $rights = 4): void
     {
-        self::match($as, $route, 'get');
+        self::match($as, $route, 'get', $rights);
     }
     
-    private static function match(string $as, string $route, string $method): void
+    private static function match(string $as, string $route, string $method, int $rights): void
     {
         $route = str_replace('@', '/', $route);
         $routes = explode('/', $route);
         self::$routes[$as ?? $route] = [
             'controller' => ucfirst($routes[0]),
             'action' => strtolower($routes[1]) ?? 'index',
-            'method' => $method
+            'method' => $method,
+            'rights' => $rights
         ];
     }
     
