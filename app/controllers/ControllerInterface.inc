@@ -8,7 +8,7 @@ interface ControllerInterface
     
     public function show(int $id);
     
-    public function delete(int $id);
-    
     public function update(\App\Facades\Http\Request $request);
+    
+    public function delete(int $id);
 }

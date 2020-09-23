@@ -16,14 +16,19 @@ class ClientsController extends DashController
         return $this->render();
     }
     
-    public function add(?int $id = null)
-    {
-        echo 'eluwina';
-    }
-    
     public function store(Request $request)
     {
-        if(!$this->validate($request->all(), [
+        if(!$this->validate($request->all(), $this->validateRules()))
+            return $this->response(['ok' => false, 'msg' => Validator::getErrors()], 400);
+        
+        Client::insert($request->all());
+
+        return $this->response(['ok' => true, 'msg' => ['Użytkownik dodany']], 201);
+    }
+    
+    private function validateRules()
+    {
+        return [
             'name' => 'required|min:4',
             'ftp_server' => 'required|min:4',
             'ftp_user' => 'required|min:4',
@@ -31,10 +36,6 @@ class ClientsController extends DashController
             'db_user' => 'required|min:4',
             'db_password' => 'required|min:4',
             'db_name' => 'required|min:4',
-        ])) return $this->response(['ok' => false, 'msg' => Validator::getErrors()], 400);
-        
-        Client::insert($request->all());
-
-        return $this->response(['ok' => true, 'msg' => ['Użytkownik dodany']], 201);
+        ];
     }
 }

@@ -244,7 +244,7 @@ final class Router
     public static function group(array $alias, callable $function): void
     {
         self::$aliases[$alias['prefix']] = [
-            'ns' => str_replace('.', '\\', $alias['as']) . '\\',
+            'ns' => str_replace('\\', '\\', $alias['as']) . '\\',
             'base' => $alias['base'] ?? null
         ];
         $function();

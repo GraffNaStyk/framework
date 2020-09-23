@@ -133,8 +133,6 @@ export const callback = (ok= false, to = null) => {
 
 export const OnSubmitForms = () => {
   on('submit', 'form',  (e) => {
-    insertLoader();
-    preloader();
     if(e.target.dataset.action) {
       e.preventDefault();
       e.stopImmediatePropagation();

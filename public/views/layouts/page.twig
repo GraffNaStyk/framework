@@ -27,7 +27,6 @@
   </script>
 </head>
 <body>
-{% include 'layouts/inc/preloader.twig' %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container">
   <a class="navbar-brand" href="{{ url() }}">Graff PHP</a>
@@ -39,6 +38,7 @@
 </div>
 </nav>
 {% include('layouts/inc/alert.twig') %}
+
 <main id="main-page-wrapper" class="container justify-content-center align-items-center d-flex flex-column">
   {% block content %}
   {% endblock %}

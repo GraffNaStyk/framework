@@ -66,10 +66,12 @@ App.on('click', '[data-menu="toggle"]', (e) => {
 if (window.innerWidth > 991) {
   localStorage.setItem('url', window.location.pathname)
   let el = document.querySelector(`a[href='${localStorage.getItem('url')}']`);
-  el.classList.add('active');
-  el.parentElement.classList.add('d-flex');
-  if (el.parentElement.previousElementSibling) {
-    el.parentElement.previousElementSibling.classList.add('open');
+  if (el) {
+    el.classList.add('active');
+    el.parentElement.classList.add('d-flex');
+    if (el.parentElement.previousElementSibling) {
+      el.parentElement.previousElementSibling.classList.add('open');
+    }
   }
 } else {
   document.querySelector('aside.left-panel').classList.remove('d-flex');
