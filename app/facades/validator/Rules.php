@@ -45,7 +45,7 @@ class Rules
 
     public static function moreThanZero($item, $rule, $field)
     {
-        if ($item < 0 || $item == 0)
+        if ((int) $item < 0 || (int) $item === 0)
             return ['msg' => 'Pole musi być większe niż zero', 'field'=> $field];
     }
 
@@ -59,7 +59,7 @@ class Rules
     public static function json($item, $rule, $field)
     {
         json_decode($item);
-        if (json_last_error() != 0)
+        if (json_last_error() !== 0)
             return ['msg' => 'Pole musi być jsonem', 'field'=> $field];
     }
 

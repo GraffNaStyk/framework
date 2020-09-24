@@ -207,9 +207,11 @@ class Db extends Builder
             try {
                 $stmt = self::$db->prepare($this->query);
                 $stmt->execute($this->data);
+                
                 if ($this->first === true) {
                     return $stmt->fetch(PDO::FETCH_ASSOC);
                 }
+                
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch (\PDOException $e) {
                 Handle::throwException($e, $this->query);
