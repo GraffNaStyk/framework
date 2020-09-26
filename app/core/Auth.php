@@ -22,7 +22,6 @@ class Auth
     
     public static function middleware(string $class, string $action, int $rights)
     {
-        echo 'alo';
         if ($rights === 4) {
             return true;
         }
