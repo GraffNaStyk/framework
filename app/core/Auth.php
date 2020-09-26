@@ -54,8 +54,6 @@ class Auth
                 $methods = [...self::$methods[1], ...self::$methods[2], ...self::$methods[2]];
             }
             
-            pd($methods);
-            
             if (! in_array($action, $methods)) {
                 return false;
             }
