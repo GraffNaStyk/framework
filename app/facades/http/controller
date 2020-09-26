@@ -1,0 +1,47 @@
+<?php namespace App\Controllers\PATH;
+
+use App\Controllers\ControllerInterface;
+use App\Facades\Http\Request;
+
+class CLASSNAME extends EXTENSION implements ControllerInterface
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function index()
+    {
+
+    }
+
+    public function add()
+    {
+
+    }
+
+    public function store(Request $request)
+    {
+
+    }
+
+    public function update(Request $request)
+    {
+
+    }
+
+    public function show(int $id)
+    {
+
+    }
+
+    public function edit(int $id)
+    {
+
+    }
+
+    public function delete(int $id)
+    {
+
+    }
+}

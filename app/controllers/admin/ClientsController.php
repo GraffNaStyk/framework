@@ -32,6 +32,11 @@ class ClientsController extends DashController implements ControllerInterface
         return $this->response(['ok' => true, 'msg' => ['Użytkownik dodany']], 201);
     }
     
+    public function update(Request $request)
+    {
+    
+    }
+    
     public function show(int $id)
     {
     
@@ -43,11 +48,6 @@ class ClientsController extends DashController implements ControllerInterface
     }
     
     public function delete(int $id)
-    {
-    
-    }
-    
-    public function update(Request $request)
     {
     
     }
