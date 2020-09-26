@@ -1,17 +1,23 @@
 <?php namespace App\Controllers\Admin;
 
+use App\Controllers\ControllerInterface;
 use App\Facades\Http\Request;
 use App\Facades\Validator\Validator;
 use App\Model\Client;
 
-class ClientsController extends DashController
+class ClientsController extends DashController implements ControllerInterface
 {
     public function __construct()
     {
         parent::__construct();
     }
-
+    
     public function index()
+    {
+        echo 'test';
+    }
+
+    public function add()
     {
         return $this->render();
     }
@@ -24,6 +30,26 @@ class ClientsController extends DashController
         Client::insert($request->all());
 
         return $this->response(['ok' => true, 'msg' => ['Użytkownik dodany']], 201);
+    }
+    
+    public function show(int $id)
+    {
+    
+    }
+    
+    public function edit(int $id)
+    {
+    
+    }
+    
+    public function delete(int $id)
+    {
+    
+    }
+    
+    public function update(Request $request)
+    {
+    
     }
     
     private function validateRules()

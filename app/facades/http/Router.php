@@ -116,7 +116,7 @@ final class Router
             
             if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
 
-                if (! Auth::middleware($route['controller'], $route['rights'])) {
+                if (! Auth::middleware($route['controller'], $route['action'], $route['rights'])) {
                     self::redirect(Url::base());
                 }
                 
@@ -145,18 +145,17 @@ final class Router
         //this case is for automaticly routes like controller/action when
         if ((bool)$exist === false) {
             $route = explode('/', self::$url);
+            
             if (self::$baseRouteProvider) {
                 self::setClass(self::$baseRouteProvider);
-            }
-            else {
-                if (!empty($route[0])) {
-                    self::setClass($route[0]);
-                }
+            } else if (!empty($route[0])) {
+                self::setClass($route[0]);
             }
         
             if (isset($route[1]) && !empty($route[1])) {
                 self::setAction($route[1]);
             }
+            
             unset($route[0], $route[1]);
         
             foreach ($route as $key2 => $value)

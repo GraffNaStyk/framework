@@ -29,9 +29,13 @@ spl_autoload_register(function ($class) {
         $path .= $namespaces.'/';
     
     $className = rtrim($className, '/');
-    
+
     if ((bool) file_exists(path($path . $className .'.php')) === true) {
         require_once path($path . $className .'.php');
+    }
+
+    if ((bool) file_exists(path($path . $className .'.inc')) === true) {
+        require_once path($path . $className .'.inc');
     }
 });
 
@@ -43,7 +47,8 @@ if (php_sapi_name() !== 'cli') {
 
 function fatalErrorHandler () {
     $lastError = error_get_last();
-    if($lastError['type'] === E_ERROR || $lastError['type'] === E_USER_ERROR) {
+    
+    if ($lastError['type'] === E_ERROR || $lastError['type'] === E_USER_ERROR) {
         header("HTTP/1.0 200");
         http_response_code(200);
         exit (require_once view_path('errors/fatal.php'));
