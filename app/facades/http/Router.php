@@ -217,7 +217,7 @@ final class Router
         }
         
         self::$url = preg_replace('/\?.*/', '', self::$url);
-        
+
         foreach (self::$aliases as $key => $provider) {
             if(preg_match("/(^$key$|^$key(\?|\/))/U", self::$url, $m)) {
                 $m = strtolower(rtrim($m[0], '/'));

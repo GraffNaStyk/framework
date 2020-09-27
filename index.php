@@ -1,5 +1,8 @@
 <?php
 header("Content-Type: text/html; charset=utf-8");
+header("X-Frame-Options: sameorigin");
+header("Content-Security-Policy: block-all-mixed-content; upgrade-insecure-requests; reflected-xss;");
+header("X-Permitted-Cross-Domain-Policies: all");
 
 if(!file_exists(__DIR__.'/app/config/app.php'))
     exit('No app config file');

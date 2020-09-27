@@ -7,9 +7,9 @@ use App\Helpers\Session;
 
 final class Request
 {
-    protected array $file    = [];
-    private string $method   = 'post';
-    protected array $data    = [];
+    protected array $file = [];
+    private string $method = 'post';
+    protected array $data = [];
     
     public function __construct()
     {
@@ -68,16 +68,7 @@ final class Request
             if (is_array($item) === true) {
                 $this->data[$key] = $this->reSanitize($item);
             } else {
-                if ($item !== null && $item !== '') {
-                    $item = trim($item);
-                }
-                
-                if (!is_numeric($item)) {
-                    $item = urldecode($item);
-                }
-                
-                $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
-                $this->data[$key] = trim($item);
+                $this->data[$key] = $this->clear($item);
             }
         }
     }
@@ -88,19 +79,25 @@ final class Request
             if (is_array($item) === true) {
                 $this->reSanitize($item);
             } else {
-                if ($item !== null && $item !== '') {
-                    $item = trim($item);
-                }
-            
-                if (!is_numeric($item)) {
-                    $item = urldecode($item);
-                }
-            
-                $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
-                $data[$key] = trim($item);
+                $data[$key] = $this->clear($item);
             }
         }
         return $data;
+    }
+    
+    private function clear($item)
+    {
+        if ($item !== null && $item !== '') {
+            $item = trim($item);
+        }
+    
+        if (!is_numeric($item)) {
+            $item = urldecode($item);
+        }
+        
+        $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
+        $item = preg_quote($item);
+        return $item;
     }
 
     public function getMethod()

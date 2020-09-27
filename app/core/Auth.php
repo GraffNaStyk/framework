@@ -25,7 +25,7 @@ class Auth
         if ($rights === 4) {
             return true;
         }
-        
+
         if ($rights === 0) {
             return false;
         }

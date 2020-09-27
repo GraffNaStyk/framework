@@ -7,12 +7,12 @@ if (!file_exists(vendor_path('autoload.php'))) {
 
 define('app', require_once app_path('app/config/app.php'));
 
+register_shutdown_function('fatalErrorHandler');
+
 if ((bool) app['dev'] === true) {
-    ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ERROR | E_PARSE);
 } else {
-    register_shutdown_function('fatalErrorHandler');
     ini_set('error_log', storage_path('private/logs/php_' . date('d-m-Y') . '.log'));
     ini_set('log_errors', true);
 }
@@ -47,10 +47,16 @@ if (php_sapi_name() !== 'cli') {
 
 function fatalErrorHandler () {
     $lastError = error_get_last();
-    
-    if ($lastError['type'] === E_ERROR || $lastError['type'] === E_USER_ERROR) {
-        header("HTTP/1.0 200");
-        http_response_code(200);
-        exit (require_once view_path('errors/fatal.php'));
+    if (!empty($lastError)) {
+        if ($lastError['type'] === E_ERROR || $lastError['type'] === E_USER_ERROR || $lastError['type'] === E_PARSE) {
+            header("HTTP/1.0 200");
+            http_response_code(200);
+        
+            if (app['dev'] === false) {
+                exit (require_once view_path('errors/fatal.php'));
+            } else {
+                exit (require_once view_path('errors/fatal-dev.php'));
+            }
+        }
     }
 }
