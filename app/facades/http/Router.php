@@ -35,7 +35,6 @@ final class Router
         $this->request = new Request();
         $this->parseUrl();
         $this->setParams();
-        Session::set(['previous_url' => self::getClass().'/'.self::getAction()]);
         $this->create(self::$provider . self::getClass() . 'Controller');
     }
 

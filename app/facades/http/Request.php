@@ -1,4 +1,5 @@
-<?php namespace App\Facades\Http;
+<?php
+namespace App\Facades\Http;
 
 use App\Facades\Csrf\Csrf;
 use App\Facades\Dotter\Get;
@@ -15,7 +16,7 @@ final class Request
     {
         $this->setMethod();
 
-        if(!empty($this->data) && app['csrf'] && ! View::isAjax()) {
+        if(!empty($this->data) && app('csrf') && ! View::isAjax()) {
             if(! isset($this->data['csrf']) || ! Csrf::isValid($this->data['csrf'])) {
                 Router::http404();
             }
@@ -96,7 +97,12 @@ final class Request
         }
         
         $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
-        $item = preg_quote($item);
+        $item = strtr($item,
+            "???????��������������������������������������������������������������",
+            "SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy"
+        );
+        $item = preg_replace('/(;|\||`|>|<|&|^|"|'."\n|\r|'".'|{|}|[|]|\)|\()/i', '', $item);
+        $item = preg_replace('/(\)|\(|\||&)/', '', $item);
         return $item;
     }
 
