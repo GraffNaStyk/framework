@@ -16,17 +16,22 @@
 </head>
 <body>
 {% include 'layouts/inc/preloader.twig' %}
+
 <nav class="navbar navbar-expand-lg top__nav justify-content-between">
   <a href="{{ base('dash') }}" class="logo">DASHBOARD</a>
+
   <div class="d-flex align-items-center">
     <a href="#"><i class="fa fa-bars"></i></a>
     <a href="#" {{ tooltip('add') }} ><i class="fa fa-plus"></i></a>
     <a href="#" {{ tooltip('profile') }}><i data-menu="toggle" data-target="#menu" class="fa fa-user"></i></a>
+
     <div class="box__menu flex-column d-none" id="menu">
       <div class="render" data-url="password" data-el="modal">Resetuj hasło</div>
       <a href="{{ url('profile') }}">Mój profil</a>
     </div>
+
     <a href="{{ url('logout') }}" {{ tooltip('logout') }}> <i class="fa fa-power-off"></i> </a>
+
   </div>
 </nav>
 
@@ -50,27 +55,12 @@
   </aside>
 
   <main class="right-panel">
-    {% for msg in messages %}
-      <div class="alert alert-{{ color }}" role="alert">
-        {% if msg.field %}
-          [{{ msg.field }}] {{ msg.msg }}
-        {% else %}
-          {{ msg }}
-        {% endif %}
-      </div>
-    {% endfor %}
-
     {% block content %}
     {% endblock %}
   </main>
 </section>
 
-<div id="modal" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-    </div>
-  </div>
-</div>
+{% include 'components/modal.twig' %}
 <script type="module" src="public/js/components/main.js"></script>
 {{ js|raw }}
 </body>

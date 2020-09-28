@@ -3,8 +3,11 @@ header("Content-Type: text/html; charset=utf-8");
 header("X-Frame-Options: sameorigin");
 header("Content-Security-Policy: block-all-mixed-content; upgrade-insecure-requests; reflected-xss;");
 header("X-Permitted-Cross-Domain-Policies: all");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
 
-if(!file_exists(__DIR__.'/app/config/app.php'))
+if (!file_exists(__DIR__.'/app/config/app.php'))
     exit('No app config file');
 
 if (session_status() === PHP_SESSION_NONE)

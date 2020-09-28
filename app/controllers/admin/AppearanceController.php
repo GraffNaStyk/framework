@@ -1,11 +1,13 @@
 <?php namespace App\Controllers\Admin;
 
 use App\Facades\Http\Request;
-use App\Facades\Validator\Validator;
 use App\Model\Config;
+use App\Traits\Response;
 
 class AppearanceController extends DashController
 {
+    use Response;
+    
     public function __construct()
     {
         parent::__construct();
@@ -21,10 +23,11 @@ class AppearanceController extends DashController
     public function store(Request $request)
     {
         if (!$this->validate($request->all(), [
-            'bgcolor' => 'required',
-            'footercolor' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'keywords' => 'required',
         ])) {
-            return $this->response(['ok' => false, 'msg' => Validator::getErrors()], 400);
+            return $this->sendError();
         }
         
         if (Config::where(['id', '=', 1])->update($request->all())) {

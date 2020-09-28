@@ -74,7 +74,7 @@ class Blueprint
             }
 
             $this->db->query($this->sql);
-            $this->foreign ?? $this->model->query($this->foreign);
+            $this->foreign ?? $this->db->query($this->foreign);
         }
 
         if(!empty($this->trigger)) {

@@ -14,10 +14,6 @@
   <form data-action="dash/upload">
    <div class="form__grid">
      {{ input({
-       type: 'file',
-       name: 'file'
-     }) }}
-     {{ input({
        label: 'text',
        placeholder: 'text',
        class: 'form-control',
@@ -31,6 +27,12 @@
        name: 'user[surname]'
      }) }}
    </div>
+    {{ input({
+      label: 'wgraj plik',
+      type: 'file',
+      name: 'file',
+      class: 'form-control'
+    }) }}
     {{ input({
       type: 'submit',
       value: 'Zapisz',

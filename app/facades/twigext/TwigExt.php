@@ -48,19 +48,28 @@ class TwigExt extends AbstractExtension
     {
         return new TwigFunction('input', function($attr = []) {
             $html = '';
-            if($attr['type'] !== 'hidden') {
+            if ($attr['type'] !== 'hidden') {
+                if ($attr['type'] === 'file') {
+                    $labelClass = 'class="input__upload"';
+                }
+                
                 if(isset($attr['label'])) {
-                    $html = '<label><span>'.$attr['label'].'</span>';
+                    $html = '<label '.$labelClass.'><span>'.$attr['label'].'</span>';
                 } else {
-                    $html = '<label>';
+                    $html = '<label '.$labelClass.'>';
                 }
             }
             
             unset($attr['label']);
             $inputText = '';
             
-            foreach ($attr as $key => $value)
+            foreach ($attr as $key => $value) {
                 $inputText .= $key.'="'.$value.'"';
+            }
+    
+            if ($attr['type'] === 'file') {
+                $inputText .= 'style="display: none;"';
+            }
             
             echo $html . '<input ' . $inputText. '/> </label>';
         });
