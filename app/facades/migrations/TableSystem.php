@@ -27,6 +27,16 @@ trait TableSystem
         }
         
         return false;
+    }
+    
+    public function hasRecord(string $table, string $column, string $record)
+    {
+        $res = $this->db->query('SELECT `'.$column.'` FROM '.$table. ' WHERE `'.$column.'` = "'.$record.'"');
+
+        if (empty($res) === false) {
+            return true;
+        }
         
+        return false;
     }
 }

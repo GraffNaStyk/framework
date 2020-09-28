@@ -10,27 +10,30 @@ class AppearanceController extends DashController
     {
         parent::__construct();
     }
-
+    
     public function colors()
     {
-       return $this->render(
-           Config::where(['id', '=', 1])->findOrFail()
-       );
+        return $this->render(
+            Config::where(['id', '=', 1])->findOrFail()
+        );
     }
-
+    
     public function store(Request $request)
     {
-       if(!$this->validate($request->all(), [
+        if (!$this->validate($request->all(), [
             'bgcolor' => 'required',
-            'footercolor' => 'required'
-        ])) return $this->response(['ok' => false, 'msg' => Validator::getErrors()], 400);
-
-       if(Config::where(['id', '=', 1])->update($request->all()))
-           return $this->response(['ok' => true, 'msg' => ['Dane zostały zapisane']]);
-       
+            'footercolor' => 'required',
+        ])) {
+            return $this->response(['ok' => false, 'msg' => Validator::getErrors()], 400);
+        }
+        
+        if (Config::where(['id', '=', 1])->update($request->all())) {
+            return $this->response(['ok' => true, 'msg' => ['Dane zostały zapisane']]);
+        }
+        
         return $this->response(['ok' => false, 'msg' => ['Wystąpił błąd']], 400);
     }
-
+    
     public function seo()
     {
         return $this->render(

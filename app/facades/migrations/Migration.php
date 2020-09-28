@@ -51,27 +51,34 @@ class Migration
     public function up(bool $isDump = false)
     {
         $this->makeJsonFile();
-        $json = Storage::disk('private')->get('db/migrations.json');
-        $migrationContent = (array) json_decode(storage_path($json[0]), true);
+        $migrationContent = (array) json_decode(
+            Storage::disk('private')->getContent('db/migrations.json')
+            , true
+        );
+
         foreach (glob(app_path('app/db/migrate/Migration_*.php')) as $migration) {
             $migration = 'App\\Db\\Migrate\\'.basename(str_replace('.php','', $migration));
-            if (array_key_exists($migration, $migrationContent) === false) {
+
+            if (!isset($migrationContent[$migration]) || $isDump) {
                 $migrationContent[$migration] = ['date' => date('Y-m-d H:i:s')];
                 $migration = new $migration();
                 $migration->up(new Schema(app['model-provider'].$migration->model, $isDump));
             }
         }
+        
         Storage::disk('private')->put('db/migrations.json', json_encode($migrationContent), true);
     }
 
     public function down()
     {
         $this->makeJsonFile(true);
+        
         foreach (glob(app_path('app/db/migrate/Migration_*.php')) as $migration) {
             $migration = 'App\\Db\\Migrate\\'.basename(str_replace('.php','', $migration));
             $migration = new $migration();
             $migration->down(new Schema(app['model-provider'].$migration->model));
         }
+        
         Storage::disk('private')->remove('db/migrations.json');
     }
 
@@ -80,7 +87,7 @@ class Migration
         $this->up(true);
     }
 
-    private function makeJsonFile($replace=false)
+    private function makeJsonFile($replace = false)
     {
         Storage::disk('private')->make('db');
         Storage::disk('private')->put('db/migrations.json', '{}', $replace);

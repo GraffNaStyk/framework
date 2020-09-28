@@ -125,6 +125,11 @@ class Storage
 
        return $result;
     }
+    
+    public function getContent($path)
+    {
+        return file_get_contents(self::$disk.'/'.$path);
+    }
 
     public function make($path, $mode = 0775)
     {
