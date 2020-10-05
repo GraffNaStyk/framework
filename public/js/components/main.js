@@ -1,7 +1,18 @@
 import * as  App from '../app.js';
+let className;
 
-document.getElementsByClassName( window.innerWidth > 991 ? 'grid' : 'right-panel')[0].style.minHeight
-  = window.innerHeight - document.getElementsByTagName('nav')[0].clientHeight + 'px';
+if (window.innerWidth > 991) {
+  className = 'grid';
+} else {
+  className = 'right-panel';
+}
+
+let element = document.getElementsByClassName(className)[0];
+
+if (element !== undefined) {
+  element.style.minHeight = window.innerHeight - document.getElementsByTagName('nav')[0].clientHeight + 'px';
+}
+
 
 const menu = (e) => {
   if(e.target.nextElementSibling.classList.contains('d-flex')) {

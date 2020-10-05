@@ -25,10 +25,10 @@ class LoginController extends Controller
 
     public function check(Request $request)
     {
-        if(!Validator::make($request->all(), [
+        if(!$this->validate($request->all(), [
             'name' => 'string|required|min:3',
             'password' => 'string|required|min:3',
-        ])) $this->redirect('login');
+        ])) $this->sendError();
         
         if ($user = User::select(['name', 'id', 'password'])
             ->where(['name', '=', $request->get('name')])
@@ -37,13 +37,13 @@ class LoginController extends Controller
             if (password_verify($request->get('password'), $user['password'])) {
                 unset($user['password']);
                 Session::set(['user' => $user]);
-                $this->redirect('dash');
+                $this->sendSuccess('Zalogowano poprawnie', 'dash');
             }
-            Session::msg('Błędne hasło', 'danger');
+            $this->sendError();
         } else {
-            Session::msg('Użytkownik nie istnieje', 'danger');
+            $this->sendError();
         }
-
-        $this->redirect('login');
+    
+        $this->sendError();
     }
 }

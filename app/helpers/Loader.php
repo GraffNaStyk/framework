@@ -1,4 +1,5 @@
-<?php namespace App\Helpers;
+<?php
+namespace App\Helpers;
 
 use App\Facades\Http\Router;
 
@@ -50,8 +51,9 @@ class Loader
         
         $jsString .= static::getFileForView('js');
         
-        foreach (self::$loaded['js'] as $val)
+        foreach (self::$loaded['js'] as $val) {
             $jsString .= self::getFile($val, 'js');
+        }
         
         return $jsString;
     }
@@ -62,8 +64,8 @@ class Loader
             ? css_path($name.'.css')
             : js_path($name.'.js');
         
-        if(is_file($path)) {
-            if($ext === 'css') {
+        if (is_file($path)) {
+            if ($ext === 'css') {
                 return trim('<link rel="stylesheet" href="'.str_replace(app_path(), '', $path).'">'.PHP_EOL);
             }
             

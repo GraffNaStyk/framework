@@ -2,9 +2,9 @@
 
 {% block content %}
   <div class="d-flex justify-content-center align-items-center flex-column content">
-    {% include('layouts/inc/alert.twig') %}
-      <h4 class="text-center custom__title">Graff CMS</h4>
-    <form action="{{ url('login/check') }}" method="post" class="my__form">
+    <div class="right-panel"></div>
+    <h4 class="text-center custom__title">Graff CMS</h4>
+    <form class="my__form" data-action="login/check">
       <label>
         <i class="fa fa-user"></i>
         <input name="name" type="text" placeholder="Podaj login" value="{{ name }}">

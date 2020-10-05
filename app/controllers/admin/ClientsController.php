@@ -2,7 +2,6 @@
 
 use App\Controllers\ControllerInterface;
 use App\Facades\Http\Request;
-use App\Facades\Validator\Validator;
 use App\Model\Client;
 
 class ClientsController extends DashController implements ControllerInterface
@@ -26,11 +25,11 @@ class ClientsController extends DashController implements ControllerInterface
     public function store(Request $request)
     {
         if(!$this->validate($request->all(), $this->validateRules()))
-            return $this->response(['ok' => false, 'msg' => Validator::getErrors()], 400);
+            return $this->sendError();
         
         Client::insert($request->all());
 
-        return $this->response(['ok' => true, 'msg' => ['Użytkownik dodany']], 201);
+        return $this->sendSuccess('Użytkownik dodany', 201);
     }
     
     public function update(Request $request)

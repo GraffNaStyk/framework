@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Admin;
 
+use App\Facades\Faker\Hash;
 use App\Facades\Http\Request;
 use App\Facades\Http\View;
 use App\Facades\Validator\Validator;
@@ -24,12 +25,12 @@ class PasswordController extends DashController
     {
         if(!Validator::make($request->all(), [
             'password' => 'required|min:6'
-        ])) return $this->response(['ok' => false, 'msg' => Validator::getErrors()], 400);
+        ])) return $this->sendError();
         
         User::where(['id' ,'=', Session::get('user.id')])
-            ->update(['password' => password_hash($request->get('password'), PASSWORD_BCRYPT)]);
+            ->update(['password' => Hash::crypt($request->get('password'))]);
     
-        return $this->response(['ok' => true, 'msg' => ['Hasło zostało zresetowane']]);
+        return $this->sendSuccess('Hasło zostało zresetowane');
     }
 }
 

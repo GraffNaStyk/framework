@@ -1,45 +1,41 @@
 <?php
 namespace App\Core;
 
+use App\Facades\Http\Response;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
 use App\Helpers\Session;
 use App\Helpers\Storage;
 use App\Facades\Http\View;
 use App\Facades\Http\Router;
-use App\Facades\Http\Response;
 
 abstract class Controller
 {
     public function __construct()
     {
+        $this->boot();
+    }
+    
+    public function boot()
+    {
         Storage::disk('private')->make('logs');
-
-        View::set([
+    
+        $this->set([
             'messages' => Session::getMsg(),
             'color' => Session::getColor(),
+            'css' => Loader::css(),
+            'js' => Loader::js()
         ]);
-
-        if($vars = Session::collectProvidedData())
+    
+        if ($vars = Session::collectProvidedData())
             View::set($vars);
-
+    
         Session::clearMsg();
-        $this->resources();
-    }
-
-    public function resources(): void
-    {
-        View::set(['css' => Loader::css(), 'js' => Loader::js()]);
     }
 
     public function redirect(?string $path, int $code=302, bool $direct=false)
     {
         return Router::redirect($path, $code, $direct);
-    }
-
-    public function response(array $response, int $status=200, array $headers=[])
-    {
-        return Response::json($response, $status, $headers);
     }
     
     public function set(array $data): void
@@ -60,18 +56,13 @@ abstract class Controller
         return Validator::make($request, $rules);
     }
     
-    public function errors()
+    public function sendSuccess(?string $message, string $to = null, int $status = 200 ,array $headers = []): string
     {
-        return Validator::getErrors();
+        return Response::json(['ok' => true, 'msg' => [$message ?? 'Dane zostały zapisane'], 'to' => $to], $status, $headers);
     }
     
-    public function action()
+    public function sendError(int $status = 400, array $headers = []): string
     {
-        return Router::getAction();
-    }
-    
-    public function class()
-    {
-        return Router::getClass();
+        return Response::json(['ok' => false, 'msg' => Validator::getErrors()], $status, $headers);
     }
 }

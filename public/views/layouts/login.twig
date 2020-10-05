@@ -9,10 +9,17 @@
   <base href="{{ base() }}">
   <title>{{ title }}</title>
   {{ css|raw }}
+  <script>
+    document.url = '{{ url() }}';
+  </script>
 </head>
 <body>
+{% include 'layouts/inc/preloader.twig' %}
   {% block content %}
 
-  {% endblock %}
+  {% endblock %},
+{% include 'components/modal.twig' %}
+  <script type="module" src="public/js/components/main.js"></script>
+  {{ js|raw }}
 </body>
 </html>

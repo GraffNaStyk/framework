@@ -239,6 +239,10 @@ final class Router
 
     public static function http404(): void
     {
+        if (View::isAjax()) {
+            self::throwJsonResponse(404, 'Page not found');
+        }
+        
         header("HTTP/1.0 404 Not Found");
         http_response_code(404);
         exit(require_once (view_path('errors/404.php')));
@@ -246,9 +250,18 @@ final class Router
     
     private function http405(): void
     {
+        if (View::isAjax()) {
+            self::throwJsonResponse(405, 'Method not allowed');
+        }
+        
         header("HTTP/1.0 405 Method Not Allowed");
         http_response_code(405);
         exit(require_once (view_path('errors/405.php')));
+    }
+    
+    private static function throwJsonResponse(int $status, string $message)
+    {
+        return Response::json(['msg' => $message], $status);
     }
 
     public static function run(): self

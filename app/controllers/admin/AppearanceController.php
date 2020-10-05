@@ -2,11 +2,9 @@
 
 use App\Facades\Http\Request;
 use App\Model\Config;
-use App\Traits\Response;
 
 class AppearanceController extends DashController
 {
-    use Response;
     
     public function __construct()
     {
