@@ -39,11 +39,11 @@ class LoginController extends Controller
                 Session::set(['user' => $user]);
                 $this->sendSuccess('Zalogowano poprawnie', 'dash');
             }
-            $this->sendError();
+            $this->sendError('Niepoprwane danie logowania');
         } else {
-            $this->sendError();
+            $this->sendError('Niepoprwane danie logowania');
         }
     
-        $this->sendError();
+        $this->sendError('Niepoprwane danie logowania');
     }
 }

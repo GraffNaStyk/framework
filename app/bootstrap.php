@@ -49,8 +49,8 @@ function fatalErrorHandler () {
     $lastError = error_get_last();
     if (!empty($lastError)) {
         if ($lastError['type'] === E_ERROR || $lastError['type'] === E_USER_ERROR || $lastError['type'] === E_PARSE) {
-            header("HTTP/1.0 200");
-            http_response_code(200);
+            header("HTTP/1.0 500 Method Not Allowed");
+            http_response_code(500);
         
             if (app['dev'] === false) {
                 exit (require_once view_path('errors/fatal.php'));

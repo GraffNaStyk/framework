@@ -30,7 +30,6 @@ class PasswordController extends DashController
         User::where(['id' ,'=', Session::get('user.id')])
             ->update(['password' => Hash::crypt($request->get('password'))]);
     
-        return $this->sendSuccess('Hasło zostało zresetowane');
+        return $this->sendSuccess('Hasło zostało zresetowane', '', 202);
     }
 }
-

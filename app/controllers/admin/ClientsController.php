@@ -29,7 +29,7 @@ class ClientsController extends DashController implements ControllerInterface
         
         Client::insert($request->all());
 
-        return $this->sendSuccess('Użytkownik dodany', 201);
+        return $this->sendSuccess('Użytkownik dodany', '', 201);
     }
     
     public function update(Request $request)

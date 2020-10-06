@@ -15,11 +15,11 @@
 </head>
 <body>
 {% include 'layouts/inc/preloader.twig' %}
-  {% block content %}
+{% block content %}
 
-  {% endblock %},
+{% endblock %}
 {% include 'components/modal.twig' %}
-  <script type="module" src="public/js/components/main.js"></script>
-  {{ js|raw }}
+<script type="module" src="public/js/components/main.js"></script>
+{{ js|raw }}
 </body>
 </html>

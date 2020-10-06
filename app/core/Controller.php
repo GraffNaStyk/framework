@@ -61,8 +61,8 @@ abstract class Controller
         return Response::json(['ok' => true, 'msg' => [$message ?? 'Dane zostały zapisane'], 'to' => $to], $status, $headers);
     }
     
-    public function sendError(int $status = 400, array $headers = []): string
+    public function sendError(string $message=null, int $status = 400, array $headers = []): string
     {
-        return Response::json(['ok' => false, 'msg' => Validator::getErrors()], $status, $headers);
+        return Response::json(['ok' => false, 'msg' => $message ?? Validator::getErrors()], $status, $headers);
     }
 }
