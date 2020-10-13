@@ -11,7 +11,6 @@ RewriteEngine on
 RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png)$ [NC]
 RewriteCond %{REQUEST_URI} !=/favicon.ico
 RewriteCond %{REQUEST_URI} !(\.[^./]+)$
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 
 RewriteRule ^(.*)$ index.php [QSA,L]
