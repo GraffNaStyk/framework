@@ -98,7 +98,7 @@ export const response = (res, selector) => {
       }
     }))
   } else {
-    throwCustomMessage(res, '.right-panel')
+    throwCustomMessage(res, selector)
   }
 };
 

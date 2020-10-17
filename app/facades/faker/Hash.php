@@ -17,4 +17,9 @@ class Hash
     {
         return password_hash($password, PASSWORD_BCRYPT, ['cost' => $cost]);
     }
+    
+    public static function verify($rawPassword, $hashPassword)
+    {
+        return password_verify($rawPassword, $hashPassword);
+    }
 }

@@ -80,6 +80,17 @@ abstract class Builder extends Field
         }
         
         $this->query = rtrim($this->query, ', ') .")";
+    
+        if ($this->onDuplicate === true) {
+            $this->query .= ' ON DUPLICATE KEY UPDATE ';
+            foreach ($this->data as $key => $field) {
+                if ((string) $field !== '') {
+                    $this->query .= "`{$key}` = :{$key}, ";
+                }
+            }
+        }
+    
+        $this->query = rtrim($this->query, ', ');
         
         return true;
     }

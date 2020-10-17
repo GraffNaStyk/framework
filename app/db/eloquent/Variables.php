@@ -39,6 +39,8 @@ trait Variables
     
     private static string $dbName;
     
+    private bool $onDuplicate = true;
+    
     public bool $hasId = false;
     
     protected function reconstruct($model)
