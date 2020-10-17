@@ -1,30 +1,30 @@
 <?php
-use App\Facades\Migrations\Migration;
 
-if ((string) php_sapi_name() !== 'cli') {
-    header('location: index.php');
-}
+use App\Facades\Dispatcher\Dispatcher;
+use App\Facades\Migrations\Migration;
 
 require_once __DIR__.'/index.php';
 
-$migration = Migration::dispatch($argv);
+$job = Dispatcher::dispatch($argv);
 
-if ($migration->do('make') === true) {
+$job->register(['make', 'up', 'down', 'dump']);
+
+$migration = new Migration($job->getArgs());
+
+if ($job->do('make') === true) {
     $migration->make();
-    exit();
 }
 
-if ($migration->do('up') === true) {
+if ($job->do('up') === true) {
     $migration->up();
-    exit();
 }
 
-if ($migration->do('down') === true) {
+if ($job->do('down') === true) {
     $migration->down();
-    exit();
 }
 
-if ($migration->do('dump') === true) {
+if ($job->do('dump') === true) {
     $migration->dump();
-    exit();
 }
+
+$job->end();

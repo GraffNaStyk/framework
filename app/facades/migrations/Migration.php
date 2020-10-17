@@ -5,46 +5,30 @@ use App\Helpers\Storage;
 
 class Migration
 {
-    protected static array $argv = [];
+    private array $args = [];
     
-    protected static array $canDo = [
-        'make', 'up', 'down', 'dump'
-    ];
-    
-    public static function dispatch(&$argv)
+    public function __construct($args)
     {
-        self::$argv = $argv;
-        return new self();
-    }
-    
-    public function do(string $what): bool
-    {
-        if (in_array($what, self::$canDo) === true
-            && (string) $what === self::$argv[1]
-        ) {
-            return true;
-        }
-        
-        return false;
+        $this->args = $args;
     }
     
     public function make()
     {
         $migration = file_get_contents(app_path('app/facades/migrations/migration'));
-        $migration = str_replace('CLASSNAME', 'Migration_'.self::$argv[2].'_'.date('Y_m_d__H_i'), $migration);
-        $migration = str_replace('MODEL', self::$argv[2], $migration);
+        $migration = str_replace('CLASSNAME', 'Migration_'.$this->args[2].'_'.date('Y_m_d__H_i'), $migration);
+        $migration = str_replace('MODEL', $this->args[2], $migration);
         
         if (is_dir(app_path('app/db/migrate/')) === false) {
             mkdir(app_path('app/db/migrate/'), 0775, true);
         }
         
-        file_put_contents(app_path('app/db/migrate/Migration_'.self::$argv[2].'_'.date('Y_m_d__H_i').'.php'), "<?php ".$migration);
+        file_put_contents(app_path('app/db/migrate/Migration_'.$this->args[2].'_'.date('Y_m_d__H_i').'.php'), "<?php ".$migration);
         
-        if(file_exists(app_path('app/model/'.ucfirst(self::$argv[2]).'.php')) === false) {
+        if(file_exists(app_path('app/model/'.ucfirst($this->args[2]).'.php')) === false) {
             $model = file_get_contents(app_path('app/facades/migrations/model'));
-            $model = str_replace('CLASSNAME', ucfirst(self::$argv[2]), $model);
-            $model = str_replace('TABLE', self::$argv[3], $model);
-            file_put_contents(app_path('app/model/'.ucfirst(self::$argv[2]).'.php'), "<?php ".$model);
+            $model = str_replace('CLASSNAME', ucfirst($this->args[2]), $model);
+            $model = str_replace('TABLE', $this->args[3], $model);
+            file_put_contents(app_path('app/model/'.ucfirst($this->args[2]).'.php'), "<?php ".$model);
         }
     }
     
