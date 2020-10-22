@@ -65,14 +65,14 @@ final class Router
     
     private function create(string $controller)
     {
-        if (class_exists($controller) === true) {
+        if (class_exists($controller)) {
 
-            if(!method_exists($controller, self::getAction()))
+            if (!method_exists($controller, self::getAction()))
                 self::http404();
             
             $reflectionClass = new ReflectionClass($controller);
 
-            if((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller)
+            if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller)
                 self::http404();
             
             $reflection = new ReflectionMethod($controller, self::getAction());
@@ -81,17 +81,17 @@ final class Router
 
             $params = $reflection->getParameters();
 
-            if (empty($params) === true)
+            if (empty($params))
                 return $controller->{self::getAction()}();
             
-            if (empty(self::$params) == false) {
+            if (empty(self::$params)) {
                 foreach (self::$params as $key => $param) {
                     $this->request->set($key, $param);
                 }
             }
 
             $this->request->sanitize();
-    
+            
             if (isset($params[0]->name) && (string) $params[0]->name === 'request') {
                 return $controller->{self::getAction()}($this->request);
             }
@@ -142,7 +142,7 @@ final class Router
     private static function setBasic(bool $exist): void
     {
         //this case is for automaticly routes like controller/action when
-        if ((bool)$exist === false) {
+        if ($exist === false) {
             $route = explode('/', self::$url);
             
             if (self::$baseRouteProvider) {
@@ -193,7 +193,8 @@ final class Router
     public static function redirect(string $path, int $code = 302, bool $direct = false): void
     {
         session_write_close();
-
+        session_regenerate_id();
+        
         if ($direct) {
             header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::base() . $path, true, $code);
         } else {
@@ -209,7 +210,7 @@ final class Router
     
     private function parseUrl(): void
     {
-        if((string) app['url'] !== '/') {
+        if ((string) app['url'] !== '/') {
             self::$url = str_replace(app['url'], '', self::url());
         } else {
             self::$url = self::url();
@@ -218,7 +219,7 @@ final class Router
         self::$url = preg_replace('/\?.*/', '', self::$url);
 
         foreach (self::$aliases as $key => $provider) {
-            if(preg_match("/(^$key$|^$key(\?|\/))/U", self::$url, $m)) {
+            if (preg_match("/(^$key$|^$key(\?|\/))/U", self::$url, $m)) {
                 $m = strtolower(rtrim($m[0], '/'));
                 self::$url = preg_replace("/" . $m . "/", '', self::$url, 1);
                 self::$provider = $provider['ns'];
