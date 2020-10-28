@@ -34,7 +34,7 @@ abstract class Builder extends Field
         $join = '';
         if (!empty($this->$table)) {
             foreach ((array) $this->$table['field'] as $key => $value) {
-                $join .= " {$this->$table['connector'][$iterator]} `{$this->$table['table'][$iterator]}` ON
+                $join .= " {$this->$table['connector'][$iterator]} {$this->checkHowToConnectValue($this->$table['table'][$iterator], true, true)} ON
                            {$this->checkHowToConnectValue($this->$table['field'][$iterator], true)}
                            {$this->$table['comparison'][$iterator]} {$this->checkHowToConnectValue($this->$table['value'][$iterator], true)} ";
                 ++$iterator;
@@ -84,7 +84,7 @@ abstract class Builder extends Field
         if ($this->onDuplicate === true) {
             $this->query .= ' ON DUPLICATE KEY UPDATE ';
             foreach ($this->data as $key => $field) {
-                if ((string) $field !== '') {
+                if ((string) $field !== '' || (string) $key !== 'id') {
                     $this->query .= "`{$key}` = :{$key}, ";
                 }
             }
