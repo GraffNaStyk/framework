@@ -11,6 +11,8 @@ use App\Facades\Http\Router;
 
 abstract class Controller
 {
+    const PER_PAGE = 25;
+    
     public function __construct()
     {
         $this->boot();

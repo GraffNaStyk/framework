@@ -4,6 +4,8 @@ namespace App\Db\Eloquent;
 trait Variables
 {
     protected array $where = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+
+    protected array $wereIn = [];
     
     protected $values = '*';
     
@@ -14,6 +16,8 @@ trait Variables
     protected array $order = ['by' => '', 'type' => 'ASC'];
     
     protected string $limit = '';
+    
+    protected string $offset = '';
     
     protected string $group = '';
     
@@ -46,10 +50,12 @@ trait Variables
     protected function reconstruct($model)
     {
         $this->where  = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
+        $this->whereIn = [];
         $this->values = '*';
         $this->query;
         $this->order = ['by' => '', 'type' => 'ASC'];
         $this->limit = '';
+        $this->offset = '';
         $this->group = '';
         $this->distinct = false;
         $this->innerJoin = ['table' => [],'field' => [], 'comparison' => [], 'value' => [], 'connector' => []];

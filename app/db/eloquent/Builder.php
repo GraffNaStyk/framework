@@ -12,10 +12,17 @@ abstract class Builder extends Field
             $this->hasId = true;
         }
     }
-
+    
     protected function buildOrder()
     {
-        return " ORDER BY {$this->checkHowToConnectValue($this->order['by'], true)} {$this->order['type']}";
+        $tmp = '';
+        
+        foreach ($this->order['by'] as $order) {
+            $tmp .= $this->checkHowToConnectValue($order, true) . ', ';
+        }
+        
+        $tmp = rtrim($tmp, ', ');
+        return " ORDER BY {$tmp} {$this->order['type']}";
     }
 
     protected function buildGroup()
@@ -147,6 +154,19 @@ abstract class Builder extends Field
             return rtrim($where, ' ');
         }
         return '';
+    }
+    
+    protected function buildWhereInQuery()
+    {
+        $in = implode("', '", $this->whereIn['value'])."'";
+        $value = str_replace(',', '', $this->checkHowToConnectValue($this->whereIn['field']));
+        if (isset($this->where['field'][0])) {
+            $whereIn = " AND {$value} IN ('{$in})";
+        } else {
+            $whereIn = " WHERE {$value} IN ('{$in})";
+        }
+        
+        return $whereIn;
     }
     
     protected function setData()
