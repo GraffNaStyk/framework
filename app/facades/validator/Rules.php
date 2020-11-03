@@ -8,14 +8,24 @@ class Rules
 {
     public static function min($item, $rule, $field)
     {
-        if (strlen($item) < $rule)
-            return ['msg' => 'Pole jest za krótkie', 'field'=> $field];
+        if (is_numeric($item)) {
+            if (strlen($item) < $rule)
+                return ['msg' => 'Pole jest za krótkie', 'field'=> $field];
+        } else {
+            if (strlen($item) < $rule)
+                return ['msg' => 'Pole jest za krótkie', 'field'=> $field];
+        }
     }
-
+    
     public static function max($item, $rule, $field)
     {
-        if (strlen($item) > $rule)
-        return ['msg' => 'Pole jest za długie', 'field'=> $field];
+        if (is_numeric($item)) {
+            if ($item > $rule)
+                return ['msg' => 'Pole jest za długie', 'field'=> $field];
+        } else {
+            if (strlen($item) > $rule)
+                return ['msg' => 'Pole jest za długie', 'field'=> $field];
+        }
     }
 
     public static function required($item, $rule, $field)
