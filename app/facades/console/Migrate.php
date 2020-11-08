@@ -22,4 +22,9 @@ class Migrate
     {
         $this->migrate->down();
     }
+    
+    public function dump()
+    {
+        $this->migrate->dump();
+    }
 }

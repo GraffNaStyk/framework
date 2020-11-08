@@ -2,6 +2,10 @@
 
 use App\Facades\Console\Console;
 
+if ((string) php_sapi_name() !== 'cli') {
+    header('location: index.php');
+}
+
 require_once __DIR__.'/index.php';
 
 $job = Console::dispatch($argv);

@@ -17,7 +17,10 @@ class Console
 
         if (class_exists(self::$path.ucfirst(self::$argv[0]))) {
             $job = self::$path.ucfirst(self::$argv[0]);
-            $job = new $job();
+            $tmp = self::$argv;
+            array_shift ($tmp);
+            array_shift ($tmp);
+            $job = new $job($tmp);
 
             if (method_exists($job, self::$argv[1])) {
                 $job->{self::$argv[1]}();
