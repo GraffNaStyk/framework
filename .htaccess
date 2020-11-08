@@ -5,9 +5,15 @@ RewriteEngine on
    allow from all
 </Files>
 
+<Files "console">
+  Order Allow,Deny
+  Deny from all
+</Files>
+
 #RewriteCond %{HTTPS} !=on
 #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+Options All -Indexes
 RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png)$ [NC]
 RewriteCond %{REQUEST_URI} !=/favicon.ico
 RewriteCond %{REQUEST_URI} !(\.[^./]+)$

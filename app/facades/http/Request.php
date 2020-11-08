@@ -101,7 +101,7 @@ final class Request
             "???????��������������������������������������������������������������",
             "SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy"
         );
-        $item = preg_replace('/(;|\||`|>|<|&|^|"|'."\n|\r|'".'|{|}|[|]|\)|\()/i', '', $item);
+        $item = preg_replace('/(;|\||`|&|^|{|}|[|]|\)|\()/i', '', $item);
         $item = preg_replace('/(\)|\(|\||&)/', '', $item);
         return $item;
     }

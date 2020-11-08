@@ -184,7 +184,7 @@ final class Router
         $routes = explode('/', $route);
         self::$routes[$as ?? $route] = [
             'controller' => ucfirst($routes[0]),
-            'action' => strtolower($routes[1]) ?? 'index',
+            'action' => $routes[1] ?? 'index',
             'method' => $method,
             'rights' => $rights
         ];

@@ -5,13 +5,6 @@ use App\Helpers\Storage;
 
 class Migration
 {
-    private array $args = [];
-    
-    public function __construct($args)
-    {
-        $this->args = $args;
-    }
-    
     public function make()
     {
         $migration = file_get_contents(app_path('app/facades/migrations/migration'));

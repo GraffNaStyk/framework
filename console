@@ -1,0 +1,9 @@
+<?php
+
+use App\Facades\Console\Console;
+
+require_once __DIR__.'/index.php';
+
+$job = Console::dispatch($argv);
+
+Console::end();

@@ -51,7 +51,7 @@ class Auth
             }
     
             if ($rights === 3) {
-                $methods = [...self::$methods[1], ...self::$methods[2], ...self::$methods[2]];
+                $methods = [...self::$methods[1], ...self::$methods[2], ...self::$methods[3]];
             }
             
             if (! in_array($action, $methods)) {
