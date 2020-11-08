@@ -8,6 +8,6 @@ if ((string) php_sapi_name() !== 'cli') {
 
 require_once __DIR__.'/index.php';
 
-$job = Console::dispatch($argv);
+Console::dispatch($argv);
 
 Console::end();
