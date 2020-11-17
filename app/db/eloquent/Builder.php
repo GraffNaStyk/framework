@@ -74,7 +74,7 @@ abstract class Builder extends Field
         
         foreach ($this->data as $key => $field) {
             if ((string) $field !== '') {
-                $this->query .= "{$key}, ";
+                $this->query .= "`{$key}`, ";
             }
         }
         

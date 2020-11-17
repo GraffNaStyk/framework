@@ -47,7 +47,7 @@ trait Variables
     
     public bool $hasId = false;
     
-    protected function reconstruct($model)
+    public function reconstruct($model)
     {
         $this->where  = ['field' => [], 'comparison' => [], 'value' => [], 'connector' => []];
         $this->whereIn = [];

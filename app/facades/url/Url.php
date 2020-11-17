@@ -42,4 +42,13 @@ class Url
     {
         return in_array(getenv('REMOTE_ADDR'), ['127.0.0.1', '::1']) ? true : false;
     }
+    
+    public static function full()
+    {
+        if (empty(getenv('HTTP_HOST'))) {
+            return app['host_url'].self::base();
+        } else {
+            return Router::checkProtocol().'://'.getenv('HTTP_HOST').self::base();
+        }
+    }
 }

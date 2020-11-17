@@ -170,18 +170,18 @@ class Db extends Builder
         $this->query = "SELECT count($field) as '$alias' from `{$this->table}` {$this->buildWhereQuery()}";
         return $this->execute()[0];
     }
-
-    public function increment($column, $value)
+    
+    public function increment(array $inc)
     {
-        $this->query = "UPDATE `{$this->table}` SET {$column} = {$column} + {$value} {$this->buildWhereQuery()}";
-
+        $this->query = "UPDATE `{$this->table}` SET {$inc[0]} = {$inc[0]} + {$inc[1]} {$this->buildWhereQuery()}";
+        
         return $this->execute();
     }
-
-    public function decrement($column, $value)
+    
+    public function decrement(array $inc)
     {
-        $this->query = "UPDATE `{$this->table}` SET {$column} = {$column} - {$value} {$this->buildWhereQuery()}";
-
+        $this->query = "UPDATE `{$this->table}` SET {$inc[0]} = {$inc[0]} - {$inc[1]} {$this->buildWhereQuery()}";
+        
         return $this->execute();
     }
 

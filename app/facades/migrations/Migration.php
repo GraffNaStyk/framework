@@ -5,23 +5,23 @@ use App\Helpers\Storage;
 
 class Migration
 {
-    public function make()
+    public function make($args)
     {
         $migration = file_get_contents(app_path('app/facades/migrations/migration'));
-        $migration = str_replace('CLASSNAME', 'Migration_'.$this->args[2].'_'.date('Y_m_d__H_i'), $migration);
-        $migration = str_replace('MODEL', $this->args[2], $migration);
+        $migration = str_replace('CLASSNAME', 'Migration_'.$args[0].'_'.date('Y_m_d__H_i'), $migration);
+        $migration = str_replace('MODEL', $args[0], $migration);
         
         if (is_dir(app_path('app/db/migrate/')) === false) {
             mkdir(app_path('app/db/migrate/'), 0775, true);
         }
         
-        file_put_contents(app_path('app/db/migrate/Migration_'.$this->args[2].'_'.date('Y_m_d__H_i').'.php'), "<?php ".$migration);
+        file_put_contents(app_path('app/db/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').'.php'), "<?php ".$migration);
         
-        if(file_exists(app_path('app/model/'.ucfirst($this->args[2]).'.php')) === false) {
+        if(file_exists(app_path('app/model/'.ucfirst($args[0]).'.php')) === false) {
             $model = file_get_contents(app_path('app/facades/migrations/model'));
-            $model = str_replace('CLASSNAME', ucfirst($this->args[2]), $model);
-            $model = str_replace('TABLE', $this->args[3], $model);
-            file_put_contents(app_path('app/model/'.ucfirst($this->args[2]).'.php'), "<?php ".$model);
+            $model = str_replace('CLASSNAME', ucfirst($args[0]), $model);
+            $model = str_replace('TABLE', $args[1], $model);
+            file_put_contents(app_path('app/model/'.ucfirst($args[0]).'.php'), "<?php ".$model);
         }
     }
     

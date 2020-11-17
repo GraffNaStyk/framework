@@ -7,9 +7,11 @@ use App\Facades\Migrations\Migration;
 class Migrate
 {
     private object $migrate;
+    private array $args;
     
-    public function __construct()
+    public function __construct($args)
     {
+        $this->args = $args;
         $this->migrate = new Migration();
     }
     
@@ -26,5 +28,10 @@ class Migrate
     public function dump()
     {
         $this->migrate->dump();
+    }
+    
+    public function make()
+    {
+        $this->migrate->make($this->args);
     }
 }

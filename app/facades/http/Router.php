@@ -83,8 +83,8 @@ final class Router
 
             if (empty($params))
                 return $controller->{self::getAction()}();
-            
-            if (empty(self::$params)) {
+    
+            if (!empty(self::$params)) {
                 foreach (self::$params as $key => $param) {
                     $this->request->set($key, $param);
                 }
@@ -233,7 +233,7 @@ final class Router
         self::$url = filter_var(self::$url, FILTER_SANITIZE_URL);
     }
 
-    private static function checkProtocol(): string
+    public static function checkProtocol(): string
     {
         return isset($_SERVER['HTTPS']) ? 'https' : 'http';
     }

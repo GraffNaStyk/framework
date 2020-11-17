@@ -24,4 +24,15 @@ class Faker
 
         return $number;
     }
+    
+    public static function hash(int $length)
+    {
+        $password = '';
+        while (strlen($password) < $length) {
+            $password .= self::string(1);
+            $password .= self::int(1);
+        }
+        
+        return $password;
+    }
 }
