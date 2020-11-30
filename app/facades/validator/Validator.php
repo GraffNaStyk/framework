@@ -39,7 +39,7 @@ class Validator
     private static function run(array $request)
     {
         foreach (static::$rules as $key => $item) {
-            if(array_key_exists($key, $request)) {
+            if(isset($request[$key])) {
                 foreach ($item as $fnName => $validateRule) {
                     static::$validatorErrors[] = Rules::$fnName(trim($request[$key]), $validateRule, $key);
                 }

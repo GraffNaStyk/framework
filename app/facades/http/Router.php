@@ -167,15 +167,15 @@ final class Router
             );
         }
     }
-
-    public static function post(string $as, string $route, int $rights = 4): void
+    
+    public static function post(string $url, string $provider, int $rights = 4): void
     {
-        self::match($as, $route, 'post', $rights);
+        self::match($url, $provider, 'post', $rights);
     }
-
-    public static function get(string $as, string $route, int $rights = 4): void
+    
+    public static function get(string $url, string $provider, int $rights = 4): void
     {
-        self::match($as, $route, 'get', $rights);
+        self::match($url, $provider, 'get', $rights);
     }
     
     private static function match(string $as, string $route, string $method, int $rights): void

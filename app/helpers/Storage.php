@@ -88,11 +88,6 @@ class Storage
 
     public function upload($file, $destination = '/', $as = null)
     {
-        if(!isset($file['name']) || empty($file['name'])) {
-            Session::msg(['Upload failed! file not exist!'], 'danger');
-            return false;
-        }
-        
         if ($file['error'] === UPLOAD_ERR_OK) {
 
             $this->make($destination);
@@ -107,9 +102,6 @@ class Storage
                 return false;
             }
             
-            return false;
-        } else {
-            Session::msg(['Upload failed! '. $file['name'] . ' is corrupted.', 'danger']);
             return false;
         }
     }

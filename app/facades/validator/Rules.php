@@ -88,4 +88,11 @@ class Rules
             return ['msg' => 'Taka nazwa już istnieje', 'field'=> $field];
         }
     }
+    
+    public static function checkFile($item, $rule, $field)
+    {
+        if ($item['error'] !== UPLOAD_ERR_OK) {
+            return ['msg' => 'Plik jest uszkodzony', 'field'=> $field];
+        }
+    }
 }

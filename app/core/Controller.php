@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Core;
 
 use App\Facades\Http\Response;
@@ -29,15 +30,17 @@ abstract class Controller
             'js' => Loader::js()
         ]);
     
-        if ($vars = Session::collectProvidedData())
+        $vars = Session::collectProvidedData();
+        if ($vars) {
             View::set($vars);
+        }
     
         Session::clearMsg();
     }
 
     public function redirect(?string $path, int $code=302, bool $direct=false)
     {
-        return Router::redirect($path, $code, $direct);
+        Router::redirect($path, $code, $direct);
     }
     
     public function set(array $data): void
