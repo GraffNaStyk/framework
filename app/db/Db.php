@@ -1,17 +1,25 @@
-<?php namespace App\Db;
+<?php
+
+namespace App\Db;
 
 use App\Db\Eloquent\Builder;
 use App\Db\Eloquent\Handle;
 use App\Db\Eloquent\Variables;
 use PDO;
 
-class Db extends Builder
+class Db
 {
     use Variables;
-
+    use Builder;
+    
+    private static array $env;
+    private static ?object $db = null;
+    private static ?string $dbName = null;
+    public ?string $as = null;
+    
     public function __construct($model)
     {
-        parent::__construct($model);
+        $this->table = $model::$table;
     }
 
     public static function init(array $env)
@@ -20,9 +28,9 @@ class Db extends Builder
         self::connect();
     }
     
-    private static function connect()
+    private static function connect(): void
     {
-        if (empty(self::$env) === false) {
+        if (! empty(self::$env)) {
             try {
                 if (self::$db === null) {
                     self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
@@ -36,183 +44,300 @@ class Db extends Builder
                 Handle::throwException($e, 'DATABASE CONNECTION ERROR');
             }
         }
-        return false;
     }
 
-    public function getDbName()
+    public function getDbName(): string
     {
         return self::$dbName;
     }
-
-    public function select($values = '*')
+    
+    public function as(string $alias): Db
     {
-        $this->values = $values;
-        return $this;
-    }
-
-    public function where(array $where)
-    {
-        if(empty($where) === true) {
-            $where = [1,'=',1];
-        }
-
-        if(is_array($where[0]) === true) {
-            foreach ($where as $key => $value) {
-                $this->push('where', $value[0], $value[1], $value[2], $value[3] ?? 'AND');
-            }
-        } else {
-            $this->push('where', $where[0], $where[1], $where[2], $where[3] ?? 'AND');
-        }
-
-        return $this;
-    }
-
-    public function orWhere(array $where)
-    {
-        if(isset($where[3]) === false) {
-            $where[3] = 'OR';
-        }
-
-        $this->where($where);
-        return $this;
-    }
-
-    public function order(string $by, string $type = null)
-    {
-        $this->order['by'] = $by;
-        $this->order['type'] = $type ?? 'ASC';
-        return $this;
-    }
-
-    public function group(string $group)
-    {
-        $this->group = $group;
-        return $this;
-    }
-
-    public function distinct()
-    {
-        $this->distinct = true;
-        return $this;
-    }
-
-    public function limit($limit = null)
-    {
-        $this->limit = $limit;
+        $this->as = ' as `'.$alias.'`';
+        
         return $this;
     }
     
-    public function offset($offset = null)
+    public function distinct(): Db
     {
-        $this->offset = $offset;
+        $this->distinct = true;
+        
+        return $this;
+    }
+    
+    public function duplicate(): Db
+    {
+        $this->onDuplicate = true;
+        
+        return $this;
+    }
+    
+    public function insert(array $values): bool
+    {
+        $this->data = $values;
+        $this->query = "INSERT INTO `{$this->table}` (";
+    
+        foreach ($this->data as $key => $field) {
+            $this->query .= "`{$key}`, ";
+        }
+    
+        $this->query = rtrim($this->query, ', ') .") VALUES (";
+    
+        foreach ($this->data as $key => $field) {
+            $this->query .= ":$key, ";
+        }
+    
+        $this->query = rtrim($this->query, ', ') .")";
+    
+        if ($this->onDuplicate === true) {
+            $this->query .= ' ON DUPLICATE KEY UPDATE ';
+            foreach ($this->data as $key => $field) {
+                $this->query .= "`{$key}` = :{$key}, ";
+            }
+        }
+    
+        $this->query = rtrim($this->query, ', ');
+    
+        return $this->execute();
+    }
+
+    public function select(array $values = []): Db
+    {
+        $this->query = 'SELECT';
+        
+        if ($this->distinct) {
+            $this->query .= ' DISTINCT';
+        }
+        
+        if (empty($values)) {
+            $this->query .= ' * FROM `'.$this->table.'`'.$this->as;
+        } else {
+            $this->query .= " {$this->prepareValuesForSelect($values)} FROM `{$this->table}`".$this->as;
+        }
+        
+        return $this;
+    }
+    
+    public function update(array $values): Db
+    {
+        $this->data = $values;
+        $this->query = "UPDATE `{$this->table}` SET ";
+    
+        foreach ($this->data as $key => $value) {
+            if ((string) $key === 'id') {
+                continue;
+            }
+            $this->query .= "`{$key}` = :{$key}, ";
+        }
+    
+        $this->query = rtrim($this->query, ', ');
+        
+        return $this;
+    }
+    
+    public function delete(): Db
+    {
+        $this->query = "DELETE FROM `{$this->table}`";
+        
+        return $this;
+    }
+
+    public function where(string $item, string $is, string $item2): Db
+    {
+        $tmpItem = str_replace('.', '__', $item).'__'.rand(1,10000);
+        $this->data[$tmpItem] = $item2;
+        
+        if ($this->isFirstWhere === true) {
+            $this->query .= " AND {$this->prepareValueForWhere($item)} {$is} :{$tmpItem} ";
+        } else {
+            $this->isFirstWhere = true;
+            $this->query .= " WHERE {$this->prepareValueForWhere($item)} {$is} :{$tmpItem}";
+        }
+        
+        return $this;
+    }
+
+    public function orWhere(string $item, string $is, string $item2): Db
+    {
+        $tmpItem = str_replace('.', '__', $item).'__'.rand(1,10000);
+        $this->data[$tmpItem] = $item2;
+        $this->query .= " OR {$this->prepareValueForWhere($item)} {$is} :{$tmpItem} ";
+        
+        return $this;
+    }
+    
+    public function whereNull(string $item): Db
+    {
+        if ($this->isFirstWhere === true) {
+            $this->query .= " AND {$this->prepareValueForWhere($item)} IS NULL ";
+        } else {
+            $this->isFirstWhere = true;
+            $this->query .= " WHERE {$this->prepareValueForWhere($item)} IS NULL ";
+        }
+    
+        return $this;
+    }
+    
+    public function whereNotNull(string $item): Db
+    {
+        if ($this->isFirstWhere === true) {
+            $this->query .= " AND {$this->prepareValueForWhere($item)} IS NOT NULL ";
+        } else {
+            $this->isFirstWhere = true;
+            $this->query .= " WHERE {$this->prepareValueForWhere($item)} IS NOT NULL ";
+        }
+    
+        return $this;
+    }
+    
+    public function orWhereNull(string $item): Db
+    {
+        $this->query .= " OR {$this->prepareValueForWhere($item)} IS NULL ";
+    
+        return $this;
+    }
+    
+    public function orWhereNotNull(string $item): Db
+    {
+        $this->query .= " OR {$this->prepareValueForWhere($item)} IS NOT NULL ";
+    
+        return $this;
+    }
+    
+    public function whereIn(array $items, string $item): Db
+    {
+        $items = "'".implode("', '", $items)."'";
+
+        if ($this->isFirstWhere === true) {
+            $this->query .= " AND {$this->prepareValueForWhere($item)} IN ({$items}) ";
+        } else {
+            $this->isFirstWhere = true;
+            $this->query .= " WHERE {$this->prepareValueForWhere($item)} IN ({$items}) ";
+        }
+        
+        return $this;
+    }
+    
+    public function whereNotIn(array $items, string $item): Db
+    {
+        $items = "'".implode("', '", $items)."'";
+    
+        if ($this->isFirstWhere === true) {
+            $this->query .= " AND {$this->prepareValueForWhere($item)} NOT IN ({$items}) ";
+        } else {
+            $this->isFirstWhere = true;
+            $this->query .= " WHERE {$this->prepareValueForWhere($item)} NOT IN ({$items}) ";
+        }
+    
+        return $this;
+    }
+    
+    public function raw(string $raw): Db
+    {
+        $this->query .= ' '.$raw;
+        
+        return $this;
+    }
+    
+    public function order(array $by, string $type = 'ASC'): Db
+    {
+        $this->query .= " ORDER BY {$this->prepareValuesForSelect($by)} {$type}";
+        
+        return $this;
+    }
+
+    public function group(string $group): Db
+    {
+        $this->query .= " GROUP BY {$this->prepareValueForWhere($group)} {$type}";
+        
+        return $this;
+    }
+
+    public function limit(int $limit): Db
+    {
+        $this->query .= " LIMIT {$limit}";
+    
+        return $this;
+    }
+    
+    public function offset(int $offset): Db
+    {
+        $this->query .= " OFFSET {$offset}";
+    
         return $this;
     }
 
     public function first()
     {
-        $this->first = true;
-        return $this;
     }
 
-    public function get()
+    public function get(): array
     {
-        $this->query = "SELECT ";
-
-        if ($this->distinct)
-            $this->query .= $this->buildDistinct();
-
-        $this->query .= $this->prepareValues();
-        $this->query .= " FROM `{$this->table}`";
-
-        if (!empty($this->innerJoin['field']))
-            $this->query .= $this->buildJoin('innerJoin');
-
-        if (!empty($this->leftJoin['field']))
-            $this->query .= $this->buildJoin('leftJoin');
-
-        if (!empty($this->rightJoin['field']))
-            $this->query .= $this->buildJoin('rightJoin');
-
-        if (!empty($this->where))
-            $this->query .= $this->buildWhereQuery();
-    
-        if (!empty($this->whereIn))
-            $this->query .= $this->buildWhereInQuery();
-
-        if (!empty($this->group))
-            $this->query .= $this->buildGroup();
-
-        if (!empty($this->order['by']))
-            $this->query .= $this->buildOrder();
-
-        if (!empty($this->limit))
-            $this->query .= " LIMIT {$this->limit}";
-    
-        if (!empty($this->offset))
-            $this->query .= " OFFSET {$this->offset}";
-
-        if($this->debug)
+        if ($this->debug) {
             $this->develop();
-
-        return $this->execute();
-    }
-
-    public function all()
-    {
-        $this->query = "SELECT * FROM  `{$this->table}`";
+        }
+        
         return $this->execute();
     }
 
     public function count($data = [])
     {
-        $field = $data[0] ?? '*';
-        $alias = $data[1] ?? 'total';
-        $this->query = "SELECT count($field) as '$alias' from `{$this->table}` {$this->buildWhereQuery()}";
-        return $this->execute()[0];
     }
     
-    public function increment(array $inc)
+    public function increment(string $field, int $increment): Db
     {
-        $this->query = "UPDATE `{$this->table}` SET {$inc[0]} = {$inc[0]} + {$inc[1]} {$this->buildWhereQuery()}";
+        $this->query = "UPDATE `{$this->table}` SET {$field} = {$field} + {$increment} ";
         
-        return $this->execute();
+        return $this;
     }
     
-    public function decrement(array $inc)
+    public function decrement(string $field, int $decrement): Db
     {
-        $this->query = "UPDATE `{$this->table}` SET {$inc[0]} = {$inc[0]} - {$inc[1]} {$this->buildWhereQuery()}";
+        $this->query = "UPDATE `{$this->table}` SET {$field} = {$field} - {$decrement} ";
         
-        return $this->execute();
-    }
-
-    public function join(array $join)
-    {
-        $this->push('innerJoin', $join[1], $join[2], $join[3], 'INNER JOIN', $join[0]);
         return $this;
     }
 
-    public function leftJoin(array $join)
+    public function join(string $table, string $value1, string $by, string $value2, bool $isRigidly = false): Db
     {
-        $this->push('leftJoin', $join[1], $join[2], $join[3], 'LEFT JOIN', $join[0]);
+        $this->setJoin('INNER', $table, $value1, $by, $value2, $isRigidly);
         return $this;
     }
 
-    public function rightJoin(array $join)
+    public function leftJoin(string $table, string $value1, string $by, string $value2, bool $isRigidly = false): Db
     {
-        $this->push('rightJoin', $join[1], $join[2], $join[3], 'RIGHT JOIN', $join[0]);
+        $this->setJoin('LEFT', $table, $value1, $by, $value2, $isRigidly);
         return $this;
     }
 
-    private function execute()
+    public function rightJoin(string $table, string $value1, string $by, string $value2, bool $isRigidly = false): Db
+    {
+        $this->setJoin('RIGHT', $table, $value1, $by, $value2, $isRigidly);
+        return $this;
+    }
+    
+    private function setJoin(string $type, string $table, string $value1, string $by, string $value2, bool $isRigidly = false): void
+    {
+        if ($isRigidly) {
+            $twoValue = $value2;
+        } else {
+            $twoValue = $this->prepareValueForWhere($value2);
+        }
+        
+        $this->query .= " {$type} JOIN {$this->prepareValueForWhere($table)} ON {$this->prepareValueForWhere($value1)} {$by} {$twoValue}";
+    }
+
+    private function execute(): array
     {
         $this->setData();
+        
         if (preg_match('/^(INSERT|UPDATE|DELETE)/', $this->query)) {
             try {
                 if (self::$db->prepare($this->query)->execute($this->data)) {
                     return true;
                 }
             } catch (\PDOException $e) {
-                Handle::throwException($e, $this->query);
+                Handle::throwException($e, $this->develop(true));
             }
             return false;
         } else {
@@ -226,7 +351,7 @@ class Db extends Builder
                 
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch (\PDOException $e) {
-                Handle::throwException($e, $this->query);
+                Handle::throwException($e, $this->develop(true));
             }
         }
         return false;
@@ -237,55 +362,7 @@ class Db extends Builder
         return self::$db->lastInsertId();
     }
 
-    public function update(array $data)
-    {
-        $this->data = $data;
-        $this->buildUpdateQuery();
-
-        if($this->execute())
-            return true;
-
-        return false;
-    }
-
-    public function insert(array $data)
-    {
-        $this->data = $data;
-        $this->buildSaveQuery();
-
-        if($this->execute())
-            return true;
-
-        return false;
-    }
-
-    public function delete()
-    {
-        $this->query = "DELETE FROM `{$this->table}` {$this->buildWhereQuery()}";
-
-        if($this->execute())
-            return true;
-
-        return false;
-    }
-
-    public function findOrFail()
-    {
-        $result = $this->get();
-
-        if(empty($result) === true)
-            return false;
-
-        if(isset($result[1]))
-            return false;
-
-        if(isset($result[0]))
-            return $result[0];
-
-        return false;
-    }
-
-    public function debug()
+    public function debug(): Db
     {
         $this->debug = true;
 
@@ -296,28 +373,24 @@ class Db extends Builder
     {
         $stmt = self::$db->prepare($query);
         $stmt->execute();
+
         if (preg_match('/^(SELECT)/', $query)) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
 
-    private function develop()
+    private function develop($return = false)
     {
         $statement = $this->query;
+        
         foreach ($this->data as $key => $item) {
             $statement = str_replace(':'.$key, "'".$item."'", $statement);
         }
+        
+        if ($return) {
+            return $statement;
+        }
 
-        pd([
-            'Query' => $statement,
-            'RawQuery' => $this->query,
-            'Data' => $this->data,
-            'Where' => $this->where,
-            'Join' => [
-                'Left' => $this->leftJoin,
-                'Right' => $this->rightJoin,
-                'Inner' => $this->innerJoin,
-            ]
-        ]);
+        pd($statement);
     }
 }

@@ -89,7 +89,6 @@ class Storage
     public function upload($file, $destination = '/', $as = null)
     {
         if ($file['error'] === UPLOAD_ERR_OK) {
-
             $this->make($destination);
 
             $destination  = self::$disk . $destination;
@@ -97,6 +96,7 @@ class Storage
 
             if(move_uploaded_file($file['tmp_name'], $destination)) {
                 if ($this->checkFile($destination) === true) {
+                    chmod($destination, 0775);
                     return true;
                 }
                 return false;

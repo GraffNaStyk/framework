@@ -52,8 +52,19 @@ function fatalErrorHandler () {
         if ($lastError['type'] === E_ERROR || $lastError['type'] === E_USER_ERROR || $lastError['type'] === E_PARSE) {
             header("HTTP/1.0 500 Method Not Allowed");
             http_response_code(500);
-        
+            
+            if (php_sapi_name() === 'cli') {
+                print_r($lastError);
+                exit;
+            }
+            
             if (app['dev'] === false) {
+                $lastError['trace'] = ['Controller' => \App\Facades\Http\Router::getClass(), 'action' => \App\Facades\Http\Router::getAction()];
+                file_put_contents(
+                    storage_path('private/logs/php_' . date('d-m-Y') . '.log'),
+                    json_encode($lastError, JSON_PRETTY_PRINT),
+                    FILE_APPEND
+                );
                 exit (require_once view_path('errors/fatal.php'));
             } else {
                 exit (require_once view_path('errors/fatal-dev.php'));

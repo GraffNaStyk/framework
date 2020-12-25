@@ -1,4 +1,6 @@
-<?php namespace App\Db;
+<?php
+
+namespace App\Db;
 
 class Model
 {
@@ -6,12 +8,7 @@ class Model
 
     public static function __callStatic($name, $arguments)
     {
-        if (self::$db instanceof Db) {
-            self::$db->reconstruct(get_called_class());
-        } else {
-            self::$db = new Db(get_called_class());
-        }
-        
+        self::$db = new Db(get_called_class());
         return self::$db->$name($arguments[0] ?? $arguments);
     }
 }

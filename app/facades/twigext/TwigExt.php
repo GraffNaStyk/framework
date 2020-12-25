@@ -90,14 +90,20 @@ class TwigExt extends AbstractExtension
             $url = '';
             $data = '<option data-placeholder="true"></option>';
             $multiple = '';
-            
+    
             if (isset($attr['data']) && empty($attr['data']) === false) {
                 foreach ($attr['data'] as $key => $value) {
-                    if (isset($attr['selected'])) {
+                    if (isset($attr['selected']) && ! is_array($attr['selected'])) {
                         $selected = $value['value'] == $attr['selected'] ? 'selected' : '';
+                        $data .= '<option value="'.$value['value'].'" '.$selected.'>'.$value['text'].'</option>';
+                    } else if (isset($attr['selected']) && is_array($attr['selected'])) {
+                        foreach ($attr['selected'] as $item) {
+                            $selected = $value['value'] == $item ? 'selected' : '';
+                            $data .= '<option value="'.$value['value'].'" '.$selected.'>'.$value['text'].'</option>';
+                        }
+                    }  else {
+                        $data .= '<option value="'.$value['value'].'" '.$selected.'>'.$value['text'].'</option>';
                     }
-                    
-                    $data .= '<option value="'.$value['value'].'" '.$selected.'>'.$value['text'].'</option>';
                 }
                 unset($attr['data']);
             }
