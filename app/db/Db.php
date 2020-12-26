@@ -72,7 +72,7 @@ class Db
         return $this;
     }
     
-    public function insert(array $values): bool
+    public function insert(array $values): Db
     {
         $this->data = $values;
         $this->query = "INSERT INTO `{$this->table}` (";
@@ -98,7 +98,7 @@ class Db
     
         $this->query = rtrim($this->query, ', ');
     
-        return $this->execute();
+        return $this;
     }
 
     public function select(array $values = []): Db
@@ -140,6 +140,11 @@ class Db
         $this->query = "DELETE FROM `{$this->table}`";
         
         return $this;
+    }
+    
+    public function exec()
+    {
+        return $this->execute();
     }
 
     public function where(string $item, string $is, string $item2): Db
@@ -267,8 +272,11 @@ class Db
         return $this;
     }
 
-    public function first()
+    public function one()
     {
+        $this->first = true;
+        
+        return $this->execute();
     }
 
     public function get(): array
@@ -280,8 +288,12 @@ class Db
         return $this->execute();
     }
 
-    public function count($data = [])
+    public function count(string $item): Db
     {
+        $this->query = "SELECT COUNT({$item}) as count from `{$this->table}`";
+        $this->first = true;
+        
+        return $this;
     }
     
     public function increment(string $field, int $increment): Db
@@ -327,7 +339,7 @@ class Db
         $this->query .= " {$type} JOIN {$this->prepareValueForWhere($table)} ON {$this->prepareValueForWhere($value1)} {$by} {$twoValue}";
     }
 
-    private function execute(): array
+    private function execute()
     {
         $this->setData();
         

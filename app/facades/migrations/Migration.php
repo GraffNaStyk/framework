@@ -29,8 +29,8 @@ class Migration
     {
         $this->makeJsonFile();
         $migrationContent = (array) json_decode(
-            Storage::disk('private')->getContent('db/migrations.json')
-            , true
+            Storage::disk('private')->getContent('db/migrations.json'),
+            true
         );
         
         foreach ($this->sortByDate(glob(app_path('app/db/migrate/Migration_*.php'))) as $migration) {

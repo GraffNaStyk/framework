@@ -24,21 +24,21 @@ trait Builder
     {
         $ret = '';
     
-        if ((bool) strpos($value, '.') === true && (bool) strpos($value, 'as') === true) {
+        if ((bool) strpos($value, '.') === true && (bool) preg_match('/( as )/', $value)) {
             $value = explode('.', $value);
             $ret .= " `{$this->trim($value[0])}`";
-            $value = explode('as', $value[1]);
+            $value = explode(' as ', $value[1]);
             $ret .= ".`{$this->trim($value[0])}` as `{$this->trim($value[1])}`";
-        } else if ((bool) strpos($value, 'as') === true && (bool) strpos($value, '.') === false) {
-            $value = explode('as', $value);
+        } else if ((bool) preg_match('/( as )/', $value) && (bool) strpos($value, '.') === false) {
+            $value = explode(' as ', $value);
             $ret .= "`{$this->trim($value[0])}` as `{$this->trim($value[1])}`";
-        } else if ((bool) strpos($value, 'as') === false && (bool) strpos($value, '.') === true) {
+        } else if (! (bool) preg_match('/( as )/') && (bool) strpos($value, '.') === true) {
             $value = explode('.', $value);
             $ret .= "`{$this->trim($value[0])}`.`{$this->trim($value[1])}`";
         } else {
             $ret .= "`{$this->trim($value)}`";
         }
-        
+
         return $ret;
     }
     

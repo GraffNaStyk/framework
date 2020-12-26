@@ -50,8 +50,9 @@ abstract class Controller
     
     public function render(array $data = [])
     {
-        if(empty($data) === false)
+        if (! empty($data)) {
             return View::render($data);
+        }
         
         return View::render();
     }
@@ -63,11 +64,11 @@ abstract class Controller
     
     public function sendSuccess(?string $message, string $to = null, int $status = 200 ,array $headers = []): string
     {
-        return Response::json(['ok' => true, 'msg' => [$message ?? 'Dane zostały zapisane'], 'to' => $to], $status, $headers);
+         Response::json(['ok' => true, 'msg' => [$message ?? 'Dane zostały zapisane'], 'to' => $to], $status, $headers);
     }
     
     public function sendError(string $message=null, int $status = 400, array $headers = []): string
     {
-        return Response::json(['ok' => false, 'msg' => $message ?? Validator::getErrors()], $status, $headers);
+         Response::json(['ok' => false, 'msg' => $message ?? Validator::getErrors()], $status, $headers);
     }
 }
