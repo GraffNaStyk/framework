@@ -7,23 +7,15 @@ use ReflectionMethod;
 use ReflectionClass;
 use App\Facades\Url\Url;
 
-final class Router
+final class Router extends Route
 {
     private static array $params = [];
-
-    private static array $aliases = [];
-
-    private static string $provider = '';
     
-    private static ?string $baseRouteProvider = null;
+    private static string $provider = 'Index';
     
     private static string $class = 'Index';
 
     private static string $action = 'index';
-
-    private static array $routes = [];
-
-    private static ?string $alias = null;
 
     private static string $url = '';
 
@@ -31,11 +23,15 @@ final class Router
 
     public function __construct()
     {
-        self::$provider = app['http-provider'];
         $this->request = new Request();
+        $this->boot();
+    }
+    
+    private function boot()
+    {
         $this->parseUrl();
         $this->setParams();
-        $this->create(self::$provider . self::getClass() . 'Controller');
+        $this->create(self::$provider . '\\' . self::getClass() . 'Controller');
     }
 
     public static function getClass(): string
@@ -47,6 +43,11 @@ final class Router
     {
         return self::$action;
     }
+    
+    public static function getNamespace(): string
+    {
+        return self::$provider;
+    }
 
     private static function setClass(string $class): void
     {
@@ -57,23 +58,35 @@ final class Router
     {
         self::$action = lcfirst($action);
     }
-
+    
+    private static function setNamespace(string $namespace): void
+    {
+        self::$provider = $namespace;
+    }
+    
     public static function getAlias()
     {
-        return self::$alias;
+        $alias = mb_strtolower(end(explode('\\', self::getNamespace())));
+        
+        if ($alias === 'http') {
+            return 'http';
+        }
+        
+        return 'admin';
     }
     
     private function create(string $controller)
     {
         if (class_exists($controller)) {
-
-            if (!method_exists($controller, self::getAction()))
+            if (! method_exists($controller, self::getAction())) {
                 self::http404();
+            }
             
             $reflectionClass = new ReflectionClass($controller);
 
-            if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller)
+            if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
                 self::http404();
+            }
             
             $reflection = new ReflectionMethod($controller, self::getAction());
             
@@ -107,100 +120,32 @@ final class Router
     
     public function setParams()
     {
-        $exist = false;
-
         foreach (self::$routes as $key => $route) {
             self::$params = [];
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
             
             if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
-
                 if (! Auth::middleware($route['controller'], $route['action'], $route['rights'])) {
                     self::redirect(Url::base());
                 }
-                
-                $exist = true;
                 
                 if ((string) $this->request->getMethod() !== (string) $route['method']) {
                     $this->http405();
                 }
                 
+                self::setNamespace($route['namespace']);
                 self::setClass($route['controller']);
                 self::setAction($route['action']);
                 
                 $matches = array_slice($matches, 1);
                 
-                foreach ($matches as $key2 => $value)
+                foreach ($matches as $key2 => $value) {
                     self::$params[] = $matches[$key2][0];
+                }
                 
                 break;
             }
         }
-        self::setBasic($exist);
-    }
-    
-    private static function setBasic(bool $exist): void
-    {
-        //this case is for automaticly routes like controller/action when
-        if ($exist === false) {
-            $route = explode('/', self::$url);
-            
-            if (self::$baseRouteProvider) {
-                self::setClass(self::$baseRouteProvider);
-            } else if (!empty($route[0])) {
-                self::setClass($route[0]);
-            }
-        
-            if (isset($route[1]) && !empty($route[1])) {
-                self::setAction($route[1]);
-            }
-            
-            unset($route[0], $route[1]);
-        
-            foreach ($route as $key2 => $value)
-                self::$params[] = $value;
-        
-            self::match('',
-                self::getClass() . '@' . self::getAction(),
-                getenv('REQUEST_METHOD'),
-                4
-            );
-        }
-    }
-    
-    public static function post(string $url, string $provider, int $rights = 4): void
-    {
-        self::match($url, $provider, 'post', $rights);
-    }
-    
-    public static function get(string $url, string $provider, int $rights = 4): void
-    {
-        self::match($url, $provider, 'get', $rights);
-    }
-    
-    private static function match(string $as, string $route, string $method, int $rights): void
-    {
-        $route = str_replace('@', '/', $route);
-        $routes = explode('/', $route);
-        self::$routes[$as ?? $route] = [
-            'controller' => ucfirst($routes[0]),
-            'action' => $routes[1] ?? 'index',
-            'method' => $method,
-            'rights' => $rights
-        ];
-    }
-    
-    public static function redirect(string $path, int $code = 302, bool $direct = false): void
-    {
-        session_write_close();
-        session_regenerate_id();
-        
-        if ($direct) {
-            header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::base() . $path, true, $code);
-        } else {
-            header('location: '.self::checkProtocol().'://' . $_SERVER['HTTP_HOST'] . Url::get() . $path, true, $code);
-        }
-        exit;
     }
     
     public static function url(): string
@@ -216,26 +161,7 @@ final class Router
             self::$url = self::url();
         }
         
-        self::$url = preg_replace('/\?.*/', '', self::$url);
-
-        foreach (self::$aliases as $key => $provider) {
-            if (preg_match("/(^$key$|^$key(\?|\/))/U", self::$url, $m)) {
-                $m = strtolower(rtrim($m[0], '/'));
-                self::$url = preg_replace("/" . $m . "/", '', self::$url, 1);
-                self::$provider = $provider['ns'];
-                self::setClass($provider['base'] ?? 'Index');
-                self::$alias = $m;
-                break;
-            }
-        }
-        
-        self::$url = trim(self::$url, '/');
         self::$url = filter_var(self::$url, FILTER_SANITIZE_URL);
-    }
-
-    public static function checkProtocol(): string
-    {
-        return isset($_SERVER['HTTPS']) ? 'https' : 'http';
     }
 
     public static function http404(): void
@@ -262,20 +188,11 @@ final class Router
     
     private static function throwJsonResponse(int $status, string $message)
     {
-        return Response::json(['msg' => $message], $status);
+        Response::json(['msg' => $message], $status);
     }
 
     public static function run(): self
     {
         return new self();
-    }
-
-    public static function group(array $alias, callable $function): void
-    {
-        self::$aliases[$alias['prefix']] = [
-            'ns' => str_replace('\\', '\\', $alias['as']) . '\\',
-            'base' => $alias['base'] ?? null
-        ];
-        $function();
     }
 }

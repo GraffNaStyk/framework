@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-  <base href="{{ base() }}">
   <title>{{ page.title }}</title>
     {{ css|raw }}
   <script>
@@ -18,19 +17,19 @@
 {% include 'layouts/inc/preloader.twig' %}
 
 <nav class="navbar navbar-expand-lg top__nav justify-content-between">
-  <a href="{{ url('dash') }}" class="logo">DASHBOARD</a>
+  <a href="{{ url('/dash') }}" class="logo">DASHBOARD</a>
 
   <div class="d-flex align-items-center">
     <a href="#"><i class="fa fa-bars"></i></a>
-    <a href="{{ url('settings') }}" {{ tooltip('settings') }} ><i class="fa fa-cog"></i></a>
+    <a href="{{ url('/settings') }}" {{ tooltip('settings') }} ><i class="fa fa-cog"></i></a>
     <a href="#" {{ tooltip('profile') }}><i data-menu="toggle" data-target="#menu" class="fa fa-user"></i></a>
 
     <div class="box__menu flex-column d-none" id="menu">
       <div class="render" data-url="password" data-el="modal">Resetuj hasło</div>
-      <a href="{{ url('profile') }}">Mój profil</a>
+      <a href="{{ url('/profile') }}">Mój profil</a>
     </div>
 
-    <a href="{{ url('logout') }}" {{ tooltip('logout') }}> <i class="fa fa-power-off"></i> </a>
+    <a href="{{ url('/logout') }}" {{ tooltip('logout') }}> <i class="fa fa-power-off"></i> </a>
 
   </div>
 </nav>
@@ -42,14 +41,14 @@
 
     <a href="#" class="has__parent"> <i class="fa fa-paint-brush"></i> Strona</a>
     <div class="parent">
-      <a href="{{ url('appearance/colors') }}">Kolory</a>
-      <a href="{{ url('appearance/seo') }}">Seo</a>
+      <a href="{{ url('/appearance/colors') }}">Kolory</a>
+      <a href="{{ url('/appearance/seo') }}">Seo</a>
     </div>
 
     <a href="#" class="has__parent"> <i class="fa fa-lock"></i> Klienci</a>
     <div class="parent">
-      <a href="{{ url('clients/add') }}">nowy</a>
-      <a href="{{ url('clients') }}">Lista</a>
+      <a href="{{ url('/clients/add') }}">nowy</a>
+      <a href="{{ url('/clients') }}">Lista</a>
     </div>
 
   </aside>
@@ -61,7 +60,7 @@
 </section>
 
 {% include 'components/modal.twig' %}
-<script type="module" src="public/js/components/main.js"></script>
+<script type="module" src="{{ base('/public/js/components/main.js') }}"></script>
 {{ js|raw }}
 </body>
 </html>

@@ -272,7 +272,7 @@ class Db
         return $this;
     }
 
-    public function one()
+    public function first()
     {
         $this->first = true;
         
@@ -286,6 +286,17 @@ class Db
         }
         
         return $this->execute();
+    }
+    
+    public function exist()
+    {
+        $res = $this->first();
+        
+        if (empty($res)) {
+            return false;
+        }
+        
+        return $res;
     }
 
     public function count(string $item): Db

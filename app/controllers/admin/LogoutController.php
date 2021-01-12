@@ -1,6 +1,8 @@
-<?php namespace App\Controllers\Admin;
+<?php
 
-use App\Facades\Http\Router;
+namespace App\Controllers\Admin;
+
+use App\Facades\Http\Route;
 use App\Helpers\Session;
 
 class LogoutController
@@ -8,6 +10,6 @@ class LogoutController
     public function index()
     {
         Session::destroy();
-        Router::redirect('');
+        Route::redirect('/');
     }
 }

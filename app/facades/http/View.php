@@ -28,11 +28,11 @@ final class View
     {
         self::set($data);
         
-        if (self::$loader instanceof  Twig\Loader\FilesystemLoader === false) {
+        if (self::$loader instanceof Twig\Loader\FilesystemLoader === false) {
             self::$loader = new Twig\Loader\FilesystemLoader(view_path());
         }
     
-        if (self::$twig instanceof  Twig\Environment === false) {
+        if (self::$twig instanceof Twig\Environment === false) {
             $config['debug'] = true;
             if((bool) app['cache_view'] === true) {
                 $config['cache'] = storage_path('framework/views');
@@ -44,16 +44,16 @@ final class View
             self::registerFunctions();
         }
         
-        self::$dir = Router::getAlias() ?? 'http';
-
+        self::$dir = Router::getAlias();
         self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
         self::setViewFile();
-    
+
         if ((bool) self::$directly === true) {
             return self::$twig->display('/components/'.self::$view. self::$ext, self::$data);
         } else if (file_exists(view_path(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext))) {
             return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
         }
+        
         exit(require_once view_path('errors/view-not-found.php'));
     }
 
@@ -65,9 +65,12 @@ final class View
 
     public static function isAjax(): bool
     {
-        if (isset($_SERVER['HTTP_X_FETCH_HEADER']) && (string) strtolower($_SERVER['HTTP_X_FETCH_HEADER']) === 'fetchapi')
+        if (isset($_SERVER['HTTP_X_FETCH_HEADER'])
+            && (string) strtolower($_SERVER['HTTP_X_FETCH_HEADER']) === 'fetchapi'
+        ) {
             return true;
-
+        }
+        
         return false;
     }
 

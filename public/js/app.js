@@ -11,7 +11,7 @@ export const post = async (args) => {
     Object.keys(args.data).forEach(key => data.append(key, args.data[key]));
   }
 
-  return await fetch(document.url + args.url, {
+  return await fetch(document.url + '/' + args.url, {
     method: 'POST',
     credentials: 'same-origin',
     headers: {
@@ -22,7 +22,7 @@ export const post = async (args) => {
 };
 
 export const get = async (fetch_url) => {
-  return await fetch(document.url + fetch_url, {
+  return await fetch(document.url + '/' + fetch_url, {
     method: 'GET',
     credentials: 'same-origin',
     headers: {
@@ -34,7 +34,7 @@ export const get = async (fetch_url) => {
 export const render = (args) => {
   insertLoader();
   preloader();
-  fetch(document.url + args.url, {
+  fetch(document.url + '/' + args.url, {
     method: 'GET',
     credentials: 'same-origin',
     headers: {

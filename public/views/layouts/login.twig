@@ -6,7 +6,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-  <base href="{{ base() }}">
   <title>{{ title }}</title>
   {{ css|raw }}
   <script>
@@ -19,7 +18,7 @@
 
 {% endblock %}
 {% include 'components/modal.twig' %}
-<script type="module" src="public/js/components/main.js"></script>
+<script type="module" src="{{ base('/public/js/components/main.js') }}"></script>
 {{ js|raw }}
 </body>
 </html>

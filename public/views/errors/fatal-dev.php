@@ -16,7 +16,7 @@
 <b>[Message]:</b> <?= str_replace(['thrown', 'Stack trace:', ':'.$lastError['line']], ['', '<br /><b>[Trace]:</b>', ''], $lastError['message']);?>
 </pre>
  <a style="margin: 80px auto 0 auto; border: 1px solid rgba(0,0,0,0.6); padding: 1rem; text-decoration: none; color :rgba(0,0,0,0.6); font-family: 'Nunito', sans-serif;"
-    href="<?=\App\Facades\Url\Url::get();?>">
+    href="<?=\App\Facades\Url\Url::base();?>">
     Back to main Page
  </a>
 </div>

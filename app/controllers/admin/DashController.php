@@ -20,7 +20,7 @@ class DashController extends Controller
 
     public function index()
     {
-        return View::render(['users' => User::all()]);
+        return View::render(['users' => User::select()->get()]);
     }
     
     public function users()

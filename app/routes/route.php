@@ -1,10 +1,21 @@
 <?php
-use App\Facades\Http\Router;
 
-Router::group(['prefix' => 'admin', 'as' => 'App\Controllers\Admin', 'base' => 'login'], function () {
-    Router::get('authorize', 'Dash@index', 1);
-    Router::get('/clients/add/{id}', 'Clients@add', 1);
-    Router::get('/clients', 'Clients@index', 1);
+use App\Facades\Http\Router;
+use App\Facades\Http\Route;
+
+Route::when('/admin', '/dash');
+
+Route::alias('/admin', function () {
+    Route::namespace('App\Controllers\Admin', function () {
+        Route::get('/dash', 'Dash@index');
+        Route::get('/login', 'Login@index');
+        Route::post('/login/check', 'Login@check');
+        Route::get('/logout', 'Logout@index');
+    });
+});
+
+Route::namespace('App\Controllers\Http', function () {
+    Route::get('/', 'Index@index');
 });
 
 Router::run();

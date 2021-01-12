@@ -6,25 +6,34 @@ use App\Facades\Http\Router;
 class Url
 {
 
-    public static function get()
+    public static function get(): string
     {
-        $url = Router::getAlias() ? Router::getAlias() . '/' : Router::getAlias();
-        return app['url'].$url;
+        if (Router::getAlias() === 'http') {
+            $url = Url::base().$url;
+        } else {
+            $url = Url::base().'/'.Router::getAlias().$url;
+        }
+        
+        return $url;
     }
 
-    public static function base()
+    public static function base(): string
     {
-        return app['url'];
+        if (app('url') === '/') {
+            return '';
+        }
+        
+        return app('url');
     }
 
     public static function segment($string, $offset, $delimiter = '/'): ?string
     {
         $string = explode($delimiter, $string);
 
-        if($offset === 'end' || $offset === 'last')
+        if ($offset === 'end' || $offset === 'last')
             return end($string);
 
-        if(isset($string[$offset]))
+        if (isset($string[$offset]))
             return $string[$offset];
 
         return false;
@@ -43,7 +52,7 @@ class Url
         return in_array(getenv('REMOTE_ADDR'), ['127.0.0.1', '::1']) ? true : false;
     }
     
-    public static function full()
+    public static function full(): string
     {
         if (empty(getenv('HTTP_HOST'))) {
             return app['host_url'].self::base();

@@ -8,7 +8,7 @@ use App\Helpers\Loader;
 use App\Helpers\Session;
 use App\Helpers\Storage;
 use App\Facades\Http\View;
-use App\Facades\Http\Router;
+use App\Facades\Http\Route;
 
 abstract class Controller
 {
@@ -31,6 +31,7 @@ abstract class Controller
         ]);
     
         $vars = Session::collectProvidedData();
+        
         if ($vars) {
             View::set($vars);
         }
@@ -40,7 +41,7 @@ abstract class Controller
 
     public function redirect(?string $path, int $code=302, bool $direct=false)
     {
-        Router::redirect($path, $code, $direct);
+        Route::redirect($path, $code, $direct);
     }
     
     public function set(array $data): void

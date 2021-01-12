@@ -20,7 +20,7 @@ return [
      *  @url this is a framework url, default u can set '/' if framework exist
      *  in any sub folder need to add this path there to good working
     */
-    'url' => '/graff/',
+    'url' => '/graff',
     
     /*
      *  @cache_view disable or enable view caching
@@ -45,12 +45,6 @@ return [
      *  dynamic function used model with full path
      */
     'model-provider' => 'App\\Model\\',
-    
-    /*
-     *  @http-provider its a defined namespace to default controllers
-     *  called by user
-     */
-    'http-provider' => 'App\\Controllers\\Http\\',
     
     /*
      *  Always loaded libraries css / js from main css / js directory

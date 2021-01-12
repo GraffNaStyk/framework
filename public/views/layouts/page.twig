@@ -10,7 +10,6 @@
   <meta name="keywords" content="Graff PHP">
   <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-  <base href="{{ base() }}">
   <title>{{ page.title }}</title>
   {{ css|raw }}
   {% if styles is iterable %}
@@ -29,7 +28,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 <div class="container">
-  <a class="navbar-brand" href="{{ url() }}">Graff PHP</a>
+  <a class="navbar-brand" href="{{ base() }}">Graff PHP</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
     <span class="navbar-toggler-icon"></span>
   </button>

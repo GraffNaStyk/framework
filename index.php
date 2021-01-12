@@ -1,4 +1,5 @@
 <?php
+
 header("Content-Type: text/html; charset=utf-8");
 header("X-Frame-Options: sameorigin");
 header("Content-Security-Policy: block-all-mixed-content; upgrade-insecure-requests; reflected-xss;");
@@ -7,48 +8,48 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-if (!file_exists(__DIR__.'/app/config/app.php'))
+if (! file_exists(__DIR__.'/app/config/app.php'))
     exit('No app config file');
 
 if (session_status() === PHP_SESSION_NONE)
     session_start();
 
-function public_path($path = null)
+function public_path($path = null): string
 {
     return __DIR__ . '/public/'. $path;
 }
 
-function css_path($path = null)
+function css_path($path = null): string
 {
     return __DIR__ . '/public/css/'. $path;
 }
 
-function js_path($path = null)
+function js_path($path = null): string
 {
     return __DIR__ . '/public/js/'. $path;;
 }
 
-function view_path($path = null)
+function view_path($path = null): string
 {
     return __DIR__ . '/public/views/'. $path;
 }
 
-function app_path($path = null)
+function app_path($path = null): string
 {
     return __DIR__ . '/' . $path;
 }
 
-function storage_path($path = null)
+function storage_path($path = null): string
 {
     return __DIR__ . '/storage/' . $path;
 }
 
-function vendor_path($path = null)
+function vendor_path($path = null): string
 {
     return __DIR__ . '/vendor/' . $path;
 }
 
-function path($path = null)
+function path($path = null): string
 {
     return __DIR__ . '/' . $path;
 }
@@ -58,7 +59,7 @@ function pd($item, $die = false)
     echo '<pre>';
     print_r($item);
     echo '</pre>';
-    if($die) die();
+    if ($die) die();
 }
 
 function dd($item, $die = false)
@@ -66,7 +67,7 @@ function dd($item, $die = false)
     echo '<pre>';
     var_dump($item);
     echo '</pre>';
-    if($die) die();
+    if ($die) die();
 }
 
 function app($key)

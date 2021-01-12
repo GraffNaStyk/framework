@@ -13,8 +13,6 @@ if ((bool) app['dev'] === true) {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ERROR | E_PARSE);
 } else {
-    ini_set('error_log', storage_path('private/logs/php_' . date('d-m-Y') . '.log'));
-    ini_set('log_errors', true);
     error_reporting(0);
 }
 
@@ -24,10 +22,11 @@ spl_autoload_register(function ($class) {
     
     array_pop($classArr);
     $classArr = array_map('strtolower', $classArr);
-    
     $path = '';
-    foreach ($classArr as $namespaces)
+    
+    foreach ($classArr as $namespaces) {
         $path .= $namespaces.'/';
+    }
     
     $className = rtrim($className, '/');
 
@@ -48,9 +47,9 @@ if (php_sapi_name() !== 'cli') {
 
 function fatalErrorHandler () {
     $lastError = error_get_last();
-    if (!empty($lastError)) {
+    if (! empty($lastError)) {
         if ($lastError['type'] === E_ERROR || $lastError['type'] === E_USER_ERROR || $lastError['type'] === E_PARSE) {
-            header("HTTP/1.0 500 Method Not Allowed");
+            header("HTTP/1.0 500 Internal Server Error");
             http_response_code(500);
             
             if (php_sapi_name() === 'cli') {

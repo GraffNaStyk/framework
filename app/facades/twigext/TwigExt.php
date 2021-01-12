@@ -1,5 +1,6 @@
 <?php namespace App\Facades\TwigExt;
 
+use App\Facades\Http\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
 use Twig\Extension\AbstractExtension;
@@ -13,7 +14,7 @@ class TwigExt extends AbstractExtension
         return new self();
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             $this->print(),
@@ -28,14 +29,14 @@ class TwigExt extends AbstractExtension
         ];
     }
 
-    public function csrf()
+    public function csrf(): TwigFunction
     {
         return new TwigFunction('csrf', function() {
             echo '<input type="hidden" name="csrf" value="'.Session::get('csrf').'">';
         });
     }
 
-    public function print()
+    public function print(): TwigFunction
     {
         return new TwigFunction('print', function($item) {
             echo '<pre>';
@@ -44,7 +45,7 @@ class TwigExt extends AbstractExtension
         });
     }
     
-    public function input()
+    public function input(): TwigFunction
     {
         return new TwigFunction('input', function($attr = []) {
             $html = '';
@@ -75,7 +76,7 @@ class TwigExt extends AbstractExtension
         });
     }
     
-    public function select()
+    public function select(): TwigFunction
     {
         return new TwigFunction('select', function($attr = []) {
             if (isset($attr['label'])) {
@@ -129,35 +130,39 @@ class TwigExt extends AbstractExtension
         });
     }
     
-    public function img()
+    public function img(): TwigFunction
     {
         return new TwigFunction('img', function($url) {
             echo 'storage/public/'.$url;
         });
     }
 
-    public function url()
+    public function url(): TwigFunction
     {
         return new TwigFunction('url', function($url = null) {
-            echo Url::get() . $url;
+           if (Router::getAlias() === 'http') {
+               echo Url::base().$url;
+           } else {
+               echo Url::base().'/'.Router::getAlias().$url;
+           }
         });
     }
 
-    public function base()
+    public function base(): TwigFunction
     {
         return new TwigFunction('base', function($url = null) {
-            echo Url::base() . $url;
+            echo Url::base().$url;
         });
     }
 
-    public function tooltip()
+    public function tooltip(): TwigFunction
     {
         return new TwigFunction('tooltip', function($text, $placement = 'top') {
             echo 'data-toggle="tooltip" title="'.$text.'" data-placement="'.$placement.'"';
         });
     }
     
-    public function component()
+    public function component(): TwigFunction
     {
         return new TwigFunction('component', function($name, $variables = []) {
             View::setDirectly();

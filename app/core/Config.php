@@ -22,10 +22,9 @@ abstract class Config
 
         define('ENV', require_once app_path('app/config/.env'));
     
-        if(empty(array_filter(ENV['DB'])) === true)
-            exit(require_once view_path('errors/db.php'));
+        if(! empty(array_filter(ENV['DB'])))
+            Db::init(ENV['DB']);
         
         Loader::set();
-        Db::init(ENV['DB']);
     }
 }

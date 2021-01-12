@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Db\Migrate;
 
 use App\Facades\Faker\Hash;
@@ -11,11 +12,11 @@ class Migration_User_2020_09_28__18_04
 
        public function up(Schema $schema)
        {
-           if ($schema->hasRecord('users', 'name', 'Graff') === false) {
+           if (! $schema->hasRecord('users', 'name', 'Graff')) {
                User::insert([
                    'name' => 'Graff',
                    'password' => Hash::crypt('mulias123')
-               ]);
+               ])->exec();
                $schema->run();
            }
        }
