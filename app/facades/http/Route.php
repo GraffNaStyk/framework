@@ -49,8 +49,12 @@ abstract class Route
     
     public static function when(string $when, string $then)
     {
-        $route = rtrim(str_replace(app('url'), '', Router::url()), '/');
-
+        if (app('url') !== '/') {
+            $route = rtrim(str_replace(app('url'), '', Router::url()), '/');
+        } else {
+            $route = rtrim(Router::url(), '/');
+        }
+        
         if ($route === rtrim($when, '/')) {
             static::redirect($then);
         }
