@@ -72,4 +72,9 @@ abstract class Controller
     {
          Response::json(['ok' => false, 'msg' => $message ?? Validator::getErrors()], $status, $headers);
     }
+    
+    public function response($response, $status=200)
+    {
+        Response::json($response, $status);
+    }
 }

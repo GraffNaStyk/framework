@@ -5,7 +5,7 @@ trait Variables
 {
     private string $query;
     
-    private string $table;
+    public string $table;
     
     public bool $onDuplicate = false;
     

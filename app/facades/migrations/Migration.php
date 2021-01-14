@@ -43,7 +43,7 @@ class Migration
             }
         }
         
-        Storage::disk('private')->put('db/migrations.json', json_encode($migrationContent), true);
+        Storage::disk('private')->put('db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT), true);
     }
     
     public function down()

@@ -18,14 +18,11 @@ class TwigExt extends AbstractExtension
     {
         return [
             $this->print(),
-            $this->input(),
-            $this->select(),
             $this->csrf(),
             $this->img(),
             $this->url(),
             $this->base(),
             $this->tooltip(),
-            $this->component(),
         ];
     }
 
@@ -42,91 +39,6 @@ class TwigExt extends AbstractExtension
             echo '<pre>';
             print_r($item);
             echo '</pre>';
-        });
-    }
-    
-    public function input(): TwigFunction
-    {
-        return new TwigFunction('input', function($attr = []) {
-            $html = '';
-            if ($attr['type'] !== 'hidden') {
-                if ($attr['type'] === 'file') {
-                    $labelClass = 'class="input__upload"';
-                }
-                
-                if(isset($attr['label'])) {
-                    $html = '<label '.$labelClass.'><span>'.$attr['label'].'</span>';
-                } else {
-                    $html = '<label '.$labelClass.'>';
-                }
-            }
-            
-            unset($attr['label']);
-            $inputText = '';
-            
-            foreach ($attr as $key => $value) {
-                $inputText .= $key.'="'.$value.'"';
-            }
-    
-            if ($attr['type'] === 'file') {
-                $inputText .= 'style="display: none;"';
-            }
-            
-            echo $html . '<input ' . $inputText. '/> </label>';
-        });
-    }
-    
-    public function select(): TwigFunction
-    {
-        return new TwigFunction('select', function($attr = []) {
-            if (isset($attr['label'])) {
-                $html = '<label><span>'.$attr['label'].'</span>';
-            } else {
-                $html = '<label>';
-            }
-            
-            unset($attr['label']);
-            $selected = '';
-            $select = '';
-            $url = '';
-            $data = '<option data-placeholder="true"></option>';
-            $multiple = '';
-    
-            if (isset($attr['data']) && empty($attr['data']) === false) {
-                foreach ($attr['data'] as $key => $value) {
-                    if (isset($attr['selected']) && ! is_array($attr['selected'])) {
-                        $selected = $value['value'] == $attr['selected'] ? 'selected' : '';
-                        $data .= '<option value="'.$value['value'].'" '.$selected.'>'.$value['text'].'</option>';
-                    } else if (isset($attr['selected']) && is_array($attr['selected'])) {
-                        foreach ($attr['selected'] as $item) {
-                            $selected = $value['value'] == $item ? 'selected' : '';
-                            $data .= '<option value="'.$value['value'].'" '.$selected.'>'.$value['text'].'</option>';
-                        }
-                    }  else {
-                        $data .= '<option value="'.$value['value'].'" '.$selected.'>'.$value['text'].'</option>';
-                    }
-                }
-                unset($attr['data']);
-            }
-            
-            if (isset($attr['multiple'])) {
-                $multiple = 'multiple';
-            }
-            
-            if (isset($attr['url'])) {
-                $url = 'data-url="'.$attr['url'].'"';
-                unset($attr['url']);
-            }
-            
-            $select .= '<select name="'.$attr['name'].'" data-select="slim" '.$url.' '.$multiple.'>';
-            
-            if($data !== '') {
-                $select .= $data . '</select>';
-            } else {
-                $select .= '</select>';
-            }
-            
-            echo $html . $select . '</label>';
         });
     }
     
@@ -159,15 +71,6 @@ class TwigExt extends AbstractExtension
     {
         return new TwigFunction('tooltip', function($text, $placement = 'top') {
             echo 'data-toggle="tooltip" title="'.$text.'" data-placement="'.$placement.'"';
-        });
-    }
-    
-    public function component(): TwigFunction
-    {
-        return new TwigFunction('component', function($name, $variables = []) {
-            View::setDirectly();
-            View::change($name);
-            View::render($variables);
         });
     }
 }

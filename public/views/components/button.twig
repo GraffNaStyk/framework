@@ -1,0 +1,27 @@
+{% macro link(data) %}
+  <a class="btn is_button" href="{{ url(data.url) }}">
+    {% if data.text %}
+      {{ data.text }}
+    {% endif %}
+    {% if data.ico %}
+      <i class="fa {{ data.ico }}"></i>
+    {% endif %}
+  </a>
+{% endmacro link %}
+
+{% macro render(data) %}
+  {% if data.url and data.el %}
+    <button class="render" data-url="{{ data.url }}" data-el="{{ data.el }}">
+      {% if data.text %}
+        {{ data.text }}
+      {% endif %}
+      {% if data.ico %}
+        <i class="fa {{ data.ico }}"></i>
+      {% endif %}
+    </button>
+  {% endif %}
+{% endmacro render %}
+
+{% macro normal(data) %}
+
+{% endmacro normal %}

@@ -11,6 +11,12 @@ Route::alias('/admin', function () {
         Route::get('/login', 'Login@index');
         Route::post('/login/check', 'Login@check');
         Route::get('/logout', 'Logout@index');
+        //@Route users
+        Route::get('/users/{name}', 'Dash@users');
+        //@Route clients
+        Route::get('/clients', 'Clients@index');
+        Route::get('/clients/add', 'Clients@add');
+        Route::post('/clients/store', 'Clients@store');
     });
 });
 

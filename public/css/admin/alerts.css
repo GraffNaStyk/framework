@@ -17,14 +17,15 @@
 
 span.err {
   position: absolute;
-  top: 57%;
+  top: 33%;
   cursor: pointer;
   margin: 0 !important;
   z-index: 100;
+  left: 1%;
 }
 
 span.err img {
-  width: 20px;
+  width: 16px;
 }
 
 [tooltip]:before {

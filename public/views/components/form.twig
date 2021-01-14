@@ -1,0 +1,40 @@
+{% macro input(data) %}
+  <label {% if data.type == 'file' %}class="input__upload"{% endif %}>
+    {% if data.type == 'file' %}
+      <input style="display: none;" type="{{ data.type }}" name="{{ data.name }}">
+    {% else %}
+      <input placeholder="{{ data.label }}"
+             class="form-control {{ data.class }}"
+             type="{{ data.type }}"
+             name="{{ data.name }}"
+             value="{{ data.value }}"
+       {{ data.attr }}>
+      {% if data.value and data.label %}
+        <p class="hidden__label">{{ data.label }}</p>
+      {% endif %}
+    {% endif %}
+  </label>
+{% endmacro input %}
+
+{% macro select(data) %}
+  <label>
+    <select name="{{ data.name }}" data-select="slim" {% if data.url %}data-url="{{ data.url }}"{% endif %} {{ data.multiple }}>
+      {% if data.data %}
+        <option data-placeholder="true">{{ data.label }}</option>
+        {% for item in data.data %}
+            <option value="{{ item.value }}" {{ data.selected == item.value ? 'selected' }}>{{ item.text }}</option>
+        {% endfor %}
+      {% endif %}
+    </select>
+  </label>
+{% endmacro select %}
+
+{% macro textarea(data) %}
+<label>
+  <textarea
+   class="form-control {{ data.class }}"
+   name="{{ data.name }}"
+   cols="{{ data.cols ?? 5 }}"
+   rows="{{ data.rows ?? 5 }}">{{ data.value }}</textarea>
+</label>
+{% endmacro textarea %}

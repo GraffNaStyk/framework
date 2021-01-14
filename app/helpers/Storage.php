@@ -148,7 +148,7 @@ class Storage
         exit;
     }
 
-    public static function remove($path = null)
+    public function remove($path = null)
     {
         if (is_file(storage_path($path))) {
             unlink(storage_path($path));

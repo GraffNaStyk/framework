@@ -9,19 +9,11 @@ require_once vendor_path('autoload.php');
 final class View
 {
     protected static ?object $twig = null;
-    
     private static array $data = [];
-    
     protected static string $ext = '.twig';
-    
     protected static string $layout = 'page';
-    
     public static ?string $dir = null;
-    
     public static ?string $view = null;
-    
-    public static bool $directly = false;
-    
     protected static ?object $loader = null;
 
     public static function render(array $data = [])
@@ -48,10 +40,8 @@ final class View
         self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
         self::setViewFile();
 
-        if ((bool) self::$directly === true) {
-            return self::$twig->display('/components/'.self::$view. self::$ext, self::$data);
-        } else if (file_exists(view_path(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext))) {
-            return self::$twig->display(self::$dir . '/' . Router::getClass() . '/' . self::$view . self::$ext, self::$data);
+         if (file_exists(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
+            return self::$twig->display(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
         }
         
         exit(require_once view_path('errors/view-not-found.php'));
@@ -94,11 +84,6 @@ final class View
     public static function getName(): string
     {
         return self::$view;
-    }
-    
-    public static function setDirectly(): void
-    {
-        self::$directly = true;
     }
 
     public static function registerFunctions(): void

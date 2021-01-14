@@ -132,3 +132,7 @@ nav.top__nav a.logo {
 i.fa {
   color: #c8c8c8!important;
 }
+
+table .position-sticky {
+  text-align: right;
+}

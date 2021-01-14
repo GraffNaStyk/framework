@@ -20,12 +20,16 @@ class DashController extends Controller
 
     public function index()
     {
-        return View::render(['users' => User::select()->get()]);
+        return View::render([
+                'users' => User::select(['name as value', 'password as text'])->get()
+            ]);
     }
     
-    public function users()
+    public function users($name)
     {
-        return $this->response(User::select(['name as text', 'id as value'])->get());
+        return $this->response(
+            User::select(['name as text', 'password as value'])->get()
+        );
     }
     
     public function upload(Request $request)
