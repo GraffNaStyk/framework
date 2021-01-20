@@ -7,7 +7,9 @@ if (!file_exists(vendor_path('autoload.php'))) {
 
 define('app', require_once app_path('app/config/app.php'));
 
-register_shutdown_function('fatalErrorHandler');
+register_shutdown_function(function () {
+    \app\facades\log\Log::handlePhpError();
+});
 
 if ((bool) app('dev') === true) {
     ini_set('display_startup_errors', 1);
@@ -43,31 +45,4 @@ spl_autoload_register(function ($class) {
 
 if (php_sapi_name() !== 'cli') {
     require_once __DIR__ . '/routes/route.php';
-}
-
-function fatalErrorHandler () {
-    $lastError = error_get_last();
-    if (! empty($lastError)) {
-        if ($lastError['type'] === E_ERROR || $lastError['type'] === E_USER_ERROR || $lastError['type'] === E_PARSE) {
-            header("HTTP/1.0 500 Internal Server Error");
-            http_response_code(500);
-            
-            if (php_sapi_name() === 'cli') {
-                print_r($lastError);
-                exit;
-            }
-            
-            if (app['dev'] === false) {
-                $lastError['trace'] = ['Controller' => \App\Facades\Http\Router::getClass(), 'action' => \App\Facades\Http\Router::getAction()];
-                file_put_contents(
-                    storage_path('private/logs/php_' . date('d-m-Y') . '.log'),
-                    json_encode($lastError, JSON_PRETTY_PRINT),
-                    FILE_APPEND
-                );
-                exit (require_once view_path('errors/fatal.php'));
-            } else {
-                exit (require_once view_path('errors/fatal-dev.php'));
-            }
-        }
-    }
 }

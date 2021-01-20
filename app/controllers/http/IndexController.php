@@ -3,7 +3,6 @@
 namespace App\Controllers\Http;
 
 use App\Core\Controller;
-use App\Facades\Http\Request;
 
 class IndexController extends Controller
 {

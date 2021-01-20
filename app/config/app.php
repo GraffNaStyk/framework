@@ -14,7 +14,7 @@ return [
      *  is set to true on page have all bugs, if not all logs send to
      *  storage/private/logs like php or sql log.
      */
-    'dev' => true,
+    'dev' => false,
 
     /*
      *  @url this is a framework url, default u can set '/' if framework exist
