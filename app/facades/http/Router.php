@@ -2,6 +2,7 @@
 namespace App\Facades\Http;
 
 use App\Core\Auth;
+use App\Core\Kernel;
 use App\Helpers\Session;
 use ReflectionMethod;
 use ReflectionClass;
@@ -20,6 +21,8 @@ final class Router extends Route
     private static string $url = '';
 
     private object $request;
+    
+    private static array $currentRoute = [];
 
     public function __construct()
     {
@@ -31,6 +34,20 @@ final class Router extends Route
     {
         $this->parseUrl();
         $this->setParams();
+        
+        if (! empty(self::$currentRoute['middleware'])) {
+            $middleware = Kernel::getMiddleware(self::$currentRoute['middleware']);
+            $middleware = new $middleware();
+            $middleware->handle($this->request, self::$currentRoute);
+        }
+        
+        if (! empty(Kernel::getEveryMiddleware())) {
+            foreach (Kernel::getEveryMiddleware() as $middleware) {
+                $middleware = new $middleware();
+                $middleware->handle($this->request, self::$currentRoute);
+            }
+        }
+        
         $this->create(self::$provider . '\\' . self::getClass() . 'Controller');
     }
 
@@ -82,40 +99,44 @@ final class Router extends Route
                 self::http404();
             }
             
-            $reflectionClass = new ReflectionClass($controller);
-
-            if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
-                self::http404();
-            }
-            
-            $reflection = new ReflectionMethod($controller, self::getAction());
-            
-            $controller = new $controller();
-
-            $params = $reflection->getParameters();
-
-            if (empty($params))
-                return $controller->{self::getAction()}();
-    
-            if (!empty(self::$params)) {
-                foreach (self::$params as $key => $param) {
-                    $this->request->set($key, $param);
+            try {
+                $reflectionClass = new ReflectionClass($controller);
+                if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
+                    self::http404();
                 }
+            } catch (\ReflectionException $e) {
+                self::http404();
             }
 
-            $this->request->sanitize();
-            
-            if (isset($params[0]->name) && (string) $params[0]->name === 'request') {
-                return $controller->{self::getAction()}($this->request);
-            }
+            try {
+                $reflection = new ReflectionMethod($controller, self::getAction());
+                
+                $controller = new $controller();
     
-            if ($reflection->getNumberOfRequiredParameters() > count(self::$params))
+                $params = $reflection->getParameters();
+
+                if (empty($params)) {
+                    $resolve = $controller->{self::getAction()}();
+                }
+    
+                $this->request->sanitize();
+    
+                if (isset($params[0]->name) && (string) $params[0]->name === 'request') {
+                    $resolve = $controller->{self::getAction()}($this->request);
+                }
+    
+                if ($reflection->getNumberOfRequiredParameters() > count(self::$params)) {
+                    self::http404();
+                }
+                
+                $resolve = call_user_func_array([$controller, self::getAction()], $this->request->getData());
+            } catch (\ReflectionException $e) {
                 self::http404();
+            }
             
-            return call_user_func_array([$controller, self::getAction()], $this->request->getData());
+            echo $resolve;
+            exit;
         }
-        
-        self::http404();
     }
     
     public function setParams()
@@ -125,9 +146,7 @@ final class Router extends Route
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
             
             if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
-                if (! Auth::middleware($route['controller'], $route['action'], $route['rights'])) {
-                    self::redirect(Url::base());
-                }
+                self::$currentRoute = $route;
                 
                 if ((string) $this->request->getMethod() !== (string) $route['method']) {
                     $this->http405();
@@ -144,6 +163,12 @@ final class Router extends Route
                 }
                 
                 break;
+            }
+        }
+        
+        if (!empty (self::$params)) {
+            foreach (self::$params as $key => $param) {
+                $this->request->set($key, $param);
             }
         }
     }

@@ -8,12 +8,26 @@ abstract class Route
 {
     protected static array $routes;
     protected static string $namespace;
+    protected static ?string $middleware = null;
     protected static ?string $alias = null;
     
-    public static function namespace(string $namespace, callable $function)
+    public static function namespace(string $namespace, callable $function, array $middleware = [])
     {
         static::$namespace = $namespace;
+        
+        if (! empty($middleware)) {
+            static::$middleware = $middleware['middleware'];
+        }
+        
         $function();
+        static::$middleware = null;
+    }
+    
+    public static function middleware(string $middleware, callable $function)
+    {
+        static::$middleware = $middleware;
+        $function();
+        static::$middleware = null;
     }
     
     public static function get(string $url, string $controller, int $rights = 4): void
@@ -26,7 +40,7 @@ abstract class Route
         self::match($url, $controller, 'post', $rights);
     }
     
-    public static function alias(string $alias, callable $function): void
+    public static function prefix(string $alias, callable $function): void
     {
         self::$alias = $alias;
         $function();
@@ -43,7 +57,8 @@ abstract class Route
             'action' => $routes[1] ?? 'index',
             'namespace' => self::$namespace,
             'method' => $method,
-            'rights' => $rights
+            'rights' => $rights,
+            'middleware' => static::$middleware
         ];
     }
     

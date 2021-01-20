@@ -9,7 +9,7 @@ define('app', require_once app_path('app/config/app.php'));
 
 register_shutdown_function('fatalErrorHandler');
 
-if ((bool) app['dev'] === true) {
+if ((bool) app('dev') === true) {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ERROR | E_PARSE);
 } else {

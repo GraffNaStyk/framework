@@ -41,7 +41,7 @@ final class View
         self::setViewFile();
 
          if (file_exists(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
-            return self::$twig->display(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
+            return self::$twig->render(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
         }
         
         exit(require_once view_path('errors/view-not-found.php'));

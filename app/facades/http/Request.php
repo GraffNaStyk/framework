@@ -11,11 +11,13 @@ final class Request
     protected array $file = [];
     private string $method = 'post';
     protected array $data = [];
+    protected array $headers = [];
     
     public function __construct()
     {
         $this->setMethod();
-
+        $this->setHeaders();
+        
         if(!empty($this->data) && app('csrf') && ! View::isAjax()) {
             if(! isset($this->data['csrf']) || ! Csrf::isValid($this->data['csrf'])) {
                 Router::http404();
@@ -51,6 +53,23 @@ final class Request
                 $this->data = json_decode(file_get_contents('php://input'));
                 break;
         }
+    }
+    
+    private function setHeaders(): void
+    {
+        foreach (apache_request_headers() as $key => $item) {
+            $this->headers[mb_strtolower($key)] = $item;
+        }
+    }
+    
+    public function header(string $header)
+    {
+        return isset($this->headers[mb_strtolower($header)]) ? $this->headers[mb_strtolower($header)] : false;
+    }
+    
+    public function headers(): array
+    {
+        return $this->headers;
     }
     
     public function setData(array $data)
@@ -118,8 +137,13 @@ final class Request
 
         return Get::check($this->data, explode('.', $item));
     }
+    
+    public function input($item = null)
+    {
+        return $this->get($item);
+    }
 
-    public function all()
+    public function all(): array
     {
         return $this->data;
     }
