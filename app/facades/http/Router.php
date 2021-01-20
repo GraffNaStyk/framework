@@ -37,14 +37,12 @@ final class Router extends Route
         
         if (! empty(self::$currentRoute['middleware'])) {
             $middleware = Kernel::getMiddleware(self::$currentRoute['middleware']);
-            $middleware = new $middleware();
-            $middleware->handle($this->request, self::$currentRoute);
+            (new $middleware())->handle($this->request, self::$currentRoute);
         }
         
         if (! empty(Kernel::getEveryMiddleware())) {
             foreach (Kernel::getEveryMiddleware() as $middleware) {
-                $middleware = new $middleware();
-                $middleware->handle($this->request, self::$currentRoute);
+                (new $middleware())->handle($this->request, self::$currentRoute);
             }
         }
         
