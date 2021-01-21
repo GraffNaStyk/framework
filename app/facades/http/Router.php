@@ -114,26 +114,23 @@ final class Router extends Route
                 $params = $reflection->getParameters();
 
                 if (empty($params)) {
-                    $resolve = $controller->{self::getAction()}();
+                    return $controller->{self::getAction()}();
                 }
     
                 $this->request->sanitize();
     
                 if (isset($params[0]->name) && (string) $params[0]->name === 'request') {
-                    $resolve = $controller->{self::getAction()}($this->request);
+                    return $controller->{self::getAction()}($this->request);
                 }
     
                 if ($reflection->getNumberOfRequiredParameters() > count(self::$params)) {
                     self::http404();
                 }
-                
-                $resolve = call_user_func_array([$controller, self::getAction()], $this->request->getData());
+    
+                return call_user_func_array([$controller, self::getAction()], $this->request->getData());
             } catch (\ReflectionException $e) {
                 self::http404();
             }
-            
-            echo $resolve;
-            exit;
         }
     }
     

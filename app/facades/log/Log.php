@@ -12,9 +12,11 @@ class Log
             'controller' => Router::getNamespace().'\\'.Router::getClass(),
             'action' => Router::getAction()
         ];
+        
         $data['client'] = php_sapi_name();
         $data['text'] = 'Log '.$type.' message';
         $data['date'] = date('Y-m-d H:i:s');
+        
         file_put_contents(
             storage_path('private/logs/'.$type.'_' . date('d-m-Y') . '.log'),
             json_encode(array_reverse($data), JSON_PRETTY_PRINT),
@@ -46,6 +48,7 @@ class Log
                     print_r($lastError);
                     exit;
                 }
+                
                 if (app('dev') === false) {
                     static::make('php', $lastError);
                     exit (require_once view_path('errors/fatal.php'));

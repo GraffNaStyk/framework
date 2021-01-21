@@ -15,8 +15,8 @@ class Validator
         static::refactorRules($rules);
         static::run($request);
 
-        if(!empty(static::$validatorErrors = array_filter(static::$validatorErrors))) {
-            if(!View::isAjax()) {
+        if(! empty(static::$validatorErrors = array_filter(static::$validatorErrors))) {
+            if(! View::isAjax()) {
                 Session::checkIfDataHasBeenProvided($request);
                 Session::msg(static::$validatorErrors, 'danger');
             }
