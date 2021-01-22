@@ -60,6 +60,7 @@ class Storage
         }
 
         self::$disk = storage_path($disk);
+
         return new self();
     }
 
@@ -94,7 +95,7 @@ class Storage
             $destination  = self::$disk . $destination;
             $destination .= $as ? strtolower($as).'.'.pathinfo($file['name'], PATHINFO_EXTENSION) : strtolower($file['name']);
 
-            if(move_uploaded_file($file['tmp_name'], $destination)) {
+            if (move_uploaded_file($file['tmp_name'], $destination)) {
                 if ($this->checkFile($destination) === true) {
                     chmod($destination, 0775);
                     return true;
@@ -125,7 +126,7 @@ class Storage
 
     public function make($path, $mode = 0775)
     {
-        if(!is_dir(self::$disk.'/'.$path))
+        if (! is_dir(self::$disk.'/'.$path))
             mkdir(self::$disk.'/'.$path, $mode, true);
 
         return $this;
@@ -143,6 +144,7 @@ class Storage
                 echo fread($fd, 2048);
             }
         }
+        
         ob_flush();
         fclose($fd);
         exit;

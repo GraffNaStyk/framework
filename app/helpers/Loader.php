@@ -100,8 +100,8 @@ class Loader
             ? css_path($folder.'/'.Router::getClass().'/'.Router::getAction().'.css')
             : js_path($folder.'/'.Router::getClass().'/'.Router::getAction().'.js');
         
-        if(is_file($path) === true ) {
-            if($ext === 'css') {
+        if (is_file($path) === true ) {
+            if ($ext === 'css') {
                 return trim('<link rel="stylesheet" href="'.self::$url.str_replace(app_path(), '', $path).'">'.PHP_EOL);
             } else {
                 return trim('<script type="module" src="'.self::$url.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);

@@ -43,7 +43,7 @@ class Session
 
     public static function getFlash($item = null)
     {
-        if($item === null) {
+        if ($item === null) {
             return $_COOKIE;
         }
         
@@ -63,7 +63,7 @@ class Session
 
     public static function msg($items, $color = 'success')
     {
-        if(is_array($items)) {
+        if (is_array($items)) {
             foreach ($items as $val)
                 $_SESSION['msg'][] = $val;
         } else {
@@ -74,12 +74,12 @@ class Session
 
     public static function getMsg()
     {
-        return isset($_SESSION['msg'])? $_SESSION['msg'] : [];
+        return isset($_SESSION['msg']) ? $_SESSION['msg'] : [];
     }
 
     public static function getColor()
     {
-        return isset($_SESSION['color'])? $_SESSION['color'] : '';
+        return isset($_SESSION['color']) ? $_SESSION['color'] : '';
     }
 
     public static function clearMsg()
@@ -89,11 +89,6 @@ class Session
         unset($_SESSION['unused']);
     }
 
-    public static function debug()
-    {
-        pd(['session-framework' => self::all(), 'session' => $_SESSION, 'cookie' => $_COOKIE]);
-    }
-
     public static function checkIfDataHasBeenProvided($request)
     {
         $_SESSION['unused'] = $request;
@@ -101,9 +96,10 @@ class Session
 
     public static function collectProvidedData()
     {
-        if(isset($_SESSION['unused'])) {
+        if (isset($_SESSION['unused'])) {
             return $_SESSION['unused'];
         }
+        
         return null;
     }
     

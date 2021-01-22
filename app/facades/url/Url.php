@@ -55,7 +55,7 @@ class Url
     public static function full(): string
     {
         if (empty(getenv('HTTP_HOST'))) {
-            return app['host_url'].self::base();
+            return app('host_url').self::base();
         } else {
             return Router::checkProtocol().'://'.getenv('HTTP_HOST').self::base();
         }

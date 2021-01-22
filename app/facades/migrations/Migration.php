@@ -17,7 +17,7 @@ class Migration
         
         file_put_contents(app_path('app/db/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').'.php'), "<?php ".$migration);
         
-        if(file_exists(app_path('app/model/'.ucfirst($args[0]).'.php')) === false) {
+        if (file_exists(app_path('app/model/'.ucfirst($args[0]).'.php')) === false) {
             $model = file_get_contents(app_path('app/facades/migrations/model'));
             $model = str_replace('CLASSNAME', ucfirst($args[0]), $model);
             $model = str_replace('TABLE', $args[1], $model);
@@ -43,7 +43,8 @@ class Migration
             }
         }
         
-        Storage::disk('private')->put('db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT), true);
+        Storage::disk('private')
+            ->put('db/migrations.json', json_encode($migrationContent, JSON_PRETTY_PRINT), true);
     }
     
     public function down()
@@ -73,6 +74,7 @@ class Migration
     private function sortByDate(array $files): array
     {
         $migrations = [];
+        
         foreach ($files as $key => $file) {
             $tmp = str_replace(app_path('app/db/migrate/Migration_'), '', $file);
             $tmp = preg_replace('/[a-zA-Z__.]/', '', $tmp);

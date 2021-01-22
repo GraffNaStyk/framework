@@ -1,12 +1,11 @@
 <?php
+
 namespace App\Facades\Http;
 
 use App\Core\Auth;
 use App\Core\Kernel;
-use App\Helpers\Session;
 use ReflectionMethod;
 use ReflectionClass;
-use App\Facades\Url\Url;
 
 final class Router extends Route
 {
@@ -94,16 +93,16 @@ final class Router extends Route
     {
         if (class_exists($controller)) {
             if (! method_exists($controller, self::getAction())) {
-                self::http404();
+                self::abort();
             }
             
             try {
                 $reflectionClass = new ReflectionClass($controller);
                 if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
-                    self::http404();
+                    self::abort();
                 }
             } catch (\ReflectionException $e) {
-                self::http404();
+                self::abort();
             }
 
             try {
@@ -124,15 +123,15 @@ final class Router extends Route
                 }
     
                 if ($reflection->getNumberOfRequiredParameters() > count(self::$params)) {
-                    self::http404();
+                    self::abort();
                 }
     
                 return call_user_func_array([$controller, self::getAction()], $this->request->getData());
             } catch (\ReflectionException $e) {
-                self::http404();
+                self::abort();
             }
         } else {
-            self::http404();
+            self::abort();
         }
     }
     
@@ -148,7 +147,7 @@ final class Router extends Route
                 $routeExist = true;
 
                 if ((string) $this->request->getMethod() !== (string) $route['method']) {
-                    $this->http405();
+                    self::abort(405);
                 }
 
                 self::setNamespace($route['namespace']);
@@ -166,10 +165,10 @@ final class Router extends Route
         }
 
         if (! $routeExist) {
-            self::http404();
+            self::abort();
         }
         
-        if (!empty (self::$params)) {
+        if (! empty (self::$params)) {
             foreach (self::$params as $key => $param) {
                 $this->request->set($key, $param);
             }
@@ -191,19 +190,12 @@ final class Router extends Route
         
         self::$url = filter_var(self::$url, FILTER_SANITIZE_URL);
     }
-
-    public static function http404(): void
+    
+    private static function abort($code = 404): void
     {
         header("HTTP/1.0 404 Not Found");
-        http_response_code(404);
-        exit(require_once (view_path('errors/404.php')));
-    }
-    
-    private function http405(): void
-    {
-        header("HTTP/1.0 405 Method Not Allowed");
-        http_response_code(405);
-        exit(require_once (view_path('errors/405.php')));
+        http_response_code($code);
+        exit(require_once (view_path('errors/'.$code.'.php')));
     }
 
     public static function run(): self
