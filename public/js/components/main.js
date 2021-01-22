@@ -87,7 +87,3 @@ if (window.innerWidth > 991) {
 } else {
   document.querySelector('aside.left-panel').classList.remove('d-flex');
 }
-
-window.onload = (() => {
-  App.preloader();
-});

@@ -7,6 +7,7 @@ Route::when('/admin', '/dash');
 
 Route::prefix('/admin', function () {
     Route::namespace('App\Controllers\Admin', function () {
+        //@Route login and logout
         Route::get('/login', 'Login@index');
         Route::post('/login/check', 'Login@check');
         
@@ -22,6 +23,9 @@ Route::prefix('/admin', function () {
             Route::get('/clients', 'Clients@index');
             Route::get('/clients/add', 'Clients@add');
             Route::post('/clients/store', 'Clients@store');
+
+            //@Route password reset
+            Route::get('/password', 'Password@reset');
         });
     });
 });

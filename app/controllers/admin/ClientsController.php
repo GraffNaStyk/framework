@@ -24,8 +24,9 @@ class ClientsController extends DashController implements ControllerInterface
     
     public function store(Request $request)
     {
-        if(!$this->validate($request->all(), $this->validateRules()))
+        if(! $this->validate($request->all(), $this->validateRules())) {
             return $this->sendError();
+        }
         
         Client::insert($request->all());
 

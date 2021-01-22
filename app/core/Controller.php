@@ -54,7 +54,7 @@ abstract class Controller
         View::set($data);
     }
     
-    public function render(array $data = []): void
+    public function render(array $data = [])
     {
         if (! empty($data)) {
              View::render($data);
@@ -68,12 +68,12 @@ abstract class Controller
         return Validator::make($request, $rules);
     }
     
-    public function sendSuccess(?string $message, string $to = null, int $status = 200 , array $headers = []): string
+    public function sendSuccess(string $message = null, string $to = null, int $status = 200 , array $headers = []): string
     {
          Response::json(['ok' => true, 'msg' => [$message ?? 'Dane zostały zapisane'], 'to' => $to], $status, $headers);
     }
     
-    public function sendError(?string $message, int $status = 400, array $headers = []): string
+    public function sendError(string $message = null, int $status = 400, array $headers = []): string
     {
          Response::json(['ok' => false, 'msg' => $message ?? Validator::getErrors()], $status, $headers);
     }

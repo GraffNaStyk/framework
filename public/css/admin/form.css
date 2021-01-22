@@ -89,7 +89,7 @@ button.btn-sm, a.is_button {
 }
 
 ::placeholder {
-  color: #cbcbcb !important;
+  color: #b0b0b0 !important;
   opacity: 1;
 }
 
@@ -98,5 +98,5 @@ p.hidden__label {
   top: 23%;
   margin: 0;
   right: 2%;
-  color: #cbcbcb !important;
+  color: #b0b0b0 !important;
 }

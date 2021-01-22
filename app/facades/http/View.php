@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Facades\Http;
 
 use App\Facades\TwigExt\TwigExt;

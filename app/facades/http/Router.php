@@ -131,22 +131,26 @@ final class Router extends Route
             } catch (\ReflectionException $e) {
                 self::http404();
             }
+        } else {
+            self::http404();
         }
     }
     
     public function setParams()
     {
+        $routeExist = false;
         foreach (self::$routes as $key => $route) {
             self::$params = [];
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
             
             if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
                 self::$currentRoute = $route;
-                
+                $routeExist = true;
+
                 if ((string) $this->request->getMethod() !== (string) $route['method']) {
                     $this->http405();
                 }
-                
+
                 self::setNamespace($route['namespace']);
                 self::setClass($route['controller']);
                 self::setAction($route['action']);
@@ -159,6 +163,10 @@ final class Router extends Route
                 
                 break;
             }
+        }
+
+        if (! $routeExist) {
+            self::http404();
         }
         
         if (!empty (self::$params)) {
@@ -186,10 +194,6 @@ final class Router extends Route
 
     public static function http404(): void
     {
-        if (View::isAjax()) {
-            self::throwJsonResponse(404, 'Page not found');
-        }
-        
         header("HTTP/1.0 404 Not Found");
         http_response_code(404);
         exit(require_once (view_path('errors/404.php')));
@@ -197,18 +201,9 @@ final class Router extends Route
     
     private function http405(): void
     {
-        if (View::isAjax()) {
-            self::throwJsonResponse(405, 'Method not allowed');
-        }
-        
         header("HTTP/1.0 405 Method Not Allowed");
         http_response_code(405);
         exit(require_once (view_path('errors/405.php')));
-    }
-    
-    private static function throwJsonResponse(int $status, string $message)
-    {
-        Response::json(['msg' => $message], $status);
     }
 
     public static function run(): self

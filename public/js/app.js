@@ -33,7 +33,6 @@ export const get = async (fetch_url) => {
 
 export const render = (args) => {
   insertLoader();
-  preloader();
   fetch(document.url + '/' + args.url, {
     method: 'GET',
     credentials: 'same-origin',
@@ -55,6 +54,7 @@ export const render = (args) => {
       OnSubmitForms();
       RefreshSelects();
     },100);
+    preloader();
   })
 };
 
@@ -70,7 +70,6 @@ const modal = (result) => {
     content.innerHTML = '';
     modal.setAttribute('style', '');
   });
-
 };
 
 export const response = (res, selector, action) => {
@@ -131,34 +130,36 @@ export const callback = (ok= false, to = null) => {
   } else if (to !== null && ok) {
     setTimeout(() => {
       document.location.href = document.url + to;
-    },2100)
+    },1500)
   } else if (ok) {
     setTimeout(() => {
       document.location.reload();
-    },1900)
+    },1500)
   }
 }
 
 export const OnSubmitForms = () => {
   on('submit', 'form',  (e) => {
-    if(e.target.dataset.action) {
+    if (e.target.dataset.action) {
       e.preventDefault();
       e.stopImmediatePropagation();
+      insertLoader();
       post({
         url: e.target.dataset.action,
         form: e.target
       }).then(res => {
+        preloader();
         const contentType = res.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
           return res.json().then(res => {
             //this is check for modal is open
             let modalSelector = document.getElementById('modal');
-            if(res.ok && modalSelector.classList.contains('d-block')) {
+            if (res.ok && modalSelector.classList.contains('d-block')) {
               setTimeout(() => {
                 document.querySelector('button[data-dismiss="modal"]').click()
               },500);
             }
-            if(res.ok === false && modalSelector.classList.contains('d-block')) {
+            if (res.ok === false && modalSelector.classList.contains('d-block')) {
               response(res, '.modal-body', e.target.dataset.action)
             } else {
               response(res, '.right-panel', e.target.dataset.action)
@@ -183,7 +184,7 @@ export const RefreshSelects = () => {
   const selectors = document.querySelectorAll('[data-select="slim"]');
   if (selectors) {
     Array.from(selectors).forEach((value => {
-      if(value.dataset.url !== undefined && value.dataset.ssid === undefined) {
+      if (value.dataset.url !== undefined && value.dataset.ssid === undefined) {
         new SlimSelect({
           select: value,
           allowDeselect: true,
@@ -225,14 +226,15 @@ export const toggleActive = (target, el) => {
   target.target.classList.add('active');
 }
 
-export const preloader =  () => {
+export const preloader = () => {
   let loader = document.querySelector('.preloader');
-  loader.style.opacity = .9;
   setTimeout(() => {
     loader.remove();
   }, 400)
 }
 
 const insertLoader = () => {
-  document.body.insertAdjacentHTML('beforebegin', loader);
+  document.body.insertAdjacentHTML('afterbegin', loader);
+  let isLoader = document.querySelector('.preloader');
+  isLoader.style.opacity = .9;
 };
