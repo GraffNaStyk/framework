@@ -6,8 +6,6 @@ class Console
 {
     protected static array $argv = [];
     
-    protected static array $canDo = [];
-    
     private static string $path = 'App\\Facades\\Console\\';
     
     public static function dispatch(array $argv)
@@ -24,9 +22,14 @@ class Console
 
             if (method_exists($job, self::$argv[1])) {
                 $job->{self::$argv[1]}();
+            } else {
+                echo 'Method not exist: method -> '.elf::$argv[1].' in class -> '.$job.PHP_EOL;
+                echo 'Remember: arg[0]=Class name in console directory, arg[1]=Method name in class, arg[2]=New file name'.PHP_EOL;
             }
+        } else {
+            echo 'Class not exist: '.self::$path.ucfirst(self::$argv[0]).PHP_EOL;
+            echo 'Remember: arg[0]=Class name in console directory, arg[1]=Method name in class, arg[2]=New file name'.PHP_EOL;
         }
-        
     }
     
     public function getArgs()

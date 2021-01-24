@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Controllers\Middleware;
+
+use App\Facades\Http\Request;
+
+class CLASSNAME
+{
+
+    public function after(Request $request, array $routeParams)
+    {
+
+    }
+
+    public function before(Request $request, array $routeParams)
+    {
+
+    }
+}

@@ -8,7 +8,7 @@ use App\Facades\Url\Url;
 use App\Helpers\Session;
 use App\Model\Right;
 
-class Auth
+final class Auth
 {
     private static array $methods = [
         1 => ['index', 'show'],
