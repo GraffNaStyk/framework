@@ -1,4 +1,6 @@
-<?php namespace App\Facades\TwigExt;
+<?php
+
+namespace App\Facades\TwigExt;
 
 use App\Facades\Http\Router;
 use App\Facades\Http\View;
@@ -9,7 +11,7 @@ use App\Helpers\Session;
 
 class TwigExt extends AbstractExtension
 {
-    public static function init()
+    public static function init(): TwigExt
     {
         return new self();
     }

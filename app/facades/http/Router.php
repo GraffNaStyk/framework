@@ -33,19 +33,27 @@ final class Router extends Route
     {
         $this->parseUrl();
         $this->setParams();
-        
+        $this->runMiddlewares('before');
+        $this->create(self::$provider . '\\' . self::getClass() . 'Controller');
+        $this->runMiddlewares('after');
+    }
+    
+    private function runMiddlewares(string $when): void
+    {
         if (! empty(self::$currentRoute['middleware'])) {
             $middleware = Kernel::getMiddleware(self::$currentRoute['middleware']);
-            (new $middleware())->handle($this->request, self::$currentRoute);
-        }
-        
-        if (! empty(Kernel::getEveryMiddleware())) {
-            foreach (Kernel::getEveryMiddleware() as $middleware) {
-                (new $middleware())->handle($this->request, self::$currentRoute);
+            if (method_exists($middleware, $when)) {
+                (new $middleware())->$when($this->request, self::$currentRoute);
             }
         }
-        
-        $this->create(self::$provider . '\\' . self::getClass() . 'Controller');
+    
+        if (! empty(Kernel::getEveryMiddleware())) {
+            foreach (Kernel::getEveryMiddleware() as $middleware) {
+                if (method_exists($middleware, $when)) {
+                    (new $middleware())->$when($this->request, self::$currentRoute);
+                }
+            }
+        }
     }
 
     public static function getClass(): string

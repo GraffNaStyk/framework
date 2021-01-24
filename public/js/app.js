@@ -236,5 +236,5 @@ export const preloader = () => {
 const insertLoader = () => {
   document.body.insertAdjacentHTML('afterbegin', loader);
   let isLoader = document.querySelector('.preloader');
-  isLoader.style.opacity = .9;
+  isLoader.style.opacity = .8;
 };

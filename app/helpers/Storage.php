@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 class Storage
@@ -49,7 +50,7 @@ class Storage
     
     private static string $disk;
 
-    public static function disk($disk)
+    public static function disk($disk): Storage
     {
         if(!is_dir(storage_path('public/'))) {
             mkdir(storage_path('public/'), 0775);
@@ -64,7 +65,7 @@ class Storage
         return new self();
     }
 
-    public function put($file, $content, $replace = false)
+    public function put($file, $content, $replace = false): bool
     {
         if ($replace === true) {
             $this->putFile($file, $content);
@@ -79,15 +80,17 @@ class Storage
         return false;
     }
     
-    protected function putFile($file, $content)
+    protected function putFile($file, $content): bool
     {
         if (file_put_contents(self::$disk.'/'.$file, $content)) {
             chmod(self::$disk.'/'.$file, 0775);
             return true;
         }
+        
+        return false;
     }
 
-    public function upload($file, $destination = '/', $as = null)
+    public function upload($file, $destination = '/', $as = null): bool
     {
         if ($file['error'] === UPLOAD_ERR_OK) {
             $this->make($destination);
@@ -100,14 +103,13 @@ class Storage
                     chmod($destination, 0775);
                     return true;
                 }
-                return false;
             }
-            
-            return false;
         }
+    
+        return false;
     }
 
-    public function get($path = null, $pattern = '*', $glob_type = GLOB_BRACE)
+    public function get($path = null, $pattern = '*', $glob_type = GLOB_BRACE): array
     {
         $path = self::$disk . '/' . $path;
         $result = [];
@@ -119,12 +121,12 @@ class Storage
        return $result;
     }
     
-    public function getContent($path)
+    public function getContent($path): string
     {
         return file_get_contents(self::$disk.'/'.$path);
     }
 
-    public function make($path, $mode = 0775)
+    public function make($path, $mode = 0775): Storage
     {
         if (! is_dir(self::$disk.'/'.$path))
             mkdir(self::$disk.'/'.$path, $mode, true);

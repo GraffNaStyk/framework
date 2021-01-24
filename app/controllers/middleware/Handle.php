@@ -7,7 +7,7 @@ use app\facades\log\Log;
 
 class Handle
 {
-    public function handle(Request $request, array $routeParams)
+    public function before(Request $request, array $routeParams)
     {
         Log::info([
             'request' => $request->all(),

@@ -16,7 +16,7 @@ class Auth
         3 => ['delete']
     ];
     
-    public function handle(Request $request, array $routeParams)
+    public function before(Request $request, array $routeParams)
     {
         if (! Session::has('user')) {
             Route::redirect('/login');
