@@ -23,7 +23,7 @@ class Console
             if (method_exists($job, self::$argv[1])) {
                 $job->{self::$argv[1]}();
             } else {
-                echo 'Method not exist: method -> '.elf::$argv[1].' in class -> '.$job.PHP_EOL;
+                echo 'Method not exist: method -> '.self::$argv[1].' in class -> '.$job.PHP_EOL;
                 echo 'Remember: arg[0]=Class name in console directory, arg[1]=Method name in class, arg[2]=New file name'.PHP_EOL;
             }
         } else {
