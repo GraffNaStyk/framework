@@ -31,9 +31,14 @@ class Controller
     
     public function put($where)
     {
-        file_put_contents(
+        if (file_put_contents(
             app_path('app/controllers/'.$where.'/'.ucfirst($this->name).'Controller.php'),
             $this->file
-        );
+        )) {
+            Console::output(
+                'Controller in path: app/controllers/'.$where.'/'.ucfirst($this->name).'Controller.php created.',
+                'green'
+            );
+        }
     }
 }

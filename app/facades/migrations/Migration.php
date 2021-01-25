@@ -1,6 +1,7 @@
 <?php
 namespace App\Facades\Migrations;
 
+use App\Facades\Console\Console;
 use App\Helpers\Storage;
 
 class Migration
@@ -15,13 +16,23 @@ class Migration
             mkdir(app_path('app/db/migrate/'), 0775, true);
         }
         
-        file_put_contents(app_path('app/db/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').'.php'), "<?php ".$migration);
+        if (file_put_contents(
+            app_path('app/db/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').'.php'),
+            "<?php ".$migration
+        )) {
+            Console::output(
+                'Migration app/db/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').' has been created',
+                'blue'
+            );
+        }
         
         if (file_exists(app_path('app/model/'.ucfirst($args[0]).'.php')) === false) {
             $model = file_get_contents(app_path('app/facades/migrations/model'));
             $model = str_replace('CLASSNAME', ucfirst($args[0]), $model);
             $model = str_replace('TABLE', $args[1], $model);
-            file_put_contents(app_path('app/model/'.ucfirst($args[0]).'.php'), "<?php ".$model);
+            if (file_put_contents(app_path('app/model/'.ucfirst($args[0]).'.php'), "<?php ".$model)) {
+                Console::output('Model '.'app/model/'.ucfirst($args[0]).' has been created', 'blue');
+            }
         }
     }
     
@@ -32,13 +43,14 @@ class Migration
             Storage::disk('private')->getContent('db/migrations.json'),
             true
         );
-        
+
         foreach ($this->sortByDate(glob(app_path('app/db/migrate/Migration_*.php'))) as $migration) {
             $migration = 'App\\Db\\Migrate\\'.basename(str_replace('.php','', $migration));
             
             if (!isset($migrationContent[$migration]) || $isDump) {
                 $migrationContent[$migration] = ['date' => date('Y-m-d H:i:s')];
                 $migration = new $migration();
+                Console::output('Migration '.get_class($migration). ' has been make', 'blue');
                 $migration->up(new Schema(app['model-provider'].$migration->model, $isDump));
             }
         }

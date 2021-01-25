@@ -5,7 +5,8 @@ namespace App\Core;
 abstract class Kernel
 {
     private static array $middlewares = [
-        'auth' => \App\Controllers\Middleware\Auth::class
+        'auth' => \App\Controllers\Middleware\Auth::class,
+        'example' => \App\Controllers\Middleware\EExample::class
     ];
     
     private static array $everyMiddleware = [

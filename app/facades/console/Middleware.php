@@ -16,9 +16,11 @@ class Middleware
     public function make()
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name), $this->file);
-        file_put_contents(
+        if (file_put_contents(
             app_path('app/controllers/middleware/'.ucfirst($this->name).'.php'),
             $this->file
-        );
+        )) {
+            Console::output('Middleware created successfully!', 'green');
+        }
     }
 }

@@ -230,7 +230,7 @@ export const preloader = () => {
   let loader = document.querySelector('.preloader');
   setTimeout(() => {
     loader.remove();
-  }, 400)
+  }, 200)
 }
 
 const insertLoader = () => {

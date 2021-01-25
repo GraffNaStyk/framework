@@ -30,14 +30,14 @@ abstract class Route
         static::$middleware = null;
     }
     
-    public static function get(string $url, string $controller, int $rights = 4): void
+    public static function get(string $url, string $controller, int $rights = 4, string $middleware=null): void
     {
-        self::match($url, $controller, 'get', $rights);
+        self::match($url, $controller, 'get', $rights, $middleware);
     }
     
-    public static function post(string $url, string $controller, int $rights = 4): void
+    public static function post(string $url, string $controller, int $rights = 4, string $middleware=null): void
     {
-        self::match($url, $controller, 'post', $rights);
+        self::match($url, $controller, 'post', $rights, $middleware);
     }
     
     public static function prefix(string $alias, callable $function): void
@@ -47,7 +47,7 @@ abstract class Route
         self::$alias = null;
     }
     
-    private static function match(string $as, string $route, string $method, int $rights): void
+    private static function match(string $as, string $route, string $method, int $rights, $middleware = null): void
     {
         $route = str_replace('@', '/', $route);
         $routes = explode('/', $route);
@@ -58,7 +58,7 @@ abstract class Route
             'namespace' => self::$namespace,
             'method' => $method,
             'rights' => $rights,
-            'middleware' => static::$middleware
+            'middleware' => static::$middleware ?? $middleware
         ];
     }
     

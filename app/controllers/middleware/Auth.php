@@ -36,12 +36,12 @@ final class Auth
         if ($rights === 0) {
             return false;
         }
-        
+  
         if (class_exists(Right::class)) {
             $result = Right::select([strtolower($class)])
                 ->where('user_id', '=', Session::get('user.id'))
                 ->first();
-            
+
             if (empty($result) || $result[strtolower($class)] < $rights) {
                 return false;
             }
@@ -64,7 +64,7 @@ final class Auth
                 return false;
             }
         }
-        
+
         return true;
     }
 }
