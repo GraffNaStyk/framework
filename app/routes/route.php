@@ -20,7 +20,7 @@ Route::prefix('/admin', function () {
             Route::get('/users/{name}', 'Dash@users');
             
             //@Route clients
-            Route::get('/clients', 'Clients@index', 1, 'example');
+            Route::get('/clients', 'Clients@index', 4, 'example');
             Route::get('/clients/add', 'Clients@add');
             Route::post('/clients/store', 'Clients@store');
 

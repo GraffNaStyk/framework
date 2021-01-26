@@ -77,7 +77,7 @@ final class Request
         $this->data = $data;
     }
     
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }
@@ -85,7 +85,7 @@ final class Request
     public function sanitize()
     {
         foreach ($this->data as $key => $item) {
-            if (is_array($item) === true) {
+            if (is_array($item)) {
                 $this->data[$key] = $this->reSanitize($item);
             } else {
                 $this->data[$key] = $this->clear($item);
@@ -93,25 +93,26 @@ final class Request
         }
     }
     
-    public function reSanitize(array $data)
+    public function reSanitize(array $data): array
     {
         foreach ($data as $key => $item) {
-            if (is_array($item) === true) {
+            if (is_array($item)) {
                 $this->reSanitize($item);
             } else {
                 $data[$key] = $this->clear($item);
             }
         }
+        
         return $data;
     }
     
     private function clear($item)
     {
-        if ($item !== null && $item !== '') {
+        if ((string) $item !== '') {
             $item = trim($item);
         }
     
-        if (!is_numeric($item)) {
+        if (! is_numeric($item)) {
             $item = urldecode($item);
         }
         
@@ -120,20 +121,23 @@ final class Request
             "???????��������������������������������������������������������������",
             "SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy"
         );
+
         $item = preg_replace('/(;|\||`|&|^|{|}|[|]|\)|\()/i', '', $item);
         $item = preg_replace('/(\)|\(|\||&)/', '', $item);
+        
         return $item;
     }
 
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->method;
     }
 
     public function get($item = null)
     {
-        if($item == null)
+        if ($item == null) {
             return $this->data;
+        }
 
         return Get::check($this->data, explode('.', $item));
     }
@@ -150,9 +154,10 @@ final class Request
 
     public function file($file = null)
     {
-        if(!is_null($file) && isset($this->file[$file]))
+        if ($file !== null && isset($this->file[$file])) {
             return $this->file[$file];
-
+        }
+        
         return $this->file;
     }
 
@@ -164,6 +169,7 @@ final class Request
     public function set($item, $data)
     {
         $item = explode('.', $item);
+        
         if (isset($item[3])) {
             $this->data[$item[0]][$item[1]][$item[2]][$item[3]] = $data;
         } else if (isset($item[2])) {
@@ -178,16 +184,12 @@ final class Request
     public function remove($item)
     {
         $item = explode('.', $item);
+        
         if (isset($item[1])) {
             unset($this->data[$item[0]][$item[1]]);
         } else {
             unset($this->data[$item[0]]);
         }
-    }
-
-    public function debug()
-    {
-        pd(['post' => $_POST, 'get' => $_GET]);
     }
 
     public function __destruct()

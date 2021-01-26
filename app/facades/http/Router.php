@@ -43,17 +43,30 @@ final class Router extends Route
         if (! empty(self::$currentRoute['middleware'])) {
             $middleware = Kernel::getMiddleware(self::$currentRoute['middleware']);
             if (method_exists($middleware, $when)) {
-                (new $middleware())->$when($this->request, self::$currentRoute);
+                (new $middleware())->$when($this->request, $this);
             }
         }
     
         if (! empty(Kernel::getEveryMiddleware())) {
             foreach (Kernel::getEveryMiddleware() as $middleware) {
                 if (method_exists($middleware, $when)) {
-                    (new $middleware())->$when($this->request, self::$currentRoute);
+                    (new $middleware())->$when($this->request, $this);
                 }
             }
         }
+    }
+    
+    public function getCurrentRoute(): array
+    {
+        return self::$currentRoute;
+    }
+    
+    private function setCurrentRoute($route): void
+    {
+        self::$currentRoute = $route;
+        self::setNamespace($route['namespace']);
+        self::setClass($route['controller']);
+        self::setAction($route['action']);
     }
 
     public static function getClass(): string
@@ -86,7 +99,7 @@ final class Router extends Route
         self::$provider = $namespace;
     }
     
-    public static function getAlias()
+    public static function getAlias(): string
     {
         $alias = mb_strtolower(end(explode('\\', self::getNamespace())));
         
@@ -116,16 +129,17 @@ final class Router extends Route
             try {
                 $reflection = new ReflectionMethod($controller, self::getAction());
                 
+                if ($reflection->isProtected() || $reflection->isPrivate()) {
+                    self::abort();
+                }
+                
                 $controller = new $controller();
-    
                 $params = $reflection->getParameters();
-
+                
                 if (empty($params)) {
                     return $controller->{self::getAction()}();
                 }
-    
-                $this->request->sanitize();
-    
+                
                 if (isset($params[0]->name) && (string) $params[0]->name === 'request') {
                     return $controller->{self::getAction()}($this->request);
                 }
@@ -146,21 +160,17 @@ final class Router extends Route
     public function setParams()
     {
         $routeExist = false;
+        
         foreach (self::$routes as $key => $route) {
-            self::$params = [];
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
             
             if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
-                self::$currentRoute = $route;
-                $routeExist = true;
-
                 if ((string) $this->request->getMethod() !== (string) $route['method']) {
                     self::abort(405);
                 }
-
-                self::setNamespace($route['namespace']);
-                self::setClass($route['controller']);
-                self::setAction($route['action']);
+    
+                $routeExist = true;
+                $this->setCurrentRoute($route);
                 
                 $matches = array_slice($matches, 1);
                 
@@ -177,15 +187,14 @@ final class Router extends Route
         }
         
         if (! empty (self::$params)) {
-            foreach (self::$params as $key => $param) {
-                $this->request->set($key, $param);
-            }
+            $this->request->setData(self::$params);
+            $this->request->sanitize();
         }
     }
     
     public static function url(): string
     {
-        return $_SERVER['REQUEST_URI'];
+        return getenv('REQUEST_URI');
     }
     
     private function parseUrl(): void
@@ -195,8 +204,23 @@ final class Router extends Route
         } else {
             self::$url = self::url();
         }
+
+        $this->setQueryStringParams();
+        self::$url = preg_replace('/\?.*/',
+            '',
+            filter_var(rtrim(self::$url, '/'), FILTER_SANITIZE_URL)
+        );
+    }
+    
+    private function setQueryStringParams()
+    {
+        parse_str(parse_url(self::$url)['query'], $str);
         
-        self::$url = filter_var(self::$url, FILTER_SANITIZE_URL);
+        if (! empty($str)) {
+            foreach ($str as $key => $item){
+                self::$params[$key] = $item;
+            }
+        }
     }
     
     private static function abort($code = 404): void

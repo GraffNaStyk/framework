@@ -4,16 +4,15 @@ use App\Controllers\ControllerInterface;
 use App\Facades\Http\Request;
 use App\Model\Client;
 
-class ClientsController extends DashController implements ControllerInterface
+class ClientsController extends DashController
 {
     public function __construct()
     {
         parent::__construct();
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        echo 'test';
         exit;
     }
 

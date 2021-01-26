@@ -3,16 +3,17 @@
 namespace App\Controllers\Middleware;
 
 use App\Facades\Http\Request;
+use App\Facades\Http\Router;
 
 class CLASSNAME
 {
 
-    public function after(Request $request, array $routeParams)
+    public function after(Request $request, Router $router)
     {
 
     }
 
-    public function before(Request $request, array $routeParams)
+    public function before(Request $request, Router $router)
     {
 
     }

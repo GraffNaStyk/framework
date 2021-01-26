@@ -4,6 +4,7 @@ namespace App\Controllers\Middleware;
 
 use App\Facades\Http\Request;
 use App\Facades\Http\Route;
+use App\Facades\Http\Router;
 use App\Facades\Url\Url;
 use App\Helpers\Session;
 use App\Model\Right;
@@ -16,51 +17,51 @@ final class Auth
         3 => ['delete']
     ];
     
-    public function before(Request $request, array $routeParams)
+    public function before(Request $request, Router $router)
     {
         if (! Session::has('user')) {
             Route::redirect('/login');
         }
 
-        if (! self::middleware($routeParams['controller'], $routeParams['action'], $routeParams['rights'])) {
+        if (! self::middleware($router->getCurrentRoute())) {
             Route::redirect(Url::base());
         }
     }
     
-    public static function middleware(string $class, string $action, int $rights): bool
+    public static function middleware(array $route): bool
     {
-        if ($rights === 4) {
+        if ($route['rights'] === 4) {
             return true;
         }
         
-        if ($rights === 0) {
+        if ($route['rights'] === 0) {
             return false;
         }
   
         if (class_exists(Right::class)) {
-            $result = Right::select([strtolower($class)])
+            $result = Right::select([strtolower($route['controller'])])
                 ->where('user_id', '=', Session::get('user.id'))
                 ->first();
 
-            if (empty($result) || $result[strtolower($class)] < $rights) {
+            if (empty($result) || $result[strtolower($route['controller'])] < $route['rights']) {
                 return false;
             }
             
             $methods = [];
             
-            if ($rights === 1) {
+            if ($route['rights'] === 1) {
                 $methods = self::$methods[1];
             }
             
-            if ($rights === 2) {
+            if ($route['rights'] === 2) {
                 $methods = [...self::$methods[1], ...self::$methods[2]];
             }
             
-            if ($rights === 3) {
+            if ($route['rights'] === 3) {
                 $methods = [...self::$methods[1], ...self::$methods[2], ...self::$methods[3]];
             }
             
-            if (! in_array($action, $methods)) {
+            if (! in_array($route['action'], $methods)) {
                 return false;
             }
         }
