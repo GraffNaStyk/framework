@@ -206,10 +206,15 @@ final class Router extends Route
         }
 
         $this->setQueryStringParams();
+        
         self::$url = preg_replace('/\?.*/',
             '',
-            filter_var(rtrim(self::$url, '/'), FILTER_SANITIZE_URL)
+            filter_var(self::$url, FILTER_SANITIZE_URL)
         );
+        
+        if ((string) self::$url !== '/') {
+            self::$url = rtrim(self::$url, '/');
+        }
     }
     
     private function setQueryStringParams()

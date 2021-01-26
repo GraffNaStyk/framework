@@ -40,6 +40,16 @@ abstract class Route
         self::match($url, $controller, 'post', $rights, $middleware);
     }
     
+    public static function put(string $url, string $controller, int $rights = 4, string $middleware=null): void
+    {
+        self::match($url, $controller, 'put', $rights, $middleware);
+    }
+    
+    public static function delete(string $url, string $controller, int $rights = 4, string $middleware=null): void
+    {
+        self::match($url, $controller, 'delete', $rights, $middleware);
+    }
+    
     public static function prefix(string $alias, callable $function): void
     {
         self::$alias = $alias;
@@ -85,6 +95,12 @@ abstract class Route
         } else {
             header('location: '.self::checkProtocol().'://'.$_SERVER['HTTP_HOST'].Url::get().$path, true, $code);
         }
+        exit;
+    }
+    
+    public static function goTo(string $url): void
+    {
+        header('location: '.$url, true, 302);
         exit;
     }
     
