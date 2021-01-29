@@ -1,8 +1,10 @@
-<?php namespace App\Controllers\Admin;
+<?php
 
-use App\Controllers\ControllerInterface;
+namespace App\Controllers\Admin;
+
 use App\Facades\Http\Request;
-use App\Model\Client;
+use App\Model\User;
+
 
 class ClientsController extends DashController
 {
@@ -11,9 +13,11 @@ class ClientsController extends DashController
         parent::__construct();
     }
     
-    public function index(Request $request)
+    public function index()
     {
-        exit;
+        return $this->render([
+            'users' => User::select()->get()
+        ]);
     }
 
     public function add()
@@ -21,13 +25,13 @@ class ClientsController extends DashController
         return $this->render();
     }
     
-    public function store(Request $request)
+    public function store(Request $request): string
     {
         if(! $this->validate($request->all(), $this->validateRules())) {
             return $this->sendError();
         }
         
-        Client::insert($request->all());
+        Client::insert($request->all())->exec();
 
         return $this->sendSuccess('Użytkownik dodany', '', 201);
     }
@@ -52,16 +56,17 @@ class ClientsController extends DashController
     
     }
     
-    private function validateRules()
+    public function password()
+    {
+        return $this->render();
+    }
+    
+    private function validateRules(): array
     {
         return [
             'name' => 'required|min:4',
             'ftp_server' => 'required|min:4',
             'ftp_user' => 'required|min:4',
-            'ftp_password' => 'required|min:4',
-            'db_user' => 'required|min:4',
-            'db_password' => 'required|min:4',
-            'db_name' => 'required|min:4',
         ];
     }
 }

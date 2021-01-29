@@ -38,3 +38,7 @@
    rows="{{ data.rows ?? 5 }}">{{ data.value }}</textarea>
 </label>
 {% endmacro textarea %}
+
+{% macro submit(data) %}
+  <button class="btn {{ data.class }}"> {{ data.value }} </button>
+{% endmacro submit %}

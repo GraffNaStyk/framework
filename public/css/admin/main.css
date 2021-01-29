@@ -130,9 +130,34 @@ nav.top__nav a.logo {
 }
 
 i.fa {
-  color: #c8c8c8!important;
+  color: #ffffff;
 }
 
 table .position-sticky {
   text-align: right;
+}
+
+a.is_grey {
+  color: #777;
+}
+
+a.is_grey i {
+  color: #777;
+}
+
+a.is_edit, button.is_edit {
+  color: white;
+  background: #d7d705;
+}
+
+table thead {
+  background: #2d2b32; color: white;
+}
+
+.table-striped tbody tr:nth-of-type(2n+1) {
+  background-color: rgba(0,0,0,.04)!important;
+}
+
+.table td, .table th {
+  vertical-align: middle!important;
 }

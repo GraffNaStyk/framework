@@ -12,7 +12,7 @@ span.err {
   cursor: pointer;
   margin: 0 !important;
   z-index: 100;
-  left: 1%;
+  left: 0;
 }
 
 span.err img {
@@ -24,16 +24,17 @@ span.err img {
   position: absolute;
   opacity: 0;
   transition: all 0.15s ease;
-  padding: 2px 8px;
+  padding: 0 4px;
   color: black;
   border-radius: 8px;
-  box-shadow: 0 0 3px 0 black;
-  width: 200px;
+  box-shadow: 0 0 2px 0 black;
+  width: 150px;
+  font-size: 14px;
 }
 
 [tooltip]:hover:before {
   opacity: 1;
-  background: #fbfbfb;
+  background: #ffffff;
   margin-left: 20px;
   top: -25px;
 }

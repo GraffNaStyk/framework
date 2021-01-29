@@ -57,10 +57,10 @@ abstract class Controller
     public function render(array $data = [])
     {
         if (! empty($data)) {
-             View::render($data);
+             return View::render($data);
         }
         
-         View::render();
+        return View::render();
     }
     
     public function validate(array $request, array $rules): bool
