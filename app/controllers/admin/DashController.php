@@ -13,7 +13,6 @@ class DashController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->set(['page' => ['title' => 'Panel Administracyjny']]);
         View::layout('admin');
     }
 
@@ -24,7 +23,7 @@ class DashController extends Controller
             ]);
     }
     
-    public function users($name)
+    public function users($name): string
     {
         return $this->response(
             User::select(['name as text', 'password as value'])->get()
