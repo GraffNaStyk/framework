@@ -18,12 +18,15 @@ Route::prefix('/admin', function () {
             
             //@Route users
             Route::get('/users/{name}', 'Dash@users');
-            Route::get('/password', 'Clients@password');
             
             //@Route clients
             Route::get('/clients', 'Clients@index', 4, 'example');
             Route::get('/clients/add', 'Clients@add');
             Route::post('/clients/store', 'Clients@store');
+            
+            //@Route password reset
+            Route::get('/password', 'Password@index');
+            Route::post('/password/store', 'Password@store');
         });
     });
 });

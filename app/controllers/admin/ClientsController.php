@@ -2,8 +2,8 @@
 
 namespace App\Controllers\Admin;
 
+use App\Facades\Faker\Faker;
 use App\Facades\Http\Request;
-use App\Facades\Rules\RuleValidator;
 use App\Model\User;
 
 
@@ -55,10 +55,5 @@ class ClientsController extends DashController
     public function delete(int $id)
     {
     
-    }
-    
-    public function password()
-    {
-        return $this->render();
     }
 }

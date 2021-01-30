@@ -7,7 +7,7 @@ return [
      *  twig variable like {{ form.csrf() }}, csrf is not checked if your
      *  request is pushed by js Api fetch method !
      */
-    'csrf' => false,
+    'csrf' => true,
 
     /*
      *  @dev here tou can set developer mode to true or false, if developer mode

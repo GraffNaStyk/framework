@@ -4,7 +4,8 @@ class Faker
 {
     private static array $letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'w', 'x', 'y', 'z'];
     private static array $numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
+    private static array $methods = ['int', 'string'];
+    
     public static function string(int $length = 0): string
     {
         $string = null;
@@ -25,12 +26,12 @@ class Faker
         return $number;
     }
     
-    public static function hash(int $length)
+    public static function hash(int $length): string
     {
         $password = '';
         while (strlen($password) < $length) {
-            $password .= self::string(1);
-            $password .= self::int(1);
+            $method = self::$methods[rand(0, 1)];
+            $password .= self::$method(1);
         }
         
         return $password;

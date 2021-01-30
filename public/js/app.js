@@ -98,7 +98,7 @@ export const response = (res, selector, action) => {
     }))
 
     if (res.csrf !== undefined && res.csrf !== false) {
-      let csrf = document.querySelector('input[name="_csrf"]');
+      let csrf = document.querySelector(`form[data-action="${action}"] input[name="_csrf"]`);
       csrf.value = res.csrf;
     }
   } else {

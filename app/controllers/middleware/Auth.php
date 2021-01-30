@@ -19,6 +19,10 @@ final class Auth
     
     public function before(Request $request, Router $router)
     {
+        if ($router::getClass() === 'Login' && Session::has('user')) {
+            Router::redirect('/dash');
+        }
+        
         if (! Session::has('user')) {
             Route::redirect('/login');
         }

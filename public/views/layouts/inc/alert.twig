@@ -1,13 +1,11 @@
 {% if messages is not empty %}
-  <div class="my-4" style="width: 360px;">
-    {% for msg in messages %}
-      <div class="alert alert-{{ color }} mb-2">
-        {% if msg.field %}
-          [{{ msg.field }}] {{ msg.msg }}
-        {% else %}
-          {{ msg }}
-        {% endif %}
-      </div>
-    {% endfor %}
-  </div>
+  {% for msg in messages %}
+    <div class="alert alert-{{ color }} mb-2">
+      {% if msg.field %}
+        [{{ msg.field }}] {{ msg.msg }}
+      {% else %}
+        {{ msg }}
+      {% endif %}
+    </div>
+  {% endfor %}
 {% endif %}
