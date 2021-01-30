@@ -34,6 +34,7 @@ class Csrf
         }
         
         $result = $this->isValid($request->get('_csrf'));
+        $request->remove('_csrf');
         Session::remove('csrf');
         self::generate();
         return $result;
