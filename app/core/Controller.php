@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Facades\Http\Response;
+use App\Facades\Rules\RuleValidator;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
 use App\Helpers\Session;
@@ -63,9 +64,9 @@ abstract class Controller
         return View::render();
     }
     
-    public function validate(array $request, array $rules): bool
+    public function validate(array $request, string $rule, array $optional = []): bool
     {
-        return Validator::make($request, $rules);
+        return Validator::make($request, RuleValidator::getRules($rule)->getRule($optional));
     }
     
     public function sendSuccess(string $message = null, string $to = null, int $status = 200 , array $headers = []): string

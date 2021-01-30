@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Facades\Http\Request;
+use App\Facades\Rules\RuleValidator;
 use App\Model\User;
 
 
@@ -27,7 +28,7 @@ class ClientsController extends DashController
     
     public function store(Request $request): string
     {
-        if (! $this->validate($request->all(), $this->validateRules())) {
+        if (! $this->validate($request->all(), 'client')) {
             return $this->sendError();
         }
         
@@ -59,14 +60,5 @@ class ClientsController extends DashController
     public function password()
     {
         return $this->render();
-    }
-    
-    private function validateRules(): array
-    {
-        return [
-            'name' => 'required|min:4',
-            'ftp_server' => 'required|min:4',
-            'ftp_user' => 'required|min:4',
-        ];
     }
 }

@@ -1,0 +1,12 @@
+<?php
+
+namespace App\Facades\Rules;
+
+class CLASSNAME
+{
+    public function getRule(array $optional = []): array
+    {
+        return [
+        ];
+    }
+}
