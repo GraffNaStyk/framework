@@ -38,6 +38,7 @@ final class Router extends Route
         $this->csrf->generate();
         $this->parseUrl();
         $this->setParams();
+        $this->request->sanitize();
         $this->runMiddlewares('before');
 
         if (! $this->csrf->valid($this->request) && $this->request->getMethod() === 'post') {
@@ -198,7 +199,6 @@ final class Router extends Route
         
         if (! empty (self::$params)) {
             $this->request->setData(self::$params);
-            $this->request->sanitize();
         }
     }
     

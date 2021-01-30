@@ -27,7 +27,7 @@ class ClientsController extends DashController
     
     public function store(Request $request): string
     {
-        if(! $this->validate($request->all(), $this->validateRules())) {
+        if (! $this->validate($request->all(), $this->validateRules())) {
             return $this->sendError();
         }
         
