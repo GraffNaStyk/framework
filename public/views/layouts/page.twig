@@ -1,45 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta http-equiv="Content-Language" content="pl">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="robots" content="index,follow,all">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="keywords" content="Graff PHP">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
   <title>{{ page.title }}</title>
   {{ css|raw }}
-  {% if styles is iterable %}
-    <style>
-      :root{
-      {% for key,style in styles %}
-        --{{ key }}: {{ style }};
-      {% endfor %}
-      }
-    </style>
-  {% endif %}
   <script>
     document.url = '{{ url() }}';
   </script>
 </head>
 <body>
-<nav>
-</nav>
+{% import 'components/form.twig' as form %}
+{% import 'components/button.twig' as button %}
+<section class="grid">
 
-<main id="main-page-wrapper" class="container justify-content-center align-items-center d-flex flex-column">
-  {% block content %}
-  {% endblock %}
-</main>
+  <aside class="left-panel d-flex">
+    <h1 class="title__headline">Graff PHP</h1>
+    <a href="{{ url() }}">About</a>
+    <a href="{{ url() }}">Install</a>
 
-<div id="modal" class="modal"></div>
-<footer class="py-2">
-  <div class="container">
-    <p class="m-0">&copy; Graff PHP {{ "now"|date('Y') }}</p>
-  </div>
-</footer>
+    <a href="#" class="has__parent">Build first application</a>
+    <div class="parent">
+      <a href="{{ url('/clients/add') }}">nowy</a>
+      <a href="{{ url('/clients') }}">Lista</a>
+    </div>
+
+  </aside>
+
+  <main class="right-panel">
+    {% include 'layouts/inc/alert.twig' %}
+    {% block content %}
+    {% endblock %}
+  </main>
+</section>
+
+{% include 'components/modal.twig' %}
+<script type="module" src="{{ base('/public/js/components/main.js') }}"></script>
 {{ js|raw }}
 </body>
 </html>

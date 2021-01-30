@@ -1,16 +1,10 @@
 import * as  App from '../app.js';
-let className;
+let className = '.grid';
 
-if (window.innerWidth > 991) {
-  className = 'grid';
-} else {
-  className = 'right-panel';
-}
-
-let element = document.getElementsByClassName(className)[0];
+let element = document.querySelector(className);
 
 if (element !== undefined) {
-  element.style.minHeight = window.innerHeight - document.getElementsByTagName('nav')[0].clientHeight + 'px';
+  element.style.minHeight = window.innerHeight;
 }
 
 
