@@ -96,6 +96,11 @@ export const response = (res, selector, action) => {
         throwCustomMessage(res, selector)
       }
     }))
+
+    if (res.csrf !== undefined && res.csrf !== false) {
+      let csrf = document.querySelector('input[name="_csrf"]');
+      csrf.value = res.csrf;
+    }
   } else {
     throwCustomMessage(res, selector)
   }
@@ -152,6 +157,10 @@ export const OnSubmitForms = () => {
         const contentType = res.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {
           return res.json().then(res => {
+            if (res === null || res === '' || res.length === 0) {
+              return false;
+            }
+
             //this is check for modal is open
             let modalSelector = document.getElementById('modal');
             if (res.ok && modalSelector.classList.contains('d-block')) {
@@ -168,6 +177,10 @@ export const OnSubmitForms = () => {
           });
         } else {
           return res.text().then(res => {
+           if (res === null || res === '') {
+             return false;
+           }
+
             document.querySelector(`[data-component="${e.target.dataset.el}"]`).innerHTML = res;
             setTimeout(() => {
               OnSubmitForms();

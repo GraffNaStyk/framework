@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Facades\Http;
 
-use App\Facades\Csrf\Csrf;
 use App\Facades\Dotter\Get;
 use App\Facades\Dotter\Has;
 use App\Helpers\Session;
@@ -9,24 +9,22 @@ use App\Helpers\Session;
 final class Request
 {
     protected array $file = [];
+    
     private string $method = 'post';
+    
     protected array $data = [];
+    
     protected array $headers = [];
     
     public function __construct()
     {
+        $this->boot();
+    }
+    
+    public function boot(): void
+    {
         $this->setMethod();
         $this->setHeaders();
-        
-        if(!empty($this->data) && app('csrf') && ! View::isAjax()) {
-            if(! isset($this->data['csrf']) || ! Csrf::isValid($this->data['csrf'])) {
-                Router::http404();
-            }
-        }
-
-        Session::remove('csrf');
-        unset($this->data['csrf']);
-
     }
 
     private function setMethod()
@@ -190,6 +188,17 @@ final class Request
         } else {
             unset($this->data[$item[0]]);
         }
+    }
+    
+    public static function isAjax(): bool
+    {
+        if (isset($_SERVER['HTTP_X_FETCH_HEADER'])
+            && (string) strtolower($_SERVER['HTTP_X_FETCH_HEADER']) === 'fetchapi'
+        ) {
+            return true;
+        }
+        
+        return false;
     }
 
     public function __destruct()

@@ -3,6 +3,7 @@
 namespace App\Facades\Http;
 
 use App\Facades\TwigExt\TwigExt;
+use App\Helpers\Session;
 use Twig;
 
 require_once vendor_path('autoload.php');
@@ -33,7 +34,7 @@ final class View
         
             self::$twig = new Twig\Environment(self::$loader, $config);
         
-            self::$twig->addGlobal('session', $_SESSION);
+            self::$twig->addGlobal('session', Session::all());
             self::registerFunctions();
         }
         
@@ -52,17 +53,6 @@ final class View
     {
         self::$view = self::$view ?? Router::getAction();
         self::$view = strtolower(implode('-', preg_split('/(?=[A-Z])/', self::$view)));
-    }
-
-    public static function isAjax(): bool
-    {
-        if (isset($_SERVER['HTTP_X_FETCH_HEADER'])
-            && (string) strtolower($_SERVER['HTTP_X_FETCH_HEADER']) === 'fetchapi'
-        ) {
-            return true;
-        }
-        
-        return false;
     }
 
     public static function layout(string $layout): void

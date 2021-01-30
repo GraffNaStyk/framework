@@ -2,8 +2,8 @@
 
 namespace App\Facades\Validator;
 
+use App\Facades\Http\Request;
 use App\Helpers\Session;
-use App\Facades\Http\View;
 
 class Validator
 {
@@ -16,7 +16,7 @@ class Validator
         static::run($request);
 
         if(! empty(static::$validatorErrors = array_filter(static::$validatorErrors))) {
-            if(! View::isAjax()) {
+            if(! Request::isAjax()) {
                 Session::checkIfDataHasBeenProvided($request);
                 Session::msg(static::$validatorErrors, 'danger');
             }

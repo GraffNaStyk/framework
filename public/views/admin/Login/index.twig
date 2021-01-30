@@ -1,6 +1,7 @@
 {% extends layout %}
 
 {% block content %}
+  {% import 'components/form.twig' as form %}
   <div class="d-flex justify-content-center align-items-center flex-column content">
     <div class="right-panel"></div>
     <h4 class="text-center custom__title">Graff CMS</h4>
@@ -13,7 +14,7 @@
         <i class="fa fa-lock"></i>
         <input name="password" type="password" placeholder="Podaj hasło" value="{{ password }}">
       </label>
-      {{ csrf() }}
+      {{ form.csrf() }}
       <input type="submit" value="Zaloguj">
     </form>
   </div>

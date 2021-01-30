@@ -75,7 +75,14 @@ abstract class Controller
     
     public function sendError(string $message = null, int $status = 400, array $headers = []): string
     {
-         Response::json(['ok' => false, 'msg' => $message ?? Validator::getErrors()], $status, $headers);
+         Response::json([
+             'ok' => false,
+             'msg' => $message ?? Validator::getErrors(),
+             'csrf' => Session::get('csrf')
+         ],
+             $status,
+             $headers
+         );
     }
     
     public function response($response, $status=200): string

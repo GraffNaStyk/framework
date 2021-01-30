@@ -4,10 +4,10 @@ return [
     /**
      *  @csrf is used to blocking csrf attack from users,
      *  if this variable is set to true, you need to add for very form
-     *  twig variable like {{ csrf() }}, csrf is not checked if your
+     *  twig variable like {{ form.csrf() }}, csrf is not checked if your
      *  request is pushed by js Api fetch method !
      */
-    'csrf' => false,
+    'csrf' => true,
 
     /*
      *  @dev here tou can set developer mode to true or false, if developer mode

@@ -1,31 +1,41 @@
 <?php
+
 namespace App\Facades\Csrf;
 
 use App\Facades\Faker\Faker;
+use App\Facades\Http\Request;
 use App\Helpers\Session;
 
 class Csrf
 {
-    public static function generate()
+    public function generate()
     {
-        Session::set(['csrf' =>
-            Faker::string(rand(2,5)).
-            Faker::int(rand(2,5)).
-            Faker::string(rand(2,5)).
-            Faker::int(rand(2,5)).
-            Faker::string(rand(2,5)).
-            Faker::int(rand(2,5)).
-            Faker::string(rand(2,5)).
-            Faker::int(rand(2,5)).
-            Faker::string(rand(2,5)).
-            Faker::int(rand(2,5)).
-            Faker::string(rand(2,5)).
-            Faker::int(rand(2,5))
-        ]);
+        if (! Session::has('csrf') && $this->isEnabled()) {
+            Session::set(['csrf' =>
+                Faker::hash(60)
+            ]);
+        }
     }
 
-    public static function isValid($csrf): bool
+    public function isValid(string $csrf): bool
     {
-        return (string) Session::get('csrf') === $csrf ? true : false;
+        return (string) Session::get('csrf') === $csrf;
+    }
+    
+    private function isEnabled(): bool
+    {
+        return app('csrf');
+    }
+    
+    public function valid(Request $request): bool
+    {
+        if (! $request->has('_csrf') && $this->isEnabled() && $request->header('HTTP_X_FETCH_HEADER')) {
+            return false;
+        }
+        
+        $result = $this->isValid($request->get('_csrf'));
+        Session::remove('csrf');
+        self::generate();
+        return $result;
     }
 }

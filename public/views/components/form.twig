@@ -42,3 +42,7 @@
 {% macro submit(data) %}
   <button class="btn {{ data.class }}"> {{ data.value }} </button>
 {% endmacro submit %}
+
+{% macro csrf() %}
+  <input type="hidden" name="_csrf" value="{{ csrf() }}">
+{% endmacro csrf %}

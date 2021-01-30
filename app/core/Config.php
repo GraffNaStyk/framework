@@ -19,10 +19,6 @@ abstract class Config
             trigger_error('Minimal version of php 7.4', E_USER_ERROR);
         }
 
-        if (app('csrf') && !Session::has('csrf') && ! View::isAjax()) {
-            Csrf::generate();
-        }
-
         $env = require_once app_path('app/config/.env');
     
         if(! empty(array_filter($env['DB']))) {

@@ -18,6 +18,7 @@ class TwigExt extends AbstractExtension
 
     public function getFunctions(): array
     {
+        parent::getFunctions();
         return [
             $this->print(),
             $this->csrf(),
@@ -31,7 +32,7 @@ class TwigExt extends AbstractExtension
     public function csrf(): TwigFunction
     {
         return new TwigFunction('csrf', function() {
-            echo '<input type="hidden" name="csrf" value="'.Session::get('csrf').'">';
+            echo Session::get('csrf');
         });
     }
 

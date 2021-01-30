@@ -4,6 +4,7 @@ namespace App\Facades\Http;
 
 use App\Core\Auth;
 use App\Core\Kernel;
+use App\Facades\Csrf\Csrf;
 use ReflectionMethod;
 use ReflectionClass;
 
@@ -21,19 +22,28 @@ final class Router extends Route
 
     private object $request;
     
+    private object $csrf;
+    
     private static array $currentRoute = [];
 
     public function __construct()
     {
         $this->request = new Request();
+        $this->csrf = new Csrf();
         $this->boot();
     }
     
     private function boot()
     {
+        $this->csrf->generate();
         $this->parseUrl();
         $this->setParams();
         $this->runMiddlewares('before');
+
+        if (! $this->csrf->valid($this->request) && $this->request->getMethod() === 'post') {
+            self::abort(400);
+        }
+        
         $this->create(self::$provider . '\\' . self::getClass() . 'Controller');
         $this->runMiddlewares('after');
     }
@@ -230,7 +240,7 @@ final class Router extends Route
     
     private static function abort($code = 404): void
     {
-        header("HTTP/1.0 404 Not Found");
+        header("HTTP/1.1 {$code} Not Found");
         http_response_code($code);
         exit(require_once (view_path('errors/'.$code.'.php')));
     }
