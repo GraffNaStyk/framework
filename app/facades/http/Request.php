@@ -115,6 +115,7 @@ final class Request
         }
         
         $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
+        $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
         $item = strtr($item,
             "???????��������������������������������������������������������������",
             "SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy"
