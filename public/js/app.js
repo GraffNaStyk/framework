@@ -74,6 +74,12 @@ const modal = (result) => {
 
 export const response = (res, selector, action) => {
   document.querySelectorAll('span.err').forEach(e => e.remove());
+
+  if (res.csrf !== undefined && res.csrf !== false) {
+    let csrf = document.querySelector(`form[data-action="${action}"] input[name="_csrf"]`);
+    csrf.value = res.csrf;
+  }
+  
   if (Array.isArray(res.msg)) {
     res.msg.forEach((msg => {
       if (msg.msg !== undefined && msg.field !== undefined) {
@@ -96,11 +102,6 @@ export const response = (res, selector, action) => {
         throwCustomMessage(res, selector)
       }
     }))
-
-    if (res.csrf !== undefined && res.csrf !== false) {
-      let csrf = document.querySelector(`form[data-action="${action}"] input[name="_csrf"]`);
-      csrf.value = res.csrf;
-    }
   } else {
     throwCustomMessage(res, selector)
   }

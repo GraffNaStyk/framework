@@ -17,7 +17,7 @@ class ClientsController extends DashController
     public function index()
     {
         return $this->render([
-            'users' => User::select()->get()
+            'users' => User::select()->limit(15)->get()
         ]);
     }
 
