@@ -5,9 +5,6 @@
 
   <div class="box">
     <h3>Welcome in dashboard</h3>
-    &nbsp;{{ button.render({el: 'test', text:'tak', url: 'no', class:'btn-primary'}) }}
-    {{ button.link({url: '/clients', ico: 'fa-user', class: 'btn-success'}) }}
-    <div data-component="cycuszki"></div>
     <form data-action="dash/upload">
       <div class="form__grid">
         {{ form.input({name: 'user[name]', value: value}) }}

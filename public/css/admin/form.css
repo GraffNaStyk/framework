@@ -89,7 +89,7 @@ button:hover i, input[type="submit"]:hover i {
 }
 
 ::placeholder {
-  color: #b0b0b0 !important;
+  color: #747D85 !important;
   opacity: 1;
 }
 
@@ -98,5 +98,10 @@ p.hidden__label {
   top: 23%;
   margin: 0;
   right: 2%;
-  color: #b0b0b0 !important;
+  color: #747D85 !important;
+}
+
+
+.ss-main .ss-single-selected .placeholder .ss-disabled {
+  color: #747D85 !important;
 }

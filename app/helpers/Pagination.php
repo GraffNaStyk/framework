@@ -13,7 +13,7 @@ class Pagination
             'pagination' => [
                 'previous' => $url.($page-1),
                 'next'     => $url.($page+1),
-                'pages' => ceil($model::count()['total'] / Controller::PER_PAGE)
+                'pages' => ceil($model::count('id')->get()['id'] / Controller::PER_PAGE)
             ]
         ]);
     }

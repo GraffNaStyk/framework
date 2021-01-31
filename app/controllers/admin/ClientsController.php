@@ -6,7 +6,6 @@ use App\Facades\Faker\Faker;
 use App\Facades\Http\Request;
 use App\Model\User;
 
-
 class ClientsController extends DashController
 {
     public function __construct()

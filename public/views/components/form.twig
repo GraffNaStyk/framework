@@ -1,6 +1,7 @@
 {% macro input(data) %}
   <label {% if data.type == 'file' %}class="input__upload"{% endif %}>
     {% if data.type == 'file' %}
+      {{ data.label }}
       <input style="display: none;" type="{{ data.type }}" name="{{ data.name }}">
     {% else %}
       <input placeholder="{{ data.label }}"
