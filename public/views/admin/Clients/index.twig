@@ -1,9 +1,11 @@
 {% extends layout %}
   {% import 'components/button.twig' as button %}
-
+  {% import 'components/headline.twig' as headline %}
 {% block content %}
 <div class="box">
-  <h3>Dodaj klienta mordo</h3>
+  {{ headline.title({
+    text: 'Lista klientów'
+  }) }}
   <table class="table">
     <thead>
       <tr>
