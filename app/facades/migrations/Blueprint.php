@@ -27,7 +27,8 @@ class Blueprint
         'text' => '',
         'mediumText' => '',
         'longText' => '',
-        'timestamp' => ' '
+        'timestamp' => ' ',
+        'datetime' => ' '
     ];
     
     protected string $currentKey = '';

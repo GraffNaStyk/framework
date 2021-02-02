@@ -68,9 +68,21 @@ class Schema extends Blueprint
         return $this;
     }
     
+    public function datetime($name): Schema
+    {
+        $this->generate($name, __FUNCTION__);
+        return $this;
+    }
+    
     public function decimal($name, $length): Schema
     {
         $this->generate($name, __FUNCTION__, $length);
+        return $this;
+    }
+    
+    public function enum($name, $options): Schema
+    {
+        $this->generate($name, __FUNCTION__, '"'.implode('", "', $options).'"');
         return $this;
     }
     
@@ -83,6 +95,12 @@ class Schema extends Blueprint
     public function implicitly($name): Schema
     {
         $this->tableFields[$this->currentKey] = $this->tableFields[$this->currentKey] . ' DEFAULT ' . $name;
+        return $this;
+    }
+    
+    public function default($name): Schema
+    {
+        $this->implicitly($name);
         return $this;
     }
     

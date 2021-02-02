@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Core\Controller;
+use App\Facades\Faker\Hash;
 use App\Facades\Http\Request;
 use App\Facades\Http\View;
 use App\Helpers\Storage;
