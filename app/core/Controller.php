@@ -3,7 +3,7 @@
 namespace App\Core;
 
 use App\Facades\Http\Response;
-use App\Facades\Rules\RuleValidator;
+use App\Rules\RuleValidator;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
 use App\Helpers\Session;

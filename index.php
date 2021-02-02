@@ -14,11 +14,6 @@ if (! file_exists(__DIR__.'/app/config/app.php'))
 if (session_status() === PHP_SESSION_NONE)
     session_start();
 
-function public_path($path = null): string
-{
-    return __DIR__ . '/public/'. $path;
-}
-
 function css_path($path = null): string
 {
     return __DIR__ . '/public/css/'. $path;

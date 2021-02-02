@@ -11,14 +11,6 @@ abstract class Response
         die();
     }
 
-    public static function send($response, $status = 200, $headers = [])
-    {
-        self::setHeaders($headers);
-        self::setCode($status);
-        echo $response;
-        die();
-    }
-
     private static function setCode($code)
     {
         http_response_code($code);
@@ -32,7 +24,6 @@ abstract class Response
         } else if (!headers_sent()) {
             header('Content-Type: application/json');
             header("Cache-Control: no-cache, must-revalidate");
-            header("Allow: GET");
         }
     }
 }

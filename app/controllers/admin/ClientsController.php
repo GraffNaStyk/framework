@@ -2,7 +2,6 @@
 
 namespace App\Controllers\Admin;
 
-use App\Facades\Faker\Faker;
 use App\Facades\Http\Request;
 use App\Model\User;
 

@@ -100,12 +100,12 @@ abstract class Route
     
     public static function goTo(string $url): void
     {
-        header('location: '.$url, true, 302);
+        header('location: '.$url, true, 301);
         exit;
     }
     
     public static function checkProtocol(): string
     {
-        return isset($_SERVER['HTTPS']) ? 'https' : 'http';
+        return isset($_SERVER['HTTPS']) || $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http';
     }
 }

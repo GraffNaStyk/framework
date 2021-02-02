@@ -365,14 +365,14 @@ class Db
             return false;
         } else {
             try {
-                $stmt = self::$db->prepare($this->query);
-                $stmt->execute($this->data);
+                $pdo = self::$db->prepare($this->query);
+                $pdo->execute($this->data);
                 
-                if ($this->first === true) {
-                    return $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($this->first) {
+                    return $pdo->fetch(PDO::FETCH_ASSOC);
                 }
                 
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $pdo->fetchAll(PDO::FETCH_ASSOC);
             } catch (\PDOException $e) {
                 Handle::throwException($e, $this->develop(true));
             }

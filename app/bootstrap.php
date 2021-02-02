@@ -1,6 +1,4 @@
 <?php
-ini_set('memory_limit', '-1');
-
 if (!file_exists(vendor_path('autoload.php'))) {
     exit(require_once view_path('errors/install.php'));
 }
@@ -41,7 +39,7 @@ spl_autoload_register(function ($class) {
     }
 });
 
-\App\Core\Config::run();
+\App\Core\App::run();
 
 if (php_sapi_name() !== 'cli') {
     require_once __DIR__ . '/routes/route.php';

@@ -79,7 +79,7 @@ export const response = (res, selector, action) => {
     let csrf = document.querySelector(`form[data-action="${action}"] input[name="_csrf"]`);
     csrf.value = res.csrf;
   }
-  
+
   if (Array.isArray(res.msg)) {
     res.msg.forEach((msg => {
       if (msg.msg !== undefined && msg.field !== undefined) {
@@ -107,21 +107,24 @@ export const response = (res, selector, action) => {
   }
 };
 
+let lastRandom = '';
+
 const throwCustomMessage = (res, selector) => {
   let min = Math.ceil(500);
   let max = Math.floor(150000);
   let rand = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  if (lastRandom !== '') {
+    let alert = document.querySelector(`[data-${lastRandom}=""]`);
+    alert.remove();
+  }
+
+  lastRandom = rand;
   document.querySelector(`${selector}`).insertAdjacentHTML('afterbegin', `
     <div data-${rand}="" class="alert alert-${res.ok ? 'success' : 'danger'}" role="alert">
         ${res.msg}
       </div>
    `);
-  let alert = document.querySelector(`[data-${rand}=""]`);
-  if (alert) {
-    setTimeout(() => {
-      alert.remove();
-    }, 2500)
-  }
 }
 
 export const on = (event, selector, fn) => {

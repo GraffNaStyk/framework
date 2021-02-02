@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Facades\Rules;
+namespace App\Rules;
 
 class RuleValidator
 {
-    private static string $ns = 'App\\Facades\\Rules\\';
+    private static string $ns = 'App\\Rules\\';
     
     public static function getRules(string $rule): object
     {
