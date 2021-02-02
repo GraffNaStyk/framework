@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Facades\Http\Request;
 use App\Model\User;
+use App\Model\Client;
 
 class ClientsController extends DashController
 {
@@ -32,7 +33,7 @@ class ClientsController extends DashController
         
         Client::insert($request->all())->exec();
 
-        return $this->sendSuccess('Użytkownik dodany', '', 201);
+        return $this->sendSuccess('Użytkownik dodany', '/clients', 201);
     }
     
     public function update(Request $request)

@@ -122,6 +122,7 @@ const throwCustomMessage = (res, selector) => {
   lastRandom = rand;
   document.querySelector(`${selector}`).insertAdjacentHTML('afterbegin', `
     <div data-${rand}="" class="alert alert-${res.ok ? 'success' : 'danger'}" role="alert">
+        <i class="fa fa-${res.ok ? 'check' : 'exclamation'} mr-3" style="color: ${res.ok ? '#155724' : '#721c24'};"></i>
         ${res.msg}
       </div>
    `);
@@ -134,9 +135,9 @@ export const on = (event, selector, fn) => {
 };
 
 export const callback = (ok= false, to = null) => {
-  if(document.callback !== undefined) {
+  if (document.callback !== undefined) {
     eval(document.callback)
-  } else if (to !== null && ok) {
+  } else if (to !== null && to !== '' && ok) {
     setTimeout(() => {
       document.location.href = document.url + to;
     },1500)

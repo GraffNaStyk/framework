@@ -37,6 +37,16 @@
               label: 'Ftp Password'
             }) }}
             {{ form.input({
+              type: 'db password',
+              name: 'db_password',
+              label: 'Db Password'
+            }) }}
+            {{ form.input({
+              type: 'db name',
+              name: 'db_name',
+              label: 'Db name'
+            }) }}
+            {{ form.input({
               type: 'text',
               name: 'db_link',
               label: 'Link do bazy'

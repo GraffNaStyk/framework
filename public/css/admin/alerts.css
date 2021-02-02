@@ -5,6 +5,7 @@
   border-radius: 8px;
   font-family: 'Nunito', sans-serif;
   padding: .6rem 1.25rem!important;
+  font-weight: bold;
 }
 
 span.err {
