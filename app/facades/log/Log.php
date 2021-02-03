@@ -1,6 +1,6 @@
 <?php
 
-namespace app\facades\log;
+namespace App\Facades\Log;
 
 use App\Facades\Http\Router;
 

@@ -9,8 +9,8 @@ abstract class App
 {
     public static function run(): void
     {
-        if (!file_exists(app_path('app/config/.env'))) {
-            trigger_error('Cannot loaded environment file.', E_USER_ERROR);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
         
         if (phpversion() < 7.4) {

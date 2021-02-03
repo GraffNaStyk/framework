@@ -38,7 +38,7 @@ class Session
 
     public static function flash($item, $value = 1, $seconds = 60)
     {
-        setcookie($item, $value, time()+$seconds, '/', $_SERVER['SERVER_NAME']);
+        setcookie($item, $value, time()+$seconds, '/', getenv('SERVER_NAME'), true, true);
     }
 
     public static function getFlash($item = null)
@@ -58,7 +58,7 @@ class Session
     public static function removeFlash($item)
     {
         unset($_COOKIE[$item]);
-        setcookie($item, false, -1, '/', $_SERVER['SERVER_NAME']);
+        setcookie($item, false, -1, '/', getenv('SERVER_NAME'), true, true);
     }
 
     public static function msg($items, $color = 'success')

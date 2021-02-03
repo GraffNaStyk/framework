@@ -1,12 +1,9 @@
 <?php
-if (!file_exists(vendor_path('autoload.php'))) {
-    exit(require_once view_path('errors/install.php'));
-}
 
-define('app', require_once app_path('app/config/app.php'));
+require_once app_path('app/facades/autoload/Autoload.php');
 
-register_shutdown_function(function () {
-    \app\facades\log\Log::handlePhpError();
+spl_autoload_register(function ($class) {
+    App\Facades\Autoload\Autoload::run($class);
 });
 
 if ((bool) app('dev') === true) {
@@ -16,29 +13,11 @@ if ((bool) app('dev') === true) {
     error_reporting(0);
 }
 
-spl_autoload_register(function ($class) {
-    $classArr = explode('\\', $class);
-    $className = end($classArr);
-    
-    array_pop($classArr);
-    $classArr = array_map('strtolower', $classArr);
-    $path = '';
-    
-    foreach ($classArr as $namespaces) {
-        $path .= $namespaces.'/';
-    }
-    
-    $className = rtrim($className, '/');
-
-    if ((bool) file_exists(path($path . $className .'.php')) === true) {
-        require_once path($path . $className .'.php');
-    }
-
-    if ((bool) file_exists(path($path . $className .'.inc')) === true) {
-        require_once path($path . $className .'.inc');
-    }
+register_shutdown_function(function () {
+\App\Facades\Log\Log::handlePhpError();
 });
 
+\App\Facades\Header\Header::set();
 \App\Core\App::run();
 
 if (php_sapi_name() !== 'cli') {
