@@ -2,6 +2,7 @@
 namespace App\Facades\Migrations;
 
 use App\Facades\Console\Console;
+use App\Facades\Console\Model;
 use App\Helpers\Storage;
 
 class Migration
@@ -18,7 +19,7 @@ class Migration
         
         if (file_put_contents(
             app_path('app/db/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').'.php'),
-            "<?php ".$migration
+            $migration
         )) {
             Console::output(
                 'Migration app/db/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').' has been created',
@@ -27,12 +28,7 @@ class Migration
         }
         
         if (file_exists(app_path('app/model/'.ucfirst($args[0]).'.php')) === false) {
-            $model = file_get_contents(app_path('app/facades/migrations/model'));
-            $model = str_replace('CLASSNAME', ucfirst($args[0]), $model);
-            $model = str_replace('TABLE', $args[1], $model);
-            if (file_put_contents(app_path('app/model/'.ucfirst($args[0]).'.php'), "<?php ".$model)) {
-                Console::output('Model '.'app/model/'.ucfirst($args[0]).' has been created', 'blue');
-            }
+            (new Model([$args[0], $args[1]]))->make();
         }
     }
     
