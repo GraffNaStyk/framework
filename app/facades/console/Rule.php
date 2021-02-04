@@ -17,7 +17,7 @@ class Rule
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Validator', $this->file);
         if (file_put_contents(
-            app_path('app/facades/rules/'.ucfirst($this->name).'Validator.php'),
+            app_path('app/rules/'.ucfirst($this->name).'Validator.php'),
             $this->file
         )) {
             Console::output('Rule created successfully!', 'green');

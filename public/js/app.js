@@ -187,11 +187,11 @@ export const OnSubmitForms = () => {
              return false;
            }
 
-            document.querySelector(`[data-component="${e.target.dataset.el}"]`).innerHTML = res;
-            setTimeout(() => {
-              OnSubmitForms();
-              RefreshSelects();
-            },100);
+          document.querySelector(`[data-component="${e.target.dataset.el}"]`).innerHTML = res;
+          setTimeout(() => {
+            OnSubmitForms();
+            RefreshSelects();
+          },100);
           });
         }
       })
