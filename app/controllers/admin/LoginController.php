@@ -29,7 +29,7 @@ class LoginController extends Controller
     public function check(Request $request)
     {
         if (! $this->validate($request->all(), 'login')) {
-            $this->sendError();
+            $this->sendError('Formularz nie zostal wysłany');
         }
         
         if ($user = User::select(['name', 'id', 'password'])

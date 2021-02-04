@@ -72,14 +72,15 @@ abstract class Controller
     public function sendSuccess(string $message = null, string $to = null, int $status = 200 , array $headers = []): string
     {
          Session::msg($message);
-         Response::json(['ok' => true, 'msg' => [$message ?? 'Dane zostały zapisane'], 'to' => $to], $status, $headers);
+         Response::json(['ok' => true, 'msg' => $message ?? 'Dane zostały zapisane', 'to' => $to], $status, $headers);
     }
     
     public function sendError(string $message = null, int $status = 400, array $headers = []): string
     {
          Response::json([
              'ok' => false,
-             'msg' => $message ?? Validator::getErrors(),
+             'msg' => $message,
+             'inputs' => Validator::getErrors(),
              'csrf' => Session::get('csrf')
          ],
              $status,

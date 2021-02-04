@@ -28,7 +28,7 @@ class ClientsController extends DashController
     public function store(Request $request): string
     {
         if (! $this->validate($request->all(), 'client')) {
-            return $this->sendError();
+            return $this->sendError('Formularz nie został wysłany');
         }
         
         Client::insert($request->all())->exec();
