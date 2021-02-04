@@ -7,7 +7,9 @@ class Has
     public static function check($method, $item = [])
     {
         if (isset($item[3])) {
-            if (isset($method[$item[0]][$item[1]][$item[2]][$item[3]]) && !empty($method[$item[0]][$item[1]][$item[2]][$item[3]])) {
+            if (isset($method[$item[0]][$item[1]][$item[2]][$item[3]])
+                && !empty($method[$item[0]][$item[1]][$item[2]][$item[3]])
+            ) {
                 return true;
             } else {
                 return false;

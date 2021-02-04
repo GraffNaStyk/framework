@@ -1,4 +1,6 @@
-<?php namespace App\Helpers;
+<?php
+
+namespace App\Helpers;
 
 use App\Facades\Dotter\Get;
 use App\Facades\Dotter\Has;

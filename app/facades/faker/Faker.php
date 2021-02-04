@@ -1,8 +1,14 @@
-<?php namespace App\Facades\Faker;
+<?php
+
+namespace App\Facades\Faker;
 
 class Faker
 {
-    private static array $letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'w', 'x', 'y', 'z'];
+    private static array $letters = [
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+        'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+        'r', 's', 't', 'u', 'w', 'x', 'y', 'z'
+    ];
     private static array $numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     private static array $methods = ['int', 'string'];
     

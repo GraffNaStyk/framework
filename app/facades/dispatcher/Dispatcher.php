@@ -8,7 +8,7 @@ class Dispatcher
     
     protected static array $canDo = [];
     
-    public static function dispatch(&$argv)
+    public static function dispatch(&$argv): ?Dispatcher
     {
         if ((string) php_sapi_name() !== 'cli') {
             header('location: index.php');
@@ -18,7 +18,7 @@ class Dispatcher
         return new self();
     }
     
-    public function register(array $can):void
+    public function register(array $can): void
     {
         self::$canDo = $can;
     }
@@ -34,12 +34,12 @@ class Dispatcher
         return false;
     }
     
-    public function getArgs()
+    public function getArgs(): array
     {
         return self::$argv;
     }
     
-    public function end()
+    public function end(): void
     {
         exit;
     }

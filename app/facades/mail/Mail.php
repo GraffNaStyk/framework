@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Facades\Mail;
 
 use App\Facades\Url\Url;

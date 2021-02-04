@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Facades\Migrations;
 
 use App\Facades\Console\Console;

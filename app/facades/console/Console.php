@@ -8,7 +8,7 @@ class Console
     
     private static string $path = 'App\\Facades\\Console\\';
     
-    private static $backgrounds = [
+    private static array $backgrounds = [
         'black' => 40,
         'red' => 41,
         'green' => 42,

@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Db\Eloquent;
 
-use App\Facades\Http\Router;
-use app\facades\log\Log;
+use App\Facades\Log\Log;
 
 abstract class Handle
 {

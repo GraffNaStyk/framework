@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Facades\Url;
 
 use App\Facades\Http\Router;
