@@ -14,6 +14,10 @@ label span, div span {
   display: flex;
 }
 
+.ss-single-selected {
+  border-radius: 8px !important;
+}
+
 div.form__grid label {
   position: relative;
   width: 100%;

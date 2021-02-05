@@ -42,4 +42,14 @@ class Faker
         
         return $password;
     }
+    
+    public static function getUniqueStr(object $model, string $column = 'hash', int $length = 50): string
+    {
+        do {
+            $hash  = self::hash(50);
+            $check = $model::select()->where($field, $hash)->first();
+        } while (!empty($check));
+    
+        return $hash;
+    }
 }

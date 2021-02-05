@@ -72,7 +72,7 @@ const modal = (result) => {
   });
 };
 
-export const response = (res, selector, action) => {
+export const response = (res, action) => {
   document.querySelectorAll('span.err')
   .forEach(e => e.remove());
 
@@ -104,7 +104,7 @@ export const response = (res, selector, action) => {
   }
 
   if (res.msg) {
-    throwCustomMessage(res, selector)
+    throwCustomMessage(res, action)
   }
 };
 
@@ -120,12 +120,18 @@ const throwCustomMessage = (res, selector) => {
     alert.remove();
   }
 
+  let form = document.querySelector(`form[data-action="${selector}"] .form__grid`);
+
+  if (form === null) {
+    form = document.querySelector(`form[data-action="${selector}"]`);
+  }
+
   lastRandom = rand;
-  document.querySelector(`${selector}`).insertAdjacentHTML('afterbegin', `
+  form.insertAdjacentHTML('beforebegin', `
     <div data-${rand}="" class="alert alert-${res.ok ? 'success' : 'danger'}" role="alert">
-        <i class="fa fa-${res.ok ? 'check' : 'exclamation'} mr-3" style="color: ${res.ok ? '#155724' : '#721c24'};"></i>
-        ${res.msg}
-      </div>
+       <i class="fa fa-${res.ok ? 'check' : 'exclamation'} mr-2" style="color: ${res.ok ? '#155724' : '#721c24'};"></i>
+       ${res.msg}
+     </div>
    `);
 }
 
@@ -174,11 +180,7 @@ export const OnSubmitForms = () => {
                 document.querySelector('button[data-dismiss="modal"]').click()
               },500);
             }
-            if (res.ok === false && modalSelector.classList.contains('d-block')) {
-              response(res, '.modal-body', e.target.dataset.action)
-            } else {
-              response(res, '.right-panel', e.target.dataset.action)
-            }
+            response(res, e.target.dataset.action)
             callback(res.ok, res.to ?? res.to);
           });
         } else {

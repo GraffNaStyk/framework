@@ -12,11 +12,11 @@ final class Router extends Route
 {
     private static array $params = [];
     
-    private static string $provider = 'Index';
+    private static ?string $provider = '';
     
-    private static string $class = 'Index';
+    private static ?string $class = '';
 
-    private static string $action = 'index';
+    private static ?string $action = '';
 
     private static string $url = '';
 

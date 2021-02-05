@@ -13,7 +13,6 @@ if (element !== undefined) {
   element.style.minHeight = window.innerHeight - document.getElementsByTagName('nav')[0].clientHeight + 'px';
 }
 
-
 const menu = (e) => {
   if(e.target.nextElementSibling.classList.contains('d-flex')) {
     e.target.nextElementSibling.classList.remove('d-flex');
@@ -35,14 +34,12 @@ App.on('click', 'nav.top__nav i.fa-bars', () => {
 
 //global function for prevent a href if href is === #
 const prevent = (e) => {
-  //this is for i element when parent element is A
-  if (e.target.parentElement.nodeName === 'A' && e.target.parentElement.href.split('/').pop() === '#') {
+  if (e.target.parentElement.nodeName === 'A'
+    && e.target.href !== undefined
+    && e.target.href.split('/').pop() === '#'
+  ) {
     e.preventDefault();
-    return false;
   }
-
-  if (e.target.href.split('/').pop() === '#')
-    e.preventDefault();
 };
 
 App.on('click', 'a', prevent);
