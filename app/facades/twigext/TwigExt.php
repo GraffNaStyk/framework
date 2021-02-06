@@ -2,6 +2,7 @@
 
 namespace App\Facades\TwigExt;
 
+use App\Facades\Http\Route;
 use App\Facades\Http\Router;
 use App\Facades\Url\Url;
 use Twig\Extension\AbstractExtension;
@@ -47,7 +48,7 @@ class TwigExt extends AbstractExtension
     public function img(): TwigFunction
     {
         return new TwigFunction('img', function($url) {
-            echo Url::base().$url;
+            echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
         });
     }
 
@@ -55,9 +56,9 @@ class TwigExt extends AbstractExtension
     {
         return new TwigFunction('url', function($url = null) {
            if (Router::getAlias() === 'http') {
-               echo Url::base().$url;
+               echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
            } else {
-               echo Url::base().'/'.Router::getAlias().$url;
+               echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().'/'.Router::getAlias().$url;
            }
         });
     }
