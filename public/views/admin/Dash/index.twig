@@ -9,8 +9,15 @@
       <div class="form__grid">
         {{ form.input({name: 'user[name]', value: value}) }}
         {{ form.select({name: 'user[info]', type: 'file', data:users, url:'users', label: 'label testowy'}) }}
+        {{ form.input({name: 'file', type: 'file'}) }}
+        {{ form.input({
+          type: 'submit',
+          value: 'Zapisz',
+          class: 'mt-3'
+        }) }}
       </div>
     </form>
+    <img src="{{ img(img.file) }}" alt="">
   </div>
 
 {% endblock %}

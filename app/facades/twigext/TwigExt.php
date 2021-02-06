@@ -3,7 +3,6 @@
 namespace App\Facades\TwigExt;
 
 use App\Facades\Http\Router;
-use App\Facades\Http\View;
 use App\Facades\Url\Url;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -48,7 +47,7 @@ class TwigExt extends AbstractExtension
     public function img(): TwigFunction
     {
         return new TwigFunction('img', function($url) {
-            echo 'storage/public/'.$url;
+            echo Url::base().$url;
         });
     }
 

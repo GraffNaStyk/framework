@@ -14,6 +14,7 @@ Route::prefix('/admin', function () {
         Route::middleware('auth', function () {
             //@Route Dashboard
             Route::get('/dash', 'Dash@index');
+            Route::post('/dash/upload', 'Dash@upload');
             Route::get('/logout', 'Logout@index');
             
             //@Route users

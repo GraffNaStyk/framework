@@ -2,6 +2,9 @@
 
 namespace App\Helpers;
 
+use App\Facades\Faker\Faker;
+use App\Model\File;
+
 class Storage
 {
     private array $mimes = [
@@ -49,6 +52,7 @@ class Storage
     ];
     
     private static string $disk;
+    private static string $relativePath;
 
     public static function disk($disk): Storage
     {
@@ -59,9 +63,10 @@ class Storage
         if(!is_dir(storage_path('private/'))) {
             mkdir(storage_path('private/'), 0775);
         }
-
+        
+        self::$relativePath = '/storage/'.$disk;
         self::$disk = storage_path($disk);
-
+        
         return new self();
     }
 
@@ -94,13 +99,31 @@ class Storage
     {
         if ($file['error'] === UPLOAD_ERR_OK) {
             $this->make($destination);
+            
+            $pathInfo = pathinfo($file['name']);
+            $location  = self::$disk.$destination;
 
-            $destination  = self::$disk . $destination;
-            $destination .= $as ? strtolower($as).'.'.pathinfo($file['name'], PATHINFO_EXTENSION) : strtolower($file['name']);
+            if (class_exists(File::class)) {
+                $hash = Faker::getUniqueStr(File::class, 'hash', 100);
+                $location .= $hash.'.'.$pathInfo['extension'];
+            } else {
+                $location .= $as
+                    ? mb_strtolower($as).'.'.$pathInfo['extension']
+                    : mb_strtolower($file['name']);
+            }
 
-            if (move_uploaded_file($file['tmp_name'], $destination)) {
-                if ($this->checkFile($destination) === true) {
-                    chmod($destination, 0775);
+            if (move_uploaded_file($file['tmp_name'], $location)) {
+                if ($this->checkFile($location) === true) {
+                    chmod($location, 0775);
+                    if (class_exists(File::class)) {
+                        File::insert([
+                            'name' => $pathInfo['filename'],
+                            'hash' => $hash,
+                            'dir' => self::$relativePath.$destination,
+                            'ext' => '.'.$pathInfo['extension'],
+                            'sha1' => sha1_file($location)
+                        ])->exec();
+                    }
                     return true;
                 }
             }

@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Core\Controller;
 use App\Facades\Faker\Hash;
+use App\Facades\Faker\Password;
 use App\Facades\Http\Router;
 use App\Helpers\Session;
 use App\Model\User;
@@ -36,14 +37,11 @@ class LoginController extends Controller
             ->where('name', '=', $request->get('name'))
             ->exist()
         ) {
-            if (Hash::verify($request->get('password'), $user['password'])) {
+            if (Password::verify($request->get('password'), $user['password'])) {
                 unset($user['password']);
                 Session::set(['user' => $user]);
                 $this->sendSuccess('Zalogowano poprawnie', '/dash');
             }
-            $this->sendError('Niepoprwane dane logowania');
-        } else {
-            $this->sendError('Niepoprwane dane logowania');
         }
     
         $this->sendError('Niepoprwane dane logowania');

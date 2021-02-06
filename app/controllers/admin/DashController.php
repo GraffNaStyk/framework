@@ -3,9 +3,11 @@
 namespace App\Controllers\Admin;
 
 use App\Core\Controller;
+use App\Db\Eloquent\Value;
 use App\Facades\Http\Request;
 use App\Facades\Http\View;
 use App\Helpers\Storage;
+use App\Model\File;
 use App\Model\User;
 
 class DashController extends Controller
@@ -19,7 +21,8 @@ class DashController extends Controller
     public function index()
     {
         return View::render([
-                'users' => User::select(['name as value', 'password as text'])->get()
+                'users' => User::select(['name as value', 'password as text'])->get(),
+                'img' => File::select([new Value("concat(dir, '', hash, '', ext) as file")])->where('id','=',5)->first()
             ]);
     }
     
