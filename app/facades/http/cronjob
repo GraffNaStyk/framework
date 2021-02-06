@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Cronjobs;
+
+class CLASSNAME
+{
+    public function __construct()
+    {
+
+    }
+}
