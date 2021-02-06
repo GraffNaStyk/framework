@@ -91,9 +91,17 @@ abstract class Route
         session_regenerate_id();
         
         if ($direct) {
-            header('location: '.self::checkProtocol().'://'.$_SERVER['HTTP_HOST'].Url::base().$path, true, $code);
+            header(
+                'location: '.self::checkProtocol().'://'.$_SERVER['HTTP_HOST'].Url::base().$path,
+                true,
+                $code
+            );
         } else {
-            header('location: '.self::checkProtocol().'://'.$_SERVER['HTTP_HOST'].Url::get().$path, true, $code);
+            header(
+                'location: '.self::checkProtocol().'://'.$_SERVER['HTTP_HOST'].Url::get().$path,
+                true,
+                $code
+            );
         }
         exit;
     }

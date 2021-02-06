@@ -33,7 +33,11 @@ class Db
         if (! empty(self::$env)) {
             try {
                 if (self::$db === null) {
-                    self::$db = new PDO('mysql:host=' . self::$env['host'] . ';dbname=' . self::$env['dbname'], self::$env['user'], self::$env['pass']);
+                    self::$db = new PDO(
+                        'mysql:host='.self::$env['host'].';dbname='.self::$env['dbname'],
+                        self::$env['user'],
+                        self::$env['pass'])
+                    ;
                     self::$dbName = self::$env['dbname'];
                     self::$env = [];
                     self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -339,15 +343,22 @@ class Db
         return $this;
     }
     
-    private function setJoin(string $type, string $table, string $value1, string $by, string $value2, bool $isRigidly = false): void
-    {
+    private function setJoin(
+         string $type,
+         string $table,
+         string $value1,
+         string $by,
+         string $value2,
+         bool $isRigidly = false
+    ): void {
         if ($isRigidly) {
             $twoValue = $value2;
         } else {
             $twoValue = $this->prepareValueForWhere($value2);
         }
         
-        $this->query .= " {$type} JOIN {$this->prepareValueForWhere($table)} ON {$this->prepareValueForWhere($value1)} {$by} {$twoValue}";
+        $this->query .= " {$type} JOIN {$this->prepareValueForWhere($table)} ON
+                            {$this->prepareValueForWhere($value1)} {$by} {$twoValue}";
     }
 
     private function execute()
