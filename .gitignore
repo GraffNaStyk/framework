@@ -4,4 +4,4 @@ storage/private/*
 storage/public/*
 vendor/*
 composer.lock
-app/config/.env
+app/config/
