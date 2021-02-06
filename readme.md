@@ -5,14 +5,56 @@
 Application configuration app/config/app.php
 ```php
 [
-    'csrf' => 'disable or enable',
-    'url' =>  'url path default /',
-    'dev' => 't/f true show errors false log errors'
+    /**
+     *  @csrf protection
+     */
+    'csrf' => true,
+
+    /*
+     *  @dev true - show all errors, false - log errors
+     */
+    'dev' => true,
+
+    /*
+     *  @url
+    */
+    'url' => '/',
+    
+    /*
+     *  @cache_view disable or enable view caching
+     */
+    'cache_view' => false,
+    
+    /*
+     *  @mail configuration
+     */
+    'mail' => [
+        'smtp' => '',
+        'user' => '',
+        'password' => '',
+        'port' => '',
+        'from' => '',
+        'fromName' => ''
+    ],
+    
+    /*
+     *  Always loaded libraries css / js from main css / js directory
+     *
+     */
+    'is_loaded' => [
+        'css' => [
+            'bootstrap', 'slim-select', 'alerts', 'box', 'buttons', 'form', 'modal', 'table', 'loader'
+        ],
+        
+        'js' => [
+            'bootstrap', 'slim-select'
+        ]
+    ]
 ];
+
 ```
 
 Database configuration app/config/.env
-
 ```dotenv
 'DB' => [
     'user' => '',
@@ -53,6 +95,7 @@ Route::prefix('/admin', function () {
 
 
 # Model
+app/model
 ```php
 Model::insert('array')
 ->duplicate('ON DUPLICATE KEY UPDATE')
