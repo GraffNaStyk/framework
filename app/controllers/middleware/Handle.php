@@ -4,7 +4,7 @@ namespace App\Controllers\Middleware;
 
 use App\Facades\Http\Request;
 use App\Facades\Http\Router;
-use app\facades\log\Log;
+use App\Facades\Log\Log;
 
 class Handle
 {

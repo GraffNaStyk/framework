@@ -2,8 +2,6 @@
 
 namespace App\Facades\Log;
 
-use App\Facades\Http\Router;
-
 class Log
 {
     private static function make(string $type, array $data): void
