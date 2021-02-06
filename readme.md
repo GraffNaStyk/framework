@@ -1,6 +1,8 @@
-#Configuration
+# Graff framework
 
-#Application configuration app/config/app.php
+## Configuration
+
+Application configuration app/config/app.php
 ```php
 [
     'csrf' => 'disable or enable',
@@ -9,7 +11,7 @@
 ];
 ```
 
-#Database configuration app/config/.env
+Database configuration app/config/.env
 
 ```dotenv
 'DB' => [
@@ -20,7 +22,7 @@
 ]
 ```
 
-#Routing
+## Routing
 app/routes/route.php
 ```php
 Route::namespace('App\Controllers\Http', function () {
@@ -39,7 +41,7 @@ Route::prefix('/admin', function () {
 });
 ```
 
-#Console
+# Console
 | Typ | Opis |
 | ------ | ------ |
 | Crontab | time php path/to/console cronjob method - run,make fileName |
@@ -50,7 +52,7 @@ Route::prefix('/admin', function () {
 | Rule | php console rule make fileName |
 
 
-#Model
+# Model
 ```php
 Model::insert('array')
 ->duplicate('ON DUPLICATE KEY UPDATE')
