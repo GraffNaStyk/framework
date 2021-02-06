@@ -47,7 +47,7 @@ class Faker
     {
         do {
             $hash  = self::hash($length);
-            $check = $model::select()->where($column, '=', $hash)->first();
+            $check = $model::select([$column])->where($column, '=', $hash)->first();
         } while (!empty($check));
     
         return $hash;
