@@ -7,7 +7,7 @@ Route::when('/admin', '/dash');
 
 Route::prefix('/admin', function () {
     Route::namespace('App\Controllers\Admin', function () {
-        //@Route login and logout
+        //@Route login
         Route::get('/login', 'Login@index');
         Route::post('/login/check', 'Login@check');
         

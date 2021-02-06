@@ -9,7 +9,7 @@
       <div class="form__grid">
         {{ form.input({name: 'user[name]', value: value}) }}
         {{ form.select({name: 'user[info]', type: 'file', data:users, url:'users', label: 'label testowy'}) }}
-        {{ form.input({name: 'file', type: 'file'}) }}
+        {{ form.input({name: 'file', type: 'file', label: 'test'}) }}
         {{ form.input({
           type: 'submit',
           value: 'Zapisz',
@@ -18,7 +18,7 @@
       </div>
       {{ form.csrf() }}
     </form>
-    <img src="{{ img(img.file) }}" alt="">
+{#    <img src="{{ img(img.file) }}" alt="">#}
   </div>
 
 {% endblock %}

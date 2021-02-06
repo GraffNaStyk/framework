@@ -30,14 +30,14 @@ final class Auth
     
     public static function middleware(array $route): bool
     {
-        if ($route['rights'] === 4) {
-            return true;
-        }
-        
         if ($route['rights'] === 0) {
             return false;
         }
-  
+        
+        if ($route['rights'] === 4) {
+            return true;
+        }
+
         if (class_exists(Right::class)) {
             $result = Right::select([strtolower($route['controller'])])
                 ->where('user_id', '=', Session::get('user.id'))
