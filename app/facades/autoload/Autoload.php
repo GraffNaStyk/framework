@@ -11,7 +11,7 @@ class Autoload
         array_pop($classArr);
         $className = mb_strtolower(implode('/', $classArr)).'/'.$className.'.php';
         
-        if ((bool) file_exists(path($className))) {
+        if ((bool) is_readable(path($className))) {
             require_once path($className);
         }
     }
