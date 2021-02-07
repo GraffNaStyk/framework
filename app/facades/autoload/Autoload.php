@@ -6,10 +6,13 @@ class Autoload
 {
     public static function run(string $class): void
     {
-        $class = mb_strtolower(str_replace('\\', '/', $class)).'.php';
+        $classArr = explode('\\', $class);
+        $className = end($classArr);
+        array_pop($classArr);
+        $className = mb_strtolower(implode('/', $classArr)).'/'.$className.'.php';
         
-        if ((bool) is_readable(path($class))) {
-            require_once path($class);
+        if ((bool) file_exists(path($className))) {
+            require_once path($className);
         }
     }
 }
