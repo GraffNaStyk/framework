@@ -14,7 +14,7 @@ if ((bool) app('dev') === true) {
 }
 
 register_shutdown_function(function () {
-\App\Facades\Log\Log::handlePhpError();
+\App\Facades\Log\Log::handleError();
 });
 
 \App\Facades\Header\Header::set();

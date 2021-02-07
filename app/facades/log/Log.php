@@ -41,7 +41,7 @@ class Log
         static::make($name, $data);
     }
     
-    public static function handlePhpError()
+    public static function handleError()
     {
         $lastError = error_get_last();
         
