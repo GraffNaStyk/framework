@@ -36,6 +36,11 @@ class Log
         static::make('info', $data);
     }
     
+    public static function custom(string $name, array $data)
+    {
+        static::make($name, $data);
+    }
+    
     public static function handlePhpError()
     {
         $lastError = error_get_last();
