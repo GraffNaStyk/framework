@@ -8,7 +8,7 @@ class Autoload
     {
         $class = mb_strtolower(str_replace('\\', '/', $class)).'.php';
         
-        if ((bool) file_exists(path($class))) {
+        if ((bool) is_readable(path($class))) {
             require_once path($class);
         }
     }
