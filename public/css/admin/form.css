@@ -10,7 +10,6 @@
 }
 
 label span, div span {
-  margin-bottom: .5rem;
   display: flex;
 }
 
