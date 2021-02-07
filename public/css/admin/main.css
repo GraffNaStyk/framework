@@ -174,3 +174,16 @@ table tbody tr:nth-child(odd) td {
 .btn {
   padding: .340rem .75rem!important;
 }
+
+.btn-outline-warning {
+  color: #f3a423!important;
+}
+
+.btn-outline-warning:hover {
+  color: white!important;
+}
+
+.btn-warning {
+  background: #f3a423!important;
+  color: white!important;
+}

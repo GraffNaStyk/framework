@@ -3,7 +3,6 @@
 namespace App\Controllers\Admin;
 
 use App\Facades\Http\Request;
-use App\Model\User;
 use App\Model\Client;
 
 class ClientsController extends DashController
@@ -16,7 +15,7 @@ class ClientsController extends DashController
     public function index()
     {
         return $this->render([
-            'users' => User::select()->limit(15)->get()
+            'users' => Client::select()->get()
         ]);
     }
 

@@ -1,75 +1,67 @@
-{% extends layout %}
+
   {% import 'components/form.twig' as form %}
   {% import 'components/headline.twig' as headline %}
 {% block content %}
-  <div class="row">
-    <div class="col-12">
-      <div class="box">
-        {{ headline.title({
-          text: 'Dodaj klienta', subtext: 'test tekstu pod spodem'
+  <form data-action="/clients/store" method="post">
+    <div class="modal-header">
+      <h5 class="modal-title">Dodaj klienta</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form__grid">
+        {{ form.input({
+          type: 'text',
+          name: 'name',
+          label: 'Nazwa',
+          value: ''
         }) }}
-        <form method="post" data-action="clients/store">
-          <div class="form__grid">
-            {{ form.input({
-              type: 'text',
-              name: 'name',
-              label: 'Nazwa',
-              value: 'dddfffffff'
-            }) }}
-            {{ form.input({
-              type: 'text',
-              name: 'www',
-              label: 'Strona'
-            }) }}
-            {{ form.input({
-              type: 'text',
-              name: 'ftp_server',
-              label: 'Server ftp'
-            }) }}
-            {{ form.input({
-              type: 'text',
-              name: 'ftp_user',
-              label: 'User ftp'
-            }) }}
-            {{ form.input({
-              type: 'password',
-              name: 'ftp_password',
-              label: 'Ftp Password'
-            }) }}
-            {{ form.input({
-              type: 'db password',
-              name: 'db_password',
-              label: 'Db Password'
-            }) }}
-            {{ form.input({
-              type: 'db name',
-              name: 'db_name',
-              label: 'Db name'
-            }) }}
-            {{ form.input({
-              type: 'text',
-              name: 'db_link',
-              label: 'Link do bazy'
-            }) }}
-            {{ form.input({
-              type: 'text',
-              name: 'db_user',
-              label: 'User db'
-            }) }}
-            {{ form.csrf() }}
-          </div>
-          {{ form.input({
-            type: 'file',
-            name: 'db_user',
-            label: 'Wgraj zdjęcie'
-          }) }}
-          {{ form.input({
-            type: 'submit',
-            value: 'Zapisz',
-            class: 'mt-3'
-          }) }}
-        </form>
+        {{ form.input({
+          type: 'text',
+          name: 'www',
+          label: 'Strona'
+        }) }}
+        {{ form.input({
+          type: 'text',
+          name: 'ftp_server',
+          label: 'Server ftp'
+        }) }}
+        {{ form.input({
+          type: 'text',
+          name: 'ftp_user',
+          label: 'User ftp'
+        }) }}
+        {{ form.input({
+          type: 'password',
+          name: 'ftp_password',
+          label: 'Ftp Password'
+        }) }}
+        {{ form.input({
+          type: 'db password',
+          name: 'db_password',
+          label: 'Db Password'
+        }) }}
+        {{ form.input({
+          type: 'db name',
+          name: 'db_name',
+          label: 'Db name'
+        }) }}
+        {{ form.input({
+          type: 'text',
+          name: 'db_link',
+          label: 'Link do bazy'
+        }) }}
+        {{ form.input({
+          type: 'text',
+          name: 'db_user',
+          label: 'User db'
+        }) }}
       </div>
     </div>
-  </div>
+    {{ form.csrf() }}
+    <div class="modal-footer">
+      {{ form.submit({value: 'Zapisz', class: 'btn-outline-success'}) }}
+    </div>
+  </form>
 {% endblock %}

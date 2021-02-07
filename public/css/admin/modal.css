@@ -2,6 +2,10 @@
   max-width: 600px;
 }
 
+#modal {
+  overflow: auto;
+}
+
 .modal-content .modal-header {
   display: flex;
   justify-content: space-between;

@@ -14,19 +14,22 @@
         <td>street</td>
         <td>phone</td>
         <td>email</td>
-        <td class="position-sticky"></td>
+        <td class="position-sticky">
+          {{ button.render({url:'/clients/add', ico: 'fa-plus', el: 'modal', class: 'btn-success'}) }}
+        </td>
+
       </tr>
     </thead>
     <tbody>
       {% for user in users %}
         <tr>
           <td>{{ user.name }}</td>
-          <td>{{ user.city }}</td>
-          <td>{{ user.street }}</td>
-          <td>{{ user.phone }}</td>
-          <td>{{ user.mail }}</td>
+          <td>{{ user.www }}</td>
+          <td>{{ user.ftp_server }}</td>
+          <td>{{ user.ftp_user }}</td>
+          <td>{{ user.db_user }}</td>
           <td class="position-sticky">
-            {{ button.link({url:'/test/'~user.mail, text: 'edytuj', class: 'btn-outline-warning'}) }}
+            {{ button.link({url:'/test/'~user.mail, text: 'edytuj', class: 'btn-warning'}) }}
             &nbsp;
             {{ button.render({url:'/test', text: 'render', el: 'test', class: 'btn-outline-secondary'}) }}
             &nbsp;
