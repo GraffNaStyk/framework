@@ -2,6 +2,7 @@
 
 namespace App\Db\Eloquent;
 
+use App\Facades\Http\Router;
 use App\Facades\Log\Log;
 
 abstract class Handle
@@ -12,10 +13,14 @@ abstract class Handle
             print_r("<b>SQL Error</b>: {$e->getMessage()} <br>");
             pd("<b> Query </b>: {$error}", true);
         }
-    
+        
+        $router = Router::getInstance();
+        
         Log::sql([
             'error' => $e->getMessage(),
-            'Query' => $error,
+            'query' => $error,
+            'request' => $router->request->all(),
+            'routeParams' => $router->getCurrentRoute()
         ]);
     }
 }

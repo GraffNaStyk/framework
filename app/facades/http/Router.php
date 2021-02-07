@@ -20,17 +20,28 @@ final class Router extends Route
 
     private static string $url = '';
 
-    private object $request;
+    public object $request;
     
     private object $csrf;
     
     private static array $currentRoute = [];
+    
+    private static ?object $instance = null;
 
     public function __construct()
     {
+        if (self::$instance === null) {
+            self::$instance = $this;
+        }
+        
         $this->request = new Request();
         $this->csrf = new Csrf();
         $this->boot();
+    }
+    
+    public static function getInstance(): Router
+    {
+        return self::$instance;
     }
     
     private function boot()
@@ -243,10 +254,5 @@ final class Router extends Route
         header("HTTP/1.1 {$code} Not Found");
         http_response_code($code);
         exit(require_once (view_path('errors/'.$code.'.php')));
-    }
-
-    public static function run(): self
-    {
-        return new self();
     }
 }

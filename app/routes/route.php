@@ -36,4 +36,4 @@ Route::namespace('App\Controllers\Http', function () {
     Route::get('/', 'Index@index');
 });
 
-Router::run();
+new Router();
