@@ -49,17 +49,12 @@ class Log
             if (in_array($lastError['type'], [E_USER_ERROR, E_ERROR, E_PARSE])) {
                 header("HTTP/1.0 500 Internal Server Error");
                 http_response_code(500);
-            
-                if (php_sapi_name() === 'cli') {
-                    print_r($lastError);
-                    exit;
-                }
-                
+    
                 if (app('dev') === false) {
                     static::make('php', $lastError);
                     exit (require_once view_path('errors/fatal.php'));
                 } else {
-                    exit (require_once view_path('errors/fatal-dev.php'));
+                    pd($lastError, true);
                 }
             }
         }
