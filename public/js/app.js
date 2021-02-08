@@ -1,4 +1,5 @@
 let loader = `<div class="preloader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>`;
+let isFormSend = false;
 
 export const post = async (args) => {
   let data;
@@ -106,6 +107,11 @@ export const response = (res, action) => {
   if (res.msg) {
     throwCustomMessage(res, action)
   }
+
+  setTimeout(() => {
+    setPointerEvent(action, '');
+    isFormSend = false;
+  }, 100)
 };
 
 let lastRandom = '';
@@ -160,6 +166,13 @@ export const OnSubmitForms = () => {
     if (e.target.dataset.action) {
       e.preventDefault();
       e.stopImmediatePropagation();
+
+      if (isFormSend) {
+        return false;
+      }
+
+      isFormSend = true;
+      setPointerEvent(e.target.dataset.action,'none');
       insertLoader();
       post({
         url: e.target.dataset.action,
@@ -266,4 +279,12 @@ const prepareFetchUrl = (url) => {
   }
 
   return '/'+url;
+}
+
+export const setPointerEvent = (element, event) => {
+  let submit = document.querySelector(`form[data-action="${element}"] .submit__button`);
+  if (submit == null) {
+    submit = document.querySelector(`form[data-action="${element}"] input[type="submit"]`)
+  }
+  submit.style.pointerEvents = event;
 }
