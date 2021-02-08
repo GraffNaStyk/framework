@@ -101,7 +101,7 @@ class Blueprint
         }
     }
     
-    public function clear()
+    public function drop()
     {
         if ($this->hasTable($this->table)) {
             $this->db->query('DROP TABLE ' . $this->table);
@@ -110,6 +110,13 @@ class Blueprint
         $triggers = $this->db->query('SELECT * FROM `INFORMATION_SCHEMA`.`TRIGGERS` WHERE TRIGGER_SCHEMA = "'.$this->db->getDbName().'"');
         foreach ($triggers as $trigger) {
             $this->db->query('DROP TRIGGER '.$trigger['TRIGGER_NAME']);
+        }
+    }
+    
+    public function clear()
+    {
+        if ($this->hasTable($this->table)) {
+            $this->db->query('TRUNCATE TABLE ' . $this->table);
         }
     }
     

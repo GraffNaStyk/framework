@@ -83,7 +83,7 @@ class Schema extends Blueprint
     
     public function enum($name, $options): Schema
     {
-        $this->generate($name, __FUNCTION__, '"'.implode('", "', $options).'"');
+        $this->generate($name, __FUNCTION__, "'".implode("', '", $options)."'");
         return $this;
     }
     
@@ -135,7 +135,6 @@ class Schema extends Blueprint
         } else {
             $uniques = '';
         }
-        
         
         if (strlen($uniques) != 0) {
             $uniques = rtrim($uniques, ', ');

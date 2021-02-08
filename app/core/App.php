@@ -7,6 +7,8 @@ use App\Helpers\Loader;
 
 abstract class App
 {
+    const PER_PAGE = 25;
+
     public static function run(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -19,7 +21,7 @@ abstract class App
 
         $env = require_once app_path('app/config/.env');
     
-        if(! empty(array_filter($env['DB']))) {
+        if (! empty(array_filter($env['DB']))) {
             Db::init($env['DB']);
             unset($env['DB']);
         }

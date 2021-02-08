@@ -13,7 +13,6 @@ use App\Facades\Http\Route;
 
 abstract class Controller
 {
-    const PER_PAGE = 25;
     
     public function __construct()
     {
