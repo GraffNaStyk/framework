@@ -62,7 +62,10 @@ trait Builder
     
     protected function setValue(string $key, string $value): string
     {
-        $key = str_replace('.', '__', $key).'__'.rand(100,10000);
+        do {
+            $key = str_replace('.', '__', $key).'__'.rand(100,10000);
+        } while (isset($this->data[$key]));
+    
         $this->data[$key] = $value;
         return $key;
     }
