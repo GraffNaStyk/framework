@@ -59,4 +59,11 @@ trait Builder
             }
         }
     }
+    
+    protected function setValue(string $key, string $value): string
+    {
+        $key = str_replace('.', '__', $key).'__'.rand(100,10000);
+        $this->data[$key] = $value;
+        return $key;
+    }
 }

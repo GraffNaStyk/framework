@@ -49,6 +49,11 @@ class Db
             }
         }
     }
+    
+    public static function getInstance(): ?PDO
+    {
+        return self::$db;
+    }
 
     public function getDbName(): string
     {
@@ -153,24 +158,21 @@ class Db
 
     public function where(string $item, string $is, string $item2): Db
     {
-        $tmpItem = str_replace('.', '__', $item).'__'.rand(1,10000);
-        $this->data[$tmpItem] = $item2;
-        
         if ($this->isFirstWhere === true) {
-            $this->query .= " AND {$this->prepareValueForWhere($item)} {$is} :{$tmpItem} ";
+            $this->query .= " AND ";
         } else {
             $this->isFirstWhere = true;
-            $this->query .= " WHERE {$this->prepareValueForWhere($item)} {$is} :{$tmpItem}";
+            $this->query .= " WHERE ";
         }
+    
+        $this->query .= "{$this->prepareValueForWhere($item)} {$is} :{$this->setValue($item, $item2)}";
         
         return $this;
     }
 
     public function orWhere(string $item, string $is, string $item2): Db
     {
-        $tmpItem = str_replace('.', '__', $item).'__'.rand(1,10000);
-        $this->data[$tmpItem] = $item2;
-        $this->query .= " OR {$this->prepareValueForWhere($item)} {$is} :{$tmpItem} ";
+        $this->query .= " OR {$this->prepareValueForWhere($item)} {$is} :{$this->setValue($item, $item2)} ";
         
         return $this;
     }
@@ -178,66 +180,89 @@ class Db
     public function whereNull(string $item): Db
     {
         if ($this->isFirstWhere === true) {
-            $this->query .= " AND {$this->prepareValueForWhere($item)} IS NULL ";
+            $this->query .= " AND ";
         } else {
             $this->isFirstWhere = true;
-            $this->query .= " WHERE {$this->prepareValueForWhere($item)} IS NULL ";
+            $this->query .= " WHERE ";
         }
     
+        $this->query .= "{$this->prepareValueForWhere($item)} IS NULL ";
+        
         return $this;
     }
     
     public function whereNotNull(string $item): Db
     {
         if ($this->isFirstWhere === true) {
-            $this->query .= " AND {$this->prepareValueForWhere($item)} IS NOT NULL ";
+            $this->query .= " AND ";
         } else {
             $this->isFirstWhere = true;
-            $this->query .= " WHERE {$this->prepareValueForWhere($item)} IS NOT NULL ";
+            $this->query .= " WHERE ";
         }
     
+        $this->query .= "{$this->prepareValueForWhere($item)} IS NOT NULL ";
+        
         return $this;
     }
     
     public function orWhereNull(string $item): Db
     {
         $this->query .= " OR {$this->prepareValueForWhere($item)} IS NULL ";
-    
+        
         return $this;
     }
     
     public function orWhereNotNull(string $item): Db
     {
         $this->query .= " OR {$this->prepareValueForWhere($item)} IS NOT NULL ";
-    
-        return $this;
-    }
-    
-    public function whereIn(array $items, string $item): Db
-    {
-        $items = "'".implode("', '", $items)."'";
-
-        if ($this->isFirstWhere === true) {
-            $this->query .= " AND {$this->prepareValueForWhere($item)} IN ({$items}) ";
-        } else {
-            $this->isFirstWhere = true;
-            $this->query .= " WHERE {$this->prepareValueForWhere($item)} IN ({$items}) ";
-        }
         
         return $this;
     }
     
-    public function whereNotIn(array $items, string $item): Db
+    public function whereIn(string $item, array $items): Db
+    {
+        $items = "'".implode("', '", $items)."'";
+
+        if ($this->isFirstWhere === true) {
+            $this->query .= " AND ";
+        } else {
+            $this->isFirstWhere = true;
+            $this->query .= " WHERE ";
+        }
+    
+        $this->query .= "{$this->prepareValueForWhere($item)} IN ({$items}) ";
+        
+        return $this;
+    }
+    
+    public function whereNotIn(string $item, array $items): Db
     {
         $items = "'".implode("', '", $items)."'";
     
         if ($this->isFirstWhere === true) {
-            $this->query .= " AND {$this->prepareValueForWhere($item)} NOT IN ({$items}) ";
+            $this->query .= " AND ";
         } else {
             $this->isFirstWhere = true;
-            $this->query .= " WHERE {$this->prepareValueForWhere($item)} NOT IN ({$items}) ";
+            $this->query .= " WHERE ";
         }
     
+        $this->query .= "{$this->prepareValueForWhere($item)} NOT IN ({$items}) ";
+        
+        return $this;
+    }
+    
+    public function whereBetween(string $item, array $items): Db
+    {
+        if ($this->isFirstWhere === true) {
+            $this->query .= " AND ";
+        } else {
+            $this->isFirstWhere = true;
+            $this->query .= " WHERE ";
+        }
+    
+        $this->query .= "{$this->prepareValueForWhere($item)} BETWEEN
+                            '{$this->setValue($item, $items[0])}' AND '{$this->setValue($item, $items[1])}' ";
+        
         return $this;
     }
     
@@ -426,5 +451,14 @@ class Db
         }
 
         pd($statement);
+    }
+    
+    public function getColumnsInfo()
+    {
+        return $this->query(
+            'SELECT COLUMN_NAME as name, DATA_TYPE as type
+                            FROM INFORMATION_SCHEMA.COLUMNS
+                                WHERE TABLE_NAME = "'.$this->table.'"'
+        );
     }
 }
