@@ -14,7 +14,7 @@
   View <?= \App\Facades\Http\View::getName() ?>.twig not found in <?= \App\Facades\Http\Router::getClass() ?>Controller
  </h2>
  <a style="border: 1px solid rgba(0,0,0,0.6); padding: 1rem; text-decoration: none; color :rgba(0,0,0,0.6); font-family: 'Nunito', sans-serif;"
-    href="<?=\App\Facades\Url\Url::base();?>">
+    href="<?= App\Facades\Url\Url::base() ?: '/'; ?>">
     Back to main Page
  </a>
 </div>

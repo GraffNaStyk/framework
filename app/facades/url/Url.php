@@ -6,7 +6,6 @@ use App\Facades\Http\Router;
 
 class Url
 {
-
     public static function get(): string
     {
         if (Router::getAlias() === 'http') {

@@ -66,7 +66,7 @@
  </h2>
  <h1>Sorry, this method is not allowed here</h1>
  <div>
-  <a class="button" href="<?= App\Facades\Url\Url::base(); ?>">Back to main page</a>
+  <a class="button" href="<?= App\Facades\Url\Url::base() ?: '/'; ?>">Back to main page</a>
  </div>
 </div>
 </body>
