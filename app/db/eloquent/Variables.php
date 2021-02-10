@@ -13,4 +13,6 @@ trait Variables
     private bool $isFirstWhere = false;
     
     private bool $distinct = false;
+    
+    private bool $startBracket = false;
 }

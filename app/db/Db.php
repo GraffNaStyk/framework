@@ -151,20 +151,14 @@ class Db
         return $this;
     }
     
-    public function exec()
+    public function exec(): bool
     {
         return $this->execute();
     }
 
     public function where(string $item, string $is, string $item2): Db
     {
-        if ($this->isFirstWhere === true) {
-            $this->query .= " AND ";
-        } else {
-            $this->isFirstWhere = true;
-            $this->query .= " WHERE ";
-        }
-    
+        $this->appendToQuery();
         $this->query .= "{$this->prepareValueForWhere($item)} {$is} :{$this->setValue($item, $item2)}";
         
         return $this;
@@ -172,20 +166,15 @@ class Db
 
     public function orWhere(string $item, string $is, string $item2): Db
     {
-        $this->query .= " OR {$this->prepareValueForWhere($item)} {$is} :{$this->setValue($item, $item2)} ";
+        $this->appendToQuery(true);
+        $this->query .= "{$this->prepareValueForWhere($item)} {$is} :{$this->setValue($item, $item2)} ";
         
         return $this;
     }
     
     public function whereNull(string $item): Db
     {
-        if ($this->isFirstWhere === true) {
-            $this->query .= " AND ";
-        } else {
-            $this->isFirstWhere = true;
-            $this->query .= " WHERE ";
-        }
-    
+        $this->appendToQuery();
         $this->query .= "{$this->prepareValueForWhere($item)} IS NULL ";
         
         return $this;
@@ -193,13 +182,7 @@ class Db
     
     public function whereNotNull(string $item): Db
     {
-        if ($this->isFirstWhere === true) {
-            $this->query .= " AND ";
-        } else {
-            $this->isFirstWhere = true;
-            $this->query .= " WHERE ";
-        }
-    
+        $this->appendToQuery();
         $this->query .= "{$this->prepareValueForWhere($item)} IS NOT NULL ";
         
         return $this;
@@ -207,14 +190,16 @@ class Db
     
     public function orWhereNull(string $item): Db
     {
-        $this->query .= " OR {$this->prepareValueForWhere($item)} IS NULL ";
+        $this->appendToQuery(true);
+        $this->query .= "{$this->prepareValueForWhere($item)} IS NULL ";
         
         return $this;
     }
     
     public function orWhereNotNull(string $item): Db
     {
-        $this->query .= " OR {$this->prepareValueForWhere($item)} IS NOT NULL ";
+        $this->appendToQuery(true);
+        $this->query .= "{$this->prepareValueForWhere($item)} IS NOT NULL ";
         
         return $this;
     }
@@ -222,14 +207,7 @@ class Db
     public function whereIn(string $item, array $items): Db
     {
         $items = "'".implode("', '", $items)."'";
-
-        if ($this->isFirstWhere === true) {
-            $this->query .= " AND ";
-        } else {
-            $this->isFirstWhere = true;
-            $this->query .= " WHERE ";
-        }
-    
+        $this->appendToQuery();
         $this->query .= "{$this->prepareValueForWhere($item)} IN ({$items}) ";
         
         return $this;
@@ -238,14 +216,7 @@ class Db
     public function whereNotIn(string $item, array $items): Db
     {
         $items = "'".implode("', '", $items)."'";
-    
-        if ($this->isFirstWhere === true) {
-            $this->query .= " AND ";
-        } else {
-            $this->isFirstWhere = true;
-            $this->query .= " WHERE ";
-        }
-    
+        $this->appendToQuery();
         $this->query .= "{$this->prepareValueForWhere($item)} NOT IN ({$items}) ";
         
         return $this;
@@ -253,13 +224,7 @@ class Db
     
     public function whereBetween(string $item, array $items): Db
     {
-        if ($this->isFirstWhere === true) {
-            $this->query .= " AND ";
-        } else {
-            $this->isFirstWhere = true;
-            $this->query .= " WHERE ";
-        }
-    
+        $this->appendToQuery();
         $this->query .= "{$this->prepareValueForWhere($item)} BETWEEN
                             '{$this->setValue($item, $items[0])}' AND '{$this->setValue($item, $items[1])}' ";
         
@@ -450,7 +415,11 @@ class Db
             return $statement;
         }
 
-        pd($statement);
+        pd([
+            'query' => $statement,
+            'raw'   => $this->query,
+            'params' => $this->data
+        ]);
     }
     
     public function getColumnsInfo()
@@ -460,5 +429,17 @@ class Db
                             FROM INFORMATION_SCHEMA.COLUMNS
                                 WHERE TABLE_NAME = "'.$this->table.'"'
         );
+    }
+    
+    public function startBracket(): Db
+    {
+        $this->startBracket = true;
+        return $this;
+    }
+    
+    public function endBracket(): Db
+    {
+        $this->query .= ')';
+        return $this;
     }
 }

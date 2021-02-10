@@ -69,4 +69,21 @@ trait Builder
         $this->data[$key] = $value;
         return $key;
     }
+    
+    protected function appendToQuery(bool $isOr = false): void
+    {
+        if (! $this->isFirstWhere) {
+            $this->isFirstWhere = true;
+            $this->query .= " WHERE ";
+        } else if ($isOr) {
+            $this->query .= " OR ";
+        } else {
+            $this->query .= " AND ";
+        }
+        
+        if ($this->startBracket) {
+            $this->query .= ' ( ';
+            $this->startBracket = false;
+        }
+    }
 }

@@ -3,53 +3,48 @@
 namespace App\Facades\Http;
 
 use App\Facades\TwigExt\TwigExt;
-use App\Helpers\Session;
 use Twig;
-
-require_once vendor_path('autoload.php');
 
 final class View
 {
     protected static ?object $twig = null;
+    
     private static array $data = [];
+    
     protected static string $ext = '.twig';
+    
     protected static string $layout = 'page';
+    
     public static ?string $dir = null;
+    
     public static ?string $view = null;
-    protected static ?object $loader = null;
 
     public static function render(array $data = [])
     {
         self::set($data);
         
-        if (self::$loader instanceof Twig\Loader\FilesystemLoader === false) {
-            self::$loader = new Twig\Loader\FilesystemLoader(view_path());
-        }
-    
-        if (self::$twig instanceof Twig\Environment === false) {
-            $config['debug'] = true;
-            if((bool) app['cache_view'] === true) {
+        if (! self::$twig instanceof Twig\Environment) {
+            if (app('cache_view')) {
                 $config['cache'] = storage_path('framework/views');
             }
-        
-            self::$twig = new Twig\Environment(self::$loader, $config);
-        
-            self::$twig->addGlobal('session', Session::all());
+    
+            $config['debug'] = true;
+            self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
             self::registerFunctions();
         }
         
         self::$dir = Router::getAlias();
-        self::set(['layout' => 'layouts/' . self::$layout . self::$ext]);
-        self::setViewFile();
+        self::set(['layout' => 'layouts/'.self::$layout.self::$ext]);
+        self::setView();
 
-         if (file_exists(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
+         if (is_readable(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
             return self::$twig->display(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
         }
         
         exit(require_once view_path('errors/view-not-found.php'));
     }
 
-    private static function setViewFile(): void
+    private static function setView(): void
     {
         self::$view = self::$view ?? Router::getAction();
         self::$view = strtolower(implode('-', preg_split('/(?=[A-Z])/', self::$view)));
@@ -79,7 +74,7 @@ final class View
 
     public static function registerFunctions(): void
     {
-        foreach (TwigExt::init()->getFunctions() as $fn) {
+        foreach ((new TwigExt())->getFunctions() as $fn) {
             self::$twig->addFunction($fn);
         }
     }

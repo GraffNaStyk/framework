@@ -2,10 +2,11 @@
 
 namespace App\Controllers\Admin;
 
+use App\Core\Controller;
 use App\Facades\Http\Request;
 use App\Model\Client;
 
-class ClientsController extends DashController
+class ClientsController extends Controller
 {
     public function __construct()
     {

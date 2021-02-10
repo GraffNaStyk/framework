@@ -1,6 +1,7 @@
 <?php
 
 require_once app_path('app/facades/autoload/Autoload.php');
+require_once vendor_path('autoload.php');
 
 spl_autoload_register(function ($class) {
     App\Facades\Autoload\Autoload::run($class);

@@ -11,11 +11,6 @@ use App\Helpers\Session;
 
 class TwigExt extends AbstractExtension
 {
-    public static function init(): TwigExt
-    {
-        return new self();
-    }
-
     public function getFunctions(): array
     {
         parent::getFunctions();
