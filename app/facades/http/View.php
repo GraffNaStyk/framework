@@ -13,7 +13,7 @@ final class View
     
     protected static string $ext = '.twig';
     
-    protected static string $layout = 'page';
+    protected static string $layout = 'http';
     
     public static ?string $dir = null;
     
