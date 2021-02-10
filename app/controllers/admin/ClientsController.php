@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin;
 
-use App\Core\Controller;
+use App\Controllers\Controller;
 use App\Facades\Http\Request;
 use App\Model\Client;
 

@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin;
 
-use App\Core\Controller;
+use App\Controllers\Controller;
 use App\Facades\Faker\Hash;
 use App\Facades\Faker\Password;
 use App\Facades\Http\Router;

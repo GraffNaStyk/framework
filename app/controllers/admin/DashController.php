@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin;
 
-use App\Core\Controller;
+use App\Controllers\Controller;
 use App\Facades\Http\Request;
 use App\Facades\Http\View;
 use App\Helpers\Storage;
@@ -14,7 +14,6 @@ class DashController extends Controller
     public function __construct()
     {
         parent::__construct();
-        View::layout('admin');
     }
 
     public function index()
