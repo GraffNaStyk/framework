@@ -12,13 +12,11 @@
         {{ form.input({name: 'file', type: 'file', label: 'test'}) }}
         {{ form.input({
           type: 'submit',
-          value: 'Zapisz',
-          class: 'mt-3'
+          value: 'Zapisz'
         }) }}
       </div>
       {{ form.csrf() }}
     </form>
-{#    <img src="{{ img(img.file) }}" alt="">#}
   </div>
 
 {% endblock %}

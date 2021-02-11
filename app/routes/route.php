@@ -32,7 +32,7 @@ Route::prefix('/admin', function () {
     });
 });
 
-Route::namespace('App\Controllers\Http', function () {
+Route::namespace( 'App\Controllers\Http', function () {
     Route::get('/', 'Index@index');
 });
 

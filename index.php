@@ -18,7 +18,7 @@ function css_path($path = null): string
 
 function js_path($path = null): string
 {
-    return __DIR__ . '/public/js/'. $path;;
+    return __DIR__ . '/public/js/'. $path;
 }
 
 function view_path($path = null): string

@@ -14,7 +14,7 @@ abstract class Kernel
     
     final public static function getMiddleware(string $middleware): ?string
     {
-        return isset(self::$middlewares[$middleware]) ? self::$middlewares[$middleware] : null;
+        return self::$middlewares[$middleware] ?: null;
     }
     
     final public static function getEveryMiddleware(): array

@@ -5,11 +5,11 @@ namespace App\Core;
 use App\Db\Db;
 use App\Helpers\Loader;
 
-abstract class App
+final class App
 {
     const PER_PAGE = 25;
 
-    public static function run(): void
+    public function run(): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -25,7 +25,7 @@ abstract class App
             Db::init($env['DB']);
             unset($env['DB']);
         }
-        
+
         Loader::set();
     }
 }
