@@ -5,7 +5,6 @@ namespace App\Controllers\Admin;
 use App\Controllers\Controller;
 use App\Facades\Faker\Hash;
 use App\Facades\Faker\Password;
-use App\Facades\Http\Router;
 use App\Helpers\Session;
 use App\Model\User;
 use App\Facades\Http\View;
@@ -16,9 +15,6 @@ class LoginController extends Controller
     public function __construct()
     {
         parent::__construct();
-        if (Session::has('user')) {
-            Router::redirect('/dash');
-        }
     }
 
     public function index()
@@ -32,13 +28,14 @@ class LoginController extends Controller
         if (! $this->validate($request->all(), 'login')) {
             $this->sendError('Formularz nie zostal wysłany');
         }
-        
-        if ($user = User::select(['name', 'id', 'password'])
-            ->where('name', '=', $request->get('name'))
-            ->exist()
-        ) {
-            if (Password::verify($request->get('password'), $user['password'])) {
-                unset($user['password']);
+	
+	    $user = User::select(['name', 'id', 'password'])
+		    ->where('name', '=', $request->get('name'))
+		    ->exist();
+      
+	    if ($user) {
+            if (Password::verify($request->get('password'), $user->password)) {
+                unset($user->password);
                 Session::set(['user' => $user]);
                 $this->sendSuccess('Zalogowano poprawnie', '/dash');
             }

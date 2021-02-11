@@ -370,10 +370,10 @@ class Db
                 $pdo->execute($this->data);
                 
                 if ($this->first) {
-                    return $pdo->fetch(PDO::FETCH_ASSOC);
+                    return $pdo->fetch(PDO::FETCH_OBJ);
                 }
                 
-                return $pdo->fetchAll(PDO::FETCH_ASSOC);
+                return $pdo->fetchAll(PDO::FETCH_OBJ);
             } catch (\PDOException $e) {
                 Handle::throwException($e, $this->develop(true));
             }
@@ -399,7 +399,7 @@ class Db
         $stmt->execute();
 
         if (preg_match('/^(SELECT)/', $query)) {
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
     }
 

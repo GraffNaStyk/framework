@@ -2,10 +2,13 @@
 
 namespace App\Core;
 
+use App\Controllers\Middleware\IsLogged;
+
 abstract class Kernel
 {
     private static array $middlewares = [
         'auth' => \App\Controllers\Middleware\Auth::class,
+        'isLogged' => IsLogged::class,
     ];
     
     private static array $everyMiddleware = [

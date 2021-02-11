@@ -12,7 +12,7 @@ Route::namespace( 'App\Controllers\Http', function () {
 Route::prefix('/admin', function () {
     Route::namespace('App\Controllers\Admin', function () {
         //@Route login
-        Route::get('/login', 'Login@index');
+        Route::get('/login', 'Login@index', 4, 'isLogged');
         Route::post('/login/check', 'Login@check');
         
         Route::middleware('auth', function () {
