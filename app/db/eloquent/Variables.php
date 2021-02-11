@@ -15,6 +15,4 @@ trait Variables
     private bool $distinct = false;
     
     private bool $startBracket = false;
-    
-    private array $relations = [];
 }

@@ -3,16 +3,18 @@
 namespace App\Core;
 
 use App\Controllers\Middleware\IsLogged;
+use \App\Controllers\Middleware\Auth;
+use \App\Controllers\Middleware\Handle;
 
 abstract class Kernel
 {
     private static array $middlewares = [
-        'auth' => \App\Controllers\Middleware\Auth::class,
+        'auth' => Auth::class,
         'isLogged' => IsLogged::class,
     ];
     
     private static array $everyMiddleware = [
-        \App\Controllers\Middleware\Handle::class
+        Handle::class
     ];
     
     final public static function getMiddleware(string $middleware): ?string
