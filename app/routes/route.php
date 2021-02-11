@@ -5,6 +5,10 @@ use App\Facades\Http\Route;
 
 Route::when('/admin', '/dash');
 
+Route::namespace( 'App\Controllers\Http', function () {
+    Route::get('/', 'Index@index');
+});
+
 Route::prefix('/admin', function () {
     Route::namespace('App\Controllers\Admin', function () {
         //@Route login
@@ -32,8 +36,4 @@ Route::prefix('/admin', function () {
     });
 });
 
-Route::namespace( 'App\Controllers\Http', function () {
-    Route::get('/', 'Index@index');
-});
-
-new Router();
+(new Router());

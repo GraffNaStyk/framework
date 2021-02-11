@@ -47,11 +47,7 @@ final class Auth
                 return false;
             }
             
-            $methods = [];
-            
-            if ($route['rights'] === 1) {
-                $methods = self::$methods[1];
-            }
+            $methods = self::$methods[1];
             
             if ($route['rights'] === 2) {
                 $methods = [...self::$methods[1], ...self::$methods[2]];
