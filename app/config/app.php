@@ -58,5 +58,16 @@ return [
         'js' => [
             'bootstrap', 'slim-select'
         ]
-    ]
+    ],
+	
+    /**
+     * @Security used for header Content-Security-Policy
+     *
+     **/
+	'security' => [
+		'enabled' => true,
+		'protection' =>
+			"default-src 'self'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data:"
+		
+	]
 ];

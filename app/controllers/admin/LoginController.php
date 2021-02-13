@@ -36,7 +36,7 @@ class LoginController extends Controller
 	    if ($user) {
             if (Password::verify($request->get('password'), $user->password)) {
                 unset($user->password);
-                Session::set(['user' => $user]);
+                Session::set('user', $user);
                 $this->sendSuccess('Zalogowano poprawnie', '/dash');
             }
         }

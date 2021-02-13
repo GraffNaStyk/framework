@@ -7,20 +7,24 @@ use App\Facades\Property\Has;
 
 class Session
 {
-    public static function set($items)
+    public static function set($item, $data)
     {
-        foreach ($items as $key => $item) {
-            $_SESSION[$key] = $item;
-        }
+	    $item = explode('.', $item);
+	    
+	    if (isset($item[3])) {
+		    $_SESSION[$item[0]][$item[1]][$item[2]][$item[3]] = $data;
+	    } else if (isset($item[2])) {
+		    $_SESSION[$item[0]][$item[1]][$item[2]] = $data;
+	    } else if (isset($item[1])) {
+		    $_SESSION[$item[0]][$item[1]] = $data;
+	    } else {
+		    $_SESSION[$item[0]] = $data;
+	    }
     }
 
-    public static function get($item = null)
+    public static function get($item)
     {
-        if ($item === null) {
-            return $_SESSION;
-        }
-        
-        return Get::check($_SESSION, explode('.', $item));
+        return Get::check($_SESSION, $item);
     }
 
     public static function all(): array
@@ -30,12 +34,18 @@ class Session
 
     public static function has($item)
     {
-        return Has::check($_SESSION, explode('.', $item));
+        return Has::check($_SESSION, $item);
     }
 
     public static function remove($item)
     {
-        unset($_SESSION[$item]);
+	    $item = explode('.', $item);
+	
+	    if (isset($item[1])) {
+		    unset($_SESSION[$item[0]][$item[1]]);
+	    } else {
+		    unset($_SESSION[$item[0]]);
+	    }
     }
 
     public static function flash($item, $value = 1, $seconds = 60)
@@ -43,18 +53,14 @@ class Session
         setcookie($item, $value, time()+$seconds, '/', getenv('SERVER_NAME'), true, true);
     }
 
-    public static function getFlash($item = null)
+    public static function getFlash($item)
     {
-        if ($item === null) {
-            return $_COOKIE;
-        }
-        
         return Get::check($_COOKIE, $item);
     }
 
     public static function hasFlash($item)
     {
-        return Has::check($_COOKIE, explode('.', $item));
+        return Has::check($_COOKIE, $item);
     }
 
     public static function removeFlash($item)
@@ -62,6 +68,11 @@ class Session
         unset($_COOKIE[$item]);
         setcookie($item, false, -1, '/', getenv('SERVER_NAME'), true, true);
     }
+	
+	public static function flashAll()
+	{
+		return $_COOKIE;
+	}
 
     public static function msg($items, $color = 'success')
     {

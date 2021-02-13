@@ -64,7 +64,7 @@ function dd($item, $die = false)
 
 function app($key)
 {
-    return app[$key];
+    return \App\Facades\Property\Get::check(app, $key);
 }
 
 require_once __DIR__.'/app/bootstrap.php';

@@ -138,7 +138,7 @@ final class Request
             return $this->data;
         }
 
-        return Get::check($this->data, explode('.', $item));
+        return Get::check($this->data, $item);
     }
     
     public function input($item = null)
@@ -162,7 +162,7 @@ final class Request
 
     public function has($item)
     {
-        return Has::check($this->data, explode('.', $item));
+        return Has::check($this->data, $item);
     }
 
     public function set($item, $data)

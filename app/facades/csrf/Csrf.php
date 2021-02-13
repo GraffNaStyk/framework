@@ -11,9 +11,7 @@ class Csrf
     public function generate()
     {
         if (! Session::has('csrf') && $this->isEnabled()) {
-            Session::set(['csrf' =>
-                Faker::hash(60)
-            ]);
+            Session::set('csrf', Faker::hash(60));
         }
     }
 

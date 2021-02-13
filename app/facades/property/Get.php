@@ -6,6 +6,10 @@ class Get
 {
     public static function check($method, $item)
     {
+    	if (! is_array($item)) {
+		    $item = explode('.', $item);
+	    }
+    	
 	    $count = array_key_last($item);
 	
 	    if ($count === 0) {
