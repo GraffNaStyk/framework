@@ -21,9 +21,7 @@
       }
     </style>
   {% endif %}
-  <script>
-    document.url = '{{ url() }}';
-  </script>
+  <input type="hidden" name="url" value="{{ url() }}">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">

@@ -57,6 +57,10 @@ label.input__upload span {
   color: rgba(0,0,0,0.6);
 }
 
+label.input__upload input[type="file"] {
+  display: none;
+}
+
 button, input[type="submit"] {
   color: rgba(0,0,0,0.6);
   background: transparent;

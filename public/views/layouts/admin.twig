@@ -9,9 +9,7 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
   <title>{{ page.title }}</title>
     {{ css|raw }}
-  <script>
-    document.url = '{{ url() }}';
-  </script>
+  <input type="hidden" name="url" value="{{ url() }}">
 </head>
 <body>
 {% import 'components/form.twig' as form %}

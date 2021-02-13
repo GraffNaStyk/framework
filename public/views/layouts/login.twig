@@ -8,9 +8,7 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
   <title>{{ title }}</title>
   {{ css|raw }}
-  <script>
-    document.url = '{{ url() }}';
-  </script>
+  <input type="hidden" name="url" value="{{ url() }}">
 </head>
 <body>
 {% block content %}

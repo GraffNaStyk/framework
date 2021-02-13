@@ -1,5 +1,8 @@
 let loader = `<div class="preloader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>`;
 let isFormSend = false;
+let urlSelector = document.querySelector('input[name="url"]');
+const documentUrl = urlSelector.value
+urlSelector.remove();
 
 export const post = async (args) => {
   let data;
@@ -12,7 +15,7 @@ export const post = async (args) => {
     Object.keys(args.data).forEach(key => data.append(key, args.data[key]));
   }
 
-  return await fetch(document.url + prepareFetchUrl(args.url), {
+  return await fetch(documentUrl + prepareFetchUrl(args.url), {
     method: 'POST',
     credentials: 'same-origin',
     headers: {
@@ -23,7 +26,7 @@ export const post = async (args) => {
 };
 
 export const get = async (fetch_url) => {
-  return await fetch(document.url + prepareFetchUrl(fetch_url), {
+  return await fetch(documentUrl + prepareFetchUrl(fetch_url), {
     method: 'GET',
     credentials: 'same-origin',
     headers: {
@@ -34,7 +37,7 @@ export const get = async (fetch_url) => {
 
 export const render = (args) => {
   insertLoader();
-  fetch(document.url + prepareFetchUrl(args.url), {
+  fetch(documentUrl + prepareFetchUrl(args.url), {
     method: 'GET',
     credentials: 'same-origin',
     headers: {
@@ -145,7 +148,7 @@ const throwCustomMessage = (res, selector) => {
 
 export const on = (event, selector, fn) => {
   Array.from(document.querySelectorAll(`${selector}`)).forEach((item) => {
-    item.addEventListener(`${event}`, eval(fn));
+    item.addEventListener(`${event}`, fn);
   });
 };
 
@@ -154,7 +157,7 @@ export const callback = (ok= false, to = null) => {
     eval(document.callback)
   } else if (to !== null && to !== '' && ok) {
     setTimeout(() => {
-      document.location.href = document.url + to;
+      document.location.href = documentUrl + to;
     },1500)
   } else if (ok) {
     setTimeout(() => {

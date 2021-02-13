@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
 use App\Model\Client;
+use App\Facades\Http\Request;
 
 class ClientsController extends Controller
 {
