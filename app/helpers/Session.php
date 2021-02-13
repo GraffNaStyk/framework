@@ -4,22 +4,14 @@ namespace App\Helpers;
 
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
+use App\Facades\Property\Remove;
+use App\Facades\Property\Set;
 
 class Session
 {
-    public static function set($item, $data)
+    public static function set($item, $data): void
     {
-	    $item = explode('.', $item);
-	    
-	    if (isset($item[3])) {
-		    $_SESSION[$item[0]][$item[1]][$item[2]][$item[3]] = $data;
-	    } else if (isset($item[2])) {
-		    $_SESSION[$item[0]][$item[1]][$item[2]] = $data;
-	    } else if (isset($item[1])) {
-		    $_SESSION[$item[0]][$item[1]] = $data;
-	    } else {
-		    $_SESSION[$item[0]] = $data;
-	    }
+	    $_SESSION = array_merge($_SESSION, Set::set($_SESSION, $data, $item));
     }
 
     public static function get($item)
@@ -37,15 +29,9 @@ class Session
         return Has::check($_SESSION, $item);
     }
 
-    public static function remove($item)
+    public static function remove($item): void
     {
-	    $item = explode('.', $item);
-	
-	    if (isset($item[1])) {
-		    unset($_SESSION[$item[0]][$item[1]]);
-	    } else {
-		    unset($_SESSION[$item[0]]);
-	    }
+	    $_SESSION = Remove::remove($_SESSION, $item);
     }
 
     public static function flash($item, $value = 1, $seconds = 60)

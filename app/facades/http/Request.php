@@ -4,6 +4,8 @@ namespace App\Facades\Http;
 
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
+use App\Facades\Property\Remove;
+use App\Facades\Property\Set;
 use App\Helpers\Session;
 
 final class Request
@@ -165,30 +167,14 @@ final class Request
         return Has::check($this->data, $item);
     }
 
-    public function set($item, $data)
+    public function set($item, $data): void
     {
-        $item = explode('.', $item);
-        
-        if (isset($item[3])) {
-            $this->data[$item[0]][$item[1]][$item[2]][$item[3]] = $data;
-        } else if (isset($item[2])) {
-            $this->data[$item[0]][$item[1]][$item[2]] = $data;
-        } else if (isset($item[1])) {
-            $this->data[$item[0]][$item[1]] = $data;
-        } else {
-            $this->data[$item[0]] = $data;
-        }
+	    $this->data = array_merge($this->data, Set::set($this->data, $data, $item));
     }
 
-    public function remove($item)
+    public function remove($item): void
     {
-        $item = explode('.', $item);
-        
-        if (isset($item[1])) {
-            unset($this->data[$item[0]][$item[1]]);
-        } else {
-            unset($this->data[$item[0]]);
-        }
+        $this->data = Remove::remove($this->data, $item);
     }
     
     public static function isAjax(): bool
