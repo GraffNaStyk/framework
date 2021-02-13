@@ -23,9 +23,9 @@ class Session
         return Get::check($_SESSION, explode('.', $item));
     }
 
-    public static function all($key = null)
+    public static function all(): array
     {
-        return $key ? $_SESSION[$key] : $_SESSION;
+        return $_SESSION;
     }
 
     public static function has($item)

@@ -16,6 +16,7 @@ class Property
 			if (! isset($method[$item[$i]])) {
 				return false;
 			}
+			
 			$tmp = $method[$item[$i]];
 		}
 		

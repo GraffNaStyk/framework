@@ -123,7 +123,9 @@ const throwCustomMessage = (res, selector) => {
 
   if (lastRandom !== '') {
     let alert = document.querySelector(`[data-${lastRandom}=""]`);
-    alert.remove();
+    if (alert) {
+      alert.remove();
+    }
   }
 
   let form = document.querySelector(`form[data-action="${selector}"] .form__grid`);

@@ -3,7 +3,6 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
-use App\Facades\Http\Request;
 use App\Model\Client;
 
 class ClientsController extends Controller
