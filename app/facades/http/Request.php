@@ -2,8 +2,8 @@
 
 namespace App\Facades\Http;
 
-use App\Facades\Dotter\Get;
-use App\Facades\Dotter\Has;
+use App\Facades\Property\Get;
+use App\Facades\Property\Has;
 use App\Helpers\Session;
 
 final class Request

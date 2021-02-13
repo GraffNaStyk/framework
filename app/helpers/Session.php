@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Facades\Dotter\Get;
-use App\Facades\Dotter\Has;
+use App\Facades\Property\Get;
+use App\Facades\Property\Has;
 
 class Session
 {
