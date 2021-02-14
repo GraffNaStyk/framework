@@ -44,6 +44,6 @@
   <button class="btn {{ data.class }} submit__button"> {{ data.value }} </button>
 {% endmacro submit %}
 
-{% macro csrf() %}
-  <input type="hidden" name="_csrf" value="{{ csrf() }}">
+{% macro csrf(path) %}
+  <input type="hidden" name="_csrf" value="{{ csrf(path) }}">
 {% endmacro csrf %}
