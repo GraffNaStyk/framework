@@ -1,13 +1,13 @@
 let loader = `<div class="preloader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>`;
-let isFormSend = false;
 let urlSelector = document.querySelector('input[name="url"]');
 const documentUrl = urlSelector.value
 urlSelector.remove();
+let events = [];
 
 export const post = async (args) => {
   let data;
 
-  if(args.form)
+  if (args.form)
     data = new FormData(args.form);
 
   if(args.data) {
@@ -23,16 +23,6 @@ export const post = async (args) => {
     },
     body: data
   });
-};
-
-export const get = async (fetch_url) => {
-  return await fetch(documentUrl + prepareFetchUrl(fetch_url), {
-    method: 'GET',
-    credentials: 'same-origin',
-    headers: {
-      "X-Fetch-Header": "fetchApi",
-    },
-  }).then(res => res.json());
 };
 
 export const render = (args) => {
@@ -54,10 +44,7 @@ export const render = (args) => {
     } else {
       modal(result);
     }
-    setTimeout(() => {
-      OnSubmitForms();
-      RefreshSelects();
-    },100);
+    reload();
     preloader();
   })
 };
@@ -110,11 +97,6 @@ export const response = (res, action) => {
   if (res.msg) {
     throwCustomMessage(res, action)
   }
-
-  setTimeout(() => {
-    setPointerEvent(action, '');
-    isFormSend = false;
-  }, 100)
 };
 
 let lastRandom = '';
@@ -147,77 +129,81 @@ const throwCustomMessage = (res, selector) => {
 }
 
 export const on = (event, selector, fn) => {
+  events.push({event: event, selector: selector, fn: fn});
   Array.from(document.querySelectorAll(`${selector}`)).forEach((item) => {
     item.addEventListener(`${event}`, fn);
   });
 };
 
-export const callback = (ok= false, to = null) => {
-  if (document.callback !== undefined) {
-    eval(document.callback)
-  } else if (to !== null && to !== '' && ok) {
+export const callback = (ok = false, to = null) => {
+  if (to !== null && to !== '' && ok) {
     setTimeout(() => {
       document.location.href = documentUrl + to;
-    },1500)
+    }, 700)
   } else if (ok) {
     setTimeout(() => {
       document.location.reload();
-    },1500)
+    }, 700)
   }
 }
 
-export const OnSubmitForms = () => {
-  on('submit', 'form',  (e) => {
-    if (e.target.dataset.action) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
 
-      if (isFormSend) {
-        return false;
-      }
+on('submit', 'form',  (e) => {
+  if (e.target.dataset.action) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    insertLoader();
+    post({
+      url: e.target.dataset.action,
+      form: e.target
+    }).then(res => {
+      preloader();
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        res.json().then(res => {
+          if (res === null || res === '' || res.length === 0) {
+            return false;
+          }
 
-      isFormSend = true;
-      setPointerEvent(e.target.dataset.action,'none');
-      insertLoader();
-      post({
-        url: e.target.dataset.action,
-        form: e.target
-      }).then(res => {
-        preloader();
-        const contentType = res.headers.get("content-type");
-        if (contentType && contentType.indexOf("application/json") !== -1) {
-          return res.json().then(res => {
-            if (res === null || res === '' || res.length === 0) {
-              return false;
-            }
-
+          if (res.html) {
+            document.querySelector(`[data-component="${e.target.dataset.el}"]`).innerHTML = res.html;
+          } else {
             //this is check for modal is open
             let modalSelector = document.getElementById('modal');
             if (res.ok && modalSelector.classList.contains('d-block')) {
               setTimeout(() => {
                 document.querySelector('button[data-dismiss="modal"]').click()
-              },500);
+              }, 500);
             }
-            response(res, e.target.dataset.action)
+          }
+
+          response(res, e.target.dataset.action)
+
+          if (e.target.dataset.reload === undefined) {
             callback(res.ok, res.to ?? res.to);
-          });
-        } else {
-          return res.text().then(res => {
-           if (res === null || res === '') {
-             return false;
-           }
+          }
+
+          if (e.target.dataset.refresh) {
+            let component = document.querySelector(`[data-component="${e.target.dataset.refresh}"]`);
+            render({
+              url: component.dataset.fetch,
+              el: e.target.dataset.refresh
+            })
+          }
+        });
+      } else {
+        res.text().then(res => {
+          if (res === null || res === '') {
+            return false;
+          }
 
           document.querySelector(`[data-component="${e.target.dataset.el}"]`).innerHTML = res;
-          setTimeout(() => {
-            OnSubmitForms();
-            RefreshSelects();
-          },100);
-          });
-        }
-      })
-    }
-  });
-}
+        });
+      }
+      reload();
+    })
+  }
+});
 
 export const RefreshSelects = () => {
   const selectors = document.querySelectorAll('[data-select="slim"]');
@@ -292,4 +278,15 @@ export const setPointerEvent = (element, event) => {
     submit = document.querySelector(`form[data-action="${element}"] input[type="submit"]`)
   }
   submit.style.pointerEvents = event;
+}
+
+const reload = () => {
+  setTimeout(() => {
+    let items = events;
+    events = [];
+    items.forEach(item => {
+      on(item.event, item.selector, item.fn);
+    })
+    RefreshSelects();
+  }, 150);
 }

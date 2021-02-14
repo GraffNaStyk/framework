@@ -129,6 +129,7 @@ class Db
     
     public function update(array $values): Db
     {
+	    $this->isUpdate = true;
         $this->data = $values;
         $this->query = "UPDATE `{$this->table}` SET ";
     

@@ -16,7 +16,6 @@ class Controller
     public function http()
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Controller', $this->file);
-        $this->file = str_replace('EXTENSION', 'IndexController', $this->file);
         $this->file = str_replace('PATH', 'Http', $this->file);
         $this->put('http');
     }
@@ -24,7 +23,6 @@ class Controller
     public function admin()
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Controller', $this->file);
-        $this->file = str_replace('EXTENSION', 'DashController', $this->file);
         $this->file = str_replace('PATH', 'Admin', $this->file);
         $this->put('admin');
     }

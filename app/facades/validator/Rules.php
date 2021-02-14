@@ -31,13 +31,17 @@ class Rules
             }
         }
     }
-
-    public static function required($item, $rule, $field)
-    {
-        if (! isset($item) || empty($item)) {
-            return ['msg' => 'Pole jest wymagane', 'field' => $field];
-        }
-    }
+	
+	public static function required($item, $rule, $field)
+	{
+		if (is_numeric($item)) {
+			$item = (int) $item;
+		}
+		
+		if (! isset($item) || $item === '') {
+			return ['msg' => 'Pole jest wymagane', 'field' => $field];
+		}
+	}
 
     public static function email($item, $rule, $field)
     {

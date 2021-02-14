@@ -18,31 +18,35 @@ final class View
     public static ?string $dir = null;
     
     public static ?string $view = null;
-
-    public static function render(array $data = [])
-    {
-        self::set($data);
-        
-        if (! self::$twig instanceof Twig\Environment) {
-            if (app('cache_view')) {
-                $config['cache'] = storage_path('framework/views');
-            }
-    
-            $config['debug'] = true;
-            self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
-            self::registerFunctions();
-        }
-        
-        self::$dir = Router::getAlias();
-        self::set(['layout' => 'layouts/'.self::$layout.self::$ext]);
-        self::setView();
-
-         if (is_readable(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
-            return self::$twig->display(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
-        }
-        
-        exit(require_once view_path('errors/view-not-found.php'));
-    }
+	
+	public static function render(array $data = [], $html = false)
+	{
+		self::set($data);
+		
+		if (! self::$twig instanceof Twig\Environment) {
+			if (app('cache_view')) {
+				$config['cache'] = storage_path('framework/views');
+			}
+			
+			$config['debug'] = true;
+			self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
+			self::registerFunctions();
+		}
+		
+		self::$dir = Router::getAlias();
+		self::set(['layout' => 'layouts/'.self::$layout.self::$ext]);
+		self::setView();
+		
+		if (is_readable(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
+			if ($html) {
+				return self::$twig->render(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
+			} else {
+				return self::$twig->display(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
+			}
+		}
+		
+		exit(require_once view_path('errors/view-not-found.php'));
+	}
 
     private static function setView(): void
     {

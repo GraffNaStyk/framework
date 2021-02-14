@@ -2,6 +2,7 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Csrf\Csrf;
 use App\Facades\Url\Url;
 
 abstract class Route
@@ -56,6 +57,17 @@ abstract class Route
         $function();
         self::$alias = null;
     }
+	
+	public static function crud(string $url, string $controller, int $rights = 4, string $middleware = null)
+	{
+		self::get($url, $controller.'@index', $rights, $middleware);
+		self::get($url.'/add', $controller.'@add', $rights, $middleware);
+		self::get($url.'/edit/{id}', $controller.'@edit', $rights, $middleware);
+		self::get($url.'/show/{id}', $controller.'@show', $rights, $middleware);
+		self::post($url.'/store', $controller.'@store', $rights, $middleware);
+		self::post($url.'/update', $controller.'@update', $rights, $middleware);
+		self::get($url.'/delete/{id}', $controller.'@delete', $rights, $middleware);
+	}
     
     private static function match(string $as, string $route, string $method, int $rights, $middleware = null): void
     {
@@ -70,6 +82,10 @@ abstract class Route
             'rights' => $rights,
             'middleware' => static::$middleware ?? $middleware
         ];
+	
+	    if ($method !== 'get') {
+		    Csrf::make(ucfirst($routes[0]).'@'.$routes[1]);
+	    }
     }
     
     public static function when(string $when, string $then)

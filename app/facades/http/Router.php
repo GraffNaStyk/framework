@@ -43,22 +43,23 @@ final class Router extends Route
     {
         return self::$instance;
     }
-    
-    private function boot()
-    {
-        $this->csrf->generate();
-        $this->parseUrl();
-        $this->setParams();
-        $this->request->sanitize();
-        $this->runMiddlewares('before');
-
-        if (! $this->csrf->valid($this->request) && $this->request->getMethod() === 'post') {
-            self::abort(400);
-        }
-        
-        $this->create(self::$provider . '\\' . self::getClass() . 'Controller');
-        $this->runMiddlewares('after');
-    }
+	
+	private function boot()
+	{
+		$this->parseUrl();
+		$this->setParams();
+		$this->request->sanitize();
+		$this->runMiddlewares('before');
+		
+		if ($this->request->getMethod() === 'post') {
+			if (! $this->csrf->valid($this->request)) {
+				self::abort(400);
+			}
+		}
+		
+		$this->create(self::$provider . '\\' . self::getClass() . 'Controller');
+		$this->runMiddlewares('after');
+	}
     
     private function runMiddlewares(string $when): void
     {
@@ -255,4 +256,9 @@ final class Router extends Route
         http_response_code($code);
         exit(require_once (view_path('errors/'.$code.'.php')));
     }
+	
+	public static function csrfPath(): string
+	{
+		return self::$currentRoute['controller'].'@'.self::$currentRoute['action'];
+	}
 }

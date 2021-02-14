@@ -4,6 +4,8 @@ namespace App\Db\Eloquent;
 
 trait Variables
 {
+	protected ?array $data = [];
+	
     private string $query;
     
     public string $table;
@@ -15,4 +17,6 @@ trait Variables
     private bool $distinct = false;
     
     private bool $startBracket = false;
+	
+	private bool $isUpdate = false;
 }

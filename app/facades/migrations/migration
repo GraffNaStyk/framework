@@ -6,15 +6,15 @@ use App\Facades\Migrations\Schema;
 
 class CLASSNAME
 {
-       public string $model = 'MODEL';
+	public string $model = 'MODEL';
 
-       public function up(Schema $schema)
-       {
-           $schema->run();
-       }
+	public function up(Schema $schema)
+	{
+		$schema->run();
+	}
 
-       public function down(Schema $schema)
-       {
-           $schema->clear();
-       }
+	public function down(Schema $schema)
+	{
+		$schema->clear();
+	}
 }

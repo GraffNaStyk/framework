@@ -26,8 +26,8 @@ class TwigExt extends AbstractExtension
 
     public function csrf(): TwigFunction
     {
-        return new TwigFunction('csrf', function() {
-            echo Session::get('csrf');
+	    return new TwigFunction('csrf', function($path) {
+		    echo Session::get('@csrf.'.$path);
         });
     }
 

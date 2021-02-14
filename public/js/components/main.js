@@ -46,11 +46,6 @@ App.on('click', 'a', prevent);
 // enable all submenu functions
 App.on('click', 'a.has__parent', menu);
 
-setTimeout(() => {
-  App.OnSubmitForms();
-  App.RefreshSelects();
-}, 80);
-
 App.on('click', '.render', (e) => {
   e.preventDefault();
   e.stopPropagation()

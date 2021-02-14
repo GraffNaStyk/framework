@@ -4,8 +4,9 @@ namespace App\Controllers\PATH;
 
 use App\Controllers\ControllerInterface;
 use App\Facades\Http\Request;
+use App\Controllers\Controller;
 
-class CLASSNAME extends EXTENSION implements ControllerInterface
+class CLASSNAME extends Controller implements ControllerInterface
 {
     public function __construct()
     {

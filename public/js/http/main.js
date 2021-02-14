@@ -5,8 +5,6 @@ document.getElementById('main-page-wrapper').style.minHeight
   - document.getElementsByTagName('footer')[0].clientHeight
   - document.getElementsByTagName('nav')[0].clientHeight  - 1 + 'px';
 
-App.OnSubmitForms();
-
 App.on('click', '.render', (e) => {
   e.preventDefault();
   App.render({

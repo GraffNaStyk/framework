@@ -95,8 +95,9 @@ class Schema extends Blueprint
     
     public function implicitly($name): Schema
     {
-        $this->tableFields[$this->currentKey] = $this->tableFields[$this->currentKey] . ' DEFAULT ' . "'{$name}'";
-        return $this;
+	    $default = $name === 'CURRENT_TIMESTAMP' ? $name : "'{$name}'";
+	    $this->tableFields[$this->currentKey] = $this->tableFields[$this->currentKey] . ' DEFAULT ' . $default;
+	    return $this;
     }
     
     public function default($name): Schema

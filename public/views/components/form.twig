@@ -23,7 +23,7 @@
       {% if data.data %}
         <option data-placeholder="true">{{ data.label }}</option>
         {% for item in data.data %}
-            <option value="{{ item.value }}" {{ data.selected == item.value ? 'selected' }}>{{ item.text }}</option>
+          <option value="{{ item.value }}" {{ data.value == item.value ? 'selected' }}>{{ item.text }}</option>
         {% endfor %}
       {% endif %}
     </select>

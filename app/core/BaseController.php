@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Facades\Http\Response;
+use App\Facades\Http\Router;
 use App\Rules\RuleValidator;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
@@ -52,15 +53,11 @@ abstract class BaseController
     {
         View::set($data);
     }
-    
-    public function render(array $data = [])
-    {
-        if (! empty($data)) {
-             return View::render($data);
-        }
-        
-        return View::render();
-    }
+	
+	public function render(array $data = [], $html = false)
+	{
+		return View::render($data, $html);
+	}
     
     public function validate(array $request, string $rule, array $optional = []): bool
     {
@@ -79,7 +76,7 @@ abstract class BaseController
              'ok' => false,
              'msg' => $message,
              'inputs' => Validator::getErrors(),
-             'csrf' => Session::get('csrf')
+	         'csrf' => Session::get('@csrf.'.Router::csrfPath())
          ],
              $status,
              $headers

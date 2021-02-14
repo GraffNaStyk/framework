@@ -46,19 +46,26 @@ trait Builder
     {
         return trim($item);
     }
-    
-    protected function setData()
-    {
-        if (is_array($this->data)) {
-            foreach ($this->data as $key => $value) {
-                if (is_null($value) === true || (string) $value === '') {
-                    $this->data[$key] = null;
-                } else {
-                    $this->data[$key] = trim($value);
-                }
-            }
-        }
-    }
+	
+	protected function setData()
+	{
+		if (is_array($this->data)) {
+			
+			if ($this->isUpdate) {
+				unset($this->data['id']);
+			}
+			
+			foreach ($this->data as $key => $value) {
+				if (is_null($value) === true || (string) $value === '') {
+					$this->data[$key] = null;
+				} else if (is_float(floatval($value))) {
+					$this->data[$key] = str_replace(',', '.', $value);
+				} else {
+					$this->data[$key] = trim($value);
+				}
+			}
+		}
+	}
     
     protected function setValue(string $key, string $value): string
     {
