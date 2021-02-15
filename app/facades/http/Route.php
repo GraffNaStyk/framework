@@ -131,7 +131,7 @@ abstract class Route
     
     public static function back()
     {
-	    self::redirect(Session::get('history')[0]);
+	    self::redirect(Session::get('history')[0] ?? '/');
     }
     
     public static function checkProtocol(): string
