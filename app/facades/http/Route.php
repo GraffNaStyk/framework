@@ -138,6 +138,6 @@ abstract class Route
     
     public static function checkProtocol(): string
     {
-        return isset($_SERVER['HTTPS']) || $_SERVER['SERVER_PORT'] == 443 ? 'https' : 'http';
+        return isset($_SERVER['HTTPS']) || (int) $_SERVER['SERVER_PORT'] === 443 ? 'https' : 'http';
     }
 }
