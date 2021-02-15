@@ -128,11 +128,13 @@ abstract class Route
         header('location: '.$url, true, 301);
         exit;
     }
-    
-    public static function back()
-    {
-	    self::redirect(Session::get('history')[0] ?? '/');
-    }
+	
+	public static function back()
+	{
+		$url = Session::get('history')[0] ?? '/';
+		Session::remove('history');
+		self::redirect($url);
+	}
     
     public static function checkProtocol(): string
     {
