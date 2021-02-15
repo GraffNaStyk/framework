@@ -1,11 +1,11 @@
 <?php
 
 return [
+	
     /**
      *  @csrf is used to blocking csrf attack from users,
      *  if this variable is set to true, you need to add for very form
-     *  twig variable like {{ form.csrf() }}, csrf is not checked if your
-     *  request is pushed by js Api fetch method !
+     *  twig variable like {{ form.csrf('Controller@acion') }}
      */
     'csrf' => true,
 
@@ -47,7 +47,7 @@ return [
     'model-provider' => 'App\\Model\\',
     
     /**
-     *  Always loaded libraries css / js from main css / js directory
+     *  @Always loaded libraries css / js from main css / js directory
      *
      **/
     'is_loaded' => [
