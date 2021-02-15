@@ -4,6 +4,7 @@ namespace App\Facades\Http;
 
 use App\Facades\Csrf\Csrf;
 use App\Facades\Url\Url;
+use App\Helpers\Session;
 
 abstract class Route
 {
@@ -126,6 +127,11 @@ abstract class Route
     {
         header('location: '.$url, true, 301);
         exit;
+    }
+    
+    public static function back()
+    {
+	    self::redirect(Session::get('history')[0]);
     }
     
     public static function checkProtocol(): string

@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Facades\Http\Request;
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
 use App\Facades\Property\Remove;
@@ -68,6 +69,7 @@ class Session
         } else {
             $_SESSION['msg'][] = $items;
         }
+        
         $_SESSION['color'] = $color;
     }
 
@@ -101,6 +103,20 @@ class Session
         
         return null;
     }
+	
+	public static function history($url)
+	{
+		$history = self::get('history');
+		
+		if ((string) end($history) !== $url && ! Request::isAjax()) {
+			if (array_key_last($history) === 1) {
+				unset($history[0]);
+				ksort($history);
+			}
+			
+			self::set('history', [...is_array($history) ? $history : [], ...[$url]]);
+		}
+	}
     
     public static function destroy()
     {

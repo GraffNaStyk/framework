@@ -5,6 +5,7 @@ namespace App\Facades\Http;
 use App\Core\Auth;
 use App\Core\Kernel;
 use App\Facades\Csrf\Csrf;
+use App\Helpers\Session;
 use ReflectionMethod;
 use ReflectionClass;
 
@@ -58,6 +59,7 @@ final class Router extends Route
 		}
 		
 		$this->create(self::$provider . '\\' . self::getClass() . 'Controller');
+		Session::history(self::$url);
 		$this->runMiddlewares('after');
 	}
     
