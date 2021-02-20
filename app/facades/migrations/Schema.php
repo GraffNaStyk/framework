@@ -161,7 +161,7 @@ class Schema extends Blueprint
     {
         $null = $isNull ? 'DEFAULT NULL' : 'NOT NULL DEFAULT ' . "'{$default}'" ;
         $length = $length ?  $this->length[$type] : $length;
-        $this->alter[] = 'ALTER TABLE `'. $this->table . '` ADD `'.$field.'` '.$type.' '.$length.' '.$null.' '.$where.';';
+	    $this->alter[] = 'ALTER TABLE `'. $this->table . '` ADD `'.$field.'` '.$type.' '.$length.' '.$null.' AFTER '.$where.';';
         return $this;
     }
     

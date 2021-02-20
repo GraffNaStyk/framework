@@ -33,19 +33,25 @@ export const render = (args) => {
     headers: {
       "X-Fetch-Header": "fetchApi",
     },
-  }).then(async (res) => res.text())
-  .then(async result => {
-    if (args.el !== 'modal') {
-      if (args.append) {
-        document.querySelector(`[data-component="${args.el}"]`).innerHTML += result;
-      } else {
-        document.querySelector(`[data-component="${args.el}"]`).innerHTML = result;
-      }
-    } else {
-      modal(result);
-    }
-    reload();
+  }).then(res => {
     preloader();
+
+    if (res.status === 404 || res.status === 500) {
+      return false;
+    }
+
+    res.text().then(async result => {
+      if (args.el !== 'modal') {
+        if (args.append) {
+          document.querySelector(`[data-component="${args.el}"]`).innerHTML += result;
+        } else {
+          document.querySelector(`[data-component="${args.el}"]`).innerHTML = result;
+        }
+      } else {
+        modal(result);
+      }
+      reload();
+    })
   })
 };
 
@@ -158,7 +164,13 @@ on('submit', 'form',  (e) => {
       form: e.target
     }).then(res => {
       preloader();
+
+      if (res.status === 404 || res.status === 500) {
+        return false;
+      }
+
       const contentType = res.headers.get("content-type");
+
       if (contentType && contentType.indexOf("application/json") !== -1) {
         res.json().then(res => {
           if (res === null || res === '' || res.length === 0) {
@@ -270,14 +282,6 @@ const prepareFetchUrl = (url) => {
   }
 
   return '/'+url;
-}
-
-export const setPointerEvent = (element, event) => {
-  let submit = document.querySelector(`form[data-action="${element}"] .submit__button`);
-  if (submit == null) {
-    submit = document.querySelector(`form[data-action="${element}"] input[type="submit"]`)
-  }
-  submit.style.pointerEvents = event;
 }
 
 const reload = () => {

@@ -198,10 +198,17 @@ final class Router extends Route
                 $this->setCurrentRoute($route);
                 
                 $matches = array_slice($matches, 1);
-                
-                foreach ($matches as $key2 => $value) {
-                    self::$params[] = $matches[$key2][0];
-                }
+	
+	            if ((bool) strpos($matches[0][0], '/') === true) {
+		            $matches = explode('/', $matches[0][0]);
+		            foreach ($matches as $value) {
+			            self::$params[] = $value;
+		            }
+	            } else {
+		            foreach ($matches as $key2 => $value) {
+			            self::$params[] = $matches[$key2][0];
+		            }
+	            }
                 
                 break;
             }
