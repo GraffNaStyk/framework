@@ -156,14 +156,17 @@ class Schema extends Blueprint
         $this->otherImplementation .= ' INDEX ('.$this->currentFieldName.'), ';
         return $this;
     }
-    
-    public function alter(string $field, $type, $length = null, $isNull = false, $default = null, $where = null) :Schema
-    {
-        $null = $isNull ? 'DEFAULT NULL' : 'NOT NULL DEFAULT ' . "'{$default}'" ;
-        $length = $length ?  $this->length[$type] : $length;
-	    $this->alter[] = 'ALTER TABLE `'. $this->table . '` ADD `'.$field.'` '.$type.' '.$length.' '.$null.' AFTER '.$where.';';
-        return $this;
-    }
+	
+	public function alter(string $field, $type, $length = null, $isNull = false, $default = null, $where = null) :Schema
+	{
+		$null = $isNull ? 'DEFAULT NULL' : 'NOT NULL DEFAULT ';
+		$default = $default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'";
+		$null .= $default;
+		$length = $length ?  $this->length[$type] : $length;
+		$this->alter[] = 'ALTER TABLE `'. $this->table . '` ADD `'.$field.'` '.$type.' '.$length.' '.$null.' AFTER '.$where.';';
+		
+		return $this;
+	}
     
     public function foreign($reference = []): void
     {

@@ -294,3 +294,24 @@ const reload = () => {
     RefreshSelects();
   }, 150);
 }
+
+on('click', '.action', (e) => {
+  post({
+    url: e.target.dataset.url,
+    data: {'_csrf': e.target.dataset.csrf}
+  }).then(res => res.json())
+  .then(res => {
+
+    if (res.status === 404 || res.status === 500) {
+      return false;
+    }
+
+    if (e.target.dataset.refresh) {
+      let component = document.querySelector(`[data-component="${e.target.dataset.refresh}"]`);
+      render({
+        url: component.dataset.fetch,
+        el: e.target.dataset.refresh
+      })
+    }
+  })
+})

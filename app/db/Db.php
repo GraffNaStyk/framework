@@ -356,6 +356,10 @@ class Db
     {
         $this->setData();
         
+	    if ($this->debug) {
+		    $this->develop();
+	    }
+	    
         if (preg_match('/^(INSERT|UPDATE|DELETE)/', $this->query)) {
             try {
                 if (self::$db->prepare($this->query)->execute($this->data)) {

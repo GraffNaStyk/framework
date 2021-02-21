@@ -44,14 +44,14 @@ final class Request
                 $this->method = 'get';
                 $this->data = $_GET;
                 break;
-            case 'DELETE':
-                $this->method = 'delete';
-                $this->data = json_decode(file_get_contents('php://input'));
-                break;
-            case 'PUT':
-                $this->method = 'put';
-                $this->data = json_decode(file_get_contents('php://input'));
-                break;
+	        case 'DELETE':
+		        $this->method = 'delete';
+		        $this->data = (array) json_decode(file_get_contents('php://input'));
+		        break;
+	        case 'PUT':
+		        $this->method = 'put';
+		        $this->data = (array) json_decode(file_get_contents('php://input'));
+		        break;
         }
     }
     
@@ -71,11 +71,11 @@ final class Request
     {
         return $this->headers;
     }
-    
-    public function setData(array $data)
-    {
-        $this->data = $data;
-    }
+	
+	public function setData(array $data)
+	{
+		$this->data = array_merge($this->data, $data);
+	}
     
     public function getData(): array
     {

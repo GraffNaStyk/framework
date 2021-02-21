@@ -19,4 +19,8 @@ trait Variables
     private bool $startBracket = false;
 	
 	private bool $isUpdate = false;
+	
+	private bool $first = false;
+	
+	private bool $debug = false;
 }
