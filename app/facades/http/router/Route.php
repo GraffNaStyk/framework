@@ -32,24 +32,24 @@ abstract class Route
         static::$middleware = null;
     }
     
-    public static function get(string $url, string $controller, int $rights = 4, string $middleware=null): void
+    public static function get(string $url, string $controller, int $rights = 4): Collection
     {
-        self::match($url, $controller, 'get', $rights, $middleware);
+        return self::match($url, $controller, 'get', $rights);
     }
     
-    public static function post(string $url, string $controller, int $rights = 4, string $middleware=null): void
+    public static function post(string $url, string $controller, int $rights = 4): Collection
     {
-        self::match($url, $controller, 'post', $rights, $middleware);
+        return self::match($url, $controller, 'post', $rights);
     }
     
-    public static function put(string $url, string $controller, int $rights = 4, string $middleware=null): void
+    public static function put(string $url, string $controller, int $rights = 4): Collection
     {
-        self::match($url, $controller, 'put', $rights, $middleware);
+	    return self::match($url, $controller, 'put', $rights);
     }
     
-    public static function delete(string $url, string $controller, int $rights = 4, string $middleware=null): void
+    public static function delete(string $url, string $controller, int $rights = 4): Collection
     {
-        self::match($url, $controller, 'delete', $rights, $middleware);
+	    return self::match($url, $controller, 'delete', $rights);
     }
     
     public static function alias(string $alias, callable $function): void
@@ -59,18 +59,18 @@ abstract class Route
         self::$alias = null;
     }
 	
-	public static function crud(string $url, string $controller, int $rights = 4, string $middleware = null)
+	public static function crud(string $url, string $controller, int $rights = 4)
 	{
-		self::get($url, $controller.'@index', $rights, $middleware);
-		self::get($url.'/add', $controller.'@add', $rights, $middleware);
-		self::get($url.'/edit/{id}', $controller.'@edit', $rights, $middleware);
-		self::get($url.'/show/{id}', $controller.'@show', $rights, $middleware);
-		self::post($url.'/store', $controller.'@store', $rights, $middleware);
-		self::post($url.'/update', $controller.'@update', $rights, $middleware);
-		self::get($url.'/delete/{id}', $controller.'@delete', $rights, $middleware);
+		self::get($url, $controller.'@index', $rights);
+		self::get($url.'/add', $controller.'@add', $rights);
+		self::get($url.'/edit/{id}', $controller.'@edit', $rights);
+		self::get($url.'/show/{id}', $controller.'@show', $rights);
+		self::post($url.'/store', $controller.'@store', $rights);
+		self::post($url.'/update', $controller.'@update', $rights);
+		self::get($url.'/delete/{id}', $controller.'@delete', $rights);
 	}
     
-    private static function match(string $as, string $route, string $method, int $rights, $middleware = null): void
+    private static function match(string $as, string $route, string $method, int $rights): Collection
     {
         $route = str_replace('@', '/', $route);
         $routes = explode('/', $route);
@@ -81,13 +81,15 @@ abstract class Route
         $collection->namespace(self::$namespace);
         $collection->method($method);
         $collection->rights($rights);
-        $collection->middleware(static::$middleware ?? $middleware);
+        $collection->middleware(self::$middleware);
         
 	    self::$routes[self::$alias . $as ?? $route] = $collection;
 	    
 	    if ($method !== 'get') {
 		    Csrf::make(ucfirst($collection->getController()).'@'.$collection->getAction());
 	    }
+	    
+	    return $collection;
     }
     
     public static function when(string $when, string $then)
