@@ -60,6 +60,7 @@ final class Router extends Route
 		
 		$this->create(self::$provider . '\\' . self::getClass() . 'Controller');
 		Session::history(self::$url);
+		
 		$this->runMiddlewares('after');
 	}
     
@@ -182,7 +183,7 @@ final class Router extends Route
         }
     }
     
-    public function setParams()
+    public function setParams(): void
     {
         $routeExist = false;
         
@@ -196,20 +197,7 @@ final class Router extends Route
     
                 $routeExist = true;
                 $this->setCurrentRoute($route);
-                
-                $matches = array_slice($matches, 1);
-	
-	            if ((bool) strpos($matches[0][0], '/') === true) {
-		            $matches = explode('/', $matches[0][0]);
-		            foreach ($matches as $value) {
-			            self::$params[] = $value;
-		            }
-	            } else {
-		            foreach ($matches as $key2 => $value) {
-			            self::$params[] = $matches[$key2][0];
-		            }
-	            }
-                
+                $this->setMatches(array_slice($matches, 1));
                 break;
             }
         }
@@ -221,6 +209,20 @@ final class Router extends Route
         if (! empty (self::$params)) {
             $this->request->setData(self::$params);
         }
+    }
+    
+    private function setMatches(array $matches): void
+    {
+	    if ((bool) strpos($matches[0][0], '/') === true) {
+		    $matches = explode('/', $matches[0][0]);
+		    foreach ($matches as $value) {
+			    self::$params[] = $value;
+		    }
+	    } else {
+		    foreach ($matches as $key2 => $value) {
+			    self::$params[] = $matches[$key2][0];
+		    }
+	    }
     }
     
     public static function url(): string
