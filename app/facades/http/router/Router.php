@@ -67,7 +67,7 @@ final class Router extends Route
     
     private function runMiddlewares(string $when): void
     {
-        if (! empty(self::$currentRoute->getMiddleware())) {
+        if (self::$currentRoute->getMiddleware() !== null) {
             $middleware = Kernel::getMiddleware(self::$currentRoute->getMiddleware());
             if (method_exists($middleware, $when)) {
                 (new $middleware())->$when($this->request, $this);
