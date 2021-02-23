@@ -4,7 +4,7 @@ namespace App\Facades\Csrf;
 
 use App\Facades\Faker\Faker;
 use App\Facades\Http\Request;
-use App\Facades\Http\Router;
+use App\Facades\Http\Router\Router;
 use App\Helpers\Session;
 
 class Csrf

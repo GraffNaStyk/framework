@@ -3,8 +3,8 @@
 namespace App\Controllers\Middleware;
 
 use App\Facades\Http\Request;
-use App\Facades\Http\Route;
-use App\Facades\Http\Router;
+use App\Facades\Http\Router\Route;
+use App\Facades\Http\Router\Router;
 use App\Facades\Url\Url;
 use App\Helpers\Session;
 use App\Model\Right;
@@ -28,36 +28,36 @@ final class Auth
         }
     }
     
-    public static function middleware(array $route): bool
+    public static function middleware(object $route): bool
     {
-        if ($route['rights'] === 0) {
+        if ($route->getRights() === 0) {
             return false;
         }
         
-        if ($route['rights'] === 4) {
+        if ($route->getRights() === 4) {
             return true;
         }
 
         if (class_exists(Right::class)) {
-            $result = Right::select([strtolower($route['controller'])])
+            $result = Right::select([strtolower($route->getController())])
                 ->where('user_id', '=', Session::get('user.id'))
                 ->first();
 
-            if (empty($result) || $result[strtolower($route['controller'])] < $route['rights']) {
+            if (empty($result) || $result[strtolower($route->getController())] < $route->getRights()) {
                 return false;
             }
             
             $methods = self::$methods[1];
             
-            if ($route['rights'] === 2) {
+            if ($route->getRights() === 2) {
                 $methods = [...self::$methods[1], ...self::$methods[2]];
             }
             
-            if ($route['rights'] === 3) {
+            if ($route->getRights() === 3) {
                 $methods = [...self::$methods[1], ...self::$methods[2], ...self::$methods[3]];
             }
             
-            if (! in_array($route['action'], $methods)) {
+            if (! in_array($route->getAction(), $methods)) {
                 return false;
             }
         }

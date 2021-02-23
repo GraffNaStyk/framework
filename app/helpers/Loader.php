@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Facades\Http\Router;
+use App\Facades\Http\Router\Router;
 
 class Loader
 {

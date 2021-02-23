@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Admin;
 
-use App\Facades\Http\Route;
+use App\Facades\Http\Router\Route;
 use App\Helpers\Session;
 
 class LogoutController

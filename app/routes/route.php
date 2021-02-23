@@ -1,7 +1,7 @@
 <?php
 
-use App\Facades\Http\Router;
-use App\Facades\Http\Route;
+use App\Facades\Http\Router\Router;
+use App\Facades\Http\Router\Route;
 
 Route::when('/admin', '/dash');
 
@@ -9,7 +9,7 @@ Route::namespace( 'App\Controllers\Http', function () {
     Route::get('/', 'Index@index');
 });
 
-Route::prefix('/admin', function () {
+Route::alias('/admin', function () {
     Route::namespace('App\Controllers\Admin', function () {
         //@Route login
         Route::get('/login', 'Login@index', 4, 'isLogged');

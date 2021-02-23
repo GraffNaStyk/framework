@@ -2,7 +2,7 @@
 
 namespace App\Facades\Url;
 
-use App\Facades\Http\Router;
+use App\Facades\Http\Router\Router;
 
 class Url
 {

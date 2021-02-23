@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\BaseController;
-use App\Facades\Http\Router;
+use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
 
@@ -18,7 +18,7 @@ class Controller extends BaseController
     private function setLayout()
     {
         View::layout(
-            strtolower(Url::segment(Router::getInstance()->getCurrentRoute()['namespace'], 2, '\\'))
+            strtolower(Url::segment(Router::getInstance()->getCurrentRoute()->getNamespace(), 2, '\\'))
         );
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Db\Eloquent;
 
-use App\Facades\Http\Router;
+use App\Facades\Http\Router\Router;
 use App\Facades\Log\Log;
 
 abstract class Handle

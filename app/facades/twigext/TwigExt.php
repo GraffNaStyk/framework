@@ -2,8 +2,8 @@
 
 namespace App\Facades\TwigExt;
 
-use App\Facades\Http\Route;
-use App\Facades\Http\Router;
+use App\Facades\Http\Router\Route;
+use App\Facades\Http\Router\Router;
 use App\Facades\Url\Url;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

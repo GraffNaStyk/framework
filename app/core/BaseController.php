@@ -3,7 +3,7 @@
 namespace App\Core;
 
 use App\Facades\Http\Response;
-use App\Facades\Http\Router;
+use App\Facades\Http\Router\Router;
 use App\Rules\RuleValidator;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;

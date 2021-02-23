@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Facades\Http;
+namespace App\Facades\Http\Router;
 
 use App\Facades\Csrf\Csrf;
 use App\Facades\Url\Url;
@@ -10,7 +10,7 @@ abstract class Route
 {
     protected static array $routes;
     protected static string $namespace;
-    protected static ?string $middleware = null;
+    protected static ?string $middleware = '';
     protected static ?string $alias = null;
     
     public static function namespace(string $namespace, callable $function, array $middleware = [])
@@ -52,7 +52,7 @@ abstract class Route
         self::match($url, $controller, 'delete', $rights, $middleware);
     }
     
-    public static function prefix(string $alias, callable $function): void
+    public static function alias(string $alias, callable $function): void
     {
         self::$alias = $alias;
         $function();
@@ -75,17 +75,18 @@ abstract class Route
         $route = str_replace('@', '/', $route);
         $routes = explode('/', $route);
         
-        self::$routes[self::$alias . $as ?? $route] = [
-            'controller' => ucfirst($routes[0]),
-            'action' => $routes[1] ?? 'index',
-            'namespace' => self::$namespace,
-            'method' => $method,
-            'rights' => $rights,
-            'middleware' => static::$middleware ?? $middleware
-        ];
-	
+        $collection = new Collection();
+        $collection->controller(ucfirst($routes[0]));
+        $collection->action($routes[1] ?? 'index');
+        $collection->namespace(self::$namespace);
+        $collection->method($method);
+        $collection->rights($rights);
+        $collection->middleware(static::$middleware ?? $middleware);
+        
+	    self::$routes[self::$alias . $as ?? $route] = $collection;
+	    
 	    if ($method !== 'get') {
-		    Csrf::make(ucfirst($routes[0]).'@'.$routes[1]);
+		    Csrf::make(ucfirst($collection->getController()).'@'.$collection->getAction());
 	    }
     }
     
