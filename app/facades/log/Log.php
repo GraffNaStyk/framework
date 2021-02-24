@@ -2,28 +2,22 @@
 
 namespace App\Facades\Log;
 
+use App\Helpers\Storage;
+
 class Log
 {
     private static function make(string $type, array $data): void
     {
         $data['client'] = php_sapi_name();
         $data['date'] = date('Y-m-d H:i:s');
-    
-        $content = file_get_contents(storage_path('private/logs/' . $type . '_' . date('Y-m-d') . '.json'));
-    
-        if ((string) $content !== '') {
-            $content = json_decode($content, true);
-            $content[] = array_reverse($data);
-            file_put_contents(
-                storage_path('private/logs/' . $type . '_' . date('Y-m-d') . '.json'),
-                json_encode($content, JSON_PRETTY_PRINT)
-            );
-        } else {
-            file_put_contents(
-                storage_path('private/logs/' . $type . '_' . date('Y-m-d') . '.json'),
-                json_encode([array_reverse($data)], JSON_PRETTY_PRINT)
-            );
-        }
+        
+        Storage::disk('private')->make('logs/'.$type);
+        
+        file_put_contents(
+            storage_path('private/logs/'.$type.'/'.date('Y-m-d').'.log'),
+            json_encode(array_reverse($data), JSON_PRETTY_PRINT),
+            FILE_APPEND
+        );
     }
     
     public static function sql(array $data)
@@ -56,5 +50,16 @@ class Log
                 pd($lastError, true);
             }
         }
+    }
+    
+    public static function setDisplayErrors()
+    {
+	    if (app('dev')) {
+		    ini_set('display_startup_errors', 1);
+		    error_reporting(E_ERROR | E_PARSE);
+	    } else {
+		    ini_set('display_startup_errors', 0);
+		    error_reporting(0);
+	    }
     }
 }

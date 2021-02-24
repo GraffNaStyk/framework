@@ -3,21 +3,11 @@
 require_once app_path('app/facades/autoload/Autoload.php');
 require_once vendor_path('autoload.php');
 
-spl_autoload_register(function ($class) {
-    App\Facades\Autoload\Autoload::run($class);
-});
+spl_autoload_register(fn ($class) => App\Facades\Autoload\Autoload::run($class));
 
-if (app('dev')) {
-	ini_set('display_startup_errors', 1);
-    error_reporting(E_ERROR | E_PARSE);
-} else {
-	ini_set('display_startup_errors', 0);
-    error_reporting(0);
-}
+\App\Facades\Log\Log::setDisplayErrors();
 
-register_shutdown_function(function () {
-\App\Facades\Log\Log::handleError();
-});
+register_shutdown_function(fn () => \App\Facades\Log\Log::handleError());
 
 \App\Facades\Header\Header::set();
 
