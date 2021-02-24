@@ -9,36 +9,23 @@ final class Collection
 	private string $namespace;
 	private string $method;
 	private int $rights;
-	private ?string $middleware = null;
+	private array $middleware = [];
 	
-	public function controller(string $controller): void
-	{
+	public function __construct
+	(
+		string $controller,
+        string $action,
+		string $namespace,
+        string $method,
+        int $rights,
+        ?string $middleware
+	) {
 		$this->controller = $controller;
-	}
-	
-	public function action(string $action): void
-	{
 		$this->action = $action;
-	}
-	
-	public function namespace(string $namespace): void
-	{
 		$this->namespace = $namespace;
-	}
-	
-	public function method(string $method): void
-	{
 		$this->method = $method;
-	}
-	
-	public function rights(int $rights): void
-	{
 		$this->rights = $rights;
-	}
-	
-	public function middleware(?string $middleware): void
-	{
-		$this->middleware = $middleware;
+		$this->middleware[] = $middleware;
 	}
 	
 	public function getController(): string
@@ -66,8 +53,13 @@ final class Collection
 		return $this->rights;
 	}
 	
-	public function getMiddleware(): ?string
+	public function getMiddleware(): array
 	{
 		return $this->middleware;
+	}
+	
+	public function middleWare(?string $middleware): void
+	{
+		$this->middleware[] = $middleware;
 	}
 }

@@ -75,13 +75,14 @@ abstract class Route
         $route = str_replace('@', '/', $route);
         $routes = explode('/', $route);
         
-        $collection = new Collection();
-        $collection->controller(ucfirst($routes[0]));
-        $collection->action($routes[1] ?? 'index');
-        $collection->namespace(self::$namespace);
-        $collection->method($method);
-        $collection->rights($rights);
-        $collection->middleware(self::$middleware);
+        $collection = new Collection (
+	        ucfirst($routes[0]),
+	        lcfirst($routes[1]) ?? 'index',
+	        self::$namespace,
+	        $method,
+	        $rights,
+	        self::$middleware
+        );
         
 	    self::$routes[self::$alias . $as ?? $route] = $collection;
 	    

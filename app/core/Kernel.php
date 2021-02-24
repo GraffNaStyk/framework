@@ -17,9 +17,17 @@ abstract class Kernel
         Handle::class
     ];
     
-    final public static function getMiddleware(string $middleware): ?string
+    final public static function getMiddlewares(array $middlewares): array
     {
-        return self::$middlewares[$middleware] ?: null;
+    	$return = [];
+
+    	foreach ($middlewares as $middleware){
+		    if (isset(self::$middlewares[$middleware])) {
+		    	$return[] = self::$middlewares[$middleware];
+		    }
+	    }
+
+        return $return;
     }
     
     final public static function getEveryMiddleware(): array
