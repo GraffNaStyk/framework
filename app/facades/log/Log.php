@@ -20,22 +20,22 @@ class Log
         );
     }
     
-    public static function sql(array $data)
+    public static function sql(array $data): void
     {
         static::make('sql', $data);
     }
     
-    public static function info(array $data)
+    public static function info(array $data): void
     {
         static::make('info', $data);
     }
     
-    public static function custom(string $name, array $data)
+    public static function custom(string $name, array $data): void
     {
         static::make($name, $data);
     }
     
-    public static function handleError()
+    public static function handleError(): void
     {
         $lastError = error_get_last();
         
@@ -52,7 +52,7 @@ class Log
         }
     }
     
-    public static function setDisplayErrors()
+    public static function setDisplayErrors(): void
     {
 	    if (app('dev')) {
 		    ini_set('display_startup_errors', 1);

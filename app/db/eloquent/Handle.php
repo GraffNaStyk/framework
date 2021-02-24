@@ -15,12 +15,12 @@ abstract class Handle
         }
         
         $router = Router::getInstance();
-        
+
         Log::sql([
             'error' => $e->getMessage(),
             'query' => $error,
             'request' => $router->request->all(),
-            'routeParams' => $router->getCurrentRoute()
+            'routeParams' => $router->info()
         ]);
     }
 }

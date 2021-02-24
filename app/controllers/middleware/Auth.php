@@ -3,6 +3,7 @@
 namespace App\Controllers\Middleware;
 
 use App\Facades\Http\Request;
+use App\Facades\Http\Router\Collection;
 use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\Router;
 use App\Facades\Url\Url;
@@ -28,7 +29,7 @@ final class Auth
         }
     }
     
-    public static function middleware(object $route): bool
+    public static function middleware(Collection $route): bool
     {
         if ($route->getRights() === 0) {
             return false;

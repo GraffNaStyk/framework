@@ -13,7 +13,7 @@ class Handle
         Log::info([
             'request' => $request->all(),
             'headers' => $request->headers(),
-            'routeParams' => $router->getCurrentRoute(),
+            'routeParams' => $router->info(),
 	        'url' => $router::url()
         ]);
     }

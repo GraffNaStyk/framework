@@ -14,21 +14,17 @@ final class Router extends Route
 {
     private static array $params = [];
     
-    private static ?string $provider = '';
+    private static ?string $provider = null;
     
-    private static ?string $class = '';
-
-    private static ?string $action = '';
-
-    private static string $url = '';
+    private static ?string $url = null;
 
     public object $request;
     
     private object $csrf;
     
-    private static object $currentRoute;
+    private static Collection $route;
     
-    private static ?object $instance = null;
+    private static ?Router $instance = null;
 
     public function __construct()
     {
@@ -67,8 +63,8 @@ final class Router extends Route
     
     private function runMiddlewares(string $when): void
     {
-        if (self::$currentRoute->getMiddleware() !== null) {
-            $middlewares = Kernel::getMiddlewares(self::$currentRoute->getMiddleware());
+        if (self::$route->getMiddleware() !== null) {
+            $middlewares = Kernel::getMiddlewares(self::$route->getMiddleware());
             foreach ($middlewares as $middleware) {
 	            if (method_exists($middleware, $when)) {
 		            (new $middleware())->$when($this->request, $this);
@@ -85,42 +81,42 @@ final class Router extends Route
         }
     }
     
-    public function getCurrentRoute(): object
+    public function getCurrentRoute(): Collection
     {
-        return self::$currentRoute;
+        return self::$route;
+    }
+    
+    public function info(): array
+    {
+    	return [
+    		'controller' => self::getClass(),
+		    'action' => self::getAction(),
+		    'namespace' => self::$route->getNamespace(),
+		    'rights' => self::$route->getRights(),
+		    'middlewares' => self::$route->getMiddleware(),
+		    'method' => self::$route->getMethod()
+	    ];
     }
     
     private function setCurrentRoute($route): void
     {
-        self::$currentRoute = $route;
+        self::$route = $route;
         self::setNamespace($route->getNamespace());
-        self::setClass($route->getController());
-        self::setAction($route->getAction());
     }
 
     public static function getClass(): string
     {
-        return self::$class;
+        return self::$route->getController();
     }
 
     public static function getAction(): string
     {
-        return self::$action;
+        return self::$route->getAction();
     }
     
-    public static function getNamespace(): string
+    public static function getNamespace(): ?string
     {
-        return self::$provider;
-    }
-
-    private static function setClass(string $class): void
-    {
-        self::$class = ucfirst($class);
-    }
-
-    private static function setAction(string $action): void
-    {
-        self::$action = lcfirst($action);
+	    return self::$provider;
     }
     
     private static function setNamespace(string $namespace): void
@@ -273,6 +269,6 @@ final class Router extends Route
 	
 	public static function csrfPath(): string
 	{
-		return self::$currentRoute->getController().'@'.self::$currentRoute->getAction();
+		return self::$route->getController().'@'.self::$route->getAction();
 	}
 }
