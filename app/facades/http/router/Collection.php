@@ -25,6 +25,7 @@ final class Collection
 		$this->namespace = $namespace;
 		$this->method = $method;
 		$this->rights = $rights;
+		
 		if ($middleware) {
 			$this->middlewares[] = $middleware;
 		}

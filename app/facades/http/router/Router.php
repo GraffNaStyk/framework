@@ -133,13 +133,10 @@ final class Router extends Route
     
     private function create(string $controller)
     {
-        if (class_exists($controller)) {
-            if (! method_exists($controller, self::getAction())) {
-                self::abort();
-            }
-            
+        if (method_exists($controller, self::getAction())) {
             try {
                 $reflectionClass = new ReflectionClass($controller);
+                
                 if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
                     self::abort();
                 }
@@ -173,9 +170,8 @@ final class Router extends Route
             } catch (\ReflectionException $e) {
                 self::abort();
             }
-        } else {
-            self::abort();
         }
+	    self::abort();
     }
     
     public function setParams(): void
