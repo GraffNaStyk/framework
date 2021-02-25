@@ -14,15 +14,13 @@ final class Router extends Route
 {
     private static array $params = [];
     
-    private static ?string $provider = null;
-    
     private static ?string $url = null;
 
-    public object $request;
+    public Request $request;
     
-    private object $csrf;
+    private Csrf $csrf;
     
-    private static Collection $route;
+    private static ?Collection $route = null;
     
     private static ?Router $instance = null;
 
@@ -55,7 +53,7 @@ final class Router extends Route
 			}
 		}
 		
-		$this->create(self::$provider . '\\' . self::getClass() . 'Controller');
+		$this->create(self::$route->getNamespace() . '\\' . self::getClass() . 'Controller');
 		Session::history(self::$url);
 		
 		$this->runMiddlewares('after');
@@ -101,7 +99,6 @@ final class Router extends Route
     private function setCurrentRoute($route): void
     {
         self::$route = $route;
-        self::setNamespace($route->getNamespace());
     }
 
     public static function getClass(): string
@@ -116,12 +113,11 @@ final class Router extends Route
     
     public static function getNamespace(): ?string
     {
-	    return self::$provider;
-    }
-    
-    private static function setNamespace(string $namespace): void
-    {
-        self::$provider = $namespace;
+    	if (self::$route instanceof Collection) {
+    		return self::$route->getNamespace();
+	    }
+    	
+    	return null;
     }
     
     public static function getAlias(): string

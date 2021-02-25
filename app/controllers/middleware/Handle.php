@@ -10,11 +10,9 @@ class Handle
 {
     public function before(Request $request, Router $router)
     {
-        Log::info([
+        Log::custom('request', [
             'request' => $request->all(),
-            'headers' => $request->headers(),
-            'routeParams' => $router->info(),
-	        'url' => $router::url()
+            'routeParams' => $router->info()
         ]);
     }
 }

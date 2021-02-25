@@ -10,17 +10,12 @@ abstract class Route
 {
     protected static array $routes;
     protected static string $namespace;
-    protected static ?string $middleware = '';
+    protected static ?string $middleware = null;
     protected static ?string $alias = null;
     
     public static function namespace(string $namespace, callable $function, array $middleware = [])
     {
         static::$namespace = $namespace;
-        
-        if (! empty($middleware)) {
-            static::$middleware = $middleware['middleware'];
-        }
-        
         $function();
         static::$middleware = null;
     }

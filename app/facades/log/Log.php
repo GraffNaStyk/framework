@@ -2,20 +2,22 @@
 
 namespace App\Facades\Log;
 
+use App\Facades\Http\Router\Router;
 use App\Helpers\Storage;
 
 class Log
 {
     private static function make(string $type, array $data): void
     {
-        $data['client'] = php_sapi_name();
-        $data['date'] = date('Y-m-d H:i:s');
-        
+    	$log  = '['.date('Y-m-d H:i:s').'] [url]: '.Router::url().' [client]: '.php_sapi_name();
+	    $log .= ' [ip]: '.getenv('REMOTE_ADDR'). ' [host]: '.gethostbyaddr(getenv('REMOTE_ADDR')).' '.PHP_EOL;
+	    $log .= json_encode($data, JSON_PRETTY_PRINT);
+	    
         Storage::disk('private')->make('logs/'.$type);
         
         file_put_contents(
             storage_path('private/logs/'.$type.'/'.date('Y-m-d').'.log'),
-            json_encode(array_reverse($data), JSON_PRETTY_PRINT),
+	        $log.PHP_EOL,
             FILE_APPEND
         );
     }

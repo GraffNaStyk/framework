@@ -25,7 +25,9 @@ final class Collection
 		$this->namespace = $namespace;
 		$this->method = $method;
 		$this->rights = $rights;
-		$this->middleware[] = $middleware;
+		if ($middleware) {
+			$this->middleware[] = $middleware;
+		}
 	}
 	
 	public function getController(): string
@@ -58,7 +60,7 @@ final class Collection
 		return $this->middleware;
 	}
 	
-	public function middleWare(?string $middleware): void
+	public function middleWare(string $middleware): void
 	{
 		$this->middleware[] = $middleware;
 	}
