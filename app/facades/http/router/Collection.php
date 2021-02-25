@@ -9,7 +9,7 @@ final class Collection
 	private string $namespace;
 	private string $method;
 	private int $rights;
-	private array $middleware = [];
+	private array $middlewares = [];
 	
 	public function __construct
 	(
@@ -26,7 +26,7 @@ final class Collection
 		$this->method = $method;
 		$this->rights = $rights;
 		if ($middleware) {
-			$this->middleware[] = $middleware;
+			$this->middlewares[] = $middleware;
 		}
 	}
 	
@@ -57,11 +57,11 @@ final class Collection
 	
 	public function getMiddleware(): array
 	{
-		return $this->middleware;
+		return $this->middlewares;
 	}
 	
-	public function middleWare(string $middleware): void
+	public function middleware(array $middlewares): void
 	{
-		$this->middleware[] = $middleware;
+		$this->middlewares = [...$this->middlewares, ...$middlewares];
 	}
 }

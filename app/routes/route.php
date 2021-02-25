@@ -12,7 +12,7 @@ Route::namespace('App\Controllers\Http', function () {
 Route::alias('/admin', function () {
 	Route::namespace('App\Controllers\Admin', function () {
 		//@Route login
-		Route::get('/login', 'Login@index')->middleware('isLogged');
+		Route::get('/login', 'Login@index')->middleware(['isLogged']);
 		Route::post('/login/check', 'Login@check');
 		
 		Route::middleware('auth', function () {
@@ -25,7 +25,7 @@ Route::alias('/admin', function () {
 			Route::get('/users/{name}', 'Dash@users');
 			
 			//@Route clients
-			Route::get('/clients', 'Clients@index')->middleware('example');
+			Route::get('/clients', 'Clients@index')->middleware(['example']);
 			Route::get('/clients/add', 'Clients@add');
 			Route::post('/clients/store', 'Clients@store');
 			

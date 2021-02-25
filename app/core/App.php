@@ -14,10 +14,6 @@ final class App
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
-        if (phpversion() < 7.4) {
-            trigger_error('Minimal version of php 7.4', E_USER_ERROR);
-        }
 
         $env = require_once app_path('app/config/.env');
     

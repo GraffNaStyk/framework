@@ -41,7 +41,11 @@ class Validator
         foreach (static::$rules as $key => $item) {
             if (isset($request[$key]) && isset($item['required'])) {
                 foreach ($item as $fnName => $validateRule) {
-                    static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
+                	if (method_exists($fnName, $validateRule)) {
+		                static::$validatorErrors[] = $fnName::$validateRule($request[$key], $key);
+	                } else {
+		                static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
+	                }
                 }
             } else if (isset($item['required']) && !isset($request[$key])) {
                 static::$validatorErrors[] = ['msg' => 'Pole jest wymagane', 'field' => $key];
