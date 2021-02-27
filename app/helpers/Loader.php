@@ -59,7 +59,7 @@ class Loader
 			$cssString .= self::getFile($val, 'css');
 		}
 		
-		return $cssString .= self::getFontAwesome();
+		return $cssString;
 	}
 	
 	public static function js(): string
@@ -123,13 +123,5 @@ class Loader
 		}
 		
 		return '';
-	}
-	
-	private static function getFontAwesome(): ?string
-	{
-		return is_readable(css_path('font-awesome.min.css'))
-			? trim('<link rel="stylesheet" href="'.
-				self::$url.str_replace(app_path(), '', css_path('font-awesome.min.css')).'">'.PHP_EOL)
-			: null;
 	}
 }
