@@ -10,7 +10,7 @@ export const post = async (args) => {
   if (args.form)
     data = new FormData(args.form);
 
-  if(args.data) {
+  if (args.data) {
     data = new FormData();
     Object.keys(args.data).forEach(key => data.append(key, args.data[key]));
   }

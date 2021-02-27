@@ -32,13 +32,11 @@ class LoginController extends Controller
 	    $user = User::select(['name', 'id', 'password'])
 		    ->where('name', '=', $request->get('name'))
 		    ->exist();
-      
-	    if ($user) {
-            if (Password::verify($request->get('password'), $user->password)) {
-                unset($user->password);
-                Session::set('user', $user);
-                $this->sendSuccess('Zalogowano poprawnie', '/dash');
-            }
+
+	    if ($user && Password::verify($request->get('password'), $user->password)) {
+            unset($user->password);
+            Session::set('user', $user);
+            $this->sendSuccess('Zalogowano poprawnie', '/dash');
         }
     
         $this->sendError('Niepoprwane dane logowania');

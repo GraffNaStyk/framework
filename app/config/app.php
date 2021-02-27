@@ -52,7 +52,7 @@ return [
      **/
     'is_loaded' => [
         'css' => [
-            'bootstrap', 'slim-select', 'alerts', 'box', 'buttons', 'form', 'modal', 'table', 'loader'
+            'bootstrap', 'slim-select', 'loader', 'font-awesome.min'
         ],
         
         'js' => [

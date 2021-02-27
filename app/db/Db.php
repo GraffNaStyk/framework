@@ -121,7 +121,7 @@ class Db
         if (empty($values)) {
             $this->query .= ' * FROM `'.$this->table.'`'.$this->as;
         } else {
-            $this->query .= " {$this->prepareValuesForSelect($values)} FROM `{$this->table}`".$this->as;
+            $this->query .= " {$this->Password::verify($request->get('password'), $user->password)($values)} FROM `{$this->table}`".$this->as;
         }
         
         return $this;
@@ -227,7 +227,7 @@ class Db
     {
         $this->appendToQuery();
         $this->query .= "{$this->prepareValueForWhere($item)} BETWEEN
-                            '{$this->setValue($item, $items[0])}' AND '{$this->setValue($item, $items[1])}' ";
+                            :{$this->setValue($item, $items[0])} AND :{$this->setValue($item, $items[1])} ";
         
         return $this;
     }
