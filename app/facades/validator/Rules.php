@@ -109,4 +109,11 @@ class Rules
             return ['msg' => 'Plik jest uszkodzony', 'field' => $field];
         }
     }
+	
+	public static function float($item, $rule, $field)
+	{
+		if (! is_float(floatval($item))) {
+			return ['msg' => 'Wymagana wartość z przecinkiem', 'field' => $field];
+		}
+	}
 }
