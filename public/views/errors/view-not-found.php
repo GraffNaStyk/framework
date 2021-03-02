@@ -11,7 +11,7 @@
 <body>
 <div style="height: 600px; display: flex; justify-content: center; align-items: center; flex-direction: column">
  <h2 style="font-size: 3rem; color: rgba(0,0,0,0.6); font-family: 'Nunito', sans-serif; font-weight: 200">
-  View <?= \App\Facades\Http\View::getName() ?>.twig not found in <?= \App\Facades\Http\Router::getClass() ?>Controller
+  View <?= \App\Facades\Http\View::getName() ?>.twig not found in <?= \App\Facades\Http\Router\Router::getClass() ?>Controller
  </h2>
  <a style="border: 1px solid rgba(0,0,0,0.6); padding: 1rem; text-decoration: none; color :rgba(0,0,0,0.6); font-family: 'Nunito', sans-serif;"
     href="<?= App\Facades\Url\Url::base() ?: '/'; ?>">
