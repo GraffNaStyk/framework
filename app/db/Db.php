@@ -247,7 +247,14 @@ class Db
         return $this;
     }
     
-    public function order(array $by, string $type = 'ASC'): Db
+    public function bind(array $data): Db
+    {
+    	$this->data = array_merge($this->data, $data);
+
+    	return $this;
+    }
+	
+	public function order(array $by, string $type = 'ASC'): Db
     {
         $this->query .= " ORDER BY {$this->prepareValuesForSelect($by)} {$type}";
         

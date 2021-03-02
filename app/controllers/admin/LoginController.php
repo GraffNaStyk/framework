@@ -6,6 +6,7 @@ use App\Controllers\Controller;
 use App\Facades\Faker\Hash;
 use App\Facades\Faker\Password;
 use App\Helpers\Session;
+use App\Model\Client;
 use App\Model\User;
 use App\Facades\Http\View;
 use App\Facades\Http\Request;
