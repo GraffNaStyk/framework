@@ -16,6 +16,14 @@ class Db
     private static ?object $db = null;
     private static ?string $dbName = null;
     public ?string $as = null;
+	
+	private static array $options = [
+		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+		PDO::ATTR_ORACLE_NULLS => PDO::NULL_EMPTY_STRING,
+		PDO::ATTR_CASE => PDO::CASE_LOWER,
+		PDO::ATTR_EMULATE_PREPARES => false,
+		PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8;'
+	];
     
     public function __construct($model)
     {
@@ -36,12 +44,12 @@ class Db
                     self::$db = new PDO(
                         'mysql:host='.self::$env['host'].';dbname='.self::$env['dbname'],
                         self::$env['user'],
-                        self::$env['pass'])
-                    ;
+                        self::$env['pass'],
+	                    self::$options
+                    );
+
                     self::$dbName = self::$env['dbname'];
                     self::$env = [];
-                    self::$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    self::$db->query('set names utf8;');
                 }
             } catch (\PDOException $e) {
                 trigger_error("Database connection error");
