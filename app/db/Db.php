@@ -129,7 +129,7 @@ class Db
         if (empty($values)) {
             $this->query .= ' * FROM `'.$this->table.'`'.$this->as;
         } else {
-            $this->query .= " {$this->Password::verify($request->get('password'), $user->password)($values)} FROM `{$this->table}`".$this->as;
+	        $this->query .= " {$this->prepareValuesForSelect($values)} FROM `{$this->table}`".$this->as;
         }
         
         return $this;
@@ -249,7 +249,10 @@ class Db
     
     public function bind(array $data): Db
     {
-    	$this->data = array_merge($this->data, $data);
+    	foreach ($data as $key => $value) {
+    		$newK = $this->setValue($key, $value);
+		    $this->query = preg_replace('/:'.$key.'/', ':'.$newK, $this->query, 1);
+	    }
 
     	return $this;
     }
@@ -291,10 +294,6 @@ class Db
 
     public function get(): array
     {
-        if ($this->debug) {
-            $this->develop();
-        }
-        
         return $this->execute();
     }
     
