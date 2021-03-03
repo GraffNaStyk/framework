@@ -82,9 +82,10 @@ class Db
         return $this;
     }
     
-    public function duplicate(): Db
+    public function onDuplicate(array $duplicated = []): Db
     {
         $this->onDuplicate = true;
+        $this->duplicated = $duplicated;
         
         return $this;
     }
@@ -108,8 +109,15 @@ class Db
     
         if ($this->onDuplicate === true) {
             $this->query .= ' ON DUPLICATE KEY UPDATE ';
-            foreach ($this->data as $key => $field) {
-                $this->query .= "`{$key}` = :{$key}, ";
+
+            if (! empty($this->duplicated)) {
+	            foreach ($this->duplicated as $key => $field) {
+		            $this->query .= "`{$field}` = :{$field}, ";
+	            }
+            } else {
+	            foreach ($this->data as $key => $field) {
+		            $this->query .= "`{$key}` = :{$key}, ";
+	            }
             }
         }
     

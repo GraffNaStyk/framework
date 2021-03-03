@@ -6,6 +6,8 @@ trait Variables
 {
 	protected ?array $data = [];
 	
+	protected ?array $duplicated = [];
+	
     private ?string $query = null;
     
     public string $table;
