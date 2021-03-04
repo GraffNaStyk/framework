@@ -50,16 +50,17 @@ trait Builder
 	protected function setData()
 	{
 		if (is_array($this->data)) {
-			
 			if ($this->isUpdate) {
 				unset($this->data['id']);
 			}
-			
+
 			foreach ($this->data as $key => $value) {
-				if (is_null($value) === true || (string) $value === '') {
+				if (is_null($value) || (string) $value === '') {
 					$this->data[$key] = null;
 				} else if (is_float(floatval($value))) {
 					$this->data[$key] = str_replace(',', '.', $value);
+				} else if (is_numeric($value)) {
+					$this->data[$key] = (int) trim($value);
 				} else {
 					$this->data[$key] = trim($value);
 				}

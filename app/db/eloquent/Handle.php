@@ -20,7 +20,7 @@ abstract class Handle
             'error' => $e->getMessage(),
             'query' => $error,
             'request' => $router->request->all(),
-            'routeParams' => $router->info()
+            'routeParams' => $router->routeParams()
         ]);
     }
 }

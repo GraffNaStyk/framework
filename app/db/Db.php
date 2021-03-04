@@ -111,7 +111,7 @@ class Db
             $this->query .= ' ON DUPLICATE KEY UPDATE ';
 
             if (! empty($this->duplicated)) {
-	            foreach ($this->duplicated as $key => $field) {
+	            foreach ($this->duplicated as $field) {
 		            $this->query .= "`{$field}` = :{$field}, ";
 	            }
             } else {

@@ -84,7 +84,7 @@ final class Router extends Route
         return self::$route;
     }
     
-    public function info(): array
+    public function routeParams(): array
     {
     	return [
     		'controller' => self::getClass(),

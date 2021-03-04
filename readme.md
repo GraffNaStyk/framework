@@ -128,7 +128,7 @@ Model::update('array')->where('param1', 'is', 'param2')->exec();
 
 Model::select('array')
 ->as('alias for table')
-->distinct()
+->distinct('?array')
 ->join('table', 'param1', 'is', 'param2', 'rigidly')
 ->leftJoin('table', 'param1', 'is', 'param2', 'rigidly')
 ->rightJoin('table', 'param1', 'is', 'param2', 'rigidly')
@@ -148,6 +148,7 @@ Model::select('array')
 ->group('by')
 ->limit(limit)
 ->offset('offset')
+->('array bind values for war query')
 ->get()
 ?->exist()
 ?->first();

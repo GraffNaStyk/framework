@@ -12,7 +12,7 @@ class Handle
     {
         Log::custom('request', [
             'request' => $request->all(),
-            'routeParams' => $router->info()
+            'routeParams' => $router->routeParams()
         ]);
     }
 }

@@ -35,6 +35,7 @@ class Faker
     public static function hash(int $length): string
     {
         $password = '';
+
         while (strlen($password) < $length) {
             $method = self::$methods[rand(0, 1)];
             $password .= self::$method(1);

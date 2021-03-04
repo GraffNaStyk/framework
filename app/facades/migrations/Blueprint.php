@@ -40,7 +40,7 @@ class Blueprint
     protected object $db;
     protected array $trigger = [];
     
-    use TableSystem;
+    use TableQueries;
     
     public function __construct($model, $store=false)
     {
@@ -49,17 +49,12 @@ class Blueprint
         $this->store = $store;
     }
     
-    private function lastKey()
-    {
-        return array_keys($this->tableFields)[count($this->tableFields)-1];
-    }
-    
     public function generate($name, $fnName, $length = null)
     {
         $this->lastCalled = $fnName;
         $this->currentFieldName = '`'.$name.'`';
         $this->tableFields[] = '`'.$name.'`' . ' ' . $this->lastCalled . ' ' .($length ? '(' . $length . ')' : $this->length[$this->lastCalled]). ' ' . $this->notNull;
-        $this->currentKey = $this->lastKey();
+        $this->currentKey = array_key_last($this->tableFields);
     }
     
     public function run()
