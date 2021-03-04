@@ -59,15 +59,13 @@ trait Builder
 					$this->data[$key] = null;
 				} else if (is_float(floatval($value))) {
 					$this->data[$key] = str_replace(',', '.', $value);
-				} else if (is_numeric($value)) {
-					$this->data[$key] = (int) trim($value);
 				} else {
 					$this->data[$key] = trim($value);
 				}
 			}
 		}
 	}
-    
+
     protected function setValue(string $key, string $value): string
     {
         do {
