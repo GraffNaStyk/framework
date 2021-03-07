@@ -293,7 +293,7 @@ class Db
         return $this;
     }
 
-    public function first()
+    public function first(): object
     {
         $this->first = true;
         
@@ -408,9 +408,9 @@ class Db
         return false;
     }
 
-    public function lastId()
+    public function lastId(): int
     {
-        return self::$db->lastInsertId();
+        return (int) self::$db->lastInsertId();
     }
 
     public function debug(): Db
@@ -420,7 +420,7 @@ class Db
         return $this;
     }
 
-    public function query($query)
+    public function query($query): ?array
     {
         $stmt = self::$db->prepare($query);
         $stmt->execute();
@@ -430,7 +430,7 @@ class Db
         }
     }
 
-    private function develop($return = false)
+    private function develop($return = false): ?string
     {
         $statement = $this->query;
         
@@ -447,9 +447,11 @@ class Db
             'raw'   => $this->query,
             'params' => $this->data
         ]);
+        
+        return null;
     }
     
-    public function getColumnsInfo()
+    public function getColumnsInfo(): ?array
     {
         return $this->query(
             'SELECT COLUMN_NAME as name, DATA_TYPE as type

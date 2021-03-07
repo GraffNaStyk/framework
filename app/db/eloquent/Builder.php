@@ -47,7 +47,7 @@ trait Builder
         return trim($item);
     }
 	
-	protected function setData()
+	protected function setData(): void
 	{
 		if (is_array($this->data)) {
 			if ($this->isUpdate) {
