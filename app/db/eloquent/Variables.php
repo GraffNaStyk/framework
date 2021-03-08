@@ -25,4 +25,6 @@ trait Variables
 	private bool $first = false;
 	
 	private bool $debug = false;
+
+	private bool $selectGroup = false;
 }

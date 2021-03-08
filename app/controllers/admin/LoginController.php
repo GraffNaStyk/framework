@@ -20,6 +20,7 @@ class LoginController extends Controller
 
     public function index()
     {
+    	pd(Client::selectGroup(['race', 'name', 'health'])->get());
         View::layout('login');
         return View::render(['title' => 'Panel Administracyjny - logowanie']);
     }

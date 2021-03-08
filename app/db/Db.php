@@ -89,6 +89,13 @@ class Db
         
         return $this;
     }
+	
+	public function selectGroup(array $values = []): Db
+    {
+    	$this->selectGroup = true;
+    	$this->select($values);
+    	return $this;
+    }
     
     public function insert(array $values): Db
     {
@@ -400,7 +407,13 @@ class Db
                     return $pdo->fetch(PDO::FETCH_OBJ);
                 }
                 
-                return $pdo->fetchAll(PDO::FETCH_OBJ);
+				if ($this->selectGroup) {
+					$this->selectGroup = false;
+					return $pdo->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_OBJ);
+				} else {
+					return $pdo->fetchAll(PDO::FETCH_OBJ);
+				}
+				
             } catch (\PDOException $e) {
                 Handle::throwException($e, $this->develop(true));
             }
