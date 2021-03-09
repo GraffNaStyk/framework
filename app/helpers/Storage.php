@@ -12,8 +12,6 @@ class Storage
         'css' => 'text/css',
         'json' => 'application/json',
         'xml' => 'application/xml',
-        'swf' => 'application/x-shockwave-flash',
-        'flv' => 'video/x-flv',
         // images
         'png' => 'image/png',
         'jpe' => 'image/jpeg',
@@ -25,59 +23,48 @@ class Storage
         'tiff' => 'image/tiff',
         'tif' => 'image/tiff',
         'svg' => 'image/svg+xml',
-        'svgz' => 'image/svg+xml',
         // archives
         'zip' => 'application/zip',
-        'rar' => 'application/x-rar-compressed',
         // audio/video
         'mp3' => 'audio/mpeg',
         'qt' => 'video/quicktime',
         'mov' => 'video/quicktime',
         // adobe
         'pdf' => 'application/pdf',
-        'ai' => 'application/postscript',
-        'eps' => 'application/postscript',
-        'ps' => 'application/postscript',
         // ms office
         'doc' => 'application/msword',
-        'rtf' => 'application/rtf',
         'xls' => 'application/vnd.ms-excel',
-        'ppt' => 'application/vnd.ms-powerpoint',
         'docx' => 'application/msword',
         'xlsx' => 'application/vnd.ms-excel',
-        'pptx' => 'application/vnd.ms-powerpoint',
-        // open office
-        'odt' => 'application/vnd.oasis.opendocument.text',
-        'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
     ];
     
     private static string $disk;
     private static string $relativePath;
 
-    public static function disk($disk): Storage
+    public static function disk(): Storage
     {
-        if(!is_dir(storage_path('public/'))) {
+        if (! is_dir(storage_path('public/'))) {
             mkdir(storage_path('public/'), 0775);
         }
 
-        if(!is_dir(storage_path('private/'))) {
+        if (! is_dir(storage_path('private/'))) {
             mkdir(storage_path('private/'), 0775);
         }
-        
+
         self::$relativePath = '/storage/'.$disk;
-        self::$disk = storage_path($disk);
-        
+        self::$disk = storage_path('public');
+
         return new self();
     }
 
     public function put($file, $content, $replace = false): bool
     {
-        if ($replace === true) {
+        if ($replace) {
             $this->putFile($file, $content);
             return true;
         }
-        
-        if (!is_file(self::$disk.'/'.$file)) {
+
+        if (! is_file(self::$disk.'/'.$file)) {
             $this->putFile($file, $content);
             return true;
         }
@@ -91,7 +78,7 @@ class Storage
             chmod(self::$disk.'/'.$file, 0775);
             return true;
         }
-        
+
         return false;
     }
 
@@ -99,7 +86,7 @@ class Storage
     {
         if ($file['error'] === UPLOAD_ERR_OK) {
             $this->make($destination);
-            
+
             $pathInfo = pathinfo($file['name']);
             $location  = self::$disk.$destination;
 
@@ -119,8 +106,8 @@ class Storage
                         File::insert([
                             'name' => $pathInfo['filename'],
                             'hash' => $hash,
-                            'dir' => self::$relativePath.$destination,
-                            'ext' => '.'.$pathInfo['extension'],
+                            'dir'  => self::$relativePath.$destination,
+                            'ext'  => '.'.$pathInfo['extension'],
                             'sha1' => sha1_file($location)
                         ])->exec();
                     }
@@ -131,41 +118,30 @@ class Storage
     
         return false;
     }
-
-    public function get($path = null, $pattern = '*', $glob_type = GLOB_BRACE): array
-    {
-        $path = self::$disk . '/' . $path;
-        $result = [];
-
-        foreach (glob($path.$pattern, $glob_type) as $key => $value) {
-            $result[$key] = str_replace(storage_path(), '', $value);
-        }
-
-       return $result;
-    }
     
-    public function getContent($path): string
+    public function get(string $path): string
     {
         return file_get_contents(self::$disk.'/'.$path);
     }
 
-    public function make($path, $mode = 0775): Storage
+    public function make(string $path, int $mode = 0775): Storage
     {
-        if (! is_dir(self::$disk.'/'.$path))
-            mkdir(self::$disk.'/'.$path, $mode, true);
+        if (! is_dir(self::$disk.'/'.$path)) {
+	        mkdir(self::$disk.'/'.$path, $mode, true);
+        }
 
         return $this;
     }
 
     public function download($file)
     {
-        if ($fd = fopen(self::$disk. '/' .$file, "r")) {
+        if ($fd = fopen(self::$disk.'/'.$file, 'r')) {
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="' . basename(self::$disk. '/' .$file) . '"');
-            header('Content-Length: ' . filesize(self::$disk. '/' .$file));
-            header("Content-Transfer-Encoding: Binary");
-            header("Cache-control: private");
-            while (!feof($fd)) {
+            header('Content-Disposition: attachment; filename="'.basename(self::$disk.'/'.$file).'"');
+            header('Content-Length: '.filesize(self::$disk.'/'.$file));
+            header('Content-Transfer-Encoding: Binary');
+            header('Cache-control: private');
+            while (! feof($fd)) {
                 echo fread($fd, 2048);
             }
         }
@@ -175,34 +151,36 @@ class Storage
         exit;
     }
 
-    public function remove($path = null)
+    public function remove($path = null): bool
     {
         if (is_file(storage_path($path))) {
             unlink(storage_path($path));
             return true;
-        } else if (!file_exists(storage_path($path))) {
+        } else if (! file_exists(storage_path($path))) {
             return false;
         } else if (is_dir(storage_path($path))) {
-            foreach(scandir(storage_path($path)) as $file) {
+            foreach (scandir(storage_path($path)) as $file) {
                 if ($file != '.' && $file != '..') {
                     self::remove($path.'/'.$file);
                 }
             }
             rmdir(storage_path($path));
         }
+
         return false;
     }
     
-    private function checkFile($destination)
+    private function checkFile(string $destination): bool
     {
         $pathInfo = pathinfo($destination);
-        if (isset($this->mimes[$pathInfo['extension']]) === true
-            && (string) $this->mimes[$pathInfo['extension']] === (string) mime_content_type ($destination)
+
+        if (isset($this->mimes[$pathInfo['extension']])
+            && (string) $this->mimes[$pathInfo['extension']] === (string) mime_content_type($destination)
         ) {
             return true;
-        } else {
-            self::remove(str_replace(storage_path(), '', $destination));
-            return false;
         }
+	
+	    self::remove(str_replace(storage_path(), '', $destination));
+	    return false;
     }
 }

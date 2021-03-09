@@ -127,6 +127,7 @@ Model::insert('array')
 Model::update('array')->where('param1', 'is', 'param2')->exec();
 
 Model::select('array')
+->?selectGroup(PDO::FETCH_GROUP)
 ->as('alias for table')
 ->distinct('?array')
 ->join('table', 'param1', 'is', 'param2', 'rigidly')
@@ -148,7 +149,7 @@ Model::select('array')
 ->group('by')
 ->limit(limit)
 ->offset('offset')
-->('array bind values for war query')
+->bind('array bind values for war query')
 ->get()
 ?->exist()
 ?->first();
