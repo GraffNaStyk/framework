@@ -413,7 +413,7 @@ class Db
 				} else {
 					return $pdo->fetchAll(PDO::FETCH_OBJ);
 				}
-				
+
             } catch (\PDOException $e) {
                 Handle::throwException($e, $this->develop(true));
             }

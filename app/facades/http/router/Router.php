@@ -5,6 +5,7 @@ namespace App\Facades\Http\Router;
 use App\Core\Auth;
 use App\Core\Kernel;
 use App\Facades\Csrf\Csrf;
+use App\Facades\Log\Log;
 use App\Helpers\Session;
 use ReflectionMethod;
 use ReflectionClass;
@@ -141,6 +142,7 @@ final class Router extends Route
                     self::abort();
                 }
             } catch (\ReflectionException $e) {
+            	Log::custom('router', ['msg' => $e->getMessage()]);
                 self::abort();
             }
 
@@ -168,9 +170,11 @@ final class Router extends Route
     
                 return call_user_func_array([$controller, self::getAction()], $this->request->getData());
             } catch (\ReflectionException $e) {
+	            Log::custom('router', ['msg' => $e->getMessage()]);
                 self::abort();
             }
         }
+
 	    self::abort();
     }
     
@@ -197,7 +201,7 @@ final class Router extends Route
             self::abort();
         }
         
-        if (! empty (self::$params)) {
+        if (! empty(self::$params)) {
             $this->request->setData(self::$params);
         }
     }
@@ -246,7 +250,7 @@ final class Router extends Route
         parse_str(parse_url(self::$url)['query'], $str);
         
         if (! empty($str)) {
-            foreach ($str as $key => $item){
+            foreach ($str as $key => $item) {
                 self::$params[$key] = $item;
             }
         }

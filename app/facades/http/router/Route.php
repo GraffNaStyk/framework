@@ -134,7 +134,7 @@ abstract class Route
 		Session::remove('history');
 		self::redirect($url);
 	}
-    
+
     public static function checkProtocol(): string
     {
         return isset($_SERVER['HTTPS']) || (int) $_SERVER['SERVER_PORT'] === 443 ? 'https' : 'http';

@@ -14,10 +14,10 @@ final class Auth
 {
     private static array $methods = [
         1 => ['index', 'show'],
-        2 => ['add', 'edit', 'store', 'update'],
+        2 => ['add', 'edit', 'store', 'update', 'upload'],
         3 => ['delete']
     ];
-    
+
     public function before(Request $request, Router $router)
     {
         if (! Session::has('user')) {
