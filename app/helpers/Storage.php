@@ -59,6 +59,8 @@ class Storage
 
     public function put($file, $content, $replace = false): bool
     {
+	    $file = ltrim('/', $file);
+  
         if ($replace) {
             $this->putFile($file, $content);
             return true;
@@ -74,6 +76,8 @@ class Storage
     
     protected function putFile($file, $content): bool
     {
+	    $file = ltrim('/', $file);
+
         if (file_put_contents(self::$disk.'/'.$file, $content)) {
             chmod(self::$disk.'/'.$file, 0775);
             return true;
@@ -121,11 +125,14 @@ class Storage
     
     public function get(string $path): string
     {
+	    $path = ltrim('/', $path);
         return file_get_contents(self::$disk.'/'.$path);
     }
 
     public function make(string $path, int $mode = 0775): Storage
     {
+	    $path = ltrim('/', $path);
+
         if (! is_dir(self::$disk.'/'.$path)) {
 	        mkdir(self::$disk.'/'.$path, $mode, true);
         }
@@ -135,6 +142,8 @@ class Storage
 
     public function download($file)
     {
+	    $file = ltrim('/', $file);
+
         if ($fd = fopen(self::$disk.'/'.$file, 'r')) {
             header('Content-Type: application/octet-stream');
             header('Content-Disposition: attachment; filename="'.basename(self::$disk.'/'.$file).'"');
@@ -153,18 +162,11 @@ class Storage
 
     public function remove($path = null): bool
     {
-        if (is_file(storage_path($path))) {
-            unlink(storage_path($path));
+	    $path = ltrim('/', $path);
+
+        if (is_file(self::$disk.'/'.$path)) {
+            unlink(self::$disk.'/'.$path);
             return true;
-        } else if (! file_exists(storage_path($path))) {
-            return false;
-        } else if (is_dir(storage_path($path))) {
-            foreach (scandir(storage_path($path)) as $file) {
-                if ($file != '.' && $file != '..') {
-                    self::remove($path.'/'.$file);
-                }
-            }
-            rmdir(storage_path($path));
         }
 
         return false;

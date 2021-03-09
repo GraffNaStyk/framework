@@ -1,6 +1,6 @@
 .idea/*
 storage/framework/*
-storage/private/
+storage/private/*
 storage/public/*
 vendor/*
 composer.lock
