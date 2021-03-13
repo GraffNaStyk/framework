@@ -1,6 +1,4 @@
-import * as App from '../app.js';
-
-document.getElementById('main-page-wrapper').style.minHeight
+$.el('#main-page-wrapper').style.minHeight
   = window.innerHeight
-  - document.getElementsByTagName('footer')[0].clientHeight
-  - document.getElementsByTagName('nav')[0].clientHeight  - 1 + 'px';
+  - $.el('footer').clientHeight
+  - $.el('nav').clientHeight  - 1 + 'px';

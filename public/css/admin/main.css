@@ -187,3 +187,7 @@ table tbody tr:nth-child(odd) td {
   background: #f3a423!important;
   color: white!important;
 }
+
+i {
+  pointer-events: none;
+}

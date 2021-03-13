@@ -21,19 +21,20 @@ class TwigExt extends AbstractExtension
             $this->url(),
             $this->base(),
             $this->tooltip(),
+	        $this->options()
         ];
     }
 
     public function csrf(): TwigFunction
     {
-	    return new TwigFunction('csrf', function($path) {
+	    return new TwigFunction('csrf', function ($path) {
 		    echo Session::get('@csrf.'.$path);
         });
     }
 
     public function print(): TwigFunction
     {
-        return new TwigFunction('print', function($item) {
+        return new TwigFunction('print', function ($item) {
             echo '<pre>';
             print_r($item);
             echo '</pre>';
@@ -42,14 +43,14 @@ class TwigExt extends AbstractExtension
     
     public function img(): TwigFunction
     {
-        return new TwigFunction('img', function($url) {
+        return new TwigFunction('img', function ($url) {
             echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
         });
     }
 
     public function url(): TwigFunction
     {
-        return new TwigFunction('url', function($url = null) {
+        return new TwigFunction('url', function ($url = null) {
            if (Router::getAlias() === 'http') {
                echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
            } else {
@@ -60,15 +61,22 @@ class TwigExt extends AbstractExtension
 
     public function base(): TwigFunction
     {
-        return new TwigFunction('base', function($url = null) {
+        return new TwigFunction('base', function ($url = null) {
             echo Url::base().$url;
         });
     }
 
     public function tooltip(): TwigFunction
     {
-        return new TwigFunction('tooltip', function($text, $placement = 'top') {
+        return new TwigFunction('tooltip', function ($text, $placement = 'top') {
             echo 'data-toggle="tooltip" title="'.$text.'" data-placement="'.$placement.'"';
         });
+    }
+    
+    public function options(): TwigFunction
+    {
+	    return new TwigFunction('options', function (array $options) {
+		    echo htmlspecialchars(json_encode($options));
+	    });
     }
 }

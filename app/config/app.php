@@ -56,7 +56,7 @@ return [
         ],
         
         'js' => [
-            'bootstrap', 'slim-select'
+            'App', 'bootstrap', 'slim-select'
         ]
     ],
 	

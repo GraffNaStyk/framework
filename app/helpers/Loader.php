@@ -27,9 +27,9 @@ class Loader
 		
 		if (app('dev')) {
 			$cssArr = glob(css_path("$folder/*.css"), GLOB_BRACE);
-			
+
 			$rebuild = false;
-			$mtime = filemtime(js_path('build/'.$folder.'/result.css'));
+			$mtime = filemtime(js_path('build/'.$folder.'/main.css'));
 			
 			foreach ($cssArr as $item) {
 				if (filemtime($item) > $mtime) {
@@ -39,7 +39,7 @@ class Loader
 			}
 			
 			if ($rebuild) {
-				unlink(css_path('build/'.$folder.'/result.css'));
+				unlink(css_path('build/'.$folder.'/main.css'));
 				$cssString = null;
 				
 				foreach ($cssArr as $key => $css) {
@@ -48,18 +48,20 @@ class Loader
 					}
 				}
 				
-				file_put_contents(css_path('build/'.$folder.'/result.css'), $cssString);
+				file_put_contents(css_path('build/'.$folder.'/main.css'), $cssString);
 			}
 		}
 		
-		$cssString = trim('<link rel="stylesheet" href="'.
-				self::$url.str_replace(app_path(), '', css_path('build/'.$folder.'/result.css')).'">').PHP_EOL;
+		$applyCss = null;
 		
 		foreach (self::$loaded['css'] as $val) {
-			$cssString .= self::getFile($val, 'css');
+			$applyCss .= self::getFile($val, 'css');
 		}
 		
-		return $cssString;
+		$applyCss .= trim('<link rel="stylesheet" href="'.
+				self::$url.str_replace(app_path(), '', css_path('build/'.$folder.'/main.css')).'">').PHP_EOL;
+		
+		return $applyCss;
 	}
 	
 	public static function js(): string
@@ -69,7 +71,7 @@ class Loader
 		if (app('dev')) {
 			$jsArr = glob(js_path("$folder/*.js"), GLOB_BRACE);
 			$rebuild = false;
-			$mtime = filemtime(js_path('build/'.$folder.'/result.js'));
+			$mtime = filemtime(js_path('build/'.$folder.'/main.js'));
 			
 			foreach ($jsArr as $item) {
 				if (filemtime($item) > $mtime) {
@@ -77,33 +79,34 @@ class Loader
 					break;
 				}
 			}
-			
+
 			if ($rebuild) {
-				unlink(js_path('build/'.$folder.'/result.js'));
+				unlink(js_path('build/'.$folder.'/main.js'));
 				$jsString = null;
-				
+
 				foreach ($jsArr as $key => $js) {
 					if ((bool) is_readable($js)) {
 						$jsString .= preg_replace('/\s\s+/', ' ', file_get_contents($js)).' ; ';
 					}
 				}
 				
-				$jsString = str_replace("import * as App from '../app.js';",'', $jsString);
 				file_put_contents(
-					js_path('build/'.$folder.'/result.js'),
-					"import * as App from '../../app.js'; ".$jsString
+					js_path('build/'.$folder.'/main.js'),
+					$jsString
 				);
 			}
 		}
 		
-		$jsString = trim('<script type="module" src="'.
-				self::$url.str_replace(app_path(), '', js_path('build/'.$folder.'/result.js')).'"></script>').PHP_EOL;
+		$applyJs = null;
 		
 		foreach (self::$loaded['js'] as $val) {
-			$jsString .= self::getFile($val, 'js');
+			$applyJs .= self::getFile($val, 'js');
 		}
 		
-		return $jsString;
+		$applyJs .= trim('<script type="module" src="'.
+				self::$url.str_replace(app_path(), '', js_path('build/'.$folder.'/main.js')).'"></script>').PHP_EOL;
+		
+		return $applyJs;
 	}
 	
 	private static function getFile($name, $ext): string
