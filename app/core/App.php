@@ -16,10 +16,9 @@ final class App
         }
 
         $env = file_get_contents(app_path('app/config/.env'));
-        $env = array_filter(explode(PHP_EOL, $env));
 	    $environment = [];
         
-        foreach ($env as $item) {
+        foreach (array_filter(explode(PHP_EOL, $env)) as $item) {
         	$item = explode('=', $item);
         	$environment[trim($item[0])] = trim($item[1]);
         }
