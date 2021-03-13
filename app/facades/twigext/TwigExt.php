@@ -75,7 +75,7 @@ class TwigExt extends AbstractExtension
     
     public function options(): TwigFunction
     {
-	    return new TwigFunction('options', function (array $options) {
+	    return new TwigFunction('options', function ($options = []) {
 		    echo htmlspecialchars(json_encode($options));
 	    });
     }

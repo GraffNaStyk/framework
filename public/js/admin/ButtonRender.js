@@ -1,4 +1,8 @@
 $.on('click', '.render', (e) => {
+  Render(e);
+});
+
+const Render = (e) => {
   e.preventDefault();
   e.stopPropagation();
   $.loaderStart();
@@ -22,4 +26,4 @@ $.on('click', '.render', (e) => {
     $.reloadEvents();
     RefreshSelects();
   });
-});
+}

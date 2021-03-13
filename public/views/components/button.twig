@@ -21,3 +21,16 @@
     </button>
   {% endif %}
 {% endmacro render %}
+
+{% macro action(data) %}
+  {% if data.url %}
+    <button class="action {{ data.class }}" {{ data.attr }} data-csrf="{{ csrf(data.csrf) }}" data-url="{{ data.url }}" data-options="{{ options(data.options) }}">
+      {% if data.text %}
+        {{ data.text|raw }}
+      {% endif %}
+      {% if data.ico %}
+        <i class="fa {{ data.ico }}"></i>
+      {% endif %}
+    </button>
+  {% endif %}
+{% endmacro action %}

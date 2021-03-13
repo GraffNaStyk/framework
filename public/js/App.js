@@ -5,6 +5,7 @@ class App {
     this.events = [];
     this.loader = `<div class="preloader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>`;
     this.setDocumentUrl();
+    this.bindActions();
   }
 
   setDocumentUrl() {
@@ -62,8 +63,8 @@ class App {
       },
       body: data
     }).then(res => {
-      if (res.status === 404 || res.status === 500) {
-        return false;
+      if ([404,500,405].includes(res.status)) {
+        return {};
       }
 
       return res;
@@ -78,8 +79,8 @@ class App {
         "X-Fetch-Header": "fetchApi",
       },
     }).then(res => {
-      if (res.status === 404 || res.status === 500) {
-        return false;
+      if ([404,500,405].includes(res.status)) {
+        return {};
       }
 
       return res;
@@ -166,13 +167,21 @@ class App {
 
   loaderStart = () => {
     this.adjacent(document.body, this.loader);
-    let isLoader = this.el('.preloader').style.opacity = .8;
+    this.el('.preloader').style.opacity = .8;
   }
 
   toggle(selector, by = 'd-flex') {
     selector.classList.toggle(by);
   }
 
+  bindActions() {
+    this.buttons = [];
+
+    this.elements('button.action').forEach(item => {
+        this.buttons[item.dataset.url] = {'options': JSON.parse(item.dataset.options)};
+        item.removeAttribute('data-options');
+    })
+  }
 }
 
 const $ = new App();

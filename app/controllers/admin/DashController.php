@@ -20,7 +20,8 @@ class DashController extends Controller
     {
         return View::render([
                 'users' => User::select(['name as value', 'password as text'])->get(),
-                'img' => File::select([File::selectPath()])->where('id', '=', 5)->first()
+                'img' => File::select([File::selectPath()])->where('id', '=', 5)->first(),
+	            'options' => ['test' => 'raz', 'dwa' => 'trzy', 'twoj' => 'stary']
             ]);
     }
     

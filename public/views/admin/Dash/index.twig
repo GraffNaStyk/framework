@@ -15,7 +15,13 @@
           value: 'Zapisz'
         }) }}
       </div>
-      {{ form.csrf() }}
+      {{ button.action({
+        url: '/clients',
+        text: 'test',
+        csrf: 'Clients@store',
+        options: options
+      }) }}
+      {{ form.csrf('Dash@upload') }}
     </form>
   </div>
 

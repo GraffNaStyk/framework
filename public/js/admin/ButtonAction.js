@@ -1,13 +1,6 @@
 $.on('click', '.action', (e) => {
-  let data = {};
 
-  if (e.target.dataset.json) {
-    e.target.dataset.json.split(',').forEach((k, v) => {
-      let tmp = k.split(':');
-      data[tmp[0]] = tmp[1];
-    })
-  }
-
+  let data = $.buttons[e.target.dataset.url]['options'];
   data['_csrf'] = e.target.dataset.csrf;
 
   $.post({
@@ -27,10 +20,8 @@ $.on('click', '.action', (e) => {
 
     if (e.target.dataset.refresh) {
       let component = $.el(`[data-component="${e.target.dataset.refresh}"]`);
-      $.render({
-        url: component.dataset.fetch,
-        el: e.target.dataset.refresh
-      });
+      e.target.dataset.url = component.dataset.fetch;
+      Render(e);
     }
   })
 });
