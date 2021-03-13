@@ -42,13 +42,13 @@ class Db
             try {
                 if (self::$db === null) {
                     self::$db = new PDO(
-                        'mysql:host='.self::$env['host'].';dbname='.self::$env['dbname'],
-                        self::$env['user'],
-                        self::$env['pass'],
+                        'mysql:host='.self::$env['DB_HOST'].';dbname='.self::$env['DB_NAME'],
+                        self::$env['DB_USER'],
+                        self::$env['DB_PASS'],
 	                    self::$options
                     );
 
-                    self::$dbName = self::$env['dbname'];
+                    self::$dbName = self::$env['DB_NAME'];
                     self::$env = [];
                 }
             } catch (\PDOException $e) {
