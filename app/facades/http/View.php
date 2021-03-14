@@ -85,9 +85,9 @@ final class View
 	{
 		if (! self::$twig instanceof Twig\Environment) {
 			if (app('cache_view')) {
-				$config['cache'] = storage_path('framework/views');
+				$config['cache'] = storage_path('private/framework/views');
 			}
-			
+
 			$config['debug'] = true;
 			self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
 			self::registerFunctions();
