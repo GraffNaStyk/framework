@@ -74,10 +74,11 @@ final class View
         }
     }
 	
-	public static function mail($template)
+	public static function mail(string $template, array $data = [])
 	{
 		self::register();
-		return self::$twig->render('mail/'.$template.'.'.self::$ext);
+		self::set($data);
+		return self::$twig->render('mail/'.$template.self::$ext);
 	}
 	
 	private static function register()
