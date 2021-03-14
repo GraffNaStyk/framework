@@ -10,7 +10,7 @@ use App\Helpers\Loader;
 use App\Helpers\Session;
 use App\Helpers\Storage;
 use App\Facades\Http\View;
-use App\Facades\Http\Route;
+use App\Facades\Http\Router\Route;
 
 abstract class BaseController
 {
@@ -21,7 +21,7 @@ abstract class BaseController
     
     public function boot()
     {
-        Storage::disk('private')->make('logs');
+        Storage::private()->make('logs');
     
         $this->set([
             'messages' => Session::getMsg(),

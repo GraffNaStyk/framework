@@ -13,7 +13,7 @@ class Log
 	    $log .= ' [ip]: '.getenv('REMOTE_ADDR'). ' [host]: '.gethostbyaddr(getenv('REMOTE_ADDR')).' ';
 	    $log .= json_encode($data, JSON_PRETTY_PRINT);
 	    
-        Storage::disk('private')->make('logs/'.$type);
+        Storage::private()->make('logs/'.$type);
         
         file_put_contents(
             storage_path('private/logs/'.$type.'/'.date('Y-m-d').'.log'),
