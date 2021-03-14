@@ -23,17 +23,7 @@ final class View
 	public static function render(array $data = [], $html = false)
 	{
 		self::set($data);
-		
-		if (! self::$twig instanceof Twig\Environment) {
-			if (app('cache_view')) {
-				$config['cache'] = storage_path('framework/views');
-			}
-			
-			$config['debug'] = true;
-			self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
-			self::registerFunctions();
-		}
-		
+		self::register();
 		self::$dir = Router::getAlias();
 		self::set(['layout' => 'layouts/'.self::$layout.self::$ext]);
 		self::setView();
@@ -83,4 +73,23 @@ final class View
             self::$twig->addFunction($fn);
         }
     }
+	
+	public static function mail($template)
+	{
+		self::register();
+		return self::$twig->render('mail/'.$template.'.'.self::$ext);
+	}
+	
+	private static function register()
+	{
+		if (! self::$twig instanceof Twig\Environment) {
+			if (app('cache_view')) {
+				$config['cache'] = storage_path('framework/views');
+			}
+			
+			$config['debug'] = true;
+			self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
+			self::registerFunctions();
+		}
+	}
 }

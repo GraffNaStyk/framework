@@ -300,7 +300,7 @@ class Db
         return $this;
     }
 
-    public function first(): object
+    public function first()
     {
         $this->first = true;
         
@@ -441,6 +441,8 @@ class Db
         if (preg_match('/^(SELECT)/', $query)) {
             return $stmt->fetchAll(PDO::FETCH_OBJ);
         }
+	
+	    return null;
     }
 
     private function develop($return = false): ?string

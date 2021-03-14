@@ -2,6 +2,7 @@
 
 namespace App\Facades\Mail;
 
+use App\Facades\Http\View;
 use App\Facades\Url\Url;
 
 class Mail
@@ -45,12 +46,17 @@ class Mail
         $this->message->setTo($to);
         return $this;
     }
-    
-    public function body(string $body, bool $isTemplate = false): Mail
-    {
-        $this->message->setBody($body);
-        return $this;
-    }
+	
+	public function body(string $body, bool $isTemplate = false): Mail
+	{
+		if ($isTemplate) {
+			$this->message->setBody(View::mail('register'));
+		} else {
+			$this->message->setBody($body);
+		}
+		
+		return $this;
+	}
     
     public function send()
     {

@@ -37,7 +37,7 @@ class Migration
     {
         $this->makeJsonFile();
         $migrationContent = (array) json_decode(
-            Storage::disk('private')->getContent('db/migrations.json'),
+            Storage::disk('private')->get('db/migrations.json'),
             true
         );
 

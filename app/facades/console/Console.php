@@ -55,6 +55,8 @@ class Console
     
     public static function output(string $output, $background='black')
     {
-        echo "\e[".self::$backgrounds[mb_strtolower($background)]."m".$output.PHP_EOL."\e[0m\n";
+	    if (php_sapi_name() === 'cli') {
+		    echo "\e[".self::$backgrounds[mb_strtolower($background)]."m".$output.PHP_EOL."\e[0m\n";
+	    }
     }
 }
