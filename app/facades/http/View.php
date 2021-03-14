@@ -78,7 +78,7 @@ final class View
 	{
 		self::register();
 		self::set($data);
-		return self::$twig->render('mail/'.$template.self::$ext);
+		return self::$twig->render('mail/'.$template.self::$ext, self::$data);
 	}
 	
 	private static function register()

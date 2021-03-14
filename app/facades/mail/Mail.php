@@ -47,10 +47,10 @@ class Mail
         return $this;
     }
 	
-	public function body(string $body, bool $isTemplate = false): Mail
+	public function body(string $body, bool $isTemplate = false, array $data = []): Mail
 	{
 		if ($isTemplate) {
-			$this->message->setBody(View::mail('register'));
+			$this->message->setBody(View::mail($body, $data), 'text/html');
 		} else {
 			$this->message->setBody($body);
 		}
