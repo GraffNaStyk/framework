@@ -35,23 +35,21 @@ class Validator
             }
         }
     }
-    
-    private static function run(array $request)
-    {
-        foreach (static::$rules as $key => $item) {
-            if (isset($request[$key]) && isset($item['required'])) {
-                foreach ($item as $fnName => $validateRule) {
-                	if (method_exists($fnName, $validateRule)) {
-		                static::$validatorErrors[] = $fnName::$validateRule($request[$key], $key);
-	                } else {
-		                static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
-	                }
-                }
-            } else if (isset($item['required']) && !isset($request[$key])) {
-                static::$validatorErrors[] = ['msg' => 'Pole jest wymagane', 'field' => $key];
-            }
-        }
-    }
+	
+	private static function run(array $request)
+	{
+		foreach (static::$rules as $key => $item) {
+			foreach ($item as $fnName => $validateRule) {
+				if (method_exists($fnName, $validateRule)) {
+					static::$validatorErrors[] = $fnName::$validateRule($request[$key], $key);
+				} else {
+					if (((string) $request[$key] === '' && isset($item['required'])) || (string) $request[$key] !== '') {
+						static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
+					}
+				}
+			}
+		}
+	}
 
     public static function getErrors(): array
     {
