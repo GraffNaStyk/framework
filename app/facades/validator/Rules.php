@@ -10,7 +10,7 @@ class Rules
     {
         if (is_numeric($item)) {
             if ($item < $rule) {
-                return ['msg' => 'Pole jest za krótkie', 'field' => $field];
+                return ['msg' => 'Zbyt mała wartość', 'field' => $field];
             }
         } else {
             if (strlen($item) < $rule) {
@@ -23,7 +23,7 @@ class Rules
     {
         if (is_numeric($item)) {
             if ($item > $rule) {
-                return ['msg' => 'Pole jest za długie', 'field' => $field];
+                return ['msg' => 'Zbyt duża wartość', 'field' => $field];
             }
         } else {
             if (strlen($item) > $rule) {
