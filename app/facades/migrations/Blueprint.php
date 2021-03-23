@@ -17,19 +17,19 @@ class Blueprint
     protected bool $store = false;
     
     protected array $length = [
-        'tinyint' => '(2)',
+        'tinyint' => '(1)',
         'smallint' => '(4)',
         'mediumint' => '(8)',
-        'int' => '(10)',
+        'int' => '(11)',
         'char' => '(10)',
         'varchar' => '(100)',
-        'boolean' => '(255)',
-        'tinytext' => '(50)',
         'text' => '',
         'mediumText' => '',
         'longText' => '',
         'timestamp' => ' ',
-        'datetime' => ' '
+        'datetime' => ' ',
+	    'double' => ' ',
+	    'decimal' => '4,2',
     ];
     
     protected string $currentKey = '';
@@ -65,7 +65,7 @@ class Blueprint
             $this->otherImplementation = rtrim($this->otherImplementation, ', ');
             $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields . ', ' . $this->otherImplementation . $this->endSql;
             
-            if($this->store === true) {
+            if ($this->store === true) {
                 $this->storeMigration();
                 return true;
             } else {
@@ -73,7 +73,7 @@ class Blueprint
             }
         }
         
-        if ($this->store === false) {
+        if (! $this->store) {
             if (! empty($this->queries)) {
                 foreach ($this->queries as $query)
                     $this->db->query($query);

@@ -39,12 +39,6 @@ class Schema extends Blueprint
         return $this;
     }
     
-    public function tinyText($name): Schema
-    {
-        $this->generate($name, __FUNCTION__);
-        return $this;
-    }
-    
     public function text($name): Schema
     {
         $this->generate($name, __FUNCTION__);
@@ -80,6 +74,12 @@ class Schema extends Blueprint
         $this->generate($name, __FUNCTION__, $length);
         return $this;
     }
+	
+	public function double($name): Schema
+	{
+		$this->generate($name, __FUNCTION__);
+		return $this;
+	}
     
     public function enum($name, $options): Schema
     {
@@ -115,7 +115,8 @@ class Schema extends Blueprint
     public function unsigned(): Schema
     {
         $this->tableFields[$this->currentKey] = explode(')', $this->tableFields[$this->currentKey]);
-        $this->tableFields[$this->currentKey] = $this->tableFields[$this->currentKey][0] . ') UNSIGNED ' . $this->tableFields[$this->currentKey][1];
+        $this->tableFields[$this->currentKey] =
+	        $this->tableFields[$this->currentKey][0] . ') UNSIGNED ' . $this->tableFields[$this->currentKey][1];
         return $this;
     }
     
@@ -133,11 +134,9 @@ class Schema extends Blueprint
         if ( !empty($others)) {
             foreach ($others as $val)
                 $uniques .= $val .', ';
-        } else {
-            $uniques = '';
         }
-        
-        if (strlen($uniques) != 0) {
+
+        if ((int) strlen($uniques) !== 0) {
             $uniques = rtrim($uniques, ', ');
             $uniques = ' , ' . $uniques;
         }
@@ -157,7 +156,7 @@ class Schema extends Blueprint
         return $this;
     }
 	
-	public function alter(string $field, $type, $length = null, $isNull = false, $default = null, $where = null) :Schema
+	public function alter(string $field, $type, $length = null, $isNull = false, $default = null, $where = null): Schema
 	{
 		$null = $isNull ? 'DEFAULT NULL' : 'NOT NULL DEFAULT ';
 		
