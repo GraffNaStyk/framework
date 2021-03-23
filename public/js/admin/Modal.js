@@ -5,8 +5,12 @@ const showModal = (modal, result) => {
   $.append(content, result);
 };
 
-$.on('click', 'button[data-dismiss="modal"]', () => {
-  $.el('#modal').classList.remove('d-block');
-  $.clear($.el('.modal-content'));
-  $.el('#modal').setAttribute('style', '');
-});
+const registerClose = () => {
+  $.on('click', 'button[data-dismiss="modal"]', () => {
+    $.el('#modal').classList.remove('d-block');
+    $.clear($.el('.modal-content'));
+    $.el('#modal').setAttribute('style', '');
+  });
+};
+
+registerClose();
