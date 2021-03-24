@@ -75,23 +75,27 @@ class Blueprint
         
         if (! $this->store) {
             if (! empty($this->queries)) {
-                foreach ($this->queries as $query)
-                    $this->db->query($query);
+                foreach ($this->queries as $query) {
+	                $this->db->query($query);
+                }
             }
             
             if (! empty($this->alter)) {
-                foreach ($this->alter as $alter)
-                    $this->db->query($alter);
+                foreach ($this->alter as $alter) {
+	                $this->db->query($alter);
+                }
             }
             
             if (! empty($this->foreign)) {
-                foreach ($this->foreign as $foreign)
-                    $this->db->query($foreign);
+                foreach ($this->foreign as $foreign) {
+	                $this->db->query($foreign);
+                }
             }
             
             if (! empty($this->trigger)) {
-                foreach ($this->trigger as $trigger)
-                    $this->db->query($trigger);
+                foreach ($this->trigger as $trigger) {
+	                $this->db->query($trigger);
+                }
             }
         }
     }
@@ -121,23 +125,27 @@ class Blueprint
         file_put_contents(app_path('app/db/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);
         
         if (! empty($this->queries)) {
-            foreach ($this->queries as $query)
-                file_put_contents(app_path('app/db/migrate/'.$name), $query.';'.PHP_EOL, FILE_APPEND);
+            foreach ($this->queries as $query) {
+	            file_put_contents(app_path('app/db/migrate/'.$name), $query.';'.PHP_EOL, FILE_APPEND);
+            }
         }
         
         if (! empty($this->alter)) {
-            foreach ($this->alter as $alter)
-                file_put_contents(app_path('app/db/migrate/'.$name), $alter.';'.PHP_EOL, FILE_APPEND);
+            foreach ($this->alter as $alter) {
+	            file_put_contents(app_path('app/db/migrate/'.$name), $alter.';'.PHP_EOL, FILE_APPEND);
+            }
         }
         
         if (! empty($this->foreign)) {
-            foreach ($this->foreign as $foreign)
-                file_put_contents(app_path('app/db/migrate/'.$name), $foreign.';'.PHP_EOL, FILE_APPEND);
+            foreach ($this->foreign as $foreign) {
+	            file_put_contents(app_path('app/db/migrate/'.$name), $foreign.';'.PHP_EOL, FILE_APPEND);
+            }
         }
         
         if (! empty($this->trigger)) {
-            foreach ($this->trigger as $trigger)
-                file_put_contents(app_path('app/db/migrate/'.$name), $trigger.';'.PHP_EOL, FILE_APPEND);
+            foreach ($this->trigger as $trigger) {
+	            file_put_contents(app_path('app/db/migrate/'.$name), $trigger.';'.PHP_EOL, FILE_APPEND);
+            }
         }
     }
 }
