@@ -73,12 +73,10 @@ Application configuration app/config/app.php
 
 Database configuration app/config/.env
 ```dotenv
-'DB' => [
-    'user' => '',
-    'pass' => '',
-    'host' => '',
-    'dbname' => ''
-]
+DB_USER=user
+DB_PASS=pass
+DB_HOST=localhost
+DB_NAME=db_example
 ```
 
 ## Routing
