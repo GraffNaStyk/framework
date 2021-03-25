@@ -152,6 +152,8 @@ Model::select('array')
 ?->exist()
 ?->first();
 
+Model::raw('Raw query');
+
 Model::delete()->where('param1', 'is', 'param2')->exec();
 
 Model::count('item')->where('param1', 'is', 'param2')->exec();

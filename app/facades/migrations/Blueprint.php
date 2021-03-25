@@ -63,8 +63,14 @@ class Blueprint
             $fields = implode(', ', $this->tableFields);
             $fields = rtrim($fields, ',');
             $this->otherImplementation = rtrim($this->otherImplementation, ', ');
-            $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields . ', ' . $this->otherImplementation . $this->endSql;
-            
+
+            if ($this->otherImplementation !== '') {
+	            $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields 
+		            . ', ' . $this->otherImplementation . $this->endSql;
+            } else {
+	            $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields . $this->endSql;
+            }
+
             if ($this->store === true) {
                 $this->storeMigration();
                 return true;
