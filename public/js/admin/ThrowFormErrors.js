@@ -9,9 +9,11 @@ const throwFormErrors = (res, action) => {
   if (Array.isArray(res.inputs)) {
     res.inputs.forEach((error => {
       let selector = $.el(`form[data-action="${action}"] input[name="${error.field}"]`);
+      
       if (selector === null) {
         selector = $.el(`form[data-action="${action}"] textarea[name="${error.field}"]`);
       }
+      
       if (selector === null) {
         selector = $.el(`form[data-action="${action}"] select[name="${error.field}"]`);
       }

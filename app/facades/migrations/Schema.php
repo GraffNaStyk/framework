@@ -93,20 +93,20 @@ class Schema extends Blueprint
         return $this;
     }
     
-    public function implicitly($name): Schema
+    public function implicitly(string $name): Schema
     {
 	    $default = $name === 'CURRENT_TIMESTAMP' ? $name : "'{$name}'";
 	    $this->tableFields[$this->currentKey] = $this->tableFields[$this->currentKey] . ' DEFAULT ' . $default;
 	    return $this;
     }
     
-    public function default($name): Schema
+    public function default(string $name): Schema
     {
         $this->implicitly($name);
         return $this;
     }
     
-    public function onUpdate($name): Schema
+    public function onUpdate(string $name): Schema
     {
         $this->tableFields[$this->currentKey] = $this->tableFields[$this->currentKey] . ' ON UPDATE ' . $name;
         return $this;
@@ -127,7 +127,7 @@ class Schema extends Blueprint
         return $this;
     }
     
-    public function unique($others = []): Schema
+    public function unique(array $others = []): Schema
     {
         $uniques = '';
         
@@ -145,7 +145,7 @@ class Schema extends Blueprint
         return $this;
     }
     
-    public function comment($comment): void
+    public function comment(string $comment): void
     {
         $this->tableFields[$this->currentKey] = $this->tableFields[$this->currentKey] . ' COMMENT ' . "'" . $comment . "'";
     }
@@ -171,10 +171,11 @@ class Schema extends Blueprint
 		return $this;
 	}
 	
-    public function foreign($reference = []): void
+    public function foreign(array $reference = []): void
     {
-        $this->foreign[] = 'ALTER TABLE '. $this->table . ' ADD FOREIGN KEY ('.$this->currentFieldName.') REFERENCES '. $reference['table'] .
-            ' (`'.$reference['field'].'`) ON DELETE ' . strtoupper($reference['onDelete']) . ' ON UPDATE ' . strtoupper($reference['onUpdate']) . ';';
+        $this->foreign[] = 'ALTER TABLE '. $this->table . ' ADD FOREIGN KEY ('.$this->currentFieldName.') REFERENCES '.
+	        $reference['table'] . ' (`'.$reference['field'].'`) ON DELETE ' . strtoupper($reference['onDelete']) .
+	        ' ON UPDATE ' . strtoupper($reference['onUpdate']) . ';';
     }
     
     public function trigger($name, $when, $action, $body): void

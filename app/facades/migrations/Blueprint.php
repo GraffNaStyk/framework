@@ -53,7 +53,9 @@ class Blueprint
     {
         $this->lastCalled = $fnName;
         $this->currentFieldName = '`'.$name.'`';
-        $this->tableFields[] = '`'.$name.'`' . ' ' . $this->lastCalled . ' ' .($length ? '(' . $length . ')' : $this->length[$this->lastCalled]). ' ' . $this->notNull;
+        $this->tableFields[] = '`'.$name.'`' . ' ' . $this->lastCalled . ' ' .
+	        ($length ? '(' . $length . ')' : $this->length[$this->lastCalled]). ' ' . $this->notNull;
+        
         $this->currentKey = array_key_last($this->tableFields);
     }
     
@@ -112,7 +114,9 @@ class Blueprint
             $this->db->query('DROP TABLE ' . $this->table);
         }
     
-        $triggers = $this->db->query('SELECT * FROM `INFORMATION_SCHEMA`.`TRIGGERS` WHERE TRIGGER_SCHEMA = "'.$this->db->getDbName().'"');
+        $triggers = $this->db->query('SELECT * FROM `INFORMATION_SCHEMA`.`TRIGGERS` WHERE TRIGGER_SCHEMA = "'
+	        .$this->db->getDbName().'"');
+        
         foreach ($triggers as $trigger) {
             $this->db->query('DROP TRIGGER '.$trigger['TRIGGER_NAME']);
         }
