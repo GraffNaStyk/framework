@@ -1,12 +1,12 @@
 $.on('submit', 'form',  (e) => {
-  let that = e.target;
-  if (that.dataset.action) {
+  let that = e.target.dataset;
+  if (that.action) {
     e.preventDefault();
     e.stopImmediatePropagation();
     $.loaderStart();
 
     $.post({
-      url: that.dataset.action,
+      url: that.action,
       form: that
     }).then(res => {
       $.loaderStop();
@@ -19,7 +19,7 @@ $.on('submit', 'form',  (e) => {
           }
 
           if (res.html) {
-            $.html($.el(`[data-component="${that.dataset.el}"]`), res.html);
+            $.html($.el(`[data-component="${that.el}"]`), res.html);
           } else {
             let modalSelector = $.el('#modal');
             if (res.ok && modalSelector.classList.contains('d-block')) {
@@ -29,7 +29,7 @@ $.on('submit', 'form',  (e) => {
             }
           }
 
-          throwFormErrors(res, that.dataset.action);
+          throwFormErrors(res, that.action);
 
           if (e.target.dataset.reload === undefined) {
             callback(res.ok, res.to ?? res.to);
@@ -41,7 +41,7 @@ $.on('submit', 'form',  (e) => {
             return false;
           }
 
-          $.html($.el(`[data-component="${that.dataset.el}"]`), res);
+          $.html($.el(`[data-component="${that.el}"]`), res);
         });
       }
 

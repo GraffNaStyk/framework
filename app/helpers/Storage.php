@@ -194,6 +194,7 @@ class Storage
 		}
 		
 		self::remove(str_replace(storage_path(), '', $destination));
+
 		return false;
 	}
 }
