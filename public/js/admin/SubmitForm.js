@@ -1,12 +1,12 @@
 $.on('submit', 'form',  (e) => {
-  let that = e.target.dataset;
-  if (that.action) {
+  let that = e.target;
+  if (that.dataset.action) {
     e.preventDefault();
     e.stopImmediatePropagation();
     $.loaderStart();
 
     $.post({
-      url: that.action,
+      url: that.dataset.action,
       form: that
     }).then(res => {
       $.loaderStop();
@@ -29,9 +29,9 @@ $.on('submit', 'form',  (e) => {
             }
           }
 
-          throwFormErrors(res, that.action);
+          throwFormErrors(res, that.dataset.action);
 
-          if (e.target.dataset.reload === undefined) {
+          if (that.dataset.reload === undefined) {
             callback(res.ok, res.to ?? res.to);
           }
         });
