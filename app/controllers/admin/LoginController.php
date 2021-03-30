@@ -3,10 +3,9 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Core\Auth;
 use App\Facades\Faker\Hash;
 use App\Facades\Faker\Password;
-use App\Helpers\Session;
-use App\Model\Client;
 use App\Model\User;
 use App\Facades\Http\View;
 use App\Facades\Http\Request;
@@ -30,13 +29,12 @@ class LoginController extends Controller
             $this->sendError('Formularz nie zostal wysłany');
         }
 	
-	    $user = User::select(['name', 'id', 'password'])
+	    $user = User::select()
 		    ->where('name', '=', $request->get('name'))
 		    ->exist();
 
 	    if ($user && Password::verify($request->get('password'), $user->password)) {
-            unset($user->password);
-            Session::set('user', $user);
+            Auth::login($user);
             $this->sendSuccess('Zalogowano poprawnie', '/dash');
         }
     
