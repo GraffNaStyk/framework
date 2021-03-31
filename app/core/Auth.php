@@ -23,10 +23,10 @@ class Auth
 		Session::set('user', $user);
 	}
 	
-	public static function refresh(int $id): void
+	public static function refresh(): void
 	{
 		Session::set('user', 
-			User::select()->where('id', '=', $id)->exist()
+			User::select()->where('id', '=', self::id())->exist()
 		);
 	}
 }

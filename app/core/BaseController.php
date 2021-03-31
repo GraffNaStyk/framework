@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Facades\Http\Router\Router;
 use App\Rules\RuleValidator;
@@ -64,23 +65,39 @@ abstract class BaseController
         return Validator::make($request, RuleValidator::getRules($rule)->getRule($optional));
     }
     
-    public function sendSuccess(string $message = null, string $to = null, int $status = 200 , array $headers = []): string
+    public function sendSuccess(string $message = null, string $to = null, int $status = 200 , array $headers = []): ?string
     {
-         Session::msg($message);
-         Response::json(['ok' => true, 'msg' => $message ?? 'Dane zostały zapisane', 'to' => $to], $status, $headers);
+    	if (Request::isAjax()) {
+		    Response::json([
+		    	'ok'  => true,
+			    'msg' => $message ?? 'Dane zostały zapisane',
+			    'to'  => $to
+		    ],
+			    $status, 
+			    $headers
+		    );	
+	    } else {
+		    Session::msg($message);
+		    return null;
+	    }
     }
     
-    public function sendError(string $message = null, int $status = 400, array $headers = []): string
+    public function sendError(string $message = null, int $status = 400, array $headers = []): ?string
     {
-         Response::json([
-             'ok' => false,
-             'msg' => $message,
-             'inputs' => Validator::getErrors(),
-	         'csrf' => Session::get('@csrf.'.Router::csrfPath())
-         ],
-             $status,
-             $headers
-         );
+	    if (Request::isAjax()) {
+		    Response::json([
+			    'ok'     => false,
+			    'msg'    => $message,
+			    'inputs' => Validator::getErrors(),
+			    'csrf'   => Session::get('@csrf.'.Router::csrfPath())
+		    ],
+			    $status,
+			    $headers
+		    );
+	    } else {
+		    Session::msg($message, 'danger');
+		    return null;
+	    }
     }
     
     public function response($response, $status=200): string

@@ -57,7 +57,7 @@ final class Request
     
     private function setHeaders(): void
     {
-        foreach (apache_request_headers() as $key => $item) {
+        foreach (getallheaders() as $key => $item) {
             $this->headers[mb_strtolower($key)] = $item;
         }
     }
@@ -153,7 +153,7 @@ final class Request
         return $this->data;
     }
 
-    public function file($file = null)
+    public function file(?string $file = null)
     {
         if ($file !== null && isset($this->file[$file])) {
             return $this->file[$file];
@@ -162,7 +162,7 @@ final class Request
         return $this->file;
     }
 
-    public function has($item)
+    public function has(string $item)
     {
         return Has::check($this->data, $item);
     }
@@ -179,8 +179,8 @@ final class Request
     
     public static function isAjax(): bool
     {
-        if (isset($_SERVER['HTTP_X_FETCH_HEADER'])
-            && (string) strtolower($_SERVER['HTTP_X_FETCH_HEADER']) === 'fetchapi'
+        if (isset(getallheaders()['Is-Fetch-Request'])
+            && (string) mb_strtolower(getallheaders()['Is-Fetch-Request']) === 'true'
         ) {
             return true;
         }

@@ -59,7 +59,7 @@ class App {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
-        "X-Fetch-Header": "fetchApi",
+        "Is-Fetch-Request": "true",
       },
       body: data
     }).then(res => {
