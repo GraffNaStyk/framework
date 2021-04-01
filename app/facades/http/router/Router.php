@@ -88,12 +88,12 @@ final class Router extends Route
     public function routeParams(): array
     {
     	return [
-    		'controller' => self::getClass(),
-		    'action' => self::getAction(),
-		    'namespace' => self::$route->getNamespace(),
-		    'rights' => self::$route->getRights(),
+    		'controller'  => self::getClass(),
+		    'action'      => self::getAction(),
+		    'namespace'   => self::$route->getNamespace(),
+		    'rights'      => self::$route->getRights(),
 		    'middlewares' => self::$route->getMiddleware(),
-		    'method' => self::$route->getMethod()
+		    'method'      => self::$route->getMethod()
 	    ];
     }
     
@@ -124,7 +124,7 @@ final class Router extends Route
     public static function getAlias(): string
     {
         $alias = mb_strtolower(end(explode('\\', self::getNamespace())));
-        
+
         if ($alias === 'http') {
             return 'http';
         }
@@ -150,6 +150,7 @@ final class Router extends Route
                 $reflection = new ReflectionMethod($controller, self::getAction());
                 
                 if ($reflection->isProtected() || $reflection->isPrivate()) {
+	                Log::custom('router', ['msg' => 'Aborted by access to private or protected method']);
                     self::abort();
                 }
                 
@@ -165,6 +166,7 @@ final class Router extends Route
                 }
     
                 if ($reflection->getNumberOfRequiredParameters() > count(self::$params)) {
+	                Log::custom('router', ['msg' => 'Not enough params']);
                     self::abort();
                 }
     
@@ -174,7 +176,7 @@ final class Router extends Route
                 self::abort();
             }
         }
-
+        
 	    self::abort();
     }
     
