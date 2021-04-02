@@ -32,7 +32,7 @@ $.on('submit', 'form',  (e) => {
           throwFormErrors(res, that.dataset.action);
 
           if (that.dataset.reload === undefined) {
-            callback(res.ok, res.to ?? res.to);
+            callback(res);
           }
         });
       } else {

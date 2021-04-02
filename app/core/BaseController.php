@@ -65,15 +65,16 @@ abstract class BaseController
         return Validator::make($request, RuleValidator::getRules($rule)->getRule($optional));
     }
     
-    public function sendSuccess(string $message = null, string $to = null, int $status = 200 , array $headers = []): ?string
+    public function sendSuccess(string $message = null, string $to = null, bool $reload = true, int $status = 200, array $headers = []): ?string
     {
     	if (Request::isAjax()) {
 		    Response::json([
-		    	'ok'  => true,
-			    'msg' => $message ?? 'Dane zostały zapisane',
-			    'to'  => $to
+		    	'ok'     => true,
+			    'msg'    => $message ?? 'Dane zostały zapisane',
+			    'to'     => $to,
+			    'reload' => $reload
 		    ],
-			    $status, 
+			    $status,
 			    $headers
 		    );	
 	    } else {

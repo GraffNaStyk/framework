@@ -27,6 +27,7 @@ Route::alias('/admin', function () {
 			//@Route clients
 			Route::get('/clients', 'Clients@index')->middleware(['example']);
 			Route::get('/clients/add', 'Clients@add');
+			Route::get('/clients/edit/{id}', 'Clients@edit');
 			Route::post('/clients/store', 'Clients@store');
 			
 			//@Route password reset

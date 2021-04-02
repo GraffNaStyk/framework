@@ -48,7 +48,7 @@ class ClientsController extends Controller
     
     public function edit(int $id)
     {
-    
+    	return $this->render();
     }
     
     public function delete(int $id)

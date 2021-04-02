@@ -15,7 +15,8 @@ abstract class Handle
         }
         
         $router = Router::getInstance();
-
+        $router->request->remove('password');
+        
         Log::sql([
             'error' => $e->getMessage(),
             'query' => $error,

@@ -1,12 +1,16 @@
 
-const callback = (ok = false, to = null) => {
-  if (to !== null && to !== '' && ok) {
-    setTimeout(() => {
-      document.location.href = $.url + to;
-    }, 700);
-  } else if (ok) {
-    setTimeout(() => {
-      document.location.reload();
-    }, 700);
+const callback = (res) => {
+  if (res.ok) {
+    if (res.reload) {
+      if (res.to !== null && res.to !== '') {
+        setTimeout(() => {
+          document.location.href = $.url + res.to;
+        }, 700);
+      } else {
+        setTimeout(() => {
+          document.location.reload();
+        }, 700);
+      }
+    }
   }
 };

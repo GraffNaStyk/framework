@@ -9,11 +9,11 @@
 
 span.err {
   position: absolute;
-  top: 33%;
-  cursor: pointer;
-  margin: 0 !important;
-  z-index: 100;
-  left: 0;
+  right: 8px;
+  top: 4px;
+  color: #e53a2e;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 span.err img {
