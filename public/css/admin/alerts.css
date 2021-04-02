@@ -9,38 +9,11 @@
 
 span.err {
   position: absolute;
-  right: 8px;
   top: 4px;
-  color: #e53a2e;
+  color: #ce2e22;
   font-size: 12px;
   font-weight: bold;
-}
-
-span.err img {
-  width: 16px;
-}
-
-[tooltip]:before {
-  content: attr(tooltip);
-  position: absolute;
-  opacity: 0;
-  transition: all 0.15s ease;
-  padding: 0 4px;
-  color: black;
-  border-radius: 8px;
-  box-shadow: 0 0 2px 0 black;
-  width: 150px;
-  font-size: 14px;
-}
-
-[tooltip]:hover:before {
-  opacity: 1;
-  background: #ffffff;
-  margin-left: 20px;
-  top: -25px;
-}
-
-[tooltip]:not([tooltip-persistent]):before {
-  pointer-events: none;
-  z-index: 500;
+  display: block;
+  text-align: center;
+  width: 100%;
 }
