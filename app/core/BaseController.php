@@ -101,8 +101,8 @@ abstract class BaseController
 	    }
     }
     
-    public function response($response, $status=200): string
+    public function response(array $response= [], int $status = 200, array $headers = []): string
     {
-        Response::json($response, $status);
+        Response::json($response, $status, $headers);
     }
 }
