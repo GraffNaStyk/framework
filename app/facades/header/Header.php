@@ -12,9 +12,11 @@ class Header
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
         header('Referrer-Policy: no-referrer');
+        
         if (app('security.enabled')) {
 	        header("Content-Security-Policy: ".app('security.protection'));
         }
+        
         header('Strict-Transport-Security: max-age=31536000');
         header('X-Content-Type-Options: nosniff');
         header('X-XSS-Protection: 1; mode=block');
