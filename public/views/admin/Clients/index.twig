@@ -31,9 +31,7 @@
           <td class="position-sticky">
             {{ button.link({url:'/test/'~user.mail, text: 'edytuj', class: 'btn-warning'}) }}
             &nbsp;
-            {{ button.render({url:'/test', text: 'render', el: 'test', class: 'btn-outline-secondary'}) }}
-            &nbsp;
-            {{ button.link({url:'/test', text: 'zapisz', class: 'btn-outline-success'}) }}
+            {{ button.link({url:'/clients/details/'~user.id, text: 'pokaż', class: 'btn-outline-secondary'}) }}
           </td>
         </tr>
       {% endfor %}

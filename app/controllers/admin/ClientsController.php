@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Facades\Http\Router\Route;
 use App\Model\Client;
 use App\Facades\Http\Request;
 
@@ -43,7 +44,13 @@ class ClientsController extends Controller
     
     public function show(int $id)
     {
-    
+    	$client = Client::select()->where('id', '=', $id)->exist();
+    	
+    	if ($client) {
+		    return $this->render(['client' => $client]);
+	    } else {
+    		Route::back();
+	    }
     }
     
     public function edit(int $id)

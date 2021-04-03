@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Facades\Log\Log;
 use App\Helpers\Session;
 use App\Model\User;
 
@@ -25,8 +26,12 @@ class Auth
 	
 	public static function refresh(): void
 	{
-		Session::set('user', 
-			User::select()->where('id', '=', self::id())->exist()
-		);
+		$user = User::select()->where('id', '=', self::id())->exist();
+		
+		if ($user) {
+			self::login($user);
+		} else {
+			Log::custom('error', ['msg' => 'Cannot reload user on id: '.self::id()]);
+		}
 	}
 }

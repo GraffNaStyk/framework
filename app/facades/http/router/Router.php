@@ -55,8 +55,6 @@ final class Router extends Route
 		}
 		
 		$this->create(self::$route->getNamespace() . '\\' . self::getClass() . 'Controller');
-		Session::history(self::$url);
-		
 		$this->runMiddlewares('after');
 	}
     
@@ -171,6 +169,7 @@ final class Router extends Route
                 }
     
                 return call_user_func_array([$controller, self::getAction()], $this->request->getData());
+                
             } catch (\ReflectionException $e) {
 	            Log::custom('router', ['msg' => $e->getMessage()]);
                 self::abort();

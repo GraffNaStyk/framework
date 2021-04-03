@@ -13,6 +13,7 @@ class Controller extends BaseController
     {
         parent::__construct();
         $this->setLayout();
+        $this->set(['page' => ['title' => 'Graff CRM']]);
     }
     
     private function setLayout()
