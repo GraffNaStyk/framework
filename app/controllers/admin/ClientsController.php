@@ -49,7 +49,7 @@ class ClientsController extends Controller
     	if ($client) {
 		    return $this->render(['client' => $client]);
 	    } else {
-    		Route::back();
+    		$this->redirect('/clients');
 	    }
     }
     
