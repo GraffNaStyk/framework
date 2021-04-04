@@ -1,13 +1,16 @@
 <?php
 
-if (! file_exists(__DIR__.'/app/config/app.php'))
-    exit('No app config file');
+if (! file_exists(__DIR__.'/app/config/app.php')) {
+	exit('No app config file');	
+}
 
-if (!file_exists(app_path('app/config/.env')))
-    trigger_error('Cannot loaded environment file.', E_USER_ERROR);
+if (! file_exists(app_path('app/config/.env'))) {
+	exit('Cannot loaded environment file.');
+}
 
-if (!file_exists(vendor_path('autoload.php')))
-    exit(require_once view_path('errors/install.php'));
+if (! file_exists(vendor_path('autoload.php'))) {
+	exit(require_once view_path('errors/install.php'));
+}
 
 define('app', require_once app_path('app/config/app.php'));
 
@@ -46,7 +49,7 @@ function path($path = null): string
     return __DIR__ . '/' . $path;
 }
 
-function pd($item, $die = false)
+function pd($item, $die = false): void
 {
     echo '<pre>';
     print_r($item);
@@ -54,7 +57,7 @@ function pd($item, $die = false)
     if ($die) die();
 }
 
-function dd($item, $die = false)
+function dd($item, $die = false): void
 {
     echo '<pre>';
     var_dump($item);
