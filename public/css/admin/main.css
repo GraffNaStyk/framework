@@ -191,3 +191,7 @@ table tbody tr:nth-child(odd) td {
 i {
   pointer-events: none;
 }
+
+.ss-main .ss-single-selected .placeholder {
+  overflow: hidden;
+}
