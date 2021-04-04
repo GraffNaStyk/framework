@@ -23,6 +23,7 @@ abstract class BaseController
     public function boot()
     {
         Storage::private()->make('logs');
+        Storage::private()->make('cache');
     
         $this->set([
             'messages' => Session::getMsg(),

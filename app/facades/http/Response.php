@@ -2,19 +2,14 @@
 
 namespace App\Facades\Http;
 
-abstract class Response
+class Response
 {
     public static function json($response, $status = 200, $headers = []): void
     {
         self::setHeaders($headers);
-        self::setCode($status);
+	    http_response_code($status);
         echo json_encode($response, true);
         die();
-    }
-
-    private static function setCode(int $code): void
-    {
-        http_response_code($code);
     }
     
     private static function setHeaders(array $headers = []): void
