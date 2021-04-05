@@ -3,7 +3,6 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
-use App\Facades\Http\Router\Route;
 use App\Model\Client;
 use App\Facades\Http\Request;
 

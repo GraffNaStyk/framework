@@ -20,7 +20,7 @@ class Response
             }
         } else if (! headers_sent()) {
             header('Content-Type: application/json');
-            header("Cache-Control: no-cache, must-revalidate");
+            header('Cache-Control: no-cache, must-revalidate');
         }
     }
 }

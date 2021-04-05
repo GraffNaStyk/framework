@@ -20,8 +20,10 @@ class Validator
                 Session::checkIfDataHasBeenProvided($request);
                 Session::msg(static::$validatorErrors, 'danger');
             }
+            
             return false;
         }
+        
         return true;
     }
 
@@ -29,6 +31,7 @@ class Validator
     {
         foreach ($rules as $key => $rule) {
             $eachRule = explode('|', $rule);
+            
             foreach ($eachRule as $rulesValue) {
                 $rulesValue = explode(':', $rulesValue);
                 static::$rules[$key][$rulesValue[0]] = $rulesValue[1] ?? $rulesValue[0];
