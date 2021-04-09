@@ -21,7 +21,7 @@ class LoginController extends Controller
     public function index()
     {
         View::layout('login');
-        return View::render(['title' => 'Panel Administracyjny - logowanie']);
+        return $this->render(['title' => 'Panel Administracyjny - logowanie']);
     }
 
     public function check(Request $request)
