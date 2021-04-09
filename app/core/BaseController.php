@@ -63,10 +63,12 @@ abstract class BaseController
     
     public function validate(array $request, string $rule, array $optional = []): bool
     {
-        return Validator::make($request, RuleValidator::getRules($rule)->getRule($optional));
+        return Validator::make($request, (new $rule())->getRule($optional));
     }
-    
-    public function sendSuccess(string $message = null, string $to = null, bool $reload = true, int $status = 200, array $headers = []): ?string
+	
+	public function sendSuccess(
+		string $message = null, string $to = null, bool $reload = true, int $status = 200, array $headers = []
+	): ?string
     {
     	if (Request::isAjax()) {
 		    Response::json([

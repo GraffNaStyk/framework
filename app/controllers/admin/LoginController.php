@@ -9,6 +9,7 @@ use App\Facades\Faker\Password;
 use App\Model\User;
 use App\Facades\Http\View;
 use App\Facades\Http\Request;
+use App\Rules\LoginValidator;
 
 class LoginController extends Controller
 {
@@ -25,7 +26,7 @@ class LoginController extends Controller
 
     public function check(Request $request)
     {
-        if (! $this->validate($request->all(), 'login')) {
+        if (! $this->validate($request->all(), LoginValidator::class)) {
             $this->sendError('Formularz nie zostal wysłany');
         }
 	

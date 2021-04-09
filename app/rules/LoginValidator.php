@@ -14,5 +14,6 @@ class LoginValidator
     
     public static function example($item, $field)
     {
+    	
     }
 }

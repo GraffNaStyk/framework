@@ -59,7 +59,7 @@ class Rules
 
     public static function int($item, $rule, $field)
     {
-        if (!is_numeric($item)) {
+        if (! is_numeric($item)) {
             return ['msg' => 'Pole musi składać się tylko z liczb', 'field' => $field];
         }
     }
