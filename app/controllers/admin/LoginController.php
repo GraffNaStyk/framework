@@ -39,6 +39,6 @@ class LoginController extends Controller
             $this->sendSuccess('Zalogowano poprawnie', '/dash');
         }
     
-        $this->sendError('Niepoprwane dane logowania');
+        return $this->sendError('Niepoprwane dane logowania');
     }
 }

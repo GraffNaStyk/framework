@@ -9,6 +9,7 @@ class Faker
         'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
         'r', 's', 't', 'u', 'w', 'x', 'y', 'z'
     ];
+    
     private static array $numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     private static array $methods = ['int', 'string'];
     
@@ -49,7 +50,7 @@ class Faker
         do {
             $hash  = self::hash($length);
             $check = $model::select([$column])->where($column, '=', $hash)->first();
-        } while (!empty($check));
+        } while (! empty($check));
     
         return $hash;
     }

@@ -16,13 +16,13 @@
         }) }}
       </div>
       {{ button.action({
-        url: '/clients',
+        url: '/clients/store',
         text: 'test',
         csrf: 'Clients@store',
-        options: options
+        options: options,
+        class: 'mt-3'
       }) }}
       {{ form.csrf('Dash@upload') }}
     </form>
   </div>
-<button class="test">asdasd</button>
 {% endblock %}
