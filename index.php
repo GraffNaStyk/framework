@@ -49,7 +49,7 @@ function path($path = null): string
     return __DIR__ . '/' . $path;
 }
 
-function pd($item, $die = false): void
+function pd($item, $die = true): void
 {
     echo '<pre>';
     print_r($item);
@@ -57,7 +57,7 @@ function pd($item, $die = false): void
     if ($die) die();
 }
 
-function dd($item, $die = false): void
+function dd($item, $die = true): void
 {
     echo '<pre>';
     var_dump($item);

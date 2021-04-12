@@ -72,7 +72,7 @@ final class Request
         return $this->headers;
     }
 	
-	public function setData(array $data)
+	public function setData(array $data): void
 	{
 		$this->data = array_merge($this->data, $data);
 	}
@@ -82,7 +82,7 @@ final class Request
         return $this->data;
     }
 
-    public function sanitize()
+    public function sanitize(): void
     {
         foreach ($this->data as $key => $item) {
             if (is_array($item)) {
@@ -118,7 +118,8 @@ final class Request
         
         $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
         $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
-        $item = strtr($item,
+        $item = strtr(
+        	$item,
             "???????��������������������������������������������������������������",
             "SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy"
         );
@@ -150,7 +151,7 @@ final class Request
 
     public function all(): array
     {
-        return $this->data;
+        return (array) $this->data;
     }
 
     public function file(?string $file = null)
