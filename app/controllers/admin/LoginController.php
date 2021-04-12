@@ -2,8 +2,8 @@
 
 namespace App\Controllers\Admin;
 
+use App\Controllers\Auth;
 use App\Controllers\Controller;
-use App\Core\Auth;
 use App\Facades\Faker\Hash;
 use App\Facades\Faker\Password;
 use App\Model\User;
