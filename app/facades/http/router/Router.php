@@ -2,11 +2,9 @@
 
 namespace App\Facades\Http\Router;
 
-use App\Core\Auth;
 use App\Core\Kernel;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Log\Log;
-use App\Helpers\Session;
 use ReflectionMethod;
 use ReflectionClass;
 use App\Facades\Http\Request;

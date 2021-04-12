@@ -41,7 +41,7 @@ final class Auth
 
         if (class_exists(Right::class)) {
             $result = Right::select([strtolower($route->getController())])
-                ->where('user_id', '=', \App\Core\Auth::id())
+                ->where('user_id', '=', \App\Controllers\Auth::id())
                 ->first();
 
             if (empty($result) || $result[strtolower($route->getController())] < $route->getRights()) {

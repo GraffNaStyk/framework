@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core;
+namespace App\Controllers;
 
 use App\Facades\Log\Log;
 use App\Helpers\Session;
