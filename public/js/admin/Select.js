@@ -1,6 +1,7 @@
 
 const RefreshSelects = () => {
   const selectors = $.elements('[data-select="slim"]');
+
   if (selectors) {
     selectors.forEach((value => {
       if (value.dataset.url !== undefined && value.dataset.ssid === undefined) {

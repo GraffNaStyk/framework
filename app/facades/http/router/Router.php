@@ -95,7 +95,7 @@ final class Router extends Route
 	    ];
     }
     
-    private function setCurrentRoute($route): void
+    private function setCurrentRoute(Collection $route): void
     {
         self::$route = $route;
     }
@@ -159,7 +159,7 @@ final class Router extends Route
                     return $controller->{self::getAction()}();
                 }
                 
-                if (isset($params[0]->name) && (string) $params[0]->name === 'request') {
+                if ((string) $params[0]->name === 'request') {
                     return $controller->{self::getAction()}($this->request);
                 }
     

@@ -17,8 +17,9 @@ class Faker
     {
         $string = null;
 
-        for ($i = 0; $i < $length; $i++)
-            $string .= static::$letters[rand(0,count(static::$letters)-1)];
+        for ($i = 0; $i < $length; $i++) {
+	        $string .= static::$letters[rand(0,count(static::$letters)-1)];
+        }
 
         return  $string;
     }
@@ -27,9 +28,10 @@ class Faker
     {
         $number = null;
 
-        for ($i = 0; $i < $length; $i++)
-            $number .= static::$numbers[rand(0,count(static::$numbers)-1)];
-
+        for ($i = 0; $i < $length; $i++) {
+	        $number .= static::$numbers[rand(0,count(static::$numbers)-1)];
+        }
+        
         return $number;
     }
     
@@ -38,10 +40,10 @@ class Faker
         $password = '';
 
         while (strlen($password) < $length) {
-            $method = self::$methods[rand(0, 1)];
+            $method    = self::$methods[rand(0, 1)];
             $password .= self::$method(1);
         }
-        
+
         return $password;
     }
     
