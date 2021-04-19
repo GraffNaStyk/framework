@@ -45,13 +45,13 @@ final class Router extends Route
 		$this->setParams();
 		$this->request->sanitize();
 		$this->runMiddlewares('before');
-		
+
 		if ($this->request->getMethod() === 'post') {
 			if (! $this->csrf->valid($this->request)) {
 				self::abort(400);
 			}
 		}
-		
+
 		$this->create(self::$route->getNamespace() . '\\' . self::getClass() . 'Controller');
 		$this->runMiddlewares('after');
 	}
@@ -124,7 +124,7 @@ final class Router extends Route
         if ($alias === 'http') {
             return 'http';
         }
-        
+
         return 'admin';
     }
     
@@ -166,7 +166,7 @@ final class Router extends Route
                     self::abort();
                 }
     
-                return call_user_func_array([$controller, self::getAction()], $this->request->getData());
+                return call_user_func_array([self::getClass(), self::getAction()], $this->request->getData());
                 
             } catch (\ReflectionException $e) {
 	            Log::custom('router', ['msg' => $e->getMessage()]);
@@ -226,8 +226,8 @@ final class Router extends Route
     
     private function parseUrl(): void
     {
-        if ((string) app['url'] !== '/') {
-            self::$url = str_replace(app['url'], '', self::url());
+        if ((string) app('url') !== '/') {
+            self::$url = str_replace(app('url'), '', self::url());
         } else {
             self::$url = self::url();
         }
