@@ -8,7 +8,7 @@ use App\Facades\Http\Router\Router;
 use App\Rules\RuleValidator;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
-use App\Helpers\Session;
+use App\Facades\Http\Session;
 use App\Helpers\Storage;
 use App\Facades\Http\View;
 use App\Facades\Http\Router\Route;
@@ -79,7 +79,7 @@ abstract class BaseController
 		    ],
 			    $status,
 			    $headers
-		    );	
+		    );
 	    } else {
 		    Session::msg($message);
 		    return null;

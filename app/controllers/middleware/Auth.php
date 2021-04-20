@@ -7,7 +7,7 @@ use App\Facades\Http\Router\Collection;
 use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\Router;
 use App\Facades\Url\Url;
-use App\Helpers\Session;
+use App\Facades\Http\Session;
 use App\Model\Right;
 
 final class Auth

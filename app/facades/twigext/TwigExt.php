@@ -7,7 +7,7 @@ use App\Facades\Http\Router\Router;
 use App\Facades\Url\Url;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use App\Helpers\Session;
+use App\Facades\Http\Session;
 
 class TwigExt extends AbstractExtension
 {

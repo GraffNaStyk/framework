@@ -4,7 +4,6 @@ namespace App\Facades\Http\Router;
 
 use App\Facades\Csrf\Csrf;
 use App\Facades\Url\Url;
-use App\Helpers\Session;
 
 abstract class Route
 {

@@ -6,7 +6,6 @@ use App\Facades\Property\Get;
 use App\Facades\Property\Has;
 use App\Facades\Property\Remove;
 use App\Facades\Property\Set;
-use App\Helpers\Session;
 
 final class Request
 {

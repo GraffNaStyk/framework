@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Facades\Log\Log;
-use App\Helpers\Session;
+use App\Facades\Http\Session;
 use App\Model\User;
 
 class Auth
