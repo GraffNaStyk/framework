@@ -12,11 +12,11 @@ abstract class Route
     protected static ?string $middleware = null;
     protected static ?string $alias = null;
     
-    public static function namespace(string $namespace, callable $function, array $middleware = [])
+    public static function namespace(string $namespace, callable $function)
     {
-        static::$namespace = $namespace;
-        $function();
-        static::$middleware = null;
+	    static::$namespace = $namespace;
+	    $function();
+	    static::$middleware = null;
     }
     
     public static function middleware(string $middleware, callable $function)
