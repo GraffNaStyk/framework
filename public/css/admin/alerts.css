@@ -17,3 +17,7 @@ span.err {
   text-align: center;
   width: 100%;
 }
+
+.input_error, .input_error:focus, .input_error:active {
+  border: 1px solid #ce2e22!important;
+}

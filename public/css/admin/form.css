@@ -115,7 +115,3 @@ p.hidden__label {
 .ss-main .ss-single-selected .placeholder .ss-disabled {
   color: #747D85 !important;
 }
-
-.input_error, .input_error:focus, .input_error:active {
-  border: 1px solid #ce2e22!important;
-}

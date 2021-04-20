@@ -67,6 +67,11 @@ final class Request
         return isset($this->headers[mb_strtolower($header)]) ? $this->headers[mb_strtolower($header)] : false;
     }
     
+    public function hasHeader(string $item)
+    {
+    	return Has::check($this->headers(), $item);
+    }
+    
     public function headers(): array
     {
         return $this->headers;
@@ -120,8 +125,8 @@ final class Request
         $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
         $item = strtr(
         	$item,
-            "???????��������������������������������������������������������������",
-            "SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy"
+            '???????��������������������������������������������������������������',
+            'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy'
         );
 
         $item = preg_replace('/(;|\||`|&|^|{|}|[|]|\)|\()/i', '', $item);

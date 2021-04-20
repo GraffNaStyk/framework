@@ -60,6 +60,7 @@ final class Router extends Route
     {
         if (self::$route->getMiddleware() !== null) {
             $middlewares = Kernel::getMiddlewares(self::$route->getMiddleware());
+
             foreach ($middlewares as $middleware) {
 	            if (method_exists($middleware, $when)) {
 		            (new $middleware())->$when($this->request, $this);
@@ -67,8 +68,10 @@ final class Router extends Route
             }
         }
     
-        if (! empty(Kernel::getEveryMiddleware())) {
-            foreach (Kernel::getEveryMiddleware() as $middleware) {
+        $everyMiddlewares = Kernel::getEveryMiddleware();
+        
+        if (! empty($everyMiddlewares)) {
+            foreach ($everyMiddlewares as $middleware) {
                 if (method_exists($middleware, $when)) {
                     (new $middleware())->$when($this->request, $this);
                 }
