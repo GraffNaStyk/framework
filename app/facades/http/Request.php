@@ -67,7 +67,7 @@ final class Request
         return isset($this->headers[mb_strtolower($header)]) ? $this->headers[mb_strtolower($header)] : false;
     }
     
-    public function hasHeader(string $item)
+    public function hasHeader(string $item): bool
     {
     	return Has::check($this->headers(), $item);
     }
@@ -168,7 +168,7 @@ final class Request
         return $this->file;
     }
 
-    public function has(string $item)
+    public function has(string $item): bool
     {
         return Has::check($this->data, $item);
     }

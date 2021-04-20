@@ -45,7 +45,7 @@ class Session
         return Get::check($_COOKIE, $item);
     }
 
-    public static function hasFlash($item)
+    public static function hasFlash($item): bool
     {
         return Has::check($_COOKIE, $item);
     }
@@ -56,7 +56,7 @@ class Session
         setcookie($item, false, -1, '/', getenv('SERVER_NAME'), true, true);
     }
 	
-	public static function flashAll()
+	public static function flashAll(): array
 	{
 		return $_COOKIE;
 	}
