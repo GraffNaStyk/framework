@@ -118,14 +118,8 @@ class Db
 		$this->query = "INSERT INTO `{$this->table}` (";
 		
 		if ($this->multiple) {
-			foreach ($values as $field) {
-				if ($i === 1)
-					break;
-				
-				foreach ($field as $key => $item) {
-					$this->query .= "`{$key}`, ";
-				}
-				$i = 1;
+			foreach ($values[0] as $key => $field) {
+				$this->query .= "`{$key}`, ";
 			}
 		}
 		else {
@@ -171,14 +165,8 @@ class Db
 			}
 			else {
 				if ($this->multiple) {
-					foreach ($values as $field) {
-						if ($i === 1)
-							break;
-						
-						foreach ($field as $key => $item) {
-							$this->query .= "`{$key}` = VALUES($key), ";
-						}
-						$i = 1;
+					foreach ($values[0] as $key => $field) {
+						$this->query .= "`{$key}` = VALUES($key), ";
 					}
 				}
 				else {
