@@ -121,8 +121,7 @@ class Db
 			foreach ($values[0] as $key => $field) {
 				$this->query .= "`{$key}`, ";
 			}
-		}
-		else {
+		} else {
 			foreach ($values as $key => $field) {
 				$this->query .= "`{$key}`, ";
 			}
@@ -142,16 +141,14 @@ class Db
 						$this->query = rtrim($this->query, ', ') . "), (";
 					}
 				}
-			}
-			else {
+			} else {
 				$this->query .= ":{$this->setValue($key, $field)}, ";
 			}
 		}
 		
 		if ($this->multiple) {
 			$this->query = rtrim($this->query, ', (');
-		}
-		else {
+		} else {
 			$this->query = rtrim($this->query, ', ') . ")";
 		}
 		
@@ -162,14 +159,12 @@ class Db
 				foreach ($this->duplicated as $field) {
 					$this->query .= "`{$field}` = VALUES($field), ";
 				}
-			}
-			else {
+			} else {
 				if ($this->multiple) {
 					foreach ($values[0] as $key => $field) {
 						$this->query .= "`{$key}` = VALUES($key), ";
 					}
-				}
-				else {
+				} else {
 					foreach ($values as $key => $field) {
 						$this->query .= "`{$key}` = VALUES($key), ";
 					}
