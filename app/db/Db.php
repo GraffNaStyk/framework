@@ -133,6 +133,7 @@ class Db
 			if (is_array($field)) {
 				$count = count($field);
 				$i = 0;
+
 				foreach ($field as $key2 => $item) {
 					$i++;
 					$this->query .= ":{$this->setValue($key2, $item)}, ";
