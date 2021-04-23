@@ -16,9 +16,10 @@ class Faker
     public static function string(int $length = 0): string
     {
         $string = null;
+	    $count = count(static::$letters) - 1;
 
         for ($i = 0; $i < $length; $i++) {
-	        $string .= static::$letters[rand(0,count(static::$letters)-1)];
+	        $string .= static::$letters[rand(0, $count)];
         }
 
         return  $string;
@@ -26,13 +27,14 @@ class Faker
 
     public static function int(int $length = 0): int
     {
-        $number = null;
-
-        for ($i = 0; $i < $length; $i++) {
-	        $number .= static::$numbers[rand(0,count(static::$numbers)-1)];
-        }
-        
-        return $number;
+	    $number = null;
+	    $count = count(static::$numbers) - 1;
+	
+	    for ($i = 0; $i < $length; $i++) {
+		    $number .= static::$numbers[rand(0, $count)];
+	    }
+	
+	    return $number;
     }
     
     public static function hash(int $length): string

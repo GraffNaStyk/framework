@@ -6,19 +6,19 @@ use App\Controllers\Auth;
 use App\Controllers\Controller;
 use App\Facades\Faker\Hash;
 use App\Facades\Faker\Password;
-use App\Model\User;
-use App\Facades\Http\View;
 use App\Facades\Http\Request;
+use App\Facades\Http\View;
+use App\Model\User;
 use App\Rules\LoginValidator;
 
 class LoginController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    public function index()
+	public function __construct()
+	{
+		parent::__construct();
+	}
+	
+	public function index()
     {
         View::layout('login');
         return $this->render(['title' => 'Panel Administracyjny - logowanie']);

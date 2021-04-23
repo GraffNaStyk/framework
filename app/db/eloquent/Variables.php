@@ -17,14 +17,16 @@ trait Variables
     private bool $isFirstWhere = false;
     
     private bool $distinct = false;
-    
-    private bool $startBracket = false;
+	
+	private bool $startBracket = false;
 	
 	private bool $isUpdate = false;
 	
 	private bool $first = false;
 	
 	private bool $debug = false;
-
+	
 	private bool $selectGroup = false;
+	
+	private bool $multiple = false;
 }

@@ -6,23 +6,28 @@ use App\Db\Eloquent\Builder;
 use App\Db\Eloquent\Handle;
 use App\Db\Eloquent\Variables;
 use PDO;
+use PDOException;
 
 class Db
 {
-    use Variables;
-    use Builder;
-    
-    private static array $env;
-    private static ?object $db = null;
-    private static ?string $dbName = null;
-    public ?string $as = null;
+	use Variables;
+	use Builder;
+	
+	private static array $env;
+	
+	/**
+	 * @var PDO
+	 */
+	private static ?object $db = null;
+	private static ?string $dbName = null;
+	public ?string $as = null;
 	
 	private static array $options = [
-		PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-		PDO::ATTR_ORACLE_NULLS       => PDO::NULL_EMPTY_STRING,
-		PDO::ATTR_CASE               => PDO::CASE_LOWER,
-		PDO::ATTR_EMULATE_PREPARES   => false,
-		PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8;'
+		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+		PDO::ATTR_ORACLE_NULLS => PDO::NULL_EMPTY_STRING,
+		PDO::ATTR_CASE => PDO::CASE_LOWER,
+		PDO::ATTR_EMULATE_PREPARES => false,
+		PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8;',
 	];
     
     public function __construct($model)
@@ -41,19 +46,19 @@ class Db
         if (! empty(self::$env)) {
             try {
                 if (self::$db === null) {
-                    self::$db = new PDO(
-                        'mysql:host='.self::$env['DB_HOST'].';dbname='.self::$env['DB_NAME'],
-                        self::$env['DB_USER'],
-                        self::$env['DB_PASS'],
-	                    self::$options
-                    );
-
-                    self::$dbName = self::$env['DB_NAME'];
-                    self::$env = [];
+	                self::$db = new PDO(
+		                'mysql:host=' . self::$env['DB_HOST'] . ';dbname=' . self::$env['DB_NAME'],
+		                self::$env['DB_USER'],
+		                self::$env['DB_PASS'],
+		                self::$options
+	                );
+	
+	                self::$dbName = self::$env['DB_NAME'];
+	                self::$env = [];
                 }
-            } catch (\PDOException $e) {
-                trigger_error("Database connection error");
-                Handle::throwException($e, 'DATABASE CONNECTION ERROR');
+            } catch (PDOException $e) {
+	            trigger_error("Database connection error");
+	            Handle::throwException($e, 'DATABASE CONNECTION ERROR');
             }
         }
     }
@@ -86,50 +91,106 @@ class Db
     {
         $this->onDuplicate = true;
         $this->duplicated = $duplicated;
-        
-        return $this;
+	
+	    return $this;
     }
 	
 	public function selectGroup(array $values = []): Db
-    {
-    	$this->selectGroup = true;
-    	$this->select($values);
-    	return $this;
-    }
-    
-    public function insert(array $values): Db
-    {
-        $this->data = $values;
-        $this->query = "INSERT INTO `{$this->table}` (";
-    
-        foreach ($this->data as $key => $field) {
-            $this->query .= "`{$key}`, ";
-        }
-    
-        $this->query = rtrim($this->query, ', ') .") VALUES (";
-    
-        foreach ($this->data as $key => $field) {
-            $this->query .= ":$key, ";
-        }
-    
-        $this->query = rtrim($this->query, ', ') .")";
-    
-        if ($this->onDuplicate === true) {
-            $this->query .= ' ON DUPLICATE KEY UPDATE ';
-
-            if (! empty($this->duplicated)) {
-	            foreach ($this->duplicated as $field) {
-		            $this->query .= "`{$field}` = :{$field}, ";
-	            }
-            } else {
-	            foreach ($this->data as $key => $field) {
-		            $this->query .= "`{$key}` = :{$key}, ";
-	            }
-            }
+	{
+		$this->selectGroup = true;
+		$this->select($values);
+		return $this;
+	}
+	
+	public function multiple(): Db
+	{
+		$this->multiple = true;
+		
+		return $this;
+	}
+	
+	public function insert(array $values): Db
+	{
+		if (empty($values)) {
+			return $this;
+		}
+		
+		$this->query = "INSERT INTO `{$this->table}` (";
+		
+		if ($this->multiple) {
+			foreach ($values as $field) {
+				if ($i === 1)
+					break;
+				
+				foreach ($field as $key => $item) {
+					$this->query .= "`{$key}`, ";
+				}
+				$i = 1;
+			}
+		}
+		else {
+			foreach ($values as $key => $field) {
+				$this->query .= "`{$key}`, ";
+			}
+		}
+		
+		$this->query = rtrim($this->query, ', ') . ") VALUES (";
+		
+		foreach ($values as $key => $field) {
+			if (is_array($field)) {
+				$count = count($field);
+				$i = 0;
+				foreach ($field as $key2 => $item) {
+					$i++;
+					$this->query .= ":{$this->setValue($key2, $item)}, ";
+					
+					if ($i === $count) {
+						$this->query = rtrim($this->query, ', ') . "), (";
+					}
+				}
+			}
+			else {
+				$this->query .= ":{$this->setValue($key, $field)}, ";
+			}
+		}
+		
+		if ($this->multiple) {
+			$this->query = rtrim($this->query, ', (');
+		}
+		else {
+			$this->query = rtrim($this->query, ', ') . ")";
+		}
+		
+		if ($this->onDuplicate === true) {
+			$this->query .= ' ON DUPLICATE KEY UPDATE ';
+			
+			if (!empty($this->duplicated)) {
+				foreach ($this->duplicated as $field) {
+					$this->query .= "`{$field}` = VALUES($field), ";
+				}
+			}
+			else {
+				if ($this->multiple) {
+					foreach ($values as $field) {
+						if ($i === 1)
+							break;
+						
+						foreach ($field as $key => $item) {
+							$this->query .= "`{$key}` = VALUES($key), ";
+						}
+						$i = 1;
+					}
+				}
+				else {
+					foreach ($values as $key => $field) {
+						$this->query .= "`{$key}` = VALUES($key), ";
+					}
+				}
+			}
         }
     
         $this->query = rtrim($this->query, ', ');
-    
+
         return $this;
     }
 
@@ -390,13 +451,13 @@ class Db
 	    }
 	    
         if (preg_match('/^(INSERT|UPDATE|DELETE)/', $this->query)) {
-            try {
-                if (self::$db->prepare($this->query)->execute($this->data)) {
-                    return true;
-                }
-            } catch (\PDOException $e) {
-                Handle::throwException($e, $this->develop(true));
-            }
+	        try {
+		        if (self::$db->prepare($this->query)->execute($this->data)) {
+			        return true;
+		        }
+	        } catch (PDOException $e) {
+		        Handle::throwException($e, $this->develop(true));
+	        }
             return false;
         } else {
             try {
@@ -404,18 +465,19 @@ class Db
                 $pdo->execute($this->data);
                 
                 if ($this->first) {
-                    return $pdo->fetch(PDO::FETCH_OBJ);
+	                return $pdo->fetch(PDO::FETCH_OBJ);
                 }
-                
-				if ($this->selectGroup) {
-					$this->selectGroup = false;
-					return $pdo->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_OBJ);
-				} else {
-					return $pdo->fetchAll(PDO::FETCH_OBJ);
-				}
-
-            } catch (\PDOException $e) {
-                Handle::throwException($e, $this->develop(true));
+	
+	            if ($this->selectGroup) {
+		            $this->selectGroup = false;
+		            return $pdo->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_OBJ);
+	            }
+	            else {
+		            return $pdo->fetchAll(PDO::FETCH_OBJ);
+	            }
+	
+            } catch (PDOException $e) {
+	            Handle::throwException($e, $this->develop(true));
             }
         }
         return false;
@@ -477,13 +539,18 @@ class Db
     
     public function startBracket(): Db
     {
-        $this->startBracket = true;
-        return $this;
+	    $this->startBracket = true;
+	    return $this;
     }
-    
-    public function endBracket(): Db
-    {
-        $this->query .= ')';
-        return $this;
-    }
+	
+	public function endBracket(): Db
+	{
+		$this->query .= ')';
+		return $this;
+	}
+	
+	public function __call($name, $arguments)
+	{
+		self::$db->{$name}();
+	}
 }
