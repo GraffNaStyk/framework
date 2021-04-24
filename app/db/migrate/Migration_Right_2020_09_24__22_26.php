@@ -11,7 +11,6 @@ class Migration_Right_2020_09_24__22_26
        {
            $schema->int('id', 11)->primary();
            $schema->int('user_id', 11)->unique();
-           $schema->tinyint('clients', 1)->implicitly(0);
            $schema->run();
        }
 

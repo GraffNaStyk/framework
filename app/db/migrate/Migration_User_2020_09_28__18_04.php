@@ -2,8 +2,6 @@
 
 namespace App\Db\Migrate;
 
-use App\Facades\Faker\Faker;
-use App\Facades\Faker\Hash;
 use App\Facades\Faker\Password;
 use App\Facades\Migrations\Schema;
 use App\Model\User;
@@ -18,10 +16,6 @@ class Migration_User_2020_09_28__18_04
                User::insert([
                    'name' => 'Graff',
                    'password' => Password::crypt('mulias123'),
-                   'phone' => Faker::int(9),
-                   'city' => Faker::string(7),
-                   'street' => Faker::string(7),
-                   'mail' => Faker::string(12),
                ])->exec();
                $schema->run();
            }
