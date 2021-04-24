@@ -10,7 +10,7 @@ trait Builder
     {
         $select = '';
         foreach ($values as $item) {
-            if (is_object($item) === true) {
+            if (is_object($item)) {
                 $select .= $item->getValue().', ';
             } else {
                 $select .= $this->prepareValueForWhere($item).', ';
