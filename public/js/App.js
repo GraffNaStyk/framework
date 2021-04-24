@@ -67,6 +67,10 @@ class App {
         return {};
       }
 
+      if (res.status === 401) {
+        window.location.reload();
+      }
+
       return res;
     })
   }
@@ -81,6 +85,10 @@ class App {
     }).then(res => {
       if ([404,500,405].includes(res.status)) {
         return {};
+      }
+
+      if (res.status === 401) {
+        window.location.reload();
       }
 
       return res;
