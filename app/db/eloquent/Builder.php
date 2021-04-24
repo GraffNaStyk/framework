@@ -9,7 +9,7 @@ trait Builder
     public function prepareValuesForSelect($values): string
     {
         $select = '';
-        foreach ($values as $key => $item) {
+        foreach ($values as $item) {
             if (is_object($item) === true) {
                 $select .= $item->getValue().', ';
             } else {
