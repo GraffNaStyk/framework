@@ -113,21 +113,15 @@ class Db
 		if (empty($values)) {
 			return $this;
 		}
-		
+
 		$this->query = "INSERT INTO `{$this->table}` (";
-		
-		if ($this->multiple) {
-			foreach ($values[0] as $key => $field) {
-				$this->query .= "`{$key}`, ";
-			}
-		} else {
-			foreach ($values as $key => $field) {
-				$this->query .= "`{$key}`, ";
-			}
+
+		foreach ($this->multiple ? $values[0] : $values as $key => $field) {
+			$this->query .= "`{$key}`, ";
 		}
-		
+
 		$this->query = rtrim($this->query, ', ') . ") VALUES (";
-		
+
 		foreach ($values as $key => $field) {
 			if (is_array($field)) {
 				$count = count($field);
@@ -160,14 +154,8 @@ class Db
 					$this->query .= "`{$field}` = VALUES($field), ";
 				}
 			} else {
-				if ($this->multiple) {
-					foreach ($values[0] as $key => $field) {
-						$this->query .= "`{$key}` = VALUES($key), ";
-					}
-				} else {
-					foreach ($values as $key => $field) {
-						$this->query .= "`{$key}` = VALUES($key), ";
-					}
+				foreach ($this->multiple ? $values[0] : $values as $key => $field) {
+					$this->query .= "`{$key}` = VALUES($key), ";
 				}
 			}
         }
