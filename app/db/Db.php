@@ -47,7 +47,7 @@ class Db
             try {
                 if (self::$db === null) {
 	                self::$db = new PDO(
-		                'mysql:host=' . self::$env['DB_HOST'] . ';dbname=' . self::$env['DB_NAME'],
+		                'mysql:host='.self::$env['DB_HOST'].';dbname='.self::$env['DB_NAME'],
 		                self::$env['DB_USER'],
 		                self::$env['DB_PASS'],
 		                self::$options
@@ -57,7 +57,6 @@ class Db
 	                self::$env = [];
                 }
             } catch (PDOException $e) {
-	            trigger_error("Database connection error");
 	            Handle::throwException($e, 'DATABASE CONNECTION ERROR');
             }
         }
