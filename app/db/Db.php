@@ -185,14 +185,14 @@ class Db
     public function update(array $values): Db
     {
 	    $this->isUpdate = true;
-        $this->data = $values;
         $this->query = "UPDATE `{$this->table}` SET ";
     
-        foreach ($this->data as $key => $value) {
+        foreach ($values as $key => $value) {
             if ((string) $key === 'id') {
                 continue;
             }
-            $this->query .= "`{$key}` = :{$key}, ";
+
+            $this->query .= "`{$key}` = :{$this->setValue($key, $value)}, ";
         }
     
         $this->query = rtrim($this->query, ', ');
