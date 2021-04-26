@@ -4,10 +4,10 @@ namespace App\Facades\Http\Router;
 
 use App\Core\Kernel;
 use App\Facades\Csrf\Csrf;
-use App\Facades\Log\Log;
-use ReflectionMethod;
-use ReflectionClass;
 use App\Facades\Http\Request;
+use App\Facades\Log\Log;
+use ReflectionClass;
+use ReflectionMethod;
 
 final class Router extends Route
 {
@@ -169,7 +169,7 @@ final class Router extends Route
                     self::abort();
                 }
     
-                return call_user_func_array([self::getClass(), self::getAction()], $this->request->getData());
+                return call_user_func_array([$controller, self::getAction()], $this->request->getData());
                 
             } catch (\ReflectionException $e) {
 	            Log::custom('router', ['msg' => $e->getMessage()]);

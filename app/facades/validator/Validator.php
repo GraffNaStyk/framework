@@ -12,6 +12,8 @@ class Validator
 
     public static function make($request, array $rules): bool
     {
+	    static::$validatorErrors = [];
+	    static::$rules = [];
         static::refactorRules($rules);
         static::run($request);
 

@@ -2,35 +2,47 @@
 
 namespace App\Facades\Validator;
 
+use App\Facades\Http\Router\Router;
 use DateTime;
 
 class Rules
 {
-    public static function min($item, $rule, $field)
-    {
-        if (is_numeric($item)) {
-            if ($item < $rule) {
-                return ['msg' => 'Zbyt mała wartość', 'field' => $field];
-            }
-        } else {
-            if (strlen($item) < $rule) {
-                return ['msg' => 'Pole jest za krótkie', 'field' => $field];
-            }
-        }
-    }
-    
-    public static function max($item, $rule, $field)
-    {
-        if (is_numeric($item)) {
-            if ($item > $rule) {
-                return ['msg' => 'Zbyt duża wartość', 'field' => $field];
-            }
-        } else {
-            if (strlen($item) > $rule) {
-                return ['msg' => 'Pole jest za długie', 'field' => $field];
-            }
-        }
-    }
+	public static function min($item, $rule, $field)
+	{
+		if ($item < $rule) {
+			return ['msg' => 'Zbyt mała wartość', 'field' => $field];
+		}
+	}
+	
+	public static function max($item, $rule, $field)
+	{
+		if ($item > $rule) {
+			return ['msg' => 'Zbyt duża wartość', 'field' => $field];
+		}
+	}
+	
+	public static function minLength($item, $rule, $field)
+	{
+		if (strlen($item) < $rule) {
+			return ['msg' => 'Pole jest za krótkie', 'field' => $field];
+		}
+	}
+	
+	public static function maxLength($item, $rule, $field)
+	{
+		if (strlen($item) > $rule) {
+			return ['msg' => 'Pole jest za długie', 'field' => $field];
+		}
+	}
+	
+	public static function sameAs($item, $rule, $field)
+	{
+		$route = Router::getInstance();
+
+		if ((string) $item !== (string) $route->request->get($rule)) {
+			return ['msg' => 'Pole '.$field.' jest różne od pola '.$rule, 'field' => $field];
+		}
+	}
 	
 	public static function required($item, $rule, $field)
 	{
