@@ -1,4 +1,3 @@
-
 class App {
 
   constructor() {
@@ -6,6 +5,7 @@ class App {
     this.loader = `<div class="preloader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>`;
     this.setDocumentUrl();
     this.bindActions();
+    this.bindConfirms();
   }
 
   setDocumentUrl() {
@@ -47,12 +47,20 @@ class App {
   async post(args) {
     let data;
 
-    if (args.form)
+    if (args.form) {
       data = new FormData(args.form);
+    }
 
     if (args.data) {
       data = new FormData();
       Object.keys(args.data).forEach(key => data.append(key, args.data[key]));
+    }
+
+    if (args.isconfirm !== undefined) {
+      data = new FormData();
+      let options = this.confirms[args.url].options;
+      Object.keys(this.confirms[args.url]['options']).forEach(key => data.append(key, options[key]));
+      data.append('_csrf', this.el(`form[data-action="${args.url}"] input[name="_csrf"]`).value);
     }
 
     return await fetch(this.url + this.prepareFetchUrl(args.url), {
@@ -186,8 +194,17 @@ class App {
     this.buttons = [];
 
     this.elements('button.action').forEach(item => {
-        this.buttons[item.dataset.url] = {'options': JSON.parse(item.dataset.options)};
-        item.removeAttribute('data-options');
+      this.buttons[item.dataset.url] = {'options': JSON.parse(item.dataset.options)};
+      item.removeAttribute('data-options');
+    })
+  }
+
+  bindConfirms() {
+    this.confirms = [];
+
+    this.elements('.confirm').forEach(item => {
+      this.confirms[item.dataset.url] = {'options': JSON.parse(item.dataset.options)};
+      item.removeAttribute('data-options');
     })
   }
 }

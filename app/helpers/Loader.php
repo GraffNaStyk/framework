@@ -66,12 +66,10 @@ class Loader
 	
 	public static function js(): string
 	{
-		$folder = Router::getAlias();
-		
 		if (app('dev')) {
-			$jsArr = glob(js_path("$folder/*.js"), GLOB_BRACE);
+			$jsArr = glob(js_path('components/*.js'), GLOB_BRACE);
 			$rebuild = false;
-			$mtime = filemtime(js_path('build/'.$folder.'/main.js'));
+			$mtime = filemtime(js_path('main.js'));
 			
 			foreach ($jsArr as $item) {
 				if (filemtime($item) > $mtime) {
@@ -81,17 +79,17 @@ class Loader
 			}
 
 			if ($rebuild) {
-				unlink(js_path('build/'.$folder.'/main.js'));
+				unlink(js_path('main.js'));
 				$jsString = null;
 
-				foreach ($jsArr as $key => $js) {
+				foreach ($jsArr as $js) {
 					if ((bool) is_readable($js)) {
 						$jsString .= preg_replace('/\s\s+/', ' ', file_get_contents($js)).' ; ';
 					}
 				}
 				
 				file_put_contents(
-					js_path('build/'.$folder.'/main.js'),
+					js_path('main.js'),
 					$jsString
 				);
 			}
@@ -104,7 +102,7 @@ class Loader
 		}
 		
 		$applyJs .= trim('<script type="module" src="'.
-				self::$url.str_replace(app_path(), '', js_path('build/'.$folder.'/main.js')).'"></script>').PHP_EOL;
+				self::$url.str_replace(app_path(), '', js_path('main.js')).'"></script>').PHP_EOL;
 		
 		return $applyJs;
 	}

@@ -1,5 +1,5 @@
 $.on('click', '.action', (e) => {
-
+  $.loaderStart();
   let data = $.buttons[e.target.dataset.url]['options'];
   data['_csrf'] = e.target.dataset.csrf;
 
@@ -14,14 +14,14 @@ $.on('click', '.action', (e) => {
       });
     }
 
-    if (res.to) {
-      window.location.href = res.to;
-    }
+    $.loaderStop();
 
     if (e.target.dataset.refresh) {
       let component = $.el(`[data-component="${e.target.dataset.refresh}"]`);
       e.target.dataset.url = component.dataset.fetch;
       Render(e);
+    } else {
+      callback(res);
     }
   })
 });

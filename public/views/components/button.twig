@@ -34,3 +34,16 @@
     </button>
   {% endif %}
 {% endmacro action %}
+
+{% macro confirm(data) %}
+  {% if data.url %}
+    <span class="confirm {{ data.class }}"
+          data-title="{{ data.title }}"
+          data-body="{{ data.body }}"
+          data-url="{{ data.url }}"
+          data-options="{{ options(data.options) }}"
+          data-csrf="{{ csrf(data.csrf) }}">
+        {{ data.text }}
+  </span>
+  {% endif %}
+{% endmacro confirm %}
