@@ -9,8 +9,8 @@ class App {
   }
 
   setDocumentUrl() {
-    this.url = this.el('input[name="url"]').value;
-    this.el('input[name="url"]').remove();
+    this.url = this.el('meta[name="url"]').content;
+    this.el('meta[name="url"]').remove();
   }
 
   el(el) {
