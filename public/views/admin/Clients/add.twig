@@ -59,6 +59,7 @@
       </div>
     </div>
     {{ form.csrf('Clients@store') }}
+    <div data-fetch="true" data-url="/clients/add" data-component="client" data-el="client"></div>
     <div class="modal-footer">
       {{ form.submit({value: 'Zapisz', class: 'btn-outline-success'}) }}
     </div>
