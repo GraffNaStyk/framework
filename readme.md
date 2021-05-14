@@ -166,3 +166,15 @@ Model::decrement('field', 'value')->where('param1', 'is', 'param2')->exec();
 
 Model::lastId();
 ```
+
+#Javascript responses
+
+| Typ | Opis |
+| ------ | ------ |
+| res.params.modal | Otwiera kolejny modal |
+| res.params.html | Podmiena HTML w komponencie |
+| res.params.to | Gdzie przekierować użytkownika |
+| res.params.reload | Ustawione na true, przeładuje stronę |
+| res.ok | Warunkuje sukces operacji |
+| res.inputs | Błędy formularza |
+| res.msg | Głowna wiadomość dla użytkownika |

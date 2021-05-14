@@ -19,7 +19,17 @@ $.on('submit', 'form',  (e) => {
             return false;
           }
 
-          if (res.html) {
+          if (res.params.modal !== undefined) {
+            Render({
+              target: {
+                dataset: {
+                  url: res.params.modal,
+                  el: 'modal'
+                }
+              }
+            });
+            return;
+          } else if (res.params.html) {
             $.html($.el(`[data-component="${that.el}"]`), res.html);
           } else {
             let modalSelector = $.el('#modal');

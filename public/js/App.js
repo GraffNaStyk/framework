@@ -6,6 +6,7 @@ class App {
     this.setDocumentUrl();
     this.bindActions();
     this.bindConfirms();
+    this.loaderExist = false;
   }
 
   setDocumentUrl() {
@@ -178,12 +179,16 @@ class App {
   loaderStop = () => {
     setTimeout(() => {
       this.el('.preloader').remove();
+      this.loaderExist = false;
     }, 200)
   }
 
   loaderStart = () => {
-    this.adjacent(document.body, this.loader);
-    this.el('.preloader').style.opacity = .8;
+    if (this.loaderExist === false) {
+      this.adjacent(document.body, this.loader);
+      this.el('.preloader').style.opacity = .5;
+      this.loaderExist = true;
+    }
   }
 
   toggle(selector, by = 'd-flex') {
