@@ -124,8 +124,8 @@ class Rules
 	
 	public static function float($item, $rule, $field)
 	{
-		if (! is_float(floatval($item))) {
-			return ['msg' => 'Wymagana wartość z przecinkiem', 'field' => $field];
+		if (is_numeric($item) || is_float(str_replace([',', ' '], ['', ''], $item))) {
+			return ['msg' => 'Wymagana wartość zmniennoprzecinkowa', 'field' => $field];
 		}
 	}
 }
