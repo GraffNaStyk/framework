@@ -36,7 +36,10 @@ class LoginController extends Controller
 
 	    if ($user && Password::verify($request->get('password'), $user->password)) {
             Auth::login($user);
-            $this->sendSuccess('Zalogowano poprawnie', '/dash');
+            $this->sendSuccess('Zalogowano poprawnie', [
+            	'to' => '/dash'
+            ]
+            );
         }
     
         return $this->sendError('Niepoprwane dane logowania');

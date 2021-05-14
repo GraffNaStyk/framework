@@ -4,14 +4,14 @@ namespace App\Core;
 
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
+use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\Router;
-use App\Rules\RuleValidator;
+use App\Facades\Http\Session;
+use App\Facades\Http\View;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
-use App\Facades\Http\Session;
 use App\Helpers\Storage;
-use App\Facades\Http\View;
-use App\Facades\Http\Router\Route;
+use App\Rules\RuleValidator;
 
 abstract class BaseController
 {
@@ -66,19 +66,16 @@ abstract class BaseController
         return Validator::make($request, (new $rule())->getRule($optional));
     }
 	
-	public function sendSuccess(
-		string $message = null, string $to = null, bool $reload = true, int $status = 200, array $headers = []
-	): ?string
+	public function sendSuccess(string $message = null, array $params = [], int $status = 200): ?string
     {
     	if (Request::isAjax()) {
 		    Response::json([
-		    	'ok'     => true,
-			    'msg'    => $message ?? 'Dane zostały zapisane',
-			    'to'     => $to,
-			    'reload' => $reload
+		    	'ok'       => true,
+			    'msg'      => $message ?? 'Dane zostały zapisane',
+			    'params'   => $params,
 		    ],
 			    $status,
-			    $headers
+			    []
 		    );
 	    } else {
 		    Session::msg($message);
@@ -86,17 +83,18 @@ abstract class BaseController
 	    }
     }
     
-    public function sendError(string $message = null, int $status = 400, array $headers = []): ?string
+    public function sendError(string $message = null, array $params = [], int $status = 400): ?string
     {
 	    if (Request::isAjax()) {
 		    Response::json([
 			    'ok'     => false,
 			    'msg'    => $message,
 			    'inputs' => Validator::getErrors(),
-			    'csrf'   => Session::get('@csrf.'.Router::csrfPath())
+			    'csrf'   => Session::get('@csrf.'.Router::csrfPath()),
+			    'params' => $params
 		    ],
 			    $status,
-			    $headers
+			    []
 		    );
 	    } else {
 		    Session::msg($message, 'danger');

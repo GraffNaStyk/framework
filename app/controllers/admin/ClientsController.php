@@ -3,8 +3,8 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
-use App\Model\Client;
 use App\Facades\Http\Request;
+use App\Model\Client;
 use App\Rules\ClientValidator;
 
 class ClientsController extends Controller
@@ -31,12 +31,14 @@ class ClientsController extends Controller
         if (! $this->validate($request->all(), ClientValidator::class)) {
             return $this->sendError('Formularz nie został wysłany');
         }
-        
+
         Client::insert($request->all())->exec();
 
-        return $this->sendSuccess('Użytkownik dodany', '/clients');
+        return $this->sendSuccess('Użytkownik dodany', [
+        	'to' => '/clients'
+        ]);
     }
-    
+
     public function update(Request $request)
     {
     
