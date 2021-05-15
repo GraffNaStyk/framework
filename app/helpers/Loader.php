@@ -29,7 +29,7 @@ class Loader
 			$cssArr = glob(css_path("$folder/*.css"), GLOB_BRACE);
 
 			$rebuild = false;
-			$mtime = filemtime(js_path('build/'.$folder.'/main.css'));
+			$mtime = filemtime(js_path($folder.'.css'));
 			
 			foreach ($cssArr as $item) {
 				if (filemtime($item) > $mtime) {
@@ -39,16 +39,16 @@ class Loader
 			}
 			
 			if ($rebuild) {
-				unlink(css_path('build/'.$folder.'/main.css'));
+				unlink(css_path($folder.'.css'));
 				$cssString = null;
 				
-				foreach ($cssArr as $key => $css) {
+				foreach ($cssArr as $css) {
 					if ((bool) is_readable($css)) {
 						$cssString .= preg_replace('/\s\s+/', '', file_get_contents($css));
 					}
 				}
 				
-				file_put_contents(css_path('build/'.$folder.'/main.css'), $cssString);
+				file_put_contents(css_path($folder.'.css'), $cssString);
 			}
 		}
 		
@@ -59,7 +59,7 @@ class Loader
 		}
 		
 		$applyCss .= trim('<link rel="stylesheet" href="'.
-				self::$url.str_replace(app_path(), '', css_path('build/'.$folder.'/main.css')).'">').PHP_EOL;
+				self::$url.str_replace(app_path(), '', css_path($folder.'.css')).'">').PHP_EOL;
 		
 		return $applyCss;
 	}
