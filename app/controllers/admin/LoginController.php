@@ -29,7 +29,7 @@ class LoginController extends Controller
         if (! $this->validate($request->all(), LoginValidator::class)) {
             $this->sendError('Formularz nie zostal wysłany');
         }
-	
+
 	    $user = User::select()
 		    ->where('name', '=', $request->get('name'))
 		    ->exist();
