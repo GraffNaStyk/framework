@@ -122,7 +122,7 @@ class Loader
 			return trim('<script src="'.
 				self::$url.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);
 		}
-		
+
 		return '';
 	}
 }

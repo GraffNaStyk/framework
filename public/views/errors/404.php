@@ -22,7 +22,7 @@
   }
 
   .fa-5, h2 {
-    font-size: 12em;
+    font-size: 5em;
     font-weight: 600;
     display:inline-block;
     margin: 0;
@@ -33,7 +33,7 @@
   }
 
   .button {
-    font-size: 2em;
+    font-size: 1.4em;
     background: white;
     border: 0;
     cursor:pointer;
@@ -42,6 +42,10 @@
     text-decoration: none;
     text-underline: none;
     transition: .6s;
+    display: block;
+    margin: 0 auto;
+    width: 220px;
+    border-radius: 20px;
   }
 
   .button:hover {
