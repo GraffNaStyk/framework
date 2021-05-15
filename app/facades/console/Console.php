@@ -53,12 +53,17 @@ class Console
         exit;
     }
     
-    public static function output(string $output, $background='black')
+    public static function output($output, $background='black')
     {
 	    if (php_sapi_name() === 'cli') {
 		    echo "\e[" . self::$backgrounds[mb_strtolower($background)] . "m" . $output . PHP_EOL . "\e[0m\n";
 	    } else {
-		    echo $output . '<br />';
+	    	if (is_array($output) || is_object($output)) {
+	    		pd($output, false);
+		    } else {
+			    echo $output . '<br />';
+		    }
+
 		    flush();
 		    ob_flush();
 	    }
