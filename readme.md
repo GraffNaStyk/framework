@@ -167,8 +167,7 @@ Model::decrement('field', 'value')->where('param1', 'is', 'param2')->exec();
 Model::lastId();
 ```
 
-#Javascript responses
-
+# Javascript responses
 | Typ | Opis |
 | ------ | ------ |
 | res.params.modal | Otwiera kolejny modal |
