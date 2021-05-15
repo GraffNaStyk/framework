@@ -13,11 +13,7 @@ const message = (res, selector) => {
     }
   }
 
-  let form = $.el(`form[data-action="${selector}"] .form__grid`);
-
-  if (form === null) {
-    form = $.el(`form[data-action="${selector}"] .form__long__modal__grid`);
-  }
+  let form = $.el(`form[data-action="${selector}"] .modal-body`);
 
   if (form === null) {
     form = $.el(`form[data-action="${selector}"]`);
@@ -28,5 +24,5 @@ const message = (res, selector) => {
     <div data-${rand}="" class="alert alert-${res.ok ? 'success' : 'danger'}" role="alert">
        ${res.msg}
      </div>
-   `, 'beforebegin');
+   `, 'afterbegin');
 }
