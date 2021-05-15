@@ -5,7 +5,7 @@
 
 .form-control {
   border-radius: 8px !important;
-  padding: .6rem 1rem!important;
+  padding: .4rem 1rem!important;
   height: 100% !important;
 }
 
@@ -15,6 +15,7 @@ label span, div span {
 
 label {
   margin: 0!important;
+  position: relative;
 }
 
 .ss-single-selected {
@@ -99,9 +100,23 @@ button:hover i, input[type="submit"]:hover i {
   grid-gap: 10px;
 }
 
+.form__long__modal__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  grid-auto-flow: dense;
+  max-width:100%;
+  list-style: none;
+  grid-gap: 10px;
+}
+
+.form__long__modal__grid label input, .form__long__modal__grid label select {
+  height: 41px!important;
+}
+
 ::placeholder {
   color: #7e878f !important;
   opacity: 1;
+  font-size: 13px;
 }
 
 p.hidden__label {
@@ -110,6 +125,13 @@ p.hidden__label {
   margin: 0;
   right: 2%;
   color: #747D85 !important;
+  font-size: 13px;
+}
+
+label b {
+  font-size: 13px;
+  margin-left: 7px;
+  margin-bottom: 4px;
 }
 
 .ss-main .ss-single-selected .placeholder .ss-disabled {

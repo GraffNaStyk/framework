@@ -16,13 +16,16 @@ const message = (res, selector) => {
   let form = $.el(`form[data-action="${selector}"] .form__grid`);
 
   if (form === null) {
+    form = $.el(`form[data-action="${selector}"] .form__long__modal__grid`);
+  }
+
+  if (form === null) {
     form = $.el(`form[data-action="${selector}"]`);
   }
 
   lastRandom = rand;
   $.adjacent(form, `
     <div data-${rand}="" class="alert alert-${res.ok ? 'success' : 'danger'}" role="alert">
-       <i class="fa fa-${res.ok ? 'check' : 'exclamation'} mr-2" style="color: ${res.ok ? '#155724' : '#721c24'};"></i>
        ${res.msg}
      </div>
    `, 'beforebegin');

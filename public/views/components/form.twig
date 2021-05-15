@@ -4,6 +4,7 @@
       {{ data.label }}
       <input style="display: none;" type="{{ data.type }}" name="{{ data.name }}">
     {% else %}
+      <b>{{ data.label }}</b>
       <input placeholder="{{ data.label }}"
              class="form-control {{ data.class }}"
              type="{{ data.type }}"
