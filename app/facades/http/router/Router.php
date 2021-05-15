@@ -163,6 +163,7 @@ final class Router extends Route
                 if ((string) $params[0]->name === 'request' && ! empty($this->request->all())) {
                     return $controller->{self::getAction()}($this->request);
                 } else {
+	                Log::custom('router', ['msg' => 'Trying to access with empty request']);
                 	self::abort(403);
                 }
     
