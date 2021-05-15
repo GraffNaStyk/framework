@@ -160,8 +160,10 @@ final class Router extends Route
                     return $controller->{self::getAction()}();
                 }
                 
-                if ((string) $params[0]->name === 'request') {
+                if ((string) $params[0]->name === 'request' && ! empty($this->request->all())) {
                     return $controller->{self::getAction()}($this->request);
+                } else {
+                	self::abort(403);
                 }
     
                 if ($reflection->getNumberOfRequiredParameters() > count(self::$params)) {
