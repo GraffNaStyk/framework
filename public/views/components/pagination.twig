@@ -1,0 +1,19 @@
+{% macro list(data) %}
+  {% if data.total != 1 %}
+    <div class="box mt-4">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination m-0 justify-content-end">
+          <li class="page-item"><a class="page-link" href="{{ data.first }}"><span aria-hidden="true">&laquo;</span></a></li>
+          {% if data.previous != 0 %}
+            <li class="page-item"><a class="page-link" href="{{ data.previousLink }}">{{ data.previous }}</a></li>
+          {% endif %}
+          <li class="page-item"><span  style="color: white; background: #007bff;" class="page-link">{{ data.currentPage }}</span></li>
+          {% if data.total >= data.next %}
+            <li class="page-item"><a class="page-link" href="{{ data.nextLink }}">{{ data.next }}</a></li>
+          {% endif %}
+          <li class="page-item"><a class="page-link" href="{{ data.last }}"><span aria-hidden="true">&raquo;</span></a></li>
+        </ul>
+      </nav>
+    </div>
+  {% endif %}
+{% endmacro %}

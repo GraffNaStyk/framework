@@ -179,3 +179,7 @@ i {
 .ss-main .ss-single-selected .placeholder {
   overflow: hidden;
 }
+
+.page-link:focus {
+  box-shadow: none!important;
+}
