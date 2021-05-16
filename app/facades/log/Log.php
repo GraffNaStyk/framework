@@ -42,7 +42,7 @@ class Log
         $lastError = error_get_last();
         
         if (! empty($lastError) && in_array($lastError['type'], [E_USER_ERROR, E_ERROR, E_PARSE])) {
-            header("HTTP/1.0 500 Internal Server Error");
+            header('HTTP/1.0 500 Internal Server Error');
             http_response_code(500);
 
             if (app('dev') === false) {

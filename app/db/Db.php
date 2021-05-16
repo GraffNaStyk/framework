@@ -339,7 +339,7 @@ class Db
         return $this->execute();
     }
 
-    public function get(): array
+    public function get()
     {
         return $this->execute();
     }
