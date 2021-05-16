@@ -159,14 +159,14 @@ final class Router extends Route
                 if (empty($params)) {
                     return $controller->{self::getAction()}();
                 }
-                
+
                 if ((string) $params[0]->name === 'request' && ! empty($this->request->all())) {
                     return $controller->{self::getAction()}($this->request);
-                } else {
+                } else if ((string) $params[0]->name === 'request' && empty($this->request->all())) {
 	                Log::custom('router', ['msg' => 'Trying to access with empty request']);
                 	self::abort(403);
                 }
-    
+
                 if ($reflection->getNumberOfRequiredParameters() > count(self::$params)) {
 	                Log::custom('router', ['msg' => 'Not enough params']);
                     self::abort();
@@ -194,7 +194,7 @@ final class Router extends Route
                 if ((string) $this->request->getMethod() !== (string) $route->getMethod()) {
                     self::abort(405);
                 }
-    
+
                 $routeExist = true;
                 $this->setCurrentRoute($route);
                 $this->setMatches(array_slice($matches, 1));
