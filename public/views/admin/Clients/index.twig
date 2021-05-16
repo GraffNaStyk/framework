@@ -1,6 +1,7 @@
 {% extends layout %}
   {% import 'components/button.twig' as button %}
   {% import 'components/headline.twig' as headline %}
+  {% import 'components/pagination.twig' as pagination %}
 {% block content %}
 <div class="box">
   {{ headline.title({
@@ -40,5 +41,5 @@
     </tbody>
   </table>
 </div>
-
+  {{ pagination.list(pagination) }}
 {% endblock %}

@@ -186,11 +186,11 @@ final class Router extends Route
     public function setParams(): void
     {
         $routeExist = false;
-        
+
         foreach (self::$routes as $key => $route) {
             $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
-            
-            if (preg_match_all('#^' . $pattern . '$#', self::$url, $matches)) {
+
+            if (preg_match('#^'.$pattern.'$#', self::$url, $matches, PREG_OFFSET_CAPTURE)) {
                 if ((string) $this->request->getMethod() !== (string) $route->getMethod()) {
                     self::abort(405);
                 }
