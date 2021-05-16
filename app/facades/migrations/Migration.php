@@ -47,8 +47,9 @@ class Migration
             if (!isset($migrationContent[$migration]) || $isDump) {
                 $migrationContent[$migration] = ['date' => date('Y-m-d H:i:s')];
                 $migration = new $migration();
-                Console::output('Migration '.get_class($migration). ' has been make', 'blue');
+                Console::output('Migration '.get_class($migration). ' start '.date('H:i:s'), 'blue');
                 $migration->up(new Schema(app['model-provider'].$migration->model, $isDump));
+	            Console::output('Migration '.get_class($migration). ' has been make '.date('H:i:s'), 'green');
             }
         }
         

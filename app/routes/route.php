@@ -1,7 +1,7 @@
 <?php
 
-use App\Facades\Http\Router\Router;
 use App\Facades\Http\Router\Route;
+use App\Facades\Http\Router\Router;
 
 Route::when('/admin', '/dash');
 
@@ -23,14 +23,15 @@ Route::alias('/admin', function () {
 			
 			//@Route users
 			Route::get('/users/{name}', 'Dash@users');
-			
+	
 			//@Route clients
-			Route::get('/clients', 'Clients@index')->middleware(['example']);
+			Route::post('/clients/store', 'Clients@store');
 			Route::get('/clients/add', 'Clients@add');
+			Route::get('/clients', 'Clients@index')->middleware(['example']);
+			Route::get('/clients/{page}', 'Clients@index')->middleware(['example']);
 			Route::get('/clients/edit/{id}', 'Clients@edit');
 			Route::get('/clients/details/{id}', 'Clients@show');
-			Route::post('/clients/store', 'Clients@store');
-			
+
 			//@Route password reset
 			Route::get('/password', 'Password@index');
 			Route::post('/password/store', 'Password@store');
