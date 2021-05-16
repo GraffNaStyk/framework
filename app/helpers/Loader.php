@@ -26,10 +26,13 @@ class Loader
 		$folder = Router::getAlias();
 		
 		if (app('dev')) {
-			$cssArr = glob(css_path("$folder/*.css"), GLOB_BRACE);
+			$cssArr = [
+				...glob(css_path("$folder/*.css"), GLOB_BRACE),
+				...glob(css_path("components/*.css"), GLOB_BRACE)
+			];
 
 			$rebuild = false;
-			$mtime = filemtime(js_path($folder.'.css'));
+			$mtime = filemtime(css_path($folder.'.css'));
 			
 			foreach ($cssArr as $item) {
 				if (filemtime($item) > $mtime) {
