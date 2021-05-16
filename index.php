@@ -1,7 +1,7 @@
 <?php
 
 if (! file_exists(__DIR__.'/app/config/app.php')) {
-	exit('No app config file');	
+	exit('No app config file');
 }
 
 if (! file_exists(app_path('app/config/.env'))) {
@@ -68,6 +68,11 @@ function dd($item, $die = true): void
 function app($key)
 {
     return \App\Facades\Property\Get::check(app, $key);
+}
+
+function config($key)
+{
+	return require_once app_path('app/config/'.$key.'.php');
 }
 
 require_once __DIR__.'/app/bootstrap.php';
