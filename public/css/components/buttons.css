@@ -1,0 +1,39 @@
+.btn {
+  padding: .340rem 1rem!important;
+  font-size: 14px;
+}
+
+.btn-outline-warning {
+  color: #ffad10!important;
+}
+
+.btn-outline-warning:hover {
+  color: white!important;
+  background: #ffad10!important;
+}
+
+.btn-warning {
+  background: #ffad10!important;
+  color: white!important;
+}
+
+.btn:focus {
+  box-shadow: none!important;
+}
+
+.text-warning {
+  color: #ffad10!important;
+}
+
+.btn-danger, .btn-outline-danger:hover {
+background-color: #b01e2c!important;
+}
+
+.btn:hover i.fa {
+  color: white!important;
+  transition: .5s;
+}
+
+.bt i.fa {
+  transition: .5s;
+}

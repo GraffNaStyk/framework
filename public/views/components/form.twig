@@ -4,7 +4,9 @@
       {{ data.label }}
       <input style="display: none;" type="{{ data.type }}" name="{{ data.name }}">
     {% else %}
-      <b>{{ data.label }}</b>
+      {% if data.label %}
+        <b>{{ data.label }}</b>
+      {% endif %}
       <input placeholder="{{ data.label }}"
              class="form-control {{ data.class }}"
              type="{{ data.type }}"
@@ -20,6 +22,9 @@
 
 {% macro select(data) %}
   <label>
+    {% if data.label %}
+      <b>{{ data.label }}</b>
+    {% endif %}
     <select name="{{ data.name }}" data-select="slim" {% if data.url %}data-url="{{ data.url }}"{% endif %} {{ data.multiple }}>
       {% if data.data %}
         <option data-placeholder="true">{{ data.label }}</option>
@@ -33,6 +38,9 @@
 
 {% macro textarea(data) %}
 <label>
+  {% if data.label %}
+    <b>{{ data.label }}</b>
+  {% endif %}
   <textarea
    class="form-control {{ data.class }}"
    name="{{ data.name }}"
@@ -42,7 +50,7 @@
 {% endmacro textarea %}
 
 {% macro submit(data) %}
-  <button class="btn {{ data.class }} submit__button"> {{ data.value }} </button>
+  <button class="btn {{ data.class }} submit__button btn-outline-success"> {{ data.value }} </button>
 {% endmacro submit %}
 
 {% macro csrf(path) %}

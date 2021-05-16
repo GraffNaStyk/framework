@@ -172,24 +172,6 @@ table tbody tr:nth-child(odd) td {
   padding: .4rem!important;
 }
 
-.btn {
-  padding: .340rem .75rem!important;
-  font-size: 14px;
-}
-
-.btn-outline-warning {
-  color: #f3a423!important;
-}
-
-.btn-outline-warning:hover {
-  color: white!important;
-}
-
-.btn-warning {
-  background: #f3a423!important;
-  color: white!important;
-}
-
 i {
   pointer-events: none;
 }
