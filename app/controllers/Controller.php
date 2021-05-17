@@ -13,13 +13,17 @@ class Controller extends BaseController
     {
         parent::__construct();
         $this->setLayout();
-        $this->set(['page' => ['title' => 'Graff CRM']]);
     }
     
     private function setLayout()
     {
-        View::layout(
-            strtolower(Url::segment(Router::getInstance()->getCurrentRoute()->getNamespace(), 2, '\\'))
-        );
+    	$layout = strtolower(
+    		Url::segment(Router::getInstance()->getCurrentRoute()->getNamespace(), 2, '\\')
+	    );
+        View::layout($layout);
+        
+        if ($layout === 'admin') {
+        	$this->set(['menu' => config('menu')]);
+        }
     }
 }

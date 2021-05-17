@@ -1,0 +1,23 @@
+{% block content %}
+  {% for key,item in menu %}
+    <a {% if item.parent is iterable %}
+      href="#" class="has__parent"
+    {% else %}
+      href="{{ url(item.href) }}"
+     {% endif %}>
+      <i class="fa fa-{{ item.ico }}"></i>
+      {{ key }}
+    </a>
+    {% if item.parent is iterable %}
+      <div class="parent">
+        {% for pKey,pItem in item.parent %}
+          {% if pItem.attr %}
+            <a class="render" data-el="{{ pItem.el }}" data-url="{{ pItem.url }}" href="#">{{ pKey }}</a>
+          {% else %}
+            <a href="{{ url(pItem.href) }}">{{ pKey }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endblock %}

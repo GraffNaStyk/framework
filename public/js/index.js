@@ -14,6 +14,10 @@ if (el !== null) {
     className = '.right-panel';
   }
 
+  if (window.innerWidth >= 990) {
+    $.el('.left-panel').classList.remove('d-flex');
+  }
+
   let element = $.el(className);
 
   if (element !== undefined && element !== null) {

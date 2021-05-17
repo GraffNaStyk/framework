@@ -12,8 +12,6 @@
     {{ css|raw }}
 </head>
 <body>
-{% import 'components/form.twig' as form %}
-{% import 'components/button.twig' as button %}
 <nav class="navbar navbar-expand-lg top__nav justify-content-between">
   <a href="{{ url('/dash') }}" class="logo">DASHBOARD</a>
 
@@ -35,14 +33,7 @@
 <section class="grid">
 
   <aside class="left-panel d-flex">
-    <a href="{{ url() }}"> <i class="fa fa-home"></i> Główna</a>
-
-    <a href="#" class="has__parent"> <i class="fa fa-users"></i> Klienci</a>
-    <div class="parent">
-      <a class="render" data-el="modal" data-url="/clients/add" href="#">nowy</a>
-      <a href="{{ url('/clients') }}">Lista</a>
-    </div>
-
+    {% include 'layouts/inc/left-menu.twig' %}
   </aside>
 
   <main class="right-panel">

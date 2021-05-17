@@ -3,7 +3,9 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Core\App;
 use App\Facades\Http\Request;
+use App\Helpers\Pagination;
 use App\Model\Client;
 use App\Rules\ClientValidator;
 
@@ -14,10 +16,11 @@ class ClientsController extends Controller
         parent::__construct();
     }
     
-    public function index(Request $request)
+    public function index(int $page=1)
     {
+    	Pagination::make(Client::class, $page, '/clients');
         return $this->render([
-            'users' => Client::select()->get()
+            'users' => Client::select()->limit(App::PER_PAGE)->offset(($page-1)*App::PER_PAGE)->get()
         ]);
     }
 

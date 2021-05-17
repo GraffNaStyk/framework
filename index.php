@@ -75,4 +75,4 @@ function config($key)
 	return require_once app_path('app/config/'.$key.'.php');
 }
 
-require_once __DIR__.'/app/bootstrap.php';
+require_once app_path('app/bootstrap.php');

@@ -19,7 +19,7 @@ class Migration_File_2021_02_06__11_23
 		$schema->enum('visible', ['y', 'n'])->default('y');
 		$schema->run();
 	}
-	
+
 	public function down(Schema $schema)
 	{
 		$schema->clear();
