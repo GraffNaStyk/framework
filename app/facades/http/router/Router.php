@@ -139,11 +139,7 @@ final class Router extends Route
     {
         $alias = mb_strtolower(end(explode('\\', self::getNamespace())));
 
-        if ($alias === 'http') {
-            return 'http';
-        }
-
-        return 'admin';
+		return $alias === 'http' ? $alias : 'admin';
     }
     
     private function create(string $controller)
