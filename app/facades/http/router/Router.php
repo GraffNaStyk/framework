@@ -3,6 +3,7 @@
 namespace App\Facades\Http\Router;
 
 use App\Core\Kernel;
+use App\Events\EventServiceProvider;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Http\Request;
 use App\Facades\Log\Log;
@@ -52,10 +53,24 @@ final class Router extends Route
 			}
 		}
 
-		$this->create(self::$route->getNamespace() . '\\' . self::getClass() . 'Controller');
+		$this->create(self::$route->getNamespace().'\\'.self::getClass().'Controller');
 		$this->runMiddlewares('after');
+		$this->dispatchEvents();
 	}
-    
+	
+	private function dispatchEvents()
+	{
+		$events = EventServiceProvider::getListener(
+			self::$route->getNamespace().'\\'.self::getClass().'Controller'
+		)[self::getAction()];
+
+		if (! empty($events)) {
+			foreach ($events as $event) {
+				(new $event)->handle();
+			}
+		}
+	}
+
     private function runMiddlewares(string $when): void
     {
         if (self::$route->getMiddleware() !== null) {
