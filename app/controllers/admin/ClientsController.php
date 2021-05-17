@@ -3,7 +3,6 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
-use App\Core\App;
 use App\Facades\Http\Request;
 use App\Helpers\Pagination;
 use App\Model\Client;
@@ -20,7 +19,7 @@ class ClientsController extends Controller
     {
     	Pagination::make(Client::class, $page, '/clients');
         return $this->render([
-            'users' => Client::select()->limit(App::PER_PAGE)->offset(($page-1)*App::PER_PAGE)->get()
+            'users' => Client::select()->paginate($page)->get()
         ]);
     }
 

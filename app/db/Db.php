@@ -2,6 +2,7 @@
 
 namespace App\Db;
 
+use App\Core\App;
 use App\Db\Eloquent\Builder;
 use App\Db\Eloquent\Handle;
 use App\Db\Eloquent\Variables;
@@ -330,6 +331,14 @@ class Db
         $this->query .= " OFFSET {$offset}";
     
         return $this;
+    }
+    
+    public function paginate(int $page): Db
+    {
+    	$this->limit(App::PER_PAGE)
+	    ->offset(($page-1)*App::PER_PAGE);
+
+    	return $this;
     }
 
     public function first()
