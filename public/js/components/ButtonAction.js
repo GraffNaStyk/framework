@@ -8,6 +8,11 @@ $.on('click', '.action', (e) => {
     data: data
   }).then(res => res.json())
   .then(res => {
+    if (res.isError) {
+      message(res, e.target.dataset.url);
+      return;
+    }
+
     if (res.csrf) {
       $.elements(`button[data-url="${e.target.dataset.url}"]`).forEach((k,v) => {
         k.dataset.csrf = res.csrf;
@@ -34,6 +39,11 @@ const Render = (e) => {
     el: e.target.dataset.el
   }).then(res => {
     $.loaderStop();
+    if (res.isError) {
+      message(res, e.target.dataset.url);
+      return;
+    }
+
     res.text().then(result => {
       if (e.target.dataset.el !== 'modal') {
         if (e.target.dataset.append) {

@@ -7,6 +7,11 @@ class App {
     this.bindActions();
     this.bindConfirms();
     this.loaderExist = false;
+    this.msgCodes = {
+      404: 'Podana strona nie istnieje',
+      405: 'Brak dostępu do zasobu',
+      500: 'Wystąpił nieoczekiwany problem, prosimy spróbować za chwile'
+    };
   }
 
   setDocumentUrl() {
@@ -73,7 +78,9 @@ class App {
       body: data
     }).then(res => {
       if ([404,500,405].includes(res.status)) {
-        return {};
+        res.msg = this.msgCodes[res.status];
+        res.isError = true;
+        return res;
       }
 
       if (res.status === 401) {
@@ -93,7 +100,9 @@ class App {
       },
     }).then(res => {
       if ([404,500,405].includes(res.status)) {
-        return {};
+        res.msg = this.msgCodes[res.status];
+        res.isError = true;
+        return res;
       }
 
       if (res.status === 401) {

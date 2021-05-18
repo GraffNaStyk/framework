@@ -13,6 +13,11 @@ $.on('submit', 'form',  (e) => {
       $.loaderStop();
       const contentType = res.headers.get('content-type');
 
+      if (res.isError) {
+        message(res, that.dataset.action);
+        return;
+      }
+
       if (contentType && contentType.indexOf('application/json') !== -1) {
         res.json().then(res => {
           if (res === null || res === '' || res.length === 0) {
