@@ -26,26 +26,11 @@ class Console
 
         if (class_exists(self::$path.ucfirst(self::$argv[0]))) {
             $job = self::$path.ucfirst(self::$argv[0]);
-            $tmp = self::$argv;
-            array_shift ($tmp);
-            array_shift ($tmp);
-            $job = new $job($tmp);
-
-            if (method_exists($job, self::$argv[1])) {
-                $job->{self::$argv[1]}();
-            } else {
-                self::output('Method not exist: method -> '.self::$argv[1].' in class -> '.self::$argv[0], 'red');
-                self::output('Remember: arg[0]=Class name in console directory, arg[1]=Method name in class, arg[2]=New file name', 'red');
-            }
+	        array_shift(self::$argv);
+            new $job(self::$argv);
         } else {
             self::output('Class not exist: '.self::$path.ucfirst(self::$argv[0]), 'red');
-            self::output('Remember: arg[0]=Class name in console directory, arg[1]=Method name in class, arg[2]=New file name', 'red');
         }
-    }
-    
-    public function getArgs()
-    {
-        return self::$argv;
     }
     
     public static function end()

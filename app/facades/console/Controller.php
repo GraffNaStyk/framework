@@ -9,32 +9,27 @@ class Controller
     
     public function __construct($args = [])
     {
-        $this->name = $args[0];
+	    $this->namespace = $args[0];
+	    $this->name      = $args[1];
         $this->file = file_get_contents(app_path('app/facades/http/controller'));
+        $this->make();
+        $this->put();
     }
     
-    public function http()
+    public function make()
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Controller', $this->file);
-        $this->file = str_replace('PATH', 'Http', $this->file);
-        $this->put('http');
+        $this->file = str_replace('PATH', ucfirst($this->namespace), $this->file);
     }
     
-    public function admin()
-    {
-        $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Controller', $this->file);
-        $this->file = str_replace('PATH', 'Admin', $this->file);
-        $this->put('admin');
-    }
-    
-    public function put($where)
+    public function put()
     {
         if (file_put_contents(
-            app_path('app/controllers/'.$where.'/'.ucfirst($this->name).'Controller.php'),
+            app_path('app/controllers/'.ucfirst($this->namespace).'/'.ucfirst($this->name).'Controller.php'),
             $this->file
         )) {
             Console::output(
-                'Controller in path: app/controllers/'.$where.'/'.ucfirst($this->name).'Controller.php created.',
+                'Controller in path: App/Controllers/'.ucfirst($this->namespace).'/'.ucfirst($this->name).'Controller.php created.',
                 'green'
             );
         }

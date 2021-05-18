@@ -11,6 +11,7 @@ class Rule
     {
         $this->name = $args[0];
         $this->file = file_get_contents(app_path('app/facades/http/rule'));
+        $this->make();
     }
     
     public function make()

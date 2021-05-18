@@ -12,6 +12,7 @@ class Cron
     {
         $this->name = $args[0];
         $this->file = file_get_contents(app_path('app/facades/http/cron'));
+        $this->make();
     }
     
     public function make()
