@@ -12,7 +12,12 @@ class Cron
     {
         $this->name = $args[0];
         $this->file = file_get_contents(app_path('app/facades/http/cron'));
-        $this->make();
+        
+        if (isset($args[1])) {
+        	$this->run();
+        } else {
+	        $this->make();
+        }
     }
     
     public function make()
@@ -31,7 +36,7 @@ class Cron
     
     public function run()
     {
-        $class = $this->path.$this->name.'Cronjob';
+        $class = $this->path.$this->name.'Cron';
         (new $class());
     }
 }

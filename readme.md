@@ -106,14 +106,13 @@ Route::crud('url', 'Controller');
 # Console
 | Typ | Opis |
 | ------ | ------ |
-| Crontab | time php path/to/console cron run fileName |
-| Controller | php console controller {admin:http} fileName |
-| Cron | php console cron fileName |
-| Model | php console model make fileName Table |
-| Migrate | php console migrate method - up,down,make,dump fileName table |
-| Middleware | php console middleware make fileName |
-| Rule | php console rule make fileName |
-
+| Crontab | time php path/to/console cron {fileName} run |
+| Controller | php console controller {namespace} {controller} |
+| Cron | php console cron {fileName} |
+| Model | php console model {fileName} Table |
+| Migrate | php console {method - up,down,make,dump} optional:{fileName table} |
+| Middleware | php console middleware {fileName} |
+| Rule | php console rule {fileName} |
 
 # Model
 app/model
