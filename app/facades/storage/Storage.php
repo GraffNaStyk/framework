@@ -136,8 +136,7 @@ class Storage
 	
 	public function get(string $path): string
 	{
-		$path = ltrim($path, '/');
-		return file_get_contents(self::$disk.'/'.$path);
+		return file_get_contents(self::$disk.'/'.ltrim($path, '/'));
 	}
 	
 	public function make(string $path, int $mode = 0775): Storage
