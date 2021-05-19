@@ -17,7 +17,7 @@ class ClientsController extends Controller
     
     public function index(int $page=1)
     {
-    	Pagination::make(Client::class, $page, '/clients');
+    	Pagination::make(Client::class, $page, '/clients/page');
         return $this->render([
             'users' => Client::select()->paginate($page)->get()
         ]);

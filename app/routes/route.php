@@ -25,12 +25,20 @@ Route::alias('/admin', function () {
 			Route::get('/users/{name}', 'Dash@users');
 	
 			//@Route clients
+			Route::group(
+				[
+					'/clients',
+					'/clients/page',
+					'/clients/page/{page}'
+				],
+				'Clients@index',
+				'get'
+			)->middleware(['example']);
+			
 			Route::post('/clients/store', 'Clients@store');
 			Route::get('/clients/add', 'Clients@add');
-			Route::get('/clients', 'Clients@index')->middleware(['example']);
-			Route::get('/clients/{page}', 'Clients@index')->middleware(['example']);
 			Route::get('/clients/edit/{id}', 'Clients@edit');
-			Route::get('/clients/details/{id}', 'Clients@show');
+			Route::get('/clients/show/{id}', 'Clients@show');
 
 			//@Route password reset
 			Route::get('/password', 'Password@index');

@@ -31,7 +31,7 @@
           <td>{{ user.ftp_user }}</td>
           <td>{{ user.db_user }}</td>
           <td class="position-sticky">
-            {{ button.link({url:'/test/'~user.mail, ico: 'fa-edit', tip: 'haloo'}) }}
+            {{ button.link({url:'/clients/show/'~user.id, ico: 'fa-edit', tip: 'haloo'}) }}
             &nbsp;
             {{ button.link({url:'/clients/details/'~user.id, ico: 'fa-eye'}) }}
             &nbsp;

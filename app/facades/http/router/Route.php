@@ -41,11 +41,21 @@ abstract class Route
 	    return self::match($url, $controller, 'put', $rights);
     }
     
+    public static function group(array $urls, string $controller, string $method = 'post', int $rights = 4): Collection
+    {
+    	foreach ($urls as $key => $url) {
+    		if (array_key_last($urls) === $key) {
+    			return self::match($url, $controller, $method, $rights);
+		    }
+		    self::match($url, $controller, $method, $rights);
+	    }
+    }
+
     public static function delete(string $url, string $controller, int $rights = 4): Collection
     {
 	    return self::match($url, $controller, 'delete', $rights);
     }
-    
+
     public static function alias(string $alias, callable $function): void
     {
         self::$alias = $alias;
@@ -66,9 +76,8 @@ abstract class Route
     
     private static function match(string $as, string $route, string $method, int $rights): Collection
     {
-        $route = str_replace('@', '/', $route);
-        $routes = explode('/', $route);
-        
+        $routes = explode('@', $route);
+
         $collection = new Collection (
 	        ucfirst($routes[0]),
 	        lcfirst($routes[1]) ?? 'index',
@@ -77,11 +86,11 @@ abstract class Route
 	        $rights,
 	        self::$middleware
         );
-        
-	    self::$routes[self::$alias . $as ?? $route] = $collection;
-	    
+
+	    self::$routes[self::$alias . $as ?? $routes[0].'/'.$routes[1]] = $collection;
+
 	    if ($method !== 'get') {
-		    Csrf::make(ucfirst($collection->getController()).'@'.$collection->getAction());
+		    Csrf::make($route);
 	    }
 	    
 	    return $collection;
