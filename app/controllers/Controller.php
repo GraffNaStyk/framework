@@ -20,6 +20,7 @@ class Controller extends BaseController
     	$layout = strtolower(
     		Url::segment(Router::getInstance()->getCurrentRoute()->getNamespace(), 2, '\\')
 	    );
+
         View::layout($layout);
         
         if ($layout === 'admin') {
