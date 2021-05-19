@@ -43,8 +43,10 @@ abstract class Route
     
     public static function group(array $urls, string $controller, string $method = 'post', int $rights = 4): Collection
     {
+    	$lastKey = array_key_last($urls);
+
     	foreach ($urls as $key => $url) {
-    		if (array_key_last($urls) === $key) {
+    		if ($lastKey === $key) {
     			return self::match($url, $controller, $method, $rights);
 		    }
 		    self::match($url, $controller, $method, $rights);
