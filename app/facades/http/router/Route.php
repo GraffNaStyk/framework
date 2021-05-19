@@ -49,6 +49,7 @@ abstract class Route
     		if ($lastKey === $key) {
     			return self::match($url, $controller, $method, $rights);
 		    }
+    		
 		    self::match($url, $controller, $method, $rights);
 	    }
     }

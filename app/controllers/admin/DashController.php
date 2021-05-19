@@ -5,7 +5,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\Controller;
 use App\Facades\Http\Request;
 use App\Facades\Http\View;
-use App\Helpers\Storage;
+use App\Facades\Storage\Storage;
 use App\Model\File;
 use App\Model\User;
 

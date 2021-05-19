@@ -3,7 +3,7 @@
 namespace App\Facades\Log;
 
 use App\Facades\Http\Router\Router;
-use App\Helpers\Storage;
+use App\Facades\Storage\Storage;
 
 class Log
 {

@@ -4,7 +4,7 @@ namespace App\Facades\Migrations;
 
 use App\Facades\Console\Console;
 use App\Facades\Console\Model;
-use App\Helpers\Storage;
+use App\Facades\Storage\Storage;
 
 class Migration
 {

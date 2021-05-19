@@ -8,9 +8,9 @@ use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\Session;
 use App\Facades\Http\View;
+use App\Facades\Storage\Storage;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
-use App\Helpers\Storage;
 use App\Rules\RuleValidator;
 
 abstract class BaseController
