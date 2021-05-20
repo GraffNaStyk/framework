@@ -169,7 +169,7 @@ label b {
   content: "";
   height: 15px;
   width: 15px;
-  left: 2px;
+  left: 3px;
   bottom: 3px;
   background-color: white;
   -webkit-transition: .4s;
