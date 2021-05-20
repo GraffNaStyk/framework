@@ -89,7 +89,6 @@ body {
 .grid aside.left-panel div.parent {
   display: none;
   flex-direction: column;
-  font-size: .9rem;
   background: #242229;
 }
 

@@ -56,3 +56,19 @@
 {% macro csrf(path) %}
   <input type="hidden" name="_csrf" value="{{ csrf(path) }}">
 {% endmacro csrf %}
+
+{% macro switch(data) %}
+  <div class="row mx-0 mb-2 position-relative switch__row">
+    <div class="col-8">
+      <b>{{ data.text }}</b>
+    </div>
+    <div class="col-4 d-flex justify-content-end align-items-center">
+      <b class="mr-2 switch__text__field-{{ data.name }}">{{ data.value == 1 ? 'Tak' : 'Nie' }}</b>
+      <label class="switch">
+        <input type="checkbox" name="{{ data.name }}" value="{{ data.value }}" {{ data.value == 1 ? 'checked' }}>
+        <span class="slider switch_slider_toggle" data-inputname="{{ data.name }}"></span>
+        <input type="hidden" name="{{ data.name }}" value="{{ data.value }}">
+      </label>
+    </div>
+  </div>
+{% endmacro switch %}
