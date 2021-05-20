@@ -24,7 +24,7 @@ const throwFormErrors = (res, action) => {
           </span>`);
 
         $.el('.switch_error').setAttribute('style' , 'top: 0');
-        row.setAttribute('style', 'border: 1px solid #ce2e22 !important; border-radius: 8px !important');
+        row.setAttribute('style', 'border: 1px solid #ce2e22 !important; border-radius: 8px !important; padding: 3px;');
       } else {
         let selector = $.el(`form[data-action="${action}"] input[name="${error.field}"]`);
 

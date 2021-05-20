@@ -10,7 +10,7 @@ class ClientValidator
             'name' => 'required|min:4',
             'ftp_server' => 'required|min:4',
             'ftp_user' => 'required|min:4',
-	        'testowyinput' => 'int'
+	        'testowyinput' => 'int|min:30'
         ];
     }
 }
