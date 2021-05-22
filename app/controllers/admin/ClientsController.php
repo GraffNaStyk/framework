@@ -20,7 +20,7 @@ class ClientsController extends Controller
     	Pagination::make(Client::class, $page, '/clients/page');
 
         return $this->render([
-            'users' => Client::select()->paginate($page)->get()
+            'clients' => Client::select()->paginate($page)->get()
         ]);
     }
 
@@ -65,6 +65,10 @@ class ClientsController extends Controller
     
     public function delete(Request $request)
     {
-        dd($request->all());
+    	Client::delete()->where('id', '=', $request->get('id'))->exec();
+
+    	$this->sendSuccess('Usunięto', [
+    		'to' => '/clients'
+	    ]);
     }
 }

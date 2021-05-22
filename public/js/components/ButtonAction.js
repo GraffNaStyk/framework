@@ -4,8 +4,8 @@ $.on('click', '.action', (e) => {
   data['_csrf'] = e.target.dataset.csrf;
 
   $.post({
-    url: e.target.dataset.url,
-    data: data
+    url: e.target.dataset.url.replace('/'+e.target.dataset.id, ''),
+    data: data,
   }).then(res => res.json())
   .then(res => {
     if (res.isError) {

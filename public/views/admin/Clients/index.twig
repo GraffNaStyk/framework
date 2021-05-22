@@ -23,23 +23,23 @@
       </tr>
     </thead>
     <tbody>
-      {% for user in users %}
+      {% for client in clients %}
         <tr>
-          <td>{{ user.name }}</td>
-          <td>{{ user.www }}</td>
-          <td>{{ user.ftp_server }}</td>
-          <td>{{ user.ftp_user }}</td>
-          <td>{{ user.db_user }}</td>
+          <td>{{ client.name }}</td>
+          <td>{{ client.www }}</td>
+          <td>{{ client.ftp_server }}</td>
+          <td>{{ client.ftp_client }}</td>
+          <td>{{ client.db_client }}</td>
           <td class="position-sticky">
-            {{ button.link({url:'/clients/show/'~user.id, ico: 'fa-edit', tip: 'haloo'}) }}
+            {{ button.link({url:'/clients/show/'~client.id, ico: 'fa-edit', tip: 'haloo'}) }}
             &nbsp;
-            {{ button.link({url:'/clients/details/'~user.id, ico: 'fa-eye'}) }}
+            {{ button.link({url:'/clients/details/'~client.id, ico: 'fa-eye'}) }}
             &nbsp;
             {{ button.confirm({
               url:'/clients/delete',
               ico: 'fa-trash',
               type: 'danger',
-              options: {id: user.id},
+              options: {id: client.id},
               csrf: 'Clients@delete',
               title: 'Usuń klienta',
               body: 'Czy na pewno chcesz usunąć klienta'

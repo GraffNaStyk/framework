@@ -67,6 +67,7 @@ class App {
       let options = this.confirms[args.url].options;
       Object.keys(this.confirms[args.url]['options']).forEach(key => data.append(key, options[key]));
       data.append('_csrf', this.el(`form[data-action="${args.url}"] input[name="_csrf"]`).value);
+      args.url = args.url.replace('/'+args.id, '');
     }
 
     return await fetch(this.url + this.prepareFetchUrl(args.url), {
@@ -208,7 +209,9 @@ class App {
     this.buttons = [];
 
     this.elements('button.action').forEach(item => {
-      this.buttons[item.dataset.url] = {'options': JSON.parse(item.dataset.options)};
+      let rand = this.rand();
+      item.setAttribute('data-id', rand);
+      this.buttons[item.dataset.url+'/'+rand] = {'options': JSON.parse(item.dataset.options)};
       item.removeAttribute('data-options');
     })
   }
@@ -217,9 +220,17 @@ class App {
     this.confirms = [];
 
     this.elements('.confirm').forEach(item => {
-      this.confirms[item.dataset.url] = {'options': JSON.parse(item.dataset.options)};
+      let rand = this.rand();
+      item.setAttribute('data-id', rand);
+      this.confirms[item.dataset.url+'/'+rand] = {'options': JSON.parse(item.dataset.options)};
       item.removeAttribute('data-options');
     })
+  }
+
+  rand() {
+    let min = Math.ceil(500);
+    let max = Math.floor(150000);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
 

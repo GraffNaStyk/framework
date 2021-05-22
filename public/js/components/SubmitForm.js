@@ -8,7 +8,8 @@ $.on('submit', 'form',  (e) => {
     $.post({
       url: that.dataset.action,
       form: that,
-      isconfirm: that.dataset.isconfirm
+      isconfirm: that.dataset.isconfirm,
+      id: that.dataset.id
     }).then(res => {
       $.loaderStop();
       const contentType = res.headers.get('content-type');

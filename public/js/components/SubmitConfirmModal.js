@@ -2,7 +2,7 @@ $.on('click', '.confirm', (e) => {
   let elem = e.target.dataset;
 
   const tpl = `
-    <form data-action="${elem.url}" data-isconfirm="">
+    <form data-action="${elem.url+'/'+elem.id}" data-isconfirm="" data-id="${elem.id}">
       <div class="modal-header">
         <h5 class="modal-title">${elem.title}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
