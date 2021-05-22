@@ -28,7 +28,7 @@ class Blueprint
         'longText' => '',
         'timestamp' => ' ',
         'datetime' => ' ',
-	    'decimal' => '9,2',
+	    'float' => '9,2',
     ];
     
     protected string $currentKey = '';

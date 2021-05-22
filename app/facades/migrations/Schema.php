@@ -69,7 +69,7 @@ class Schema extends Blueprint
         return $this;
     }
     
-    public function decimal($name, $length=null): Schema
+    public function float($name, $length=null): Schema
     {
         $this->generate($name, __FUNCTION__, $length);
         return $this;
