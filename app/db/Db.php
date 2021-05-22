@@ -340,6 +340,12 @@ class Db
 
     	return $this;
     }
+    
+    public function create(array $values)
+    {
+    	$this->insert($values);
+    	$this->execute();
+    }
 
     public function first()
     {

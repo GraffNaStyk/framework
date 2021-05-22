@@ -34,7 +34,7 @@ class ClientsController extends Controller
             return $this->sendError('Formularz nie został wysłany');
         }
 
-        Client::insert($request->all())->exec();
+        Client::create($request->all());
 
         return $this->sendSuccess('Użytkownik dodany', [
         	'to' => '/clients'
@@ -46,7 +46,7 @@ class ClientsController extends Controller
     
     }
     
-    public function show(int $id)
+    public function show(int $id, int $l, string $tmp='aaa')
     {
     	$client = Client::select()->where('id', '=', $id)->exist();
     	
