@@ -7,10 +7,11 @@ class ClientValidator
     public function getRule(array $optional = []): array
     {
         return [
-            'name' => 'required|min:4',
-            'ftp_server' => 'required|min:4',
-            'ftp_user' => 'required|min:4',
-	        'testowyinput' => 'int|min:30'
+	        'testowyinput' => 'int|min:1|max:1',
+            'name'         => 'required|min_len:4|string',
+            'ftp_server'   => 'required|min_len:4',
+            'ftp_user'     => 'required|min_len:4',
+	        'www'          => 'float|required'
         ];
     }
 }

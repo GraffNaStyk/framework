@@ -21,36 +21,32 @@ class Rules
 		}
 	}
 	
-	public static function minLength($item, $rule, $field)
+	public static function min_len($item, $rule, $field)
 	{
 		if (strlen($item) < $rule) {
 			return ['msg' => 'Pole jest za krótkie', 'field' => $field];
 		}
 	}
 	
-	public static function maxLength($item, $rule, $field)
+	public static function max_len($item, $rule, $field)
 	{
 		if (strlen($item) > $rule) {
 			return ['msg' => 'Pole jest za długie', 'field' => $field];
 		}
 	}
 	
-	public static function sameAs($item, $rule, $field)
+	public static function same_as($item, $rule, $field)
 	{
 		$route = Router::getInstance();
 
-		if ((string) $item !== (string) $route->request->get($rule)) {
+		if ($item !== $route->request->get($rule)) {
 			return ['msg' => 'Pole '.$field.' jest różne od pola '.$rule, 'field' => $field];
 		}
 	}
 	
 	public static function required($item, $rule, $field)
 	{
-		if (is_numeric($item)) {
-			$item = (int) $item;
-		}
-		
-		if (! isset($item) || $item === '') {
+		if (! isset($item)) {
 			return ['msg' => 'Pole jest wymagane', 'field' => $field];
 		}
 	}
@@ -76,7 +72,7 @@ class Rules
         }
     }
 
-    public static function moreThanZero($item, $rule, $field)
+    public static function more_than_zero($item, $rule, $field)
     {
         if ((int) $item <= 0) {
             return ['msg' => 'Pole musi być większe niż zero', 'field' => $field];
@@ -115,7 +111,7 @@ class Rules
         }
     }
     
-    public static function checkFile($item, $rule, $field)
+    public static function check_file($item, $rule, $field)
     {
         if ($item['error'] !== UPLOAD_ERR_OK) {
             return ['msg' => 'Plik jest uszkodzony', 'field' => $field];
@@ -124,7 +120,7 @@ class Rules
 	
 	public static function float($item, $rule, $field)
 	{
-		if (is_numeric($item) || is_float(str_replace([',', ' '], ['', ''], $item))) {
+		if (! is_numeric($item) && ! is_float($item)) {
 			return ['msg' => 'Wymagana wartość zmniennoprzecinkowa', 'field' => $field];
 		}
 	}

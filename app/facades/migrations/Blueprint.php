@@ -21,15 +21,14 @@ class Blueprint
         'smallint' => '(4)',
         'mediumint' => '(8)',
         'int' => '(11)',
-        'char' => '(10)',
+        'char' => '(20)',
         'varchar' => '(100)',
         'text' => '',
         'mediumText' => '',
         'longText' => '',
         'timestamp' => ' ',
         'datetime' => ' ',
-	    'double' => ' ',
-	    'decimal' => '4,2',
+	    'decimal' => '9,2',
     ];
     
     protected string $currentKey = '';
@@ -67,7 +66,7 @@ class Blueprint
             $this->otherImplementation = rtrim($this->otherImplementation, ', ');
 
             if ($this->otherImplementation !== '') {
-	            $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields 
+	            $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields
 		            . ', ' . $this->otherImplementation . $this->endSql;
             } else {
 	            $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields . $this->endSql;

@@ -165,7 +165,7 @@ final class Router extends Route
                 }
                 
                 $controller = new $controller();
-                $params = $reflection->getParameters();
+                $params     = $reflection->getParameters();
                 
                 if (empty($params)) {
                     return $controller->{self::getAction()}();

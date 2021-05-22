@@ -50,6 +50,11 @@
   color: #c8c8c8;
 }
 
+.my__form label input:focus {
+  box-shadow: none;
+  border-radius: 8px;
+}
+
 .my__form input[type="submit"] {
   border: 1px solid #c8c8c8;
   background: #323c48;

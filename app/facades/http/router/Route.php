@@ -36,12 +36,12 @@ abstract class Route
         return self::match($url, $controller, 'post', $rights);
     }
     
-    public static function put(string $url, string $controller, int $rights = 4): Collection
+    public static function put(string $url, string $controller, int $rights=4): Collection
     {
 	    return self::match($url, $controller, 'put', $rights);
     }
     
-    public static function group(array $urls, string $controller, string $method = 'post', int $rights = 4): Collection
+    public static function group(array $urls, string $controller, string $method='post', int $rights=4): Collection
     {
     	$lastKey = array_key_last($urls);
 
@@ -49,12 +49,12 @@ abstract class Route
     		if ($lastKey === $key) {
     			return self::match($url, $controller, $method, $rights);
 		    }
-    		
+
 		    self::match($url, $controller, $method, $rights);
 	    }
     }
 
-    public static function delete(string $url, string $controller, int $rights = 4): Collection
+    public static function delete(string $url, string $controller, int $rights=4): Collection
     {
 	    return self::match($url, $controller, 'delete', $rights);
     }
@@ -66,7 +66,7 @@ abstract class Route
         self::$alias = null;
     }
 	
-	public static function crud(string $url, string $controller, int $rights = 4)
+	public static function crud(string $url, string $controller, int $rights=4)
 	{
 		self::get($url, $controller.'@index', $rights);
 		self::get($url.'/add', $controller.'@add', $rights);
@@ -81,7 +81,7 @@ abstract class Route
     {
         $routes = explode('@', $route);
 
-        $collection = new Collection (
+        $collection = new Collection(
 	        ucfirst($routes[0]),
 	        lcfirst($routes[1]) ?? 'index',
 	        self::$namespace,
@@ -112,7 +112,7 @@ abstract class Route
         }
     }
     
-    public static function redirect(string $path, int $code = 302, bool $direct = false): void
+    public static function redirect(string $path, int $code=302, bool $direct=false): void
     {
         session_write_close();
         session_regenerate_id();

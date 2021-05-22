@@ -424,8 +424,6 @@ class Db
 
     private function execute()
     {
-        $this->setData();
-        
 	    if ($this->debug) {
 		    $this->develop();
 	    }

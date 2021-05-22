@@ -69,17 +69,11 @@ class Schema extends Blueprint
         return $this;
     }
     
-    public function decimal($name, $length): Schema
+    public function decimal($name, $length=null): Schema
     {
         $this->generate($name, __FUNCTION__, $length);
         return $this;
     }
-	
-	public function double($name): Schema
-	{
-		$this->generate($name, __FUNCTION__);
-		return $this;
-	}
     
     public function enum($name, $options): Schema
     {

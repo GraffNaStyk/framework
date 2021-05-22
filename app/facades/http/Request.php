@@ -6,6 +6,7 @@ use App\Facades\Property\Get;
 use App\Facades\Property\Has;
 use App\Facades\Property\Remove;
 use App\Facades\Property\Set;
+use App\Facades\Validator\Type;
 
 final class Request
 {
@@ -92,7 +93,7 @@ final class Request
             if (is_array($item)) {
                 $this->data[$key] = $this->reSanitize($item);
             } else {
-                $this->data[$key] = $this->clear($item);
+	            $this->data[$key] = $this->clear($item);
             }
         }
     }
@@ -112,12 +113,8 @@ final class Request
     
     private function clear($item)
     {
-        if ((string) $item !== '') {
-            $item = trim($item);
-        }
-    
         if (! is_numeric($item)) {
-            $item = urldecode($item);
+            $item = (string) urldecode($item);
         }
         
         $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
@@ -130,8 +127,7 @@ final class Request
 
         $item = preg_replace('/(;|\||`|&|^|{|}|[|]|\)|\()/i', '', $item);
         $item = preg_replace('/(\)|\(|\||&)/', '', $item);
-        
-        return $item;
+        return Type::get($item);
     }
 
     public function getMethod(): string
