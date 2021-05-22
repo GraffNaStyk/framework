@@ -54,7 +54,7 @@ class Session
     public static function removeFlash($item)
     {
         unset($_COOKIE[$item]);
-        setcookie($item, false, -1, '/', getenv('SERVER_NAME'), true, true);
+        setcookie($item, false, -1, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
     }
 	
 	public static function flashAll(): array
