@@ -263,7 +263,11 @@ final class Router extends Route
     private function setMatches(array $matches): void
     {
     	if (! empty($matches)) {
-		    self::$params = explode('/', $matches[0]);
+		    $matches = explode('/', $matches[0]);
+		
+		    foreach ($matches as $value) {
+			    self::$params[] = $value;
+		    }
 	    }
     }
     
