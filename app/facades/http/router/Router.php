@@ -5,6 +5,7 @@ namespace App\Facades\Http\Router;
 use App\Core\Kernel;
 use App\Events\EventServiceProvider;
 use App\Facades\Csrf\Csrf;
+use App\Facades\Header\Header;
 use App\Facades\Http\Request;
 use App\Facades\Log\Log;
 use ReflectionClass;
@@ -270,7 +271,7 @@ final class Router extends Route
 		    }
 	    }
     }
-    
+
     public static function url(): string
     {
         return getenv('REQUEST_URI');
@@ -307,9 +308,9 @@ final class Router extends Route
         }
     }
     
-    private static function abort($code = 404): void
+    private static function abort($code=404): void
     {
-        header("HTTP/1.1 {$code} Not Found");
+        header("HTTP/1.1 {$code} ".Header::RESPONSE_CODES[$code]);
         http_response_code($code);
         exit(require_once (view_path('errors/'.$code.'.php')));
     }

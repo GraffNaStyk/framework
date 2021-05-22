@@ -57,7 +57,7 @@ class ClientsController extends Controller
     		$this->redirect('/clients');
 	    }
     }
-    
+
     public function edit(int $id)
     {
     	return $this->render();

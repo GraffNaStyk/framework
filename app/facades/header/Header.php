@@ -4,6 +4,15 @@ namespace App\Facades\Header;
 
 class Header
 {
+	const RESPONSE_CODES = [
+		400 => 'Bad Request',
+		401 => 'Unauthorized',
+		403 => 'Forbidden',
+		404 => 'Not Found',
+		405 => 'Method Not Allowed',
+		500 => 'Internal Server Error'
+	];
+	
     public static function set(): void
     {
         header('Content-Type: text/html; charset=utf-8');
