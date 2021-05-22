@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Db\Db;
+use App\Facades\Env\Env;
 use App\Helpers\Loader;
 
 final class App
@@ -14,14 +15,8 @@ final class App
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-
-        $env = file_get_contents(app_path('app/config/.env'));
-	    $environment = [];
-	    
-        foreach (array_filter(explode(PHP_EOL, $env)) as $item) {
-        	$item = explode('=', $item);
-        	$environment[trim($item[0])] = trim($item[1]);
-        }
+	
+	    $environment = Env::set();
 
         if (! empty($environment)) {
             Db::init($environment);
