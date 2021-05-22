@@ -47,7 +47,7 @@ class ClientsController extends Controller
     
     }
     
-    public function show(int $id, int $l, string $tmp='aaa')
+    public function show(int $id)
     {
     	$client = Client::select()->where('id', '=', $id)->exist();
     	
