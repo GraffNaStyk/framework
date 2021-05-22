@@ -76,12 +76,12 @@ class Session
 
     public static function getMsg()
     {
-        return isset($_SESSION['msg']) ? $_SESSION['msg'] : [];
+        return $_SESSION['msg'] ?: [];
     }
 
     public static function getColor()
     {
-        return isset($_SESSION['color']) ? $_SESSION['color'] : '';
+        return $_SESSION['color'] ?: '';
     }
 
     public static function clearMsg()
