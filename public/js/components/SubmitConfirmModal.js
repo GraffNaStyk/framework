@@ -10,11 +10,11 @@ $.on('click', '.confirm', (e) => {
         </button>
       </div>
       <div class="modal-body">
-       <p>${elem.body}</p>
+       <p style="font-size: 14px; text-align: center" class="m-0">${elem.body}</p>
       </div>
       <input type="hidden" name="_csrf" value="${elem.csrf ?? ''}">
       <div class="modal-footer">
-        <button class="btn submit__button">Submit</button>
+        <button class="btn btn-outline-success submit__button btn-outline-success"> Potwierdź </button>
       </div>
     </form>
   `;

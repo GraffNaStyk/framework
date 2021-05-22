@@ -39,6 +39,7 @@ Route::alias('/admin', function () {
 			Route::get('/clients/add', 'Clients@add');
 			Route::get('/clients/edit/{id}', 'Clients@edit');
 			Route::get('/clients/show/{id}', 'Clients@show');
+			Route::post('/clients/delete', 'Clients@delete');
 
 			//@Route password reset
 			Route::get('/password', 'Password@index');

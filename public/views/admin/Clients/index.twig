@@ -35,7 +35,15 @@
             &nbsp;
             {{ button.link({url:'/clients/details/'~user.id, ico: 'fa-eye'}) }}
             &nbsp;
-            {{ button.link({url:'/clients/details/'~user.id, ico: 'fa-trash', type: 'danger'}) }}
+            {{ button.confirm({
+              url:'/clients/delete',
+              ico: 'fa-trash',
+              type: 'danger',
+              options: {id: user.id},
+              csrf: 'Clients@delete',
+              title: 'Usuń klienta',
+              body: 'Czy na pewno chcesz usunąć klienta'
+            })}}
           </td>
         </tr>
       {% endfor %}

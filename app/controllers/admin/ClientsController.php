@@ -63,8 +63,8 @@ class ClientsController extends Controller
     	return $this->render();
     }
     
-    public function delete(int $id)
+    public function delete(Request $request)
     {
-    
+        dd($request->all());
     }
 }
