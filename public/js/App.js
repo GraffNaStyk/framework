@@ -195,7 +195,7 @@ class App {
   loaderStart = () => {
     if (this.loaderExist === false) {
       this.adjacent(document.body, this.loader);
-      this.el('.preloader').style.opacity = .5;
+      this.el('.preloader').style.opacity = .6;
       this.loaderExist = true;
     }
   }
