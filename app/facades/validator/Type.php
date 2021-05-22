@@ -9,6 +9,10 @@ class Type
 		if (is_array($item) || is_object($item)) {
 			return $item;
 		}
+		
+		if (is_bool($item)) {
+			return (bool) $item;
+		}
 
 		if (is_null($item) || (string) trim($item) === '') {
 			return null;
