@@ -68,7 +68,7 @@ class Storage
 		}
 	}
 	
-	public function put($file, $content, $replace = false): bool
+	public function put($file, $content, $replace=false): bool
 	{
 		$file = ltrim($file, '/');
 		

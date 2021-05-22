@@ -152,7 +152,7 @@ final class Router extends Route
                     self::abort();
                 }
             } catch (\ReflectionException $e) {
-            	Log::custom('router', ['msg' => $e->getMessage()]);
+	            Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
                 self::abort();
             }
 
@@ -177,21 +177,59 @@ final class Router extends Route
 	                Log::custom('router', ['msg' => 'Trying to access with empty request']);
                 	self::abort(403);
                 }
+	
+	            $requestParams = $this->request->getData();
+                $paramCount    = count($requestParams);
 
-                if ($reflection->getNumberOfRequiredParameters() > count(self::$params)) {
+                if ($reflection->getNumberOfRequiredParameters() > $paramCount) {
 	                Log::custom('router', ['msg' => 'Not enough params']);
                     self::abort();
                 }
-    
-                return call_user_func_array([$controller, self::getAction()], $this->request->getData());
+
+                $this->checkParamTypes($paramCount, $requestParams, $controller);
                 
+                return call_user_func_array([$controller, self::getAction()], $requestParams);
+
             } catch (\ReflectionException $e) {
-	            Log::custom('router', ['msg' => $e->getMessage()]);
+	            Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
                 self::abort();
             }
         }
         
 	    self::abort();
+    }
+    
+    private function checkParamTypes(int $count, array $requestParams, object $controller)
+    {
+	    if (! empty($requestParams)) {
+	    	try {
+			    for ($i=0; $i < $count; $i++) {
+				    $refParam = new \ReflectionParameter([$controller, self::getAction()], $i);
+				    $type     = preg_replace(
+				    	'/.*?(\w+)\s+\$'.$refParam->name.'.*/',
+					    '\\1',
+					    $refParam->__toString()
+				    );
+				    
+				    if ($type === 'int') {
+					    $type = 'integer';
+				    }
+				
+				    if ($type === 'float') {
+					    $type = 'double';
+				    }
+				
+				    if (gettype($requestParams[$i]) !== $type) {
+					    self::abort(400);
+				    }
+				    
+				    unset($refParam);
+			    }
+		    } catch (\ReflectionException $e) {
+			    Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+			    self::abort();
+		    }
+	    }
     }
     
     public function setParams(): void
@@ -224,8 +262,8 @@ final class Router extends Route
     
     private function setMatches(array $matches): void
     {
-	    if ((bool) strpos($matches[0][0], '/') === true) {
-		    $matches = explode('/', $matches[0][0]);
+	    if ((bool) strpos($matches[0], '/') === true) {
+		    $matches = explode('/', $matches[0]);
 		    foreach ($matches as $value) {
 			    self::$params[] = $value;
 		    }

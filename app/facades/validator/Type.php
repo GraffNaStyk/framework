@@ -17,7 +17,7 @@ class Type
 		if (is_null($item) || (string) trim($item) === '') {
 			return null;
 		} else if (preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/', str_replace([',', ' '], ['.', ''], $item))) {
-			return (double) str_replace([',', ' '], ['.', ''], $item);
+			return (float) str_replace([',', ' '], ['.', ''], $item);
 		} else if (is_numeric($item)) {
 			return (int) $item;
 		} else {
