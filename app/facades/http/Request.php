@@ -170,7 +170,7 @@ final class Request
 
     public function set($item, $data): void
     {
-	    $this->data = array_merge($this->data, Set::set($this->data, $data, $item));
+	    $this->data = array_merge($this->data, Set::set($this->data, Type::get($data), $item));
     }
 
     public function remove($item): void
