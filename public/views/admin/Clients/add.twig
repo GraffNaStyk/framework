@@ -1,7 +1,7 @@
 {% import 'components/form.twig' as form %}
 {% import 'components/headline.twig' as headline %}
 {% block content %}
-  <form data-action="/clients/store" method="post">
+  <form data-action="/clients/store" method="post" data-el="clients">
     <div class="modal-header">
       <h5 class="modal-title">Dodaj klienta</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -61,7 +61,6 @@
       </div>
     </div>
     {{ form.csrf('Clients@store') }}
-    <div data-fetch="true" data-url="/clients/add" data-component="client" data-el="client"></div>
     <div class="modal-footer">
       {{ form.submit({value: 'Zapisz', class: 'btn-outline-success'}) }}
     </div>

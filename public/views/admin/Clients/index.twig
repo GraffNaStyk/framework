@@ -3,61 +3,55 @@
   {% import 'components/headline.twig' as headline %}
   {% import 'components/pagination.twig' as pagination %}
 {% block content %}
-<div class="box">
-  {{ headline.title({
-    text: 'Lista klientów',
-    subtext: 'Eluwina'
-  }) }}
-  <div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <td>Name</td>
-        <td>city</td>
-        <td>street</td>
-        <td>phone</td>
-        <td>email</td>
-        <td class="position-sticky">
-          {{ button.render({url:'/clients/add', ico: 'fa-plus', el: 'modal', type: 'success'}) }}
-        </td>
-      </tr>
-    </thead>
-    <tbody>
-      {% for client in clients %}
-        <tr>
-          <td>{{ client.name }}</td>
-          <td>{{ client.www }}</td>
-          <td>{{ client.ftp_server }}</td>
-          <td>{{ client.ftp_client }}</td>
-          <td>{{ client.db_client }}</td>
-          <td class="position-sticky">
-            {{ button.link({url:'/clients/show/'~client.id, ico: 'fa-edit', tip: 'haloo'}) }}
-            &nbsp;
-            {{ button.link({url:'/clients/details/'~client.id, ico: 'fa-eye'}) }}
-            &nbsp;
-            {{ button.confirm({
-              url:'/clients/delete',
-              ico: 'fa-trash',
-              type: 'danger',
-              options: {id: client.id},
-              csrf: 'Clients@delete',
-              title: 'Usuń klienta',
-              body: 'Czy na pewno chcesz usunąć klienta'
-            }) }}
-            &nbsp;
-            {{ button.action({
-              url:'/clients/store',
-              ico: 'fa-trash',
-              type: 'danger',
-              options: {id: client.id},
-              csrf: 'Clients@store',
-            }) }}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div data-component="clients">
+    <div class="box">
+      {{ headline.title({
+        text: 'Lista klientów',
+        subtext: 'Eluwina'
+      }) }}
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+          <tr>
+            <td>Name</td>
+            <td>city</td>
+            <td>street</td>
+            <td>phone</td>
+            <td>email</td>
+            <td class="position-sticky">
+              {{ button.render({url:'/clients/add', ico: 'fa-plus', el: 'modal', type: 'success'}) }}
+            </td>
+          </tr>
+          </thead>
+          <tbody>
+          {% for client in clients %}
+            <tr>
+              <td>{{ client.name }}</td>
+              <td>{{ client.www }}</td>
+              <td>{{ client.ftp_server }}</td>
+              <td>{{ client.ftp_client }}</td>
+              <td>{{ client.db_client }}</td>
+              <td class="position-sticky">
+                {{ button.link({url:'/clients/show/'~client.id, ico: 'fa-edit', tip: 'haloo'}) }}
+                &nbsp;
+                {{ button.link({url:'/clients/details/'~client.id, ico: 'fa-eye'}) }}
+                &nbsp;
+                {{ button.confirm({
+                  url:'/clients/delete',
+                  ico: 'fa-trash',
+                  type: 'danger',
+                  options: {id: client.id},
+                  csrf: 'Clients@delete',
+                  title: 'Usuń klienta',
+                  body: 'Czy na pewno chcesz usunąć klienta'
+                }) }}
+              </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {{ pagination.list(pagination) }}
   </div>
-</div>
-  {{ pagination.list(pagination) }}
 {% endblock %}

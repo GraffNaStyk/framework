@@ -31,13 +31,7 @@ abstract class BaseController
             'css'      => Loader::css(),
             'js'       => Loader::js()
         ]);
-    
-        $vars = Session::collectProvidedData();
-        
-        if ($vars) {
-            View::set($vars);
-        }
-	
+
 	    Session::remove('beAjax');
         Session::clearMsg();
     }
