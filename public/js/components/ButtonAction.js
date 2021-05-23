@@ -1,10 +1,10 @@
 $.on('click', '.action', (e) => {
   $.loaderStart();
-  let data = $.buttons[e.target.dataset.url]['options'];
+  let data = $.buttons[e.target.dataset.url+'/'+e.target.dataset.id]['options'];
   data['_csrf'] = e.target.dataset.csrf;
 
   $.post({
-    url: e.target.dataset.url.replace('/'+e.target.dataset.id, ''),
+    url: e.target.dataset.url,
     data: data,
   }).then(res => res.json())
   .then(res => {
