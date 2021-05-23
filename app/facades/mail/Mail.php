@@ -60,7 +60,8 @@ class Mail
     
     public function send()
     {
-        if (Url::isLocalhost() === false)
-            return self::$mailer->send($this->message);
+        if (Url::isLocalhost() === false) {
+	        return self::$mailer->send($this->message);
+        }
     }
 }

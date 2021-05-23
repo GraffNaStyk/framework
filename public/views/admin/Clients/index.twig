@@ -43,7 +43,15 @@
               csrf: 'Clients@delete',
               title: 'Usuń klienta',
               body: 'Czy na pewno chcesz usunąć klienta'
-            })}}
+            }) }}
+            &nbsp;
+            {{ button.action({
+              url:'/clients/store',
+              ico: 'fa-trash',
+              type: 'danger',
+              options: {id: client.id},
+              csrf: 'Clients@store',
+            }) }}
           </td>
         </tr>
       {% endfor %}

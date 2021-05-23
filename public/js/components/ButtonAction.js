@@ -8,6 +8,8 @@ $.on('click', '.action', (e) => {
     data: data,
   }).then(res => res.json())
   .then(res => {
+    $.loaderStop();
+
     if (res.isError) {
       message(res, e.target.dataset.url);
       return;
@@ -18,8 +20,6 @@ $.on('click', '.action', (e) => {
         k.dataset.csrf = res.csrf;
       });
     }
-
-    $.loaderStop();
 
     if (e.target.dataset.refresh) {
       let component = $.el(`[data-component="${e.target.dataset.refresh}"]`);

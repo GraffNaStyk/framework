@@ -2,9 +2,9 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Http\Router\Router;
 use App\Facades\TwigExt\TwigExt;
 use Twig;
-use App\Facades\Http\Router\Router;
 
 final class View
 {
@@ -26,6 +26,7 @@ final class View
 		self::register();
 		self::$dir = Router::getAlias();
 		self::set(['layout' => 'layouts/'.self::$layout.self::$ext]);
+		self::set(['ajax' => 'layouts/ajax'.self::$ext]);
 		self::setView();
 		
 		if (is_readable(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
@@ -90,6 +91,8 @@ final class View
 
 			$config['debug'] = true;
 			self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
+			self::$twig->addGlobal('isAjax', ((int) Request::isAjax() || Session::get('beAjax')));
+			Session::remove('beAjax');
 			self::registerFunctions();
 		}
 	}

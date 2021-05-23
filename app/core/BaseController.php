@@ -69,6 +69,7 @@ abstract class BaseController
 	public function sendSuccess(string $message = null, array $params = [], int $status = 200): ?string
     {
     	if (Request::isAjax()) {
+    		Session::set('beAjax', true);
 		    Response::json([
 		    	'ok'       => true,
 			    'msg'      => $message ?? 'Dane zostały zapisane',
@@ -86,6 +87,7 @@ abstract class BaseController
     public function sendError(string $message = null, array $params = [], int $status = 400): ?string
     {
 	    if (Request::isAjax()) {
+		    Session::set('beAjax', true);
 		    Response::json([
 			    'ok'     => false,
 			    'msg'    => $message,

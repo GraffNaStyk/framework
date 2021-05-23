@@ -14,7 +14,7 @@ $.on('click', '.confirm', (e) => {
       </div>
       <input type="hidden" name="_csrf" value="${elem.csrf ?? ''}">
       <div class="modal-footer">
-        <button class="btn btn-outline-success submit__button btn-outline-success"> Potwierdź </button>
+        <button class="btn btn-outline-success submit__button"> Potwierdź </button>
       </div>
     </form>
   `;
