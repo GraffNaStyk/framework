@@ -37,7 +37,8 @@ abstract class BaseController
         if ($vars) {
             View::set($vars);
         }
-    
+	
+	    Session::remove('beAjax');
         Session::clearMsg();
     }
 

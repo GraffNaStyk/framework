@@ -1,4 +1,4 @@
-{% extends layout %}
+{% extends isAjax ? ajax : layout %}
   {% import 'components/button.twig' as button %}
   {% import 'components/headline.twig' as headline %}
   {% import 'components/pagination.twig' as pagination %}

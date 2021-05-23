@@ -92,7 +92,6 @@ final class View
 			$config['debug'] = true;
 			self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
 			self::$twig->addGlobal('isAjax', ((int) Request::isAjax() || Session::get('beAjax')));
-			Session::remove('beAjax');
 			self::registerFunctions();
 		}
 	}

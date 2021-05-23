@@ -36,7 +36,7 @@ $.on('submit', 'form',  (e) => {
             });
             return;
           } else if (res.params.html) {
-            $.html($.el(`[data-component="${that.el}"]`), res.html);
+            $.html($.el(`[data-component="${that.dataset.el}"]`), res.params.html);
           } else {
             let modalSelector = $.el('#modal');
             if (res.ok && modalSelector.classList.contains('d-block')) {
