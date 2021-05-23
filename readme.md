@@ -97,6 +97,16 @@ Route::prefix('/admin', function () {
     Route::post('/url', 'Controller@action');
 });
 
+Route::group(
+    [
+        '/url',
+        '/url/url2',
+        '/url/url2/{param}'
+    ],
+    'Controller@action',
+    'get'
+)->middleware(['example']);
+
 Route::redirect('/path');
 Route::back();
 Route::when('/url1', '/url2');
