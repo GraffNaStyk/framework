@@ -106,20 +106,22 @@ class Blueprint
             }
         }
     }
-    
-    public function drop()
-    {
-        if ($this->hasTable($this->table)) {
-            $this->db->query('DROP TABLE ' . $this->table);
-        }
-    
-        $triggers = $this->db->query('SELECT * FROM `INFORMATION_SCHEMA`.`TRIGGERS` WHERE TRIGGER_SCHEMA = "'
-	        .$this->db->getDbName().'"');
-        
-        foreach ($triggers as $trigger) {
-            $this->db->query('DROP TRIGGER '.$trigger['TRIGGER_NAME']);
-        }
-    }
+	
+	public function drop()
+	{
+		if ($this->hasTable($this->table)) {
+			$this->db->query('DROP TABLE ' . $this->table);
+		}
+		
+		$triggers = $this->db->query('SELECT * FROM `INFORMATION_SCHEMA`.`TRIGGERS` WHERE TRIGGER_SCHEMA = "'
+			.$this->db->getDbName().'"');
+		
+		foreach ($triggers as $trigger) {
+			if ((string) $this->db->table === (string) $triggers->event_object_table) {
+				$this->db->query('DROP TRIGGER '.$trigger->trigger_name);
+			}
+		}
+	}
     
     public function clear()
     {
