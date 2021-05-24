@@ -107,6 +107,8 @@ class Loader
 		$applyJs .= trim('<script type="module" src="'.
 				self::$url.str_replace(app_path(), '', js_path('main.js')).'"></script>').PHP_EOL;
 		
+		$applyJs .= self::getFile(Router::getAlias(), 'js');
+		
 		return $applyJs;
 	}
 	
