@@ -4,6 +4,8 @@ namespace App\Facades\Console;
 
 class Cron
 {
+	use FileCreator;
+	
     protected string $path = '\\App\\Cron\\';
     private string $name;
     protected string $file;
@@ -23,15 +25,7 @@ class Cron
     public function make()
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Cron', $this->file);
-        if (file_put_contents(
-            app_path('app/cron/'.ucfirst($this->name).'Cron.php'),
-            $this->file
-        )) {
-            Console::output(
-                'Cronjob in path: app/cron/'.ucfirst($this->name).'Cron.php created.',
-                'green'
-            );
-        }
+        $this->putFile('app/cron/'.ucfirst($this->name).'Cron.php', $this->file);
     }
     
     public function run()

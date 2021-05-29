@@ -4,6 +4,8 @@ namespace App\Facades\Console;
 
 class Middleware
 {
+	use FileCreator;
+	
     private string $file;
     private string $name;
     
@@ -17,11 +19,6 @@ class Middleware
     public function make()
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name), $this->file);
-        if (file_put_contents(
-            app_path('app/controllers/middleware/'.ucfirst($this->name).'.php'),
-            $this->file
-        )) {
-            Console::output('Middleware created successfully!', 'green');
-        }
+        $this->putFile('app/controllers/middleware/'.ucfirst($this->name).'.php', $this->file);
     }
 }

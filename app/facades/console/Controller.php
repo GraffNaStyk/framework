@@ -4,6 +4,8 @@ namespace App\Facades\Console;
 
 class Controller
 {
+	use FileCreator;
+	
     private string $file;
     private string $name;
     
@@ -24,14 +26,9 @@ class Controller
     
     public function put()
     {
-        if (file_put_contents(
-            app_path('app/controllers/'.ucfirst($this->namespace).'/'.ucfirst($this->name).'Controller.php'),
-            $this->file
-        )) {
-            Console::output(
-                'Controller in path: App/Controllers/'.ucfirst($this->namespace).'/'.ucfirst($this->name).'Controller.php created.',
-                'green'
-            );
-        }
+    	$this->putFile(
+    		'app/controllers/'.ucfirst($this->namespace).'/'.ucfirst($this->name).'Controller.php',
+		    $this->file
+	    );
     }
 }
