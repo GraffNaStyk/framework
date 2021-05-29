@@ -57,7 +57,7 @@ trait Builder
         $this->data[$key] = $value;
         return $key;
     }
-    
+
     protected function appendToQuery(bool $isOr = false): void
     {
         if (! $this->isFirstWhere) {

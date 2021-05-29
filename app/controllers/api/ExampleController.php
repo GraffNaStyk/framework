@@ -2,12 +2,12 @@
 
 namespace App\Controllers\Api;
 
-use App\Controllers\Controller;
+use App\Core\BaseController;
 
-class ExampleController extends Controller
+class ExampleController extends BaseController
 {   
 	public function index()
 	{
-
+		
 	}
 }

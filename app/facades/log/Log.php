@@ -10,7 +10,7 @@ class Log
     private static function make(string $type, array $data): void
     {
     	$log  = '['.date('Y-m-d H:i:s').'] [url]: '.Router::url().' [client]: '.php_sapi_name();
-	    $log .= ' [ip]: '.getenv('REMOTE_ADDR'). ' [host]: '.gethostbyaddr(getenv('REMOTE_ADDR')).' ';
+	    $log .= ' [ip]: '.$_SERVER['REMOTE_ADDR']. ' [host]: '.gethostbyaddr($_SERVER['REMOTE_ADDR']).' ';
 	    $log .= json_encode($data, JSON_PRETTY_PRINT);
 	    
         Storage::private()->make('logs/'.$type);
