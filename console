@@ -7,7 +7,7 @@ if ((string) php_sapi_name() !== 'cli') {
 }
 
 if ($argv[1] === 'serve') {
-    exec('php -S localhost:8000');
+    exec('php -S localhost:8000 index.php');
 }
 
 require_once __DIR__.'/index.php';
