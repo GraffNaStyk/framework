@@ -90,7 +90,13 @@ abstract class Route
 	        self::$middleware
         );
 
-	    self::$routes[self::$alias . $as ?? $routes[0].'/'.$routes[1]] = $collection;
+        if (self::$alias === null) {
+        	$url = self::$alias .$as ?? $routes[0].'/'.$routes[1];
+        } else {
+	        $url = self::$alias . rtrim($as, '/') ?? $routes[0].'/'.$routes[1];
+        }
+        
+	    self::$routes[$url] = $collection;
 
 	    if ($method !== 'get') {
 		    Csrf::make($route);

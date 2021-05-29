@@ -7,6 +7,7 @@ use App\Events\EventServiceProvider;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Header\Header;
 use App\Facades\Http\Request;
+use App\Facades\Http\Response;
 use App\Facades\Log\Log;
 use ReflectionClass;
 use ReflectionMethod;
@@ -236,7 +237,7 @@ final class Router extends Route
     public function setParams(): void
     {
         $routeExist = false;
-	
+
 	    foreach (self::$routes as $key => $route) {
 		    $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
 		
@@ -274,7 +275,7 @@ final class Router extends Route
 
     public static function url(): string
     {
-        return getenv('REQUEST_URI');
+        return $_SERVER['REQUEST_URI'];
     }
     
     private function parseUrl(): void
@@ -312,9 +313,14 @@ final class Router extends Route
     {
         header("HTTP/1.1 {$code} ".Header::RESPONSE_CODES[$code]);
         http_response_code($code);
-        exit(require_once (view_path('errors/'.$code.'.php')));
+
+        if (API && defined('API')) {
+        	Response::json(['Not found'], $code);
+        } else {
+	        exit(require_once (view_path('errors/'.$code.'.php')));
+        }
     }
-	
+
 	public static function csrfPath(): string
 	{
 		return self::$route->getController().'@'.self::$route->getAction();

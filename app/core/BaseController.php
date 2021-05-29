@@ -63,7 +63,7 @@ abstract class BaseController
 	
 	public function sendSuccess(string $message = null, array $params = [], int $status = 200): ?string
     {
-    	if (Request::isAjax()) {
+    	if (Request::isAjax() || (API && defined('API'))) {
     		Session::set('beAjax', true);
 		    Response::json([
 		    	'ok'       => true,
@@ -81,7 +81,7 @@ abstract class BaseController
     
     public function sendError(string $message = null, array $params = [], int $status = 400): ?string
     {
-	    if (Request::isAjax()) {
+	    if (Request::isAjax() || (API && defined('API'))) {
 		    Session::set('beAjax', true);
 		    Response::json([
 			    'ok'     => false,

@@ -15,7 +15,12 @@ class Header
 	
     public static function set(): void
     {
-        header('Content-Type: text/html; charset=utf-8');
+    	if (API && defined('API')) {
+		    header('Content-Type: application/json; charset=utf-8');
+	    } else {
+		    header('Content-Type: text/html; charset=utf-8');
+	    }
+
         header('X-Frame-Options: sameorigin');
         header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
         header('Cache-Control: post-check=0, pre-check=0', false);

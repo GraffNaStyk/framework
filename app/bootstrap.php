@@ -14,5 +14,10 @@ register_shutdown_function(fn () => \App\Facades\Log\Log::handleError());
 (new \App\Core\App())->run();
 
 if (php_sapi_name() !== 'cli') {
-    require_once __DIR__ . '/routes/route.php';
+	if (strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') === false) {
+		define('API', true);
+		require_once __DIR__ . '/routes/api.php';
+	} else {
+		require_once __DIR__ . '/routes/web.php';
+	}
 }
