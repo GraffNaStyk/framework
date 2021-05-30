@@ -103,7 +103,7 @@ class Loader
 		foreach (self::$loaded['js'] as $val) {
 			$applyJs .= self::getFile($val, 'js');
 		}
-		
+
 		$applyJs .= trim('<script type="module" src="'.
 				self::$url.str_replace(app_path(), '', js_path('main.js')).'"></script>').PHP_EOL;
 		
