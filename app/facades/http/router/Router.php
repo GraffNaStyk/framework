@@ -109,7 +109,8 @@ final class Router extends Route
 		    'namespace'   => self::$route->getNamespace(),
 		    'rights'      => self::$route->getRights(),
 		    'middlewares' => self::$route->getMiddleware(),
-		    'method'      => self::$route->getMethod()
+		    'method'      => self::$route->getMethod(),
+		    'params'      => $this->request->getData()
 	    ];
     }
     

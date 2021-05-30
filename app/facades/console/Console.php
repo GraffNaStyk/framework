@@ -46,7 +46,7 @@ class Console
 	    	if (is_array($output) || is_object($output)) {
 	    		pd($output, false);
 		    } else {
-			    echo $output . '<br />';
+			    echo date('Y-m-d H:i:s').' '.$output . '<br />';
 		    }
 
 		    flush();

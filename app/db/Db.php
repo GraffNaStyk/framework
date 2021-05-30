@@ -447,7 +447,7 @@ class Db
             try {
                 $pdo = self::$db->prepare($this->query);
                 $pdo->execute($this->data);
-                
+
                 if ($this->first) {
 	                return $pdo->fetch(PDO::FETCH_OBJ);
                 }
@@ -459,7 +459,6 @@ class Db
 	            else {
 		            return $pdo->fetchAll(PDO::FETCH_OBJ);
 	            }
-	
             } catch (PDOException $e) {
 	            Handle::throwException($e, $this->develop(true));
             }
@@ -481,11 +480,11 @@ class Db
 
     public function query($query): ?array
     {
-        $stmt = self::$db->prepare($query);
-        $stmt->execute();
+	    $pdo = self::$db->prepare($query);
+	    $pdo->execute();
 
         if (preg_match('/^(SELECT)/', $query)) {
-            return $stmt->fetchAll(PDO::FETCH_OBJ);
+            return $pdo->fetchAll(PDO::FETCH_OBJ);
         }
 	
 	    return null;
