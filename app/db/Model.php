@@ -6,7 +6,7 @@ class Model
 {
     private static ?object $db = null;
 
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, array $arguments)
     {
 	    self::$db = new Db(get_called_class());
 	

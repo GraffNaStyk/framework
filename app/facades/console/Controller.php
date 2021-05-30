@@ -15,20 +15,15 @@ class Controller
 	    $this->name      = $args[1];
         $this->file = file_get_contents(app_path('app/facades/http/controller'));
         $this->make();
-        $this->put();
+	    $this->putFile(
+		    'app/controllers/'.ucfirst($this->namespace).'/'.ucfirst($this->name).'Controller.php',
+		    $this->file
+	    );
     }
     
     public function make()
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Controller', $this->file);
         $this->file = str_replace('PATH', ucfirst($this->namespace), $this->file);
-    }
-    
-    public function put()
-    {
-    	$this->putFile(
-    		'app/controllers/'.ucfirst($this->namespace).'/'.ucfirst($this->name).'Controller.php',
-		    $this->file
-	    );
     }
 }

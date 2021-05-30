@@ -48,7 +48,7 @@ class Migration
                 $migrationContent[$migration] = ['date' => date('Y-m-d H:i:s')];
                 $migration = new $migration();
                 Console::output('Migration '.get_class($migration). ' start '.date('H:i:s'), 'blue');
-                $migration->up(new Schema(app['model-provider'].$migration->model, $isDump));
+                $migration->up(new Schema('App\\Model\\'.$migration->model, $isDump));
 	            Console::output('Migration '.get_class($migration). ' has been make '.date('H:i:s'), 'green');
             }
         }
@@ -64,7 +64,7 @@ class Migration
         foreach (glob(app_path('app/db/migrate/Migration_*.php')) as $migration) {
             $migration = 'App\\Db\\Migrate\\'.basename(str_replace('.php','', $migration));
             $migration = new $migration();
-            $migration->down(new Schema(app['model-provider'].$migration->model));
+            $migration->down(new Schema('App\\Model\\'.$migration->model));
         }
         
         Storage::private()->remove('db/migrations.json');
@@ -77,8 +77,7 @@ class Migration
     
     private function makeJsonFile($replace = false)
     {
-        Storage::private()->make('db');
-        Storage::private()->put('db/migrations.json', '{}', $replace);
+        Storage::private()->make('db')->put('db/migrations.json', '{}', $replace);
     }
     
     private function sortByDate(array $files): array
