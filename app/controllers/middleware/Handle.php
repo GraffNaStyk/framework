@@ -11,7 +11,6 @@ class Handle
 	public function before(Request $request, Router $router)
 	{
 		Log::custom('request', [
-			'request'     => $request->all(),
 			'routeParams' => $router->routeParams(),
 		]);
 	}
