@@ -21,7 +21,7 @@ class ClientsController extends Controller
     	Pagination::make(Client::class, $page, '/clients/page');
 
         return $this->render([
-            'clients' => Cache::remember(15, function () use ($page) {
+            'clients' => Cache::remember(50, function () use ($page) {
 	            return Client::select()->paginate($page)->get();
             })
         ]);
