@@ -51,7 +51,7 @@ final class Router extends Route
 
 		if ($this->request->getMethod() === 'post') {
 			if (! $this->csrf->valid($this->request)) {
-				self::abort(400);
+				self::abort(403);
 			}
 		}
 
@@ -315,8 +315,8 @@ final class Router extends Route
         header("HTTP/1.1 {$code} ".Header::RESPONSE_CODES[$code]);
         http_response_code($code);
 
-        if (API && defined('API')) {
-        	Response::json(['Not found'], $code);
+        if ((API && defined('API')) || Request::isAjax()) {
+        	Response::json(['msg' => Header::RESPONSE_CODES[$code]], $code);
         } else {
 	        exit(require_once (view_path('errors/'.$code.'.php')));
         }

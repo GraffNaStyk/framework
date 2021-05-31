@@ -10,7 +10,8 @@ class App {
     this.msgCodes = {
       404: 'Podana strona nie istnieje',
       405: 'Brak dostępu do zasobu',
-      500: 'Wystąpił nieoczekiwany problem, prosimy spróbować za chwile'
+      500: 'Wystąpił nieoczekiwany problem, prosimy spróbować za chwile',
+      403: 'Błąd autoryzacji żądania'
     };
   }
 
@@ -78,7 +79,7 @@ class App {
       },
       body: data
     }).then(res => {
-      if ([404,500,405].includes(res.status)) {
+      if ([404,500,405,403].includes(res.status)) {
         res.msg = this.msgCodes[res.status];
         res.isError = true;
         return res;
@@ -100,7 +101,7 @@ class App {
         "X-Fetch-Header": "fetchApi",
       },
     }).then(res => {
-      if ([404,500,405].includes(res.status)) {
+      if ([404,500,405,403].includes(res.status)) {
         res.msg = this.msgCodes[res.status];
         res.isError = true;
         return res;
