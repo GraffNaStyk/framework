@@ -48,7 +48,7 @@ trait Builder
         return trim($item);
     }
 
-    protected function setValue(string $key, string $value): string
+    protected function setValue(string $key, ?string $value): string
     {
         do {
             $key = str_replace('.', '__', $key).'__'.rand(100,10000);

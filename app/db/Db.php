@@ -213,7 +213,7 @@ class Db
         return $this->execute();
     }
 
-    public function where(string $item, string $is, string $item2): Db
+    public function where(string $item, string $is, ?string $item2): Db
     {
         $this->appendToQuery();
         $this->query .= "{$this->prepareValueForWhere($item)} {$is} :{$this->setValue($item, $item2)}";
