@@ -221,7 +221,7 @@ class Db
         return $this;
     }
 
-    public function orWhere(string $item, string $is, string $item2): Db
+    public function orWhere(string $item, string $is, ?string $item2): Db
     {
         $this->appendToQuery(true);
         $this->query .= "{$this->prepareValueForWhere($item)} {$is} :{$this->setValue($item, $item2)} ";
@@ -305,7 +305,7 @@ class Db
     	return $this;
     }
 	
-	public function order(array $by, string $type = 'ASC'): Db
+	public function order(array $by, string $type='ASC'): Db
     {
         $this->query .= " ORDER BY {$this->prepareValuesForSelect($by)} {$type}";
         
