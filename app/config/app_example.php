@@ -4,8 +4,8 @@ return [
 	
     /**
      *  @csrf is used to blocking csrf attack from users,
-     *  if this variable is set to true, you need to add for very form
-     *  twig variable like {{ form.csrf('Controller@acion') }}
+     *  if this variable is set to true, you need to add for every form
+     *  twig variable like {{ form.csrf('Controller@action') }}
      */
     'csrf' => true,
 
