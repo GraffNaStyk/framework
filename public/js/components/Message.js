@@ -13,16 +13,18 @@ const message = (res, selector) => {
     }
   }
 
-  let form = $.el(`form[data-action="${selector}"] .modal-body`);
+  let form    = $.el(`form[data-action="${selector}"] .modal-body`);
+  let isModal = true;
 
   if (form === null) {
     form = $.el(`form[data-action="${selector}"]`);
+    isModal = false;
   }
 
   lastRandom = rand;
   $.adjacent(form, `
-    <div data-${rand}="" class="alert alert-${res.ok ? 'success' : 'danger'}" role="alert">
+    <div data-${rand}="" class="alert alert-${res.ok ? 'success' : 'danger'} ${isModal ? 'mt-3' : ''}" role="alert">
        ${res.msg}
      </div>
-   `, 'afterbegin');
+   `, isModal ? 'beforeend' : 'afterbegin');
 }
