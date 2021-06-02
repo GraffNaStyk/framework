@@ -40,8 +40,8 @@ class Log
     public static function handleError(): void
     {
         $lastError = error_get_last();
-        
-        if (! empty($lastError) && in_array($lastError['type'], [E_USER_ERROR, E_ERROR, E_PARSE])) {
+
+        if (! empty($lastError) && in_array($lastError['type'], [E_USER_ERROR, E_ERROR, E_PARSE, E_COMPILE_ERROR])) {
             header('HTTP/1.0 500 Internal Server Error');
             http_response_code(500);
 
