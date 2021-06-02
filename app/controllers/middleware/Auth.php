@@ -8,6 +8,7 @@ use App\Facades\Http\Router\Collection;
 use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\Session;
+use App\Facades\Log\Log;
 use App\Facades\Url\Url;
 use App\Model\Right;
 use App\Model\User;
@@ -25,6 +26,11 @@ final class Auth
     	$user = User::select(['id'])->where('id', '=', \App\Controllers\Auth::id())->exist();
 
         if (! Session::has('user') || ! $user) {
+        	Log::custom('unauthorized', [
+        		'message' => 'Unauthorized access, user not exist',
+		        'user_id' => \App\Controllers\Auth::id()
+	        ]);
+
         	if (Request::isAjax()) {
 		        Response::json([], 401);
 	        } else {
@@ -33,6 +39,11 @@ final class Auth
         }
 
         if (! self::middleware($router->getCurrentRoute())) {
+	        Log::custom('unauthorized', [
+		        'message' => 'Unauthorized access',
+		        'user'    => \App\Controllers\Auth::user()
+	        ]);
+
 	        if (Request::isAjax()) {
 		        Response::json([], 401);
 	        } else {

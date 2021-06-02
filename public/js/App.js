@@ -80,14 +80,10 @@ class App {
       },
       body: data
     }).then(res => {
-      if ([404,500,405,403].includes(res.status)) {
+      if ([404,500,405,403,401].includes(res.status)) {
         res.msg = this.msgCodes[res.status];
         res.isError = true;
         return res;
-      }
-
-      if (res.status === 401) {
-        window.location.reload();
       }
 
       return res;
@@ -99,7 +95,7 @@ class App {
       method: 'GET',
       credentials: 'same-origin',
       headers: {
-        "X-Fetch-Header": "fetchApi",
+        "Is-Fetch-Request": "true",
       },
     }).then(res => {
       if ([404,500,405,403].includes(res.status)) {
@@ -107,7 +103,7 @@ class App {
         res.isError = true;
         return res;
       }
-
+      
       if (res.status === 401) {
         window.location.reload();
       }

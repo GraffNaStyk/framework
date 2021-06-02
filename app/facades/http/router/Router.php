@@ -2,6 +2,7 @@
 
 namespace App\Facades\Http\Router;
 
+use App\Controllers\Auth;
 use App\Core\Kernel;
 use App\Events\EventServiceProvider;
 use App\Facades\Csrf\Csrf;
@@ -312,6 +313,11 @@ final class Router extends Route
     
     private static function abort($code=404): void
     {
+    	Log::custom('aborted', [
+		    'message' => 'Aborted operation from router, code: '.$code.' '.Header::RESPONSE_CODES[$code],
+		    'user'    => Auth::user() 
+	    ]);
+
         header("HTTP/1.1 {$code} ".Header::RESPONSE_CODES[$code]);
         http_response_code($code);
 
