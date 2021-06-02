@@ -72,7 +72,9 @@ function app($key)
 
 function config($key)
 {
-	return require_once app_path('app/config/'.$key.'.php');
+    if (file_exists(app_path('app/config/'.$key.'.php'))) {
+        return require_once app_path('app/config/'.$key.'.php');
+    }
 }
 
 require_once app_path('app/bootstrap.php');

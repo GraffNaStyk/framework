@@ -120,9 +120,10 @@ Route::crud('url', 'Controller');
 | Controller | php console controller {namespace} {controller} |
 | Cron | php console cron {fileName} |
 | Model | php console model {fileName} Table |
-| Migrate | php console {method - up,down,make,dump} optional:{fileName table} |
+| Migrate | php console migrate {method - up,down,make,dump} optional:{fileName table} |
 | Middleware | php console middleware {fileName} |
 | Rule | php console rule {fileName} |
+| Observer | php console observer {fileName} |
 
 # Model
 app/model
