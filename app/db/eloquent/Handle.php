@@ -18,9 +18,8 @@ abstract class Handle
         $router->request->remove('password');
         
         Log::sql([
-            'error' => $e->getMessage(),
-            'query' => $error,
-            'request' => $router->request->all(),
+            'error'       => $e->getMessage(),
+            'query'       => $error,
             'routeParams' => $router->routeParams()
         ]);
     }
