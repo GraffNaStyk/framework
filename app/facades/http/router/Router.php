@@ -224,7 +224,7 @@ final class Router extends Route
 				    }
 				
 				    if (gettype($requestParams[$i]) !== $type) {
-					    self::abort(400);
+					    self::abort(400, 'Wrong param type, param: '.$requestParams[$i]);
 				    }
 				    
 				    unset($refParam);
@@ -311,11 +311,12 @@ final class Router extends Route
         }
     }
     
-    private static function abort($code=404): void
+    private static function abort(int $code=404, ?string $message=null): void
     {
     	Log::custom('aborted', [
-		    'message' => 'Aborted operation from router, code: '.$code.' '.Header::RESPONSE_CODES[$code],
-		    'user'    => Auth::user() 
+		    'message'    => 'Aborted operation from router, code: '.$code.' '.Header::RESPONSE_CODES[$code],
+		    'custom_msg' => $message,
+		    'user'       => Auth::user() 
 	    ]);
 
         header("HTTP/1.1 {$code} ".Header::RESPONSE_CODES[$code]);
