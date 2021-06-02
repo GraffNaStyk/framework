@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Observers;
+
+
+class CLASSNAME
+{
+
+    public function created()
+    {
+
+    }
+
+    public function updated()
+    {
+
+    }
+
+    public function deleted()
+    {
+
+    }
+}

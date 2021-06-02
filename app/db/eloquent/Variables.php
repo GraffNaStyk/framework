@@ -29,4 +29,8 @@ trait Variables
 	private bool $selectGroup = false;
 	
 	private bool $multiple = false;
+
+	private bool $isObserve = false;
+
+	private ?string $observeMethod;
 }

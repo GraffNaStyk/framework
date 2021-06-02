@@ -7,4 +7,6 @@ use App\Db\Model;
 class User extends Model
 {
     public static string $table = 'users';
+
+    public static bool $observe = true;
 }

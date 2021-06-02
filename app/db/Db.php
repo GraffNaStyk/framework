@@ -5,6 +5,7 @@ namespace App\Db;
 use App\Core\App;
 use App\Db\Eloquent\Builder;
 use App\Db\Eloquent\Handle;
+use App\Db\Eloquent\ObserverResolver;
 use App\Db\Eloquent\Variables;
 use PDO;
 use PDOException;
@@ -34,6 +35,10 @@ class Db
     public function __construct($model)
     {
         $this->table = $model::$table;
+
+        if (property_exists($model, 'observe')) {
+            $this->isObserve = $model::$observe;
+        }
     }
 
     public static function init(array $env)
@@ -111,6 +116,8 @@ class Db
 	
 	public function insert(array $values): Db
 	{
+	    $this->observeMethod = 'created';
+
 		if (empty($values)) {
 			return $this;
 		}
@@ -185,6 +192,7 @@ class Db
     
     public function update(array $values): Db
     {
+        $this->observeMethod = 'updated';
 	    $this->isUpdate = true;
         $this->query = "UPDATE `{$this->table}` SET ";
     
@@ -203,6 +211,7 @@ class Db
     
     public function delete(): Db
     {
+        $this->observeMethod = 'deleted';
         $this->query = "DELETE FROM `{$this->table}`";
         
         return $this;
@@ -314,7 +323,7 @@ class Db
 
     public function group(string $group): Db
     {
-        $this->query .= " GROUP BY {$this->prepareValueForWhere($group)} {$type}";
+        $this->query .= " GROUP BY {$this->prepareValueForWhere($group)}";
         
         return $this;
     }
@@ -437,6 +446,11 @@ class Db
         if (preg_match('/^(INSERT|UPDATE|DELETE)/', $this->query)) {
 	        try {
 		        if (self::$db->prepare($this->query)->execute($this->data)) {
+                    if ($this->isObserve && $this->observeMethod !== null) {
+                        ObserverResolver::resolve($this->table, $this->observeMethod);
+                        $this->observeMethod = null;
+                    }
+
 			        return true;
 		        }
 	        } catch (PDOException $e) {
