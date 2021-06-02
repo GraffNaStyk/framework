@@ -244,7 +244,7 @@ final class Router extends Route
 		    $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
 		
 		    if (preg_match('#^'.$pattern.'$#', self::$url, $matches)) {
-			    if ((string)$this->request->getMethod() !== (string)$route->getMethod()) {
+			    if ((string) $this->request->getMethod() !== (string)$route->getMethod()) {
 				    self::abort(405);
 			    }
 			
