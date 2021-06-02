@@ -8,10 +8,11 @@ class App {
     this.bindConfirms();
     this.loaderExist = false;
     this.msgCodes = {
+      401: 'Nieautoryzowany dostęp',
+      403: 'Błąd autoryzacji żądania',
       404: 'Podana strona nie istnieje',
       405: 'Brak dostępu do zasobu',
       500: 'Wystąpił nieoczekiwany problem, prosimy spróbować za chwile',
-      403: 'Błąd autoryzacji żądania'
     };
   }
 

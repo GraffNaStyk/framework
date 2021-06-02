@@ -6,7 +6,7 @@
  <meta http-equiv="X-UA-Compatible" content="ie=edge">
  <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
  <link rel="stylesheet" href="<?=App\Facades\Url\Url::base();?>/public/css/font-awesome.min.css">
- <title> Error - 500 </title>
+ <title> Error 403 </title>
  <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
 </head>
 <body>
@@ -64,11 +64,11 @@
 <div class="wrapper">
  <h2>
   <i class="fa fa-chain-broken"></i>
-  <span>5</span>
+  <span>4</span>
   <span>0</span>
-  <span>0</span>
+  <span>3</span>
  </h2>
- <h1>OOPS ! Our server is on break!</h1>
+ <h1>Request authorization problem</h1>
  <div>
   <a class="button" href="<?= App\Facades\Url\Url::base() ?: '/'; ?>">Back to main page</a>
  </div>
