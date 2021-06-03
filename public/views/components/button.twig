@@ -11,6 +11,19 @@
   </a>
 {% endmacro link %}
 
+{% macro route(data) %}
+  <a {% if data.tip %} {{ tooltip(data.tip) }} {% endif %}
+   class="btn {{ data.class }} btn-outline-{{ data.type ?? 'secondary' }}"
+   href="{{ route(data.url, data.param) }}">
+    {% if data.text %}
+      {{ data.text }}
+    {% endif %}
+    {% if data.ico %}
+      <i class="fa {{ data.ico }} text-{{ data.type ?? 'secondary' }}"></i>
+    {% endif %}
+  </a>
+{% endmacro route %}
+
 {% macro render(data) %}
   {% if data.url and data.el %}
     <button {% if data.tip %} {{ tooltip(data.tip) }} {% endif %}

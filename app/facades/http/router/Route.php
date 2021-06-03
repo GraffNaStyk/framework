@@ -11,7 +11,8 @@ abstract class Route
     protected static string $namespace;
     protected static ?string $middleware = null;
     protected static ?string $alias = null;
-    
+    protected static array $urls = [];
+
     public static function namespace(string $namespace, callable $function)
     {
 	    static::$namespace = $namespace;
@@ -98,6 +99,10 @@ abstract class Route
         
 	    self::$routes[$url] = $collection;
 
+        if (! isset(self::$urls[$route])) {
+	        self::$urls[$route] = ['url' => $url, 'right' => $rights];
+        }
+
 	    if ($method !== 'get') {
 		    Csrf::make($route);
 	    }
@@ -148,5 +153,10 @@ abstract class Route
     public static function checkProtocol(): string
     {
         return isset($_SERVER['HTTPS']) || (int) $_SERVER['SERVER_PORT'] === 443 ? 'https' : 'http';
+    }
+    
+    public static function urls(): array
+    {
+    	return self::$urls;
     }
 }

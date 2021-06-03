@@ -25,15 +25,6 @@ class DashController extends Controller
 		]);
 	}
 	
-	public function users($name): string
-	{
-		return $this->response(
-			User::select(['name as text', 'password as value'])
-				->where('name', '=', $name)
-				->get()
-		);
-	}
-	
 	public function upload(Request $request)
 	{
 		Storage::disk()->upload($request->file('file'));

@@ -20,9 +20,6 @@ Route::alias('/admin', function () {
 			Route::get('/dash', 'Dash@index');
 			Route::post('/dash/upload', 'Dash@upload');
 			Route::get('/logout', 'Logout@index');
-			
-			//@Route users
-			Route::get('/users/{name}', 'Dash@users');
 	
 			//@Route clients
 			Route::group(
@@ -40,6 +37,8 @@ Route::alias('/admin', function () {
 			Route::get('/clients/edit/{id}', 'Clients@edit');
 			Route::get('/clients/show/{id}', 'Clients@show');
 			Route::post('/clients/delete', 'Clients@delete');
+			
+			Route::get('/users/add', 'Users@add');
 
 			//@Route password reset
 			Route::get('/password', 'Password@index');

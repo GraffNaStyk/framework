@@ -32,9 +32,7 @@
               <td>{{ client.ftp_client }}</td>
               <td>{{ client.db_client }}</td>
               <td class="position-sticky">
-                {{ button.link({url:'/clients/show/'~client.id, ico: 'fa-edit', tip: 'haloo'}) }}
-                &nbsp;
-                {{ button.link({url:'/clients/details/'~client.id, ico: 'fa-eye'}) }}
+                {{ button.link({url:'/clients/show/'~client.id, ico: 'fa-edit', tip: 'haloo'}) }} 
                 &nbsp;
                 {{ button.confirm({
                   url:'/clients/delete',

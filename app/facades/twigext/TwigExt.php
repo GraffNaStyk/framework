@@ -4,10 +4,10 @@ namespace App\Facades\TwigExt;
 
 use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\Router;
+use App\Facades\Http\Session;
 use App\Facades\Url\Url;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
-use App\Facades\Http\Session;
 
 class TwigExt extends AbstractExtension
 {
@@ -21,7 +21,8 @@ class TwigExt extends AbstractExtension
             $this->url(),
             $this->base(),
             $this->tooltip(),
-	        $this->options()
+	        $this->options(),
+	        $this->route()
         ];
     }
 
@@ -58,6 +59,22 @@ class TwigExt extends AbstractExtension
            }
         });
     }
+	
+	public function route(): TwigFunction
+	{
+		return new TwigFunction('route', function ($route, $params=[]) {
+			$route = 
+				Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().
+				Route::urls()[$route]['url'];
+			
+			if (! empty($params)) {
+				$route = str_replace(array_keys($params), array_values($params), $route);
+				$route = str_replace(['{', '}'], ['',''], $route);
+			}
+			
+			echo $route;
+		});
+	}
 
     public function base(): TwigFunction
     {
