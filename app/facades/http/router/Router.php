@@ -325,7 +325,7 @@ final class Router extends Route
         if ((API && defined('API')) || Request::isAjax()) {
         	Response::json(['msg' => Header::RESPONSE_CODES[$code]], $code);
         } else {
-	        exit(require_once (view_path('errors/'.$code.'.php')));
+	        exit(require_once (view_path('errors/error.php')));
         }
     }
 

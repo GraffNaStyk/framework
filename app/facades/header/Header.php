@@ -12,7 +12,7 @@ class Header
 		405 => 'Method Not Allowed',
 		500 => 'Internal Server Error'
 	];
-	
+
     public static function set(): void
     {
     	if (API && defined('API')) {
