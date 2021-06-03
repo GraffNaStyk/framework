@@ -75,9 +75,9 @@ abstract class Route
 		self::get($url.'/show/{id}', $controller.'@show', $rights);
 		self::post($url.'/store', $controller.'@store', $rights);
 		self::post($url.'/update', $controller.'@update', $rights);
-		self::get($url.'/delete/{id}', $controller.'@delete', $rights);
+		self::post($url.'/delete', $controller.'@delete', $rights);
 	}
-    
+
     private static function match(string $as, string $route, string $method, int $rights): Collection
     {
         $routes = explode('@', $route);
