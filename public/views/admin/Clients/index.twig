@@ -32,7 +32,7 @@
               <td>{{ client.ftp_client }}</td>
               <td>{{ client.db_client }}</td>
               <td class="position-sticky">
-                {{ button.link({url:'/clients/show/'~client.id, ico: 'fa-edit', tip: 'haloo'}) }} 
+                {{ button.route({url: 'Clients@show', param: {id: client.id}, ico: 'fa-eye'}) }}
                 &nbsp;
                 {{ button.confirm({
                   url:'/clients/delete',
