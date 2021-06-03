@@ -42,7 +42,7 @@ class CLASSNAME extends Controller
 
     }
 
-    public function delete(int $id)
+    public function delete(Request $request)
     {
 
     }
