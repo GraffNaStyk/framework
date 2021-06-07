@@ -106,10 +106,10 @@ abstract class Route
 	    if ($method !== 'get') {
 		    Csrf::make($route);
 	    }
-	    
+
 	    return $collection;
     }
-    
+
     public static function when(string $when, string $then)
     {
         if (app('url') !== '/') {
