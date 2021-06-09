@@ -41,7 +41,7 @@ class Console
     public static function output($output, $background='black')
     {
 	    if (php_sapi_name() === 'cli') {
-		    echo "\e[" . self::$backgrounds[mb_strtolower($background)] . "m" . $output . PHP_EOL . "\e[0m\n";
+		    echo "\e[" . self::$backgrounds[mb_strtolower($background)] . "m" . $output . "\e[0m\n";
 	    } else {
 	    	if (is_array($output) || is_object($output)) {
 	    		pd($output, false);
