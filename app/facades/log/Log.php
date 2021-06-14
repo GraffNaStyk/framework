@@ -45,11 +45,11 @@ class Log
             header('HTTP/1.0 500 Internal Server Error');
             http_response_code(500);
 
-            if (app('dev') === false) {
-                static::make('php', $lastError);
-                exit (require_once view_path('errors/500.php'));
-            } else {
+            if (app('dev')) {
                 pd($lastError, true);
+            } else {
+                static::make('php', $lastError);
+                exit (require_once view_path('errors/error.php'));
             }
         }
     }
