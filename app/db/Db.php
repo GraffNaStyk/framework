@@ -25,10 +25,10 @@ class Db
 	public ?string $as = null;
 	
 	private static array $options = [
-		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-		PDO::ATTR_ORACLE_NULLS => PDO::NULL_EMPTY_STRING,
-		PDO::ATTR_CASE => PDO::CASE_LOWER,
-		PDO::ATTR_EMULATE_PREPARES => false,
+		PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+		PDO::ATTR_ORACLE_NULLS       => PDO::NULL_EMPTY_STRING,
+		PDO::ATTR_CASE               => PDO::CASE_LOWER,
+		PDO::ATTR_EMULATE_PREPARES   => false,
 		PDO::MYSQL_ATTR_INIT_COMMAND => 'set names utf8;',
 	];
     

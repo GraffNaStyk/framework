@@ -81,7 +81,7 @@ final class Auth
                 $methods = [...self::$methods[1], ...self::$methods[2], ...self::$methods[3]];
             }
 
-            if (! in_array($route->getAction(), $methods)) {
+            if (! in_array($route->getAction(), $methods, true)) {
                 return false;
             }
         }

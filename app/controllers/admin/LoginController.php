@@ -4,7 +4,6 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\Auth;
 use App\Controllers\Controller;
-use App\Facades\Faker\Hash;
 use App\Facades\Faker\Password;
 use App\Facades\Http\Request;
 use App\Facades\Http\View;
@@ -37,8 +36,8 @@ class LoginController extends Controller
 	    if ($user && Password::verify($request->get('password'), $user->password)) {
             Auth::login($user);
             $this->sendSuccess('Zalogowano poprawnie', [
-            	'to' => '/dash'
-            ]
+                    'to' => '/dash'
+                ]
             );
         }
     

@@ -258,7 +258,7 @@ final class Router extends Route
         if (! $routeExist) {
             self::abort();
         }
-        
+
         if (! empty(self::$params)) {
             $this->request->setData(self::$params);
         }

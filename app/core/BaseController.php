@@ -11,7 +11,6 @@ use App\Facades\Http\View;
 use App\Facades\Storage\Storage;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
-use App\Rules\RuleValidator;
 
 abstract class BaseController
 {
@@ -26,10 +25,8 @@ abstract class BaseController
         Storage::private()->make('cache');
     
         $this->set([
-            'messages' => Session::getMsg(),
-            'color'    => Session::getColor(),
-            'css'      => Loader::css(),
-            'js'       => Loader::js()
+            'css' => Loader::css(),
+            'js'  => Loader::js()
         ]);
 
 	    Session::remove('beAjax');
@@ -66,9 +63,9 @@ abstract class BaseController
     	if (Request::isAjax() || (API && defined('API'))) {
     		Session::set('beAjax', true);
 		    Response::json([
-		    	'ok'       => true,
-			    'msg'      => $message ?? 'Dane zostały zapisane',
-			    'params'   => $params,
+		    	'ok'     => true,
+			    'msg'    => $message ?? 'Dane zostały zapisane',
+			    'params' => $params,
 		    ],
 			    $status,
 			    []
