@@ -27,12 +27,12 @@ abstract class Route
         static::$middleware = null;
     }
     
-    public static function get(string $url, string $controller, int $rights = 4): Collection
+    public static function get(string $url, string $controller, int $rights=4): Collection
     {
         return self::match($url, $controller, 'get', $rights);
     }
     
-    public static function post(string $url, string $controller, int $rights = 4): Collection
+    public static function post(string $url, string $controller, int $rights=4): Collection
     {
         return self::match($url, $controller, 'post', $rights);
     }
