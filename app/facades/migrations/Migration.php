@@ -14,16 +14,16 @@ class Migration
         $migration = str_replace('CLASSNAME', 'Migration_'.$args[0].'_'.date('Y_m_d__H_i'), $migration);
         $migration = str_replace('MODEL', $args[0], $migration);
         
-        if (is_dir(app_path('app/db/migrate/')) === false) {
-            mkdir(app_path('app/db/migrate/'), 0775, true);
+        if (is_dir(app_path('app/migrate/')) === false) {
+            mkdir(app_path('app/migrate/'), 0775, true);
         }
         
         if (file_put_contents(
-            app_path('app/db/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').'.php'),
+            app_path('app/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').'.php'),
             $migration
         )) {
             Console::output(
-                'Migration app/db/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').' has been created',
+                'Migration app/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').' has been created',
                 'blue'
             );
         }
@@ -41,8 +41,8 @@ class Migration
             true
         );
 
-        foreach ($this->sortByDate(glob(app_path('app/db/migrate/Migration_*.php'))) as $migration) {
-            $migration = 'App\\Db\\Migrate\\'.basename(str_replace('.php','', $migration));
+        foreach ($this->sortByDate(glob(app_path('app/migrate/Migration_*.php'))) as $migration) {
+            $migration = 'App\\Migrate\\'.basename(str_replace('.php','', $migration));
             
             if (!isset($migrationContent[$migration]) || $isDump) {
                 $migrationContent[$migration] = ['date' => date('Y-m-d H:i:s')];
@@ -61,8 +61,8 @@ class Migration
     {
         $this->makeJsonFile(true);
         
-        foreach (glob(app_path('app/db/migrate/Migration_*.php')) as $migration) {
-            $migration = 'App\\Db\\Migrate\\'.basename(str_replace('.php','', $migration));
+        foreach (glob(app_path('app/migrate/Migration_*.php')) as $migration) {
+            $migration = 'App\\Migrate\\'.basename(str_replace('.php','', $migration));
             $migration = new $migration();
             $migration->down(new Schema('App\\Model\\'.$migration->model));
         }
@@ -85,7 +85,7 @@ class Migration
         $migrations = [];
         
         foreach ($files as $key => $file) {
-            $tmp = str_replace(app_path('app/db/migrate/Migration_'), '', $file);
+            $tmp = str_replace(app_path('app/migrate/Migration_'), '', $file);
             $tmp = preg_replace('/[a-zA-Z__.]/', '', $tmp);
             $migrations[$tmp] = $file;
         }

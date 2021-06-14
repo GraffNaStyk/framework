@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Db\Eloquent;
+namespace App\Facades\Db;
 
 class Value
 {

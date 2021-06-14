@@ -2,7 +2,7 @@
 
 namespace App\Facades\Migrations;
 
-use App\Db\Db;
+use App\Facades\Db\Db;
 
 class Blueprint
 {

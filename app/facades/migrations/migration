@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Db\Migrate;
+namespace App\Migrate;
 
 use App\Facades\Migrations\Schema;
 

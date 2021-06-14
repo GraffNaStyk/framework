@@ -2,8 +2,8 @@
 
 namespace App\Model;
 
-use App\Db\Eloquent\Value;
-use App\Db\Model;
+use App\Facades\Db\Eloquent\Value;
+use App\Facades\Db\Model;
 
 class File extends Model
 {

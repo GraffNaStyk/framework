@@ -18,6 +18,6 @@ if (php_sapi_name() !== 'cli') {
 		define('API', true);
 		require_once __DIR__ . '/routes/api.php';
 	} else {
-		require_once __DIR__ . '/routes/web.php';
+		require_once __DIR__ . '/routes/http.php';
 	}
 }

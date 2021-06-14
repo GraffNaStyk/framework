@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Db\Migrate;
+namespace App\Migrate;
 
 use App\Facades\Migrations\Schema;
 
@@ -20,6 +20,6 @@ class Migration_User_2020_09_20__18_04
 	
 	public function down(Schema $schema)
 	{
-		$schema->clear();
+		$schema->drop();
 	}
 }

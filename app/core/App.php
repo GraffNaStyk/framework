@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-use App\Db\Db;
+use App\Facades\Db\Db;
 use App\Facades\Env\Env;
 use App\Helpers\Loader;
 
