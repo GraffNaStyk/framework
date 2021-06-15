@@ -84,7 +84,7 @@ abstract class Route
 
         $collection = new Collection(
 	        ucfirst($routes[0]),
-	        lcfirst($routes[1]) ?? 'index',
+	        strtolower($routes[1]) ?? 'index',
 	        self::$namespace,
 	        $method,
 	        $rights,
@@ -92,9 +92,9 @@ abstract class Route
         );
 
         if (self::$alias === null) {
-        	$url = self::$alias .$as ?? $routes[0].'/'.$routes[1];
+        	$url = self::$alias.$as ?? $routes[0].'/'.$routes[1];
         } else {
-	        $url = self::$alias . rtrim($as, '/') ?? $routes[0].'/'.$routes[1];
+	        $url = self::$alias.rtrim($as, '/') ?? $routes[0].'/'.$routes[1];
         }
         
 	    self::$routes[$url] = $collection;

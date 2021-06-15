@@ -7,7 +7,7 @@ use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
 
-class Controller extends BaseController
+abstract class Controller extends BaseController
 {
     public function __construct()
     {

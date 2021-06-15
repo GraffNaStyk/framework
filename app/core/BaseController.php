@@ -48,17 +48,17 @@ abstract class BaseController
         View::set($data);
     }
 	
-	public function render(array $data = [], $html = false)
+	public function render(array $data=[], $html=false)
 	{
 		return View::render($data, $html);
 	}
     
-    public function validate(array $request, string $rule, array $optional = []): bool
+    public function validate(array $request, string $rule, array $optional=[]): bool
     {
         return Validator::make($request, (new $rule())->getRule($optional));
     }
 	
-	public function sendSuccess(string $message = null, array $params = [], int $status = 200): ?string
+	public function sendSuccess(string $message=null, array $params=[], int $status=200): ?string
     {
     	if (Request::isAjax() || (API && defined('API'))) {
     		Session::set('beAjax', true);
@@ -76,7 +76,7 @@ abstract class BaseController
 	    }
     }
     
-    public function sendError(string $message = null, array $params = [], int $status = 400): ?string
+    public function sendError(string $message=null, array $params=[], int $status=400): ?string
     {
 	    if (Request::isAjax() || (API && defined('API'))) {
 		    Session::set('beAjax', true);
@@ -96,7 +96,7 @@ abstract class BaseController
 	    }
     }
     
-    public function response(array $response= [], int $status = 200, array $headers = []): string
+    public function response(array $response=[], int $status=200, array $headers=[]): string
     {
         Response::json($response, $status, $headers);
     }
