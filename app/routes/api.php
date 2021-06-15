@@ -9,4 +9,4 @@ Route::alias('/api', function () {
 	});
 });
 
-(new Router());
+new Router();

@@ -47,4 +47,4 @@ Route::alias('/admin', function () {
 	});
 });
 
-(new Router());
+new Router();

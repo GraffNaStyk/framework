@@ -173,13 +173,22 @@ class Storage
 	public function remove($path = null): bool
 	{
 		$path = ltrim($path, '/');
-		
+
+		if (is_dir(self::$disk.'/'.$path)) {
+		    $elements = array_diff(scandir(self::$disk.'/'.$path), ['.', '..']);
+
+            foreach ($elements as $element) {
+                self::remove($path.'/'.$element);
+            }
+
+            rmdir(self::$disk.'/'.$path);
+        }
+
 		if (is_file(self::$disk.'/'.$path)) {
 			unlink(self::$disk.'/'.$path);
-			return true;
 		}
-		
-		return false;
+
+		return true;
 	}
 	
 	private function checkFile(string $destination): bool

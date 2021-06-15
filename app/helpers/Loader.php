@@ -24,11 +24,10 @@ class Loader
 	public static function css(): string
 	{
 		$folder = Router::getAlias();
-		
 		if (app('dev')) {
 			$cssArr = [
-				...glob(css_path("$folder/*.css"), GLOB_BRACE),
-				...glob(css_path("components/*.css"), GLOB_BRACE)
+				...array_diff(scandir(css_path($folder)), ['.', '..', '.htaccess']),
+				...array_diff(scandir(css_path('components')), ['.', '..', '.htaccess']),
 			];
 
 			$rebuild = false;
@@ -40,7 +39,7 @@ class Loader
 					break;
 				}
 			}
-			
+
 			if ($rebuild) {
 				unlink(css_path($folder.'.css'));
 				$cssString = null;
@@ -60,7 +59,7 @@ class Loader
 		foreach (self::$loaded['css'] as $val) {
 			$applyCss .= self::getFile($val, 'css');
 		}
-		
+
 		$applyCss .= trim('<link rel="stylesheet" href="'.
 				self::$url.str_replace(app_path(), '', css_path($folder.'.css')).'">').PHP_EOL;
 		
@@ -70,9 +69,9 @@ class Loader
 	public static function js(): string
 	{
 		if (app('dev')) {
-			$jsArr = glob(js_path('components/*.js'), GLOB_BRACE);
+			$jsArr   = array_diff(scandir(js_path('components')), ['.', '..', '.htaccess']);
 			$rebuild = false;
-			$mtime = filemtime(js_path('main.js'));
+			$mtime   = filemtime(js_path('main.js'));
 			
 			foreach ($jsArr as $item) {
 				if (filemtime($item) > $mtime) {
@@ -112,7 +111,7 @@ class Loader
 		return $applyJs;
 	}
 	
-	private static function getFile($name, $ext): string
+	private static function getFile($name, $ext): ?string
 	{
 		$path = $ext === 'css'
 			? css_path($name.'.css')
@@ -128,6 +127,6 @@ class Loader
 				self::$url.str_replace(app_path(), '', $path).'"></script>'.PHP_EOL);
 		}
 
-		return '';
+		return null;
 	}
 }
