@@ -160,6 +160,7 @@ class Storage
 			header('Content-Length: '.filesize(self::$disk.'/'.$file));
 			header('Content-Transfer-Encoding: Binary');
 			header('Cache-control: private');
+
 			while (! feof($fd)) {
 				echo fread($fd, 2048);
 			}

@@ -201,7 +201,7 @@ class Db
         }
     
         $this->query = rtrim($this->query, ', ');
-        
+
         return $this;
     }
     
