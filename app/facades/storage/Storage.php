@@ -150,7 +150,7 @@ class Storage
 		return $this;
 	}
 	
-	public function download($file)
+	public function download(string $file): void
 	{
 		$file = ltrim($file, '/');
 		
