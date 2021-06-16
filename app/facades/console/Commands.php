@@ -13,6 +13,7 @@ class Commands
         'Middleware' => 'php console middleware {fileName}',
         'Rule' => 'php console rule {fileName}',
         'Observer' => 'php console observer {fileName}',
+        'Service' => 'php console service {fileName}',
     ];
 
     public function __construct()
