@@ -13,14 +13,14 @@ abstract class Route
     protected static ?string $alias = null;
     protected static array $urls = [];
 
-    public static function namespace(string $namespace, callable $function)
+    public static function namespace(string $namespace, callable $function): void
     {
 	    static::$namespace = $namespace;
 	    $function();
 	    static::$middleware = null;
     }
     
-    public static function middleware(string $middleware, callable $function)
+    public static function middleware(string $middleware, callable $function): void
     {
         static::$middleware = $middleware;
         $function();
@@ -67,7 +67,7 @@ abstract class Route
         self::$alias = null;
     }
 	
-	public static function crud(string $url, string $controller, int $rights=4)
+	public static function crud(string $url, string $controller, int $rights=4): void
 	{
 		self::get($url, $controller.'@index', $rights);
 		self::get($url.'/add', $controller.'@add', $rights);
@@ -110,7 +110,7 @@ abstract class Route
 	    return $collection;
     }
 
-    public static function when(string $when, string $then)
+    public static function when(string $when, string $then): void
     {
         if (app('url') !== '/') {
             $route = rtrim(str_replace(app('url'), '', Router::url()), '/');
