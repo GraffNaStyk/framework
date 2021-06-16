@@ -133,6 +133,7 @@ php console {args}
 | Middleware | php console middleware {fileName} |
 | Rule | php console rule {fileName} |
 | Observer | php console observer {fileName} |
+| Services | php console service {fileName} |
 | Commands | php console commands - show all commands in terminal |
 
 ## Model
