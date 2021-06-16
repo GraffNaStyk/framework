@@ -50,7 +50,7 @@ final class Router extends Route
 		$this->request->sanitize();
 		$this->runMiddlewares('before');
 
-		if ($this->request->getMethod() === 'post') {
+		if ($this->request->getMethod() === 'post' && !defined('API')) {
 			if (! $this->csrf->valid($this->request)) {
 				self::abort(403);
 			}
@@ -181,7 +181,7 @@ final class Router extends Route
 	                Log::custom('router', ['msg' => 'Trying to access with empty request']);
                 	self::abort(403);
                 }
-	
+
 	            $requestParams = $this->request->getData();
                 $paramCount    = count($requestParams);
 

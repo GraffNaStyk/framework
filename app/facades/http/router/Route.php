@@ -103,7 +103,7 @@ abstract class Route
 	        self::$urls[$route] = ['url' => $url, 'right' => $rights];
         }
 
-	    if ($method !== 'get') {
+	    if ($method !== 'get' && !defined('API')) {
 		    Csrf::make($route);
 	    }
 

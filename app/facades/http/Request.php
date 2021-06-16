@@ -25,8 +25,8 @@ final class Request
     
     public function boot(): void
     {
-        $this->setMethod();
         $this->setHeaders();
+        $this->setMethod();
     }
 
     private function setMethod()
@@ -52,6 +52,10 @@ final class Request
 		        $this->method = 'put';
 		        $this->data = (array) json_decode(file_get_contents('php://input'));
 		        break;
+        }
+
+        if (empty($this->data) && defined('API') && API === true) {
+            $this->data = (array) json_decode(file_get_contents('php://input'));
         }
     }
     
