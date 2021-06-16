@@ -40,6 +40,7 @@ $.on('submit', 'form', (e) => {
                     }
 
                     let modalSelector = $.el('#modal');
+
                     if (res.ok && modalSelector.classList.contains('d-block')) {
                         setTimeout(() => {
                             $.el('button[data-dismiss="modal"]').click()
