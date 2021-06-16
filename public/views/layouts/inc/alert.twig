@@ -1,12 +1,13 @@
 {% if messages is not empty %}
-  {% for msg in messages %}
-    <div class="alert alert-{{ color }} mb-2">
-      <i class="fa fa-{{ color == 'success' ? 'check' : 'exclamation'}} mr-3" style="color: {{ color == 'success' ? '#155724' : '#721c24'}};"></i>
-      {% if msg.field %}
-        [{{ msg.field }}] {{ msg.msg }}
-      {% else %}
-        {{ msg }}
-      {% endif %}
-    </div>
-  {% endfor %}
+    {% for msg in messages %}
+        <div class="alert alert-{{ color }} mb-2">
+            <i class="fa fa-{{ color == 'success' ? 'check' : 'exclamation' }} mr-3"
+               style="color: {{ color == 'success' ? '#155724' : '#721c24' }};"></i>
+            {% if msg.field %}
+                [{{ msg.field }}] {{ msg.msg }}
+            {% else %}
+                {{ msg }}
+            {% endif %}
+        </div>
+    {% endfor %}
 {% endif %}

@@ -1,8 +1,8 @@
 {% macro title(data) %}
-  <div class="head__wrapper mb-3">
-    <h3 class="mb-0">{{ data.text }}</h3>
-    {% if data.subtext %}
-      <span style="font-size: 14px;" class="text-muted">{{ data.subtext }}</span>
-    {% endif %}
-  </div>
+    <div class="head__wrapper mb-3">
+        <h3 class="mb-0">{{ data.text }}</h3>
+        {% if data.subtext %}
+            <span style="font-size: 14px;" class="text-muted">{{ data.subtext }}</span>
+        {% endif %}
+    </div>
 {% endmacro title %}

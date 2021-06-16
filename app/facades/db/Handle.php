@@ -13,13 +13,13 @@ abstract class Handle
             print_r("<b>SQL Error</b>: {$e->getMessage()} <br>");
             pd("<b> Query </b>: {$error}", true);
         }
-        
+
         $router = Router::getInstance();
         $router->request->remove('password');
-        
+
         Log::sql([
-            'error'       => $e->getMessage(),
-            'query'       => $error,
+            'error' => $e->getMessage(),
+            'query' => $error,
             'routeParams' => $router->routeParams()
         ]);
     }

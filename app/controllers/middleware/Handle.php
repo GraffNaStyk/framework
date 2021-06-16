@@ -8,10 +8,10 @@ use App\Facades\Log\Log;
 
 class Handle
 {
-	public function before(Request $request, Router $router)
-	{
-		Log::custom('request', [
-			'routeParams' => $router->routeParams(),
-		]);
-	}
+    public function before(Request $request, Router $router)
+    {
+        Log::custom('request', [
+            'routeParams' => $router->routeParams(),
+        ]);
+    }
 }

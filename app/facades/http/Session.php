@@ -13,7 +13,7 @@ class Session
 {
     public static function set($item, $data): void
     {
-	    $_SESSION = array_merge($_SESSION, Set::set($_SESSION, Type::get($data), $item));
+        $_SESSION = array_merge($_SESSION, Set::set($_SESSION, Type::get($data), $item));
     }
 
     public static function get($item)
@@ -33,12 +33,12 @@ class Session
 
     public static function remove($item): void
     {
-	    $_SESSION = Remove::remove($_SESSION, $item);
+        $_SESSION = Remove::remove($_SESSION, $item);
     }
 
     public static function flash($item, $value = 1, $seconds = 60)
     {
-        setcookie($item, $value, time()+$seconds, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
+        setcookie($item, $value, time() + $seconds, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
     }
 
     public static function getFlash($item)
@@ -54,13 +54,13 @@ class Session
     public static function removeFlash($item)
     {
         unset($_COOKIE[$item]);
-        setcookie($item, false, -1, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
+        setcookie($item, false, - 1, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
     }
-	
-	public static function flashAll(): array
-	{
-		return $_COOKIE;
-	}
+
+    public static function flashAll(): array
+    {
+        return $_COOKIE;
+    }
 
     public static function msg($items, $color = 'success')
     {
@@ -70,7 +70,7 @@ class Session
         } else {
             $_SESSION['msg'][] = $items;
         }
-        
+
         $_SESSION['color'] = $color;
     }
 
@@ -101,10 +101,10 @@ class Session
         if (isset($_SESSION['unused'])) {
             return $_SESSION['unused'];
         }
-        
+
         return null;
     }
-    
+
     public static function destroy()
     {
         session_destroy();

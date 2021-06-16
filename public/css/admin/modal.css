@@ -1,35 +1,35 @@
 #modal .modal-dialog {
-  max-width: 600px;
+    max-width: 600px;
 }
 
 #modal {
-  overflow: auto;
+    overflow: auto;
 }
 
 .modal-content .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .modal-content .modal-header,
 .modal-content .modal-body,
 .modal-content .modal-footer {
-  padding: .8rem;
+    padding: .8rem;
 }
 
 .modal-content .modal-header button {
-  margin:0;
-  padding:0;
-  font-size: 2.2rem;
-  font-weight: 400;
-  background: transparent;
+    margin: 0;
+    padding: 0;
+    font-size: 2.2rem;
+    font-weight: 400;
+    background: transparent;
 }
 
 .modal-header button {
-  width: auto;
+    width: auto;
 }
 
 .modal-content .modal-footer {
-  justify-content: flex-start;
+    justify-content: flex-start;
 }

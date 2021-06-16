@@ -21,15 +21,15 @@ class TwigExt extends AbstractExtension
             $this->url(),
             $this->base(),
             $this->tooltip(),
-	        $this->options(),
-	        $this->route()
+            $this->options(),
+            $this->route()
         ];
     }
 
     public function csrf(): TwigFunction
     {
-	    return new TwigFunction('csrf', function ($path) {
-		    echo Session::get('@csrf.'.$path);
+        return new TwigFunction('csrf', function ($path) {
+            echo Session::get('@csrf.'.$path);
         });
     }
 
@@ -41,7 +41,7 @@ class TwigExt extends AbstractExtension
             echo '</pre>';
         });
     }
-    
+
     public function img(): TwigFunction
     {
         return new TwigFunction('img', function ($url) {
@@ -52,29 +52,29 @@ class TwigExt extends AbstractExtension
     public function url(): TwigFunction
     {
         return new TwigFunction('url', function ($url = null) {
-           if (Router::getAlias() === 'http') {
-               echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
-           } else {
-               echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().'/'.Router::getAlias().$url;
-           }
+            if (Router::getAlias() === 'http') {
+                echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
+            } else {
+                echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().'/'.Router::getAlias().$url;
+            }
         });
     }
-	
-	public function route(): TwigFunction
-	{
-		return new TwigFunction('route', function ($route, $params=[]) {
-			$route = 
-				Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().
-				Route::urls()[$route]['url'];
-			
-			if (! empty($params)) {
-				$route = str_replace(array_keys($params), array_values($params), $route);
-				$route = str_replace(['{', '}'], ['',''], $route);
-			}
-			
-			echo $route;
-		});
-	}
+
+    public function route(): TwigFunction
+    {
+        return new TwigFunction('route', function ($route, $params = []) {
+            $route =
+                Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().
+                Route::urls()[$route]['url'];
+
+            if (! empty($params)) {
+                $route = str_replace(array_keys($params), array_values($params), $route);
+                $route = str_replace(['{', '}'], ['', ''], $route);
+            }
+
+            echo $route;
+        });
+    }
 
     public function base(): TwigFunction
     {
@@ -89,11 +89,11 @@ class TwigExt extends AbstractExtension
             echo 'data-toggle="tooltip" title="'.$text.'" data-placement="'.$placement.'"';
         });
     }
-    
+
     public function options(): TwigFunction
     {
-	    return new TwigFunction('options', function ($options = []) {
-		    echo htmlspecialchars(json_encode($options));
-	    });
+        return new TwigFunction('options', function ($options = []) {
+            echo htmlspecialchars(json_encode($options));
+        });
     }
 }

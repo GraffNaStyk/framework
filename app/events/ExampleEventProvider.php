@@ -4,8 +4,8 @@ namespace App\Events;
 
 class ExampleEventProvider
 {
-	public function handle()
-	{
+    public function handle()
+    {
 
-	}
+    }
 }

@@ -1,35 +1,35 @@
 .box {
-  background: #fff;
-  padding: .8rem;
-  margin-bottom: .5rem;
-  border-radius: 8px;
-  box-shadow: 0 0 1px 0 rgba(0,0,0,.6);
+    background: #fff;
+    padding: .8rem;
+    margin-bottom: .5rem;
+    border-radius: 8px;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .6);
 }
 
 .box__menu {
-  background: #fff;
-  border-radius: 4px;
-  box-shadow: 0 0 1px 0 rgba(0,0,0,.6);
-  position: fixed;
-  top: 45px;
-  right: 30px;
-  min-width: 150px;
-  z-index: 150;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, .6);
+    position: fixed;
+    top: 45px;
+    right: 30px;
+    min-width: 150px;
+    z-index: 150;
 }
 
 .box__menu * {
-  padding: .3rem .7rem;
-  transition: .6s;
-  border-radius: 4px;
-  text-align: center;
-  color: rgba(0,0,0,0.6);
+    padding: .3rem .7rem;
+    transition: .6s;
+    border-radius: 4px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
 }
 
 .box__menu *:not(:last-child) {
-  border-bottom: 1px solid #f4f4f4;
+    border-bottom: 1px solid #f4f4f4;
 }
 
 .box__menu *:hover {
-  color: rgba(0,0,0,0.6);
-  cursor: pointer;
+    color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
 }

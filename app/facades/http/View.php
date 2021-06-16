@@ -9,36 +9,36 @@ use Twig;
 final class View
 {
     protected static ?object $twig = null;
-    
+
     private static array $data = [];
-    
+
     protected static string $ext = '.twig';
-    
+
     protected static string $layout = 'http';
-    
+
     public static ?string $dir = null;
-    
+
     public static ?string $view = null;
-	
-	public static function render(array $data = [], $html = false)
-	{
-		self::set($data);
-		self::register();
-		self::$dir = Router::getAlias();
-		self::set(['layout' => 'layouts/'.self::$layout.self::$ext]);
-		self::set(['ajax' => 'layouts/ajax'.self::$ext]);
-		self::setView();
-		
-		if (is_readable(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
-			if ($html) {
-				return self::$twig->render(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
-			} else {
-				return self::$twig->display(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
-			}
-		}
-		
-		exit(require_once view_path('errors/view-not-found.php'));
-	}
+
+    public static function render(array $data = [], $html = false)
+    {
+        self::set($data);
+        self::register();
+        self::$dir = Router::getAlias();
+        self::set(['layout' => 'layouts/'.self::$layout.self::$ext]);
+        self::set(['ajax' => 'layouts/ajax'.self::$ext]);
+        self::setView();
+
+        if (is_readable(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
+            if ($html) {
+                return self::$twig->render(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
+            } else {
+                return self::$twig->display(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
+            }
+        }
+
+        exit(require_once view_path('errors/view-not-found.php'));
+    }
 
     private static function setView(): void
     {
@@ -62,7 +62,7 @@ final class View
             self::$data[$key] = $value;
         }
     }
-    
+
     public static function getName(): string
     {
         return self::$view;
@@ -74,25 +74,25 @@ final class View
             self::$twig->addFunction($fn);
         }
     }
-	
-	public static function mail(string $template, array $data = [])
-	{
-		self::register();
-		self::set($data);
-		return self::$twig->render('mail/'.$template.self::$ext, self::$data);
-	}
-	
-	private static function register()
-	{
-		if (! self::$twig instanceof Twig\Environment) {
-			if (app('cache_view')) {
-				$config['cache'] = storage_path('private/framework/views');
-			}
 
-			$config['debug'] = true;
-			self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
-			self::$twig->addGlobal('isAjax', ((int) Request::isAjax() || Session::get('beAjax')));
-			self::registerFunctions();
-		}
-	}
+    public static function mail(string $template, array $data = [])
+    {
+        self::register();
+        self::set($data);
+        return self::$twig->render('mail/'.$template.self::$ext, self::$data);
+    }
+
+    private static function register()
+    {
+        if (! self::$twig instanceof Twig\Environment) {
+            if (app('cache_view')) {
+                $config['cache'] = storage_path('private/framework/views');
+            }
+
+            $config['debug'] = true;
+            self::$twig = new Twig\Environment(new Twig\Loader\FilesystemLoader(view_path()), $config);
+            self::$twig->addGlobal('isAjax', ((int) Request::isAjax() || Session::get('beAjax')));
+            self::registerFunctions();
+        }
+    }
 }

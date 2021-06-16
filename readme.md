@@ -1,7 +1,9 @@
 # Graff framework
 
 ## Configuration
+
 Application configuration app/config/app.php
+
 ```php
 [
     /**
@@ -69,8 +71,11 @@ Application configuration app/config/app.php
 ];
 
 ```
+
 ## Env
+
 Database configuration app/config/.env
+
 ```dotenv
 DB_USER=user
 DB_PASS=pass
@@ -79,7 +84,9 @@ DB_NAME=db_example
 ```
 
 ## Routing
+
 app/routes/route.php
+
 ```php
 Route::namespace('App\Controllers\Http', function () {
     Route::get('/url/{param}', 'Controller@action');
@@ -129,7 +136,9 @@ php console {args}
 | Commands | php console commands - show all commands in terminal |
 
 ## Model
+
 app/model
+
 ```php
 Model::insert('array')
 ->duplicate('ON DUPLICATE KEY UPDATE')
@@ -182,6 +191,7 @@ Model::lastId();
 ```
 
 ## Javascript responses
+
 Javscript responses
 
 | Typ | Opis |

@@ -23,41 +23,41 @@ final class Auth
 
     public function before(Request $request, Router $router)
     {
-    	$user = User::select(['id'])->where('id', '=', \App\Controllers\Auth::id())->exist();
+        $user = User::select(['id'])->where('id', '=', \App\Controllers\Auth::id())->exist();
 
         if (! Session::has('user') || ! $user) {
-        	Log::custom('unauthorized', [
-        		'message' => 'Unauthorized access, user not exist',
-		        'user_id' => \App\Controllers\Auth::id()
-	        ]);
+            Log::custom('unauthorized', [
+                'message' => 'Unauthorized access, user not exist',
+                'user_id' => \App\Controllers\Auth::id()
+            ]);
 
-        	if (Request::isAjax()) {
-		        Response::json([], 401);
-	        } else {
-		        Route::redirect('/login');
-	        }
+            if (Request::isAjax()) {
+                Response::json([], 401);
+            } else {
+                Route::redirect('/login');
+            }
         }
 
         if (! self::middleware($router->getCurrentRoute())) {
-	        Log::custom('unauthorized', [
-		        'message' => 'Unauthorized access',
-		        'user'    => \App\Controllers\Auth::user()
-	        ]);
+            Log::custom('unauthorized', [
+                'message' => 'Unauthorized access',
+                'user' => \App\Controllers\Auth::user()
+            ]);
 
-	        if (Request::isAjax()) {
-		        Response::json([], 401);
-	        } else {
-		        Route::redirect(Url::base());
-	        }
+            if (Request::isAjax()) {
+                Response::json([], 401);
+            } else {
+                Route::redirect(Url::base());
+            }
         }
     }
-    
+
     public static function middleware(Collection $route): bool
     {
         if ($route->getRights() === 0) {
             return false;
         }
-        
+
         if ($route->getRights() === 4) {
             return true;
         }

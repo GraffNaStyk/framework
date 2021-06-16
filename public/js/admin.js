@@ -1,42 +1,42 @@
 let className;
 
 if (window.innerWidth > 991) {
-  className = '.grid';
+    className = '.grid';
 } else {
-  className = '.right-panel';
+    className = '.right-panel';
 }
 
 if (window.innerWidth <= 990) {
-  $.el('.left-panel').classList.remove('d-flex');
+    $.el('.left-panel').classList.remove('d-flex');
 }
 
 let element = $.el(className);
 
 if (element !== undefined && element !== null) {
-  element.style.minHeight = window.innerHeight - $.el('nav').clientHeight + 'px';
+    element.style.minHeight = window.innerHeight - $.el('nav').clientHeight + 'px';
 }
 
 const menu = (e) => {
-  if (e.target.nextElementSibling.classList.contains('d-flex')) {
-    e.target.nextElementSibling.classList.remove('d-flex');
-    e.target.classList.remove('open');
-  } else {
-    e.target.nextElementSibling.classList.add('d-flex');
-    e.target.classList.add('open');
-  }
+    if (e.target.nextElementSibling.classList.contains('d-flex')) {
+        e.target.nextElementSibling.classList.remove('d-flex');
+        e.target.classList.remove('open');
+    } else {
+        e.target.nextElementSibling.classList.add('d-flex');
+        e.target.classList.add('open');
+    }
 };
 
 $.on('click', '.menu__burger', (e) => {
-  $.toggle($.el('.grid aside.left-panel'));
+    $.toggle($.el('.grid aside.left-panel'));
 });
 
 const prevent = (e) => {
-  if (e.target.parentElement.nodeName === 'A'
-    && e.target.href !== undefined
-    && e.target.href.split('/').pop() === '#'
-  ) {
-    e.preventDefault();
-  }
+    if (e.target.parentElement.nodeName === 'A'
+        && e.target.href !== undefined
+        && e.target.href.split('/').pop() === '#'
+    ) {
+        e.preventDefault();
+    }
 };
 
 $.on('click', 'a', prevent);

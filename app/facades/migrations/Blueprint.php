@@ -15,7 +15,7 @@ class Blueprint
     protected array $alter = [];
     protected array $queries = [];
     protected bool $store = false;
-    
+
     protected array $length = [
         'tinyint' => '(1)',
         'smallint' => '(4)',
@@ -28,9 +28,9 @@ class Blueprint
         'longText' => '',
         'timestamp' => ' ',
         'datetime' => ' ',
-	    'float' => '9,2',
+        'float' => '9,2',
     ];
-    
+
     protected string $currentKey = '';
     protected string $currentFieldName = '';
     protected string $lastCalled;
@@ -38,26 +38,26 @@ class Blueprint
     protected array $foreign = [];
     protected object $db;
     protected array $trigger = [];
-    
+
     use TableQueries;
-    
-    public function __construct($model, $store=false)
+
+    public function __construct($model, $store = false)
     {
         $this->db = new Db($model);
         $this->table = $this->db->table;
         $this->store = $store;
     }
-    
+
     public function generate($name, $fnName, $length = null)
     {
         $this->lastCalled = $fnName;
         $this->currentFieldName = '`'.$name.'`';
-        $this->tableFields[] = '`'.$name.'`' . ' ' . $this->lastCalled . ' ' .
-	        ($length ? '(' . $length . ')' : $this->length[$this->lastCalled]). ' ' . $this->notNull;
-        
+        $this->tableFields[] = '`'.$name.'`'.' '.$this->lastCalled.' '.
+            ($length ? '('.$length.')' : $this->length[$this->lastCalled]).' '.$this->notNull;
+
         $this->currentKey = array_key_last($this->tableFields);
     }
-    
+
     public function run()
     {
         if (! empty($this->tableFields)) {
@@ -66,10 +66,10 @@ class Blueprint
             $this->otherImplementation = rtrim($this->otherImplementation, ', ');
 
             if ($this->otherImplementation !== '') {
-	            $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields
-		            . ', ' . $this->otherImplementation . $this->endSql;
+                $this->sql = $this->startSql.'`'.trim($this->table).'`'.' ( '.$fields
+                    .', '.$this->otherImplementation.$this->endSql;
             } else {
-	            $this->sql = $this->startSql . '`' . trim($this->table) . '`' . ' ( ' . $fields . $this->endSql;
+                $this->sql = $this->startSql.'`'.trim($this->table).'`'.' ( '.$fields.$this->endSql;
             }
 
             if ($this->store === true) {
@@ -79,83 +79,83 @@ class Blueprint
                 $this->db->query($this->sql);
             }
         }
-        
+
         if (! $this->store) {
             if (! empty($this->queries)) {
                 foreach ($this->queries as $query) {
-	                $this->db->query($query);
+                    $this->db->query($query);
                 }
             }
-            
+
             if (! empty($this->alter)) {
                 foreach ($this->alter as $alter) {
-	                $this->db->query($alter);
+                    $this->db->query($alter);
                 }
             }
-            
+
             if (! empty($this->foreign)) {
                 foreach ($this->foreign as $foreign) {
-	                $this->db->query($foreign);
+                    $this->db->query($foreign);
                 }
             }
-            
+
             if (! empty($this->trigger)) {
                 foreach ($this->trigger as $trigger) {
-	                $this->db->query($trigger);
+                    $this->db->query($trigger);
                 }
             }
         }
     }
-	
-	public function drop()
-	{
-		if ($this->hasTable($this->table)) {
-			$this->db->query('DROP TABLE ' . $this->table);
-		}
-		
-		$triggers = $this->db->query('SELECT * FROM `INFORMATION_SCHEMA`.`TRIGGERS` WHERE TRIGGER_SCHEMA = "'
-			.$this->db->getDbName().'"');
-		
-		foreach ($triggers as $trigger) {
-			if ((string) $this->db->table === (string) $triggers->event_object_table) {
-				$this->db->query('DROP TRIGGER '.$trigger->trigger_name);
-			}
-		}
-	}
-    
+
+    public function drop()
+    {
+        if ($this->hasTable($this->table)) {
+            $this->db->query('DROP TABLE '.$this->table);
+        }
+
+        $triggers = $this->db->query('SELECT * FROM `INFORMATION_SCHEMA`.`TRIGGERS` WHERE TRIGGER_SCHEMA = "'
+            .$this->db->getDbName().'"');
+
+        foreach ($triggers as $trigger) {
+            if ((string) $this->db->table === (string) $triggers->event_object_table) {
+                $this->db->query('DROP TRIGGER '.$trigger->trigger_name);
+            }
+        }
+    }
+
     public function clear()
     {
         if ($this->hasTable($this->table)) {
-            $this->db->query('TRUNCATE TABLE ' . $this->table);
+            $this->db->query('TRUNCATE TABLE '.$this->table);
         }
     }
-    
+
     protected function storeMigration()
     {
         $name = 'dump_'.date('Y_m_d__H_i').'.sql';
         file_put_contents(app_path('app/db/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);
-        
+
         if (! empty($this->queries)) {
             foreach ($this->queries as $query) {
-	            file_put_contents(app_path('app/db/migrate/'.$name), $query.';'.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/db/migrate/'.$name), $query.';'.PHP_EOL, FILE_APPEND);
             }
         }
-        
+
         if (! empty($this->alter)) {
             foreach ($this->alter as $alter) {
-	            file_put_contents(app_path('app/db/migrate/'.$name), $alter.';'.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/db/migrate/'.$name), $alter.';'.PHP_EOL, FILE_APPEND);
             }
         }
-        
+
         if (! empty($this->foreign)) {
             foreach ($this->foreign as $foreign) {
-	            file_put_contents(app_path('app/db/migrate/'.$name), $foreign.';'.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/db/migrate/'.$name), $foreign.';'.PHP_EOL, FILE_APPEND);
             }
         }
-        
+
         if (! empty($this->trigger)) {
             foreach ($this->trigger as $trigger) {
-	            file_put_contents(app_path('app/db/migrate/'.$name), $trigger.';'.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/db/migrate/'.$name), $trigger.';'.PHP_EOL, FILE_APPEND);
             }
         }
     }

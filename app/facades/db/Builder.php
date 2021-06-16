@@ -5,7 +5,7 @@ namespace App\Facades\Db;
 trait Builder
 {
     use Variables;
-    
+
     public function prepareValuesForSelect($values): string
     {
         $select = '';
@@ -17,14 +17,14 @@ trait Builder
                 $select .= $this->prepareValueForWhere($item).', ';
             }
         }
-    
+
         return rtrim($select, ', ');
     }
-    
+
     public function prepareValueForWhere($value): string
     {
         $ret = '';
-    
+
         if ((bool) strpos($value, '.') === true && (bool) preg_match('/( as )/', $value)) {
             $value = explode('.', $value);
             $ret .= " `{$this->trim($value[0])}`";
@@ -42,7 +42,7 @@ trait Builder
 
         return $ret;
     }
-    
+
     public function trim($item): string
     {
         return trim($item);
@@ -51,9 +51,9 @@ trait Builder
     protected function setValue(string $key, ?string $value): string
     {
         do {
-            $key = str_replace('.', '__', $key).'__'.rand(100,10000);
+            $key = str_replace('.', '__', $key).'__'.rand(100, 10000);
         } while (isset($this->data[$key]));
-    
+
         $this->data[$key] = $value;
         return $key;
     }
@@ -68,7 +68,7 @@ trait Builder
         } else {
             $this->query .= " AND ";
         }
-        
+
         if ($this->startBracket) {
             $this->query .= ' ( ';
             $this->startBracket = false;

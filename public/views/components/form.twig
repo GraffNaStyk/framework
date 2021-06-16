@@ -1,74 +1,76 @@
 {% macro input(data) %}
-  <label {% if data.type == 'file' %}class="input__upload"{% endif %}>
-    {% if data.type == 'file' %}
-      {{ data.label }}
-      <input style="display: none;" type="{{ data.type }}" name="{{ data.name }}">
-    {% else %}
-      {% if data.label %}
-        <b>{{ data.label }}</b>
-      {% endif %}
-      <input placeholder="{{ data.label }}"
-             class="form-control {{ data.class }}"
-             type="{{ data.type }}"
-             name="{{ data.name }}"
-             value="{{ data.value }}"
-       {{ data.attr }}>
-      {% if data.value and data.label %}
-        <p class="hidden__label">{{ data.label }}</p>
-      {% endif %}
-    {% endif %}
-  </label>
+    <label {% if data.type == 'file' %}class="input__upload"{% endif %}>
+        {% if data.type == 'file' %}
+            {{ data.label }}
+            <input style="display: none;" type="{{ data.type }}" name="{{ data.name }}">
+        {% else %}
+            {% if data.label %}
+                <b>{{ data.label }}</b>
+            {% endif %}
+            <input placeholder="{{ data.label }}"
+                   class="form-control {{ data.class }}"
+                   type="{{ data.type }}"
+                   name="{{ data.name }}"
+                   value="{{ data.value }}"
+                    {{ data.attr }}>
+            {% if data.value and data.label %}
+                <p class="hidden__label">{{ data.label }}</p>
+            {% endif %}
+        {% endif %}
+    </label>
 {% endmacro input %}
 
 {% macro select(data) %}
-  <label>
-    {% if data.label %}
-      <b>{{ data.label }}</b>
-    {% endif %}
-    <select name="{{ data.name }}" data-select="slim" {% if data.url %}data-url="{{ data.url }}"{% endif %} {{ data.multiple }}>
-      {% if data.data %}
-        <option data-placeholder="true">{{ data.label }}</option>
-        {% for item in data.data %}
-          <option value="{{ item.value }}" {{ data.value == item.value ? 'selected' }}>{{ item.text }}</option>
-        {% endfor %}
-      {% endif %}
-    </select>
-  </label>
+    <label>
+        {% if data.label %}
+            <b>{{ data.label }}</b>
+        {% endif %}
+        <select name="{{ data.name }}" data-select="slim"
+                {% if data.url %}data-url="{{ data.url }}"{% endif %} {{ data.multiple }}>
+            {% if data.data %}
+                <option data-placeholder="true">{{ data.label }}</option>
+                {% for item in data.data %}
+                    <option value="{{ item.value }}" {{ data.value == item.value ? 'selected' }}>{{ item.text }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+    </label>
 {% endmacro select %}
 
 {% macro textarea(data) %}
-<label>
-  {% if data.label %}
-    <b>{{ data.label }}</b>
-  {% endif %}
-  <textarea
-   class="form-control {{ data.class }}"
-   name="{{ data.name }}"
-   cols="{{ data.cols ?? 5 }}"
-   rows="{{ data.rows ?? 5 }}">{{ data.value }}</textarea>
-</label>
+    <label>
+        {% if data.label %}
+            <b>{{ data.label }}</b>
+        {% endif %}
+        <textarea
+                class="form-control {{ data.class }}"
+                name="{{ data.name }}"
+                cols="{{ data.cols ?? 5 }}"
+                rows="{{ data.rows ?? 5 }}">{{ data.value }}</textarea>
+    </label>
 {% endmacro textarea %}
 
 {% macro submit(data) %}
-  <button class="btn {{ data.class }} submit__button btn-outline-success"> {{ data.value }} </button>
+    <button class="btn {{ data.class }} submit__button btn-outline-success"> {{ data.value }} </button>
 {% endmacro submit %}
 
 {% macro csrf(path) %}
-  <input type="hidden" name="_csrf" value="{{ csrf(path) }}">
+    <input type="hidden" name="_csrf" value="{{ csrf(path) }}">
 {% endmacro csrf %}
 
 {% macro switch(data) %}
-  <div class="row mx-0 mb-2 position-relative switch__row">
-    <div class="col-8">
-      <b>{{ data.text }}</b>
+    <div class="row mx-0 mb-2 position-relative switch__row">
+        <div class="col-8">
+            <b>{{ data.text }}</b>
+        </div>
+        <div class="col-4 d-flex justify-content-end align-items-center">
+            <b class="mr-2 switch__text__field-{{ data.name }}">{{ data.value == 1 ? 'Tak' : 'Nie' }}</b>
+            <label class="switch">
+                <input type="checkbox" name="{{ data.name }}"
+                       value="{{ data.value }}" {{ data.value == 1 ? 'checked' }}>
+                <span class="slider switch_slider_toggle" data-inputname="{{ data.name }}"></span>
+                <input type="hidden" name="{{ data.name }}" value="{{ data.value }}">
+            </label>
+        </div>
     </div>
-    <div class="col-4 d-flex justify-content-end align-items-center">
-      <b class="mr-2 switch__text__field-{{ data.name }}">{{ data.value == 1 ? 'Tak' : 'Nie' }}</b>
-      <label class="switch">
-        <input type="checkbox" name="{{ data.name }}" value="{{ data.value }}" {{ data.value == 1 ? 'checked' }}>
-        <span class="slider switch_slider_toggle" data-inputname="{{ data.name }}"></span>
-        <input type="hidden" name="{{ data.name }}" value="{{ data.value }}">
-      </label>
-    </div>
-  </div>
 {% endmacro switch %}

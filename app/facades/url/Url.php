@@ -13,7 +13,7 @@ class Url
         } else {
             $url = Url::base().'/'.Router::getAlias().$url;
         }
-        
+
         return $url;
     }
 
@@ -22,7 +22,7 @@ class Url
         if (app('url') === '/') {
             return '';
         }
-        
+
         return app('url');
     }
 
@@ -33,11 +33,11 @@ class Url
         if ($offset === 'end' || $offset === 'last') {
             return end($string);
         }
-        
+
         if (isset($string[$offset])) {
             return $string[$offset];
         }
-        
+
         return false;
     }
 
@@ -46,20 +46,20 @@ class Url
         $link = strtolower(trim(preg_replace('~[^\\pL\d]+~u', '-', $link)));
         $link = iconv('utf-8', 'us-ascii//TRANSLIT', $link);
         $link = preg_replace('~[^-\w]+~', '', $link);
-        return substr($link, 0, -1);
+        return substr($link, 0, - 1);
     }
-    
+
     public static function isLocalhost(): bool
     {
         return in_array(getenv('REMOTE_ADDR'), ['127.0.0.1', '::1']);
     }
-	
-	public static function full(): string
-	{
-		if (empty(getenv('HTTP_HOST'))) {
-			return app('host_url') . self::base();
-		} else {
-			return Router::checkProtocol() . '://' . getenv('HTTP_HOST') . self::base();
-		}
-	}
+
+    public static function full(): string
+    {
+        if (empty(getenv('HTTP_HOST'))) {
+            return app('host_url').self::base();
+        } else {
+            return Router::checkProtocol().'://'.getenv('HTTP_HOST').self::base();
+        }
+    }
 }

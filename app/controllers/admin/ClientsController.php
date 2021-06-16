@@ -15,14 +15,14 @@ class ClientsController extends Controller
     {
         parent::__construct();
     }
-    
-    public function index(int $page=1)
+
+    public function index(int $page = 1)
     {
-    	Pagination::make(Client::class, $page, '/clients/page');
+        Pagination::make(Client::class, $page, '/clients/page');
 
         return $this->render([
             'clients' => Cache::remember(50, function () use ($page) {
-	            return Client::select()->paginate($page)->get();
+                return Client::select()->paginate($page)->get();
             })
         ]);
     }
@@ -31,7 +31,7 @@ class ClientsController extends Controller
     {
         return $this->render();
     }
-    
+
     public function store(Request $request): string
     {
         if (! $this->validate($request->all(), ClientValidator::class)) {
@@ -41,37 +41,37 @@ class ClientsController extends Controller
         Client::create($request->all());
 
         return $this->sendSuccess('Użytkownik dodany', [
-        	'to' => '/clients'
+            'to' => '/clients'
         ]);
     }
 
     public function update(Request $request)
     {
-    
+
     }
-    
+
     public function show(int $id)
     {
-    	$client = Client::select()->where('id', '=', $id)->exist();
-    	
-    	if ($client) {
-		    return $this->render(['client' => $client]);
-	    } else {
-    		$this->redirect('/clients');
-	    }
+        $client = Client::select()->where('id', '=', $id)->exist();
+
+        if ($client) {
+            return $this->render(['client' => $client]);
+        } else {
+            $this->redirect('/clients');
+        }
     }
 
     public function edit(int $id)
     {
-    	return $this->render();
+        return $this->render();
     }
-    
+
     public function delete(Request $request)
     {
-    	Client::delete()->where('id', '=', $request->get('id'))->exec();
+        Client::delete()->where('id', '=', $request->get('id'))->exec();
 
-    	$this->sendSuccess('Usunięto', [
-    		'to' => '/clients'
-	    ]);
+        $this->sendSuccess('Usunięto', [
+            'to' => '/clients'
+        ]);
     }
 }

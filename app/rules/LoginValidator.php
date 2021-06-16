@@ -11,9 +11,9 @@ class LoginValidator
             'password' => 'string|required|min:3',
         ];
     }
-    
+
     public static function example($item, $field)
     {
-    	
+
     }
 }

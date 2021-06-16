@@ -12,12 +12,12 @@ use App\Rules\LoginValidator;
 
 class LoginController extends Controller
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-	
-	public function index()
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function index()
     {
         View::layout('login');
         return $this->render(['title' => 'Panel Administracyjny - logowanie']);
@@ -28,19 +28,19 @@ class LoginController extends Controller
         if (! $this->validate($request->all(), LoginValidator::class)) {
             $this->sendError('Formularz nie zostal wysłany');
         }
-        
-	    $user = User::select()
-		    ->where('name', '=', $request->get('name'))
-		    ->exist();
 
-	    if ($user && Password::verify($request->get('password'), $user->password)) {
+        $user = User::select()
+            ->where('name', '=', $request->get('name'))
+            ->exist();
+
+        if ($user && Password::verify($request->get('password'), $user->password)) {
             Auth::login($user);
             $this->sendSuccess('Zalogowano poprawnie', [
                     'to' => '/dash'
                 ]
             );
         }
-    
+
         return $this->sendError('Niepoprwane dane logowania');
     }
 }

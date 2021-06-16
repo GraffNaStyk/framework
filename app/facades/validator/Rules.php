@@ -7,49 +7,49 @@ use DateTime;
 
 class Rules
 {
-	public static function min($item, $rule, $field)
-	{
-		if ($item < $rule) {
-			return ['msg' => 'Zbyt mała wartość', 'field' => $field];
-		}
-	}
-	
-	public static function max($item, $rule, $field)
-	{
-		if ($item > $rule) {
-			return ['msg' => 'Zbyt duża wartość', 'field' => $field];
-		}
-	}
-	
-	public static function min_len($item, $rule, $field)
-	{
-		if (strlen($item) < $rule) {
-			return ['msg' => 'Pole jest za krótkie', 'field' => $field];
-		}
-	}
-	
-	public static function max_len($item, $rule, $field)
-	{
-		if (strlen($item) > $rule) {
-			return ['msg' => 'Pole jest za długie', 'field' => $field];
-		}
-	}
-	
-	public static function same_as($item, $rule, $field)
-	{
-		$route = Router::getInstance();
+    public static function min($item, $rule, $field)
+    {
+        if ($item < $rule) {
+            return ['msg' => 'Zbyt mała wartość', 'field' => $field];
+        }
+    }
 
-		if ($item !== $route->request->get($rule)) {
-			return ['msg' => 'Pole '.$field.' jest różne od pola '.$rule, 'field' => $field];
-		}
-	}
-	
-	public static function required($item, $rule, $field)
-	{
-		if (! isset($item)) {
-			return ['msg' => 'Pole jest wymagane', 'field' => $field];
-		}
-	}
+    public static function max($item, $rule, $field)
+    {
+        if ($item > $rule) {
+            return ['msg' => 'Zbyt duża wartość', 'field' => $field];
+        }
+    }
+
+    public static function min_len($item, $rule, $field)
+    {
+        if (strlen($item) < $rule) {
+            return ['msg' => 'Pole jest za krótkie', 'field' => $field];
+        }
+    }
+
+    public static function max_len($item, $rule, $field)
+    {
+        if (strlen($item) > $rule) {
+            return ['msg' => 'Pole jest za długie', 'field' => $field];
+        }
+    }
+
+    public static function same_as($item, $rule, $field)
+    {
+        $route = Router::getInstance();
+
+        if ($item !== $route->request->get($rule)) {
+            return ['msg' => 'Pole '.$field.' jest różne od pola '.$rule, 'field' => $field];
+        }
+    }
+
+    public static function required($item, $rule, $field)
+    {
+        if (! isset($item)) {
+            return ['msg' => 'Pole jest wymagane', 'field' => $field];
+        }
+    }
 
     public static function email($item, $rule, $field)
     {
@@ -89,7 +89,7 @@ class Rules
     public static function json($item, $rule, $field)
     {
         json_decode($item);
-        
+
         if (json_last_error() !== 0) {
             return ['msg' => 'Pole musi być jsonem', 'field' => $field];
         }
@@ -110,18 +110,18 @@ class Rules
             return ['msg' => 'Taka nazwa już istnieje', 'field' => $field];
         }
     }
-    
+
     public static function check_file($item, $rule, $field)
     {
         if ($item['error'] !== UPLOAD_ERR_OK) {
             return ['msg' => 'Plik jest uszkodzony', 'field' => $field];
         }
     }
-	
-	public static function float($item, $rule, $field)
-	{
-		if (! is_numeric($item) && ! is_float($item)) {
-			return ['msg' => 'Wymagana wartość zmniennoprzecinkowa', 'field' => $field];
-		}
-	}
+
+    public static function float($item, $rule, $field)
+    {
+        if (! is_numeric($item) && ! is_float($item)) {
+            return ['msg' => 'Wymagana wartość zmniennoprzecinkowa', 'field' => $field];
+        }
+    }
 }

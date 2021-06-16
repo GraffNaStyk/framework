@@ -10,7 +10,7 @@ class Autoload
         $className = end($classArr);
         array_pop($classArr);
         $className = mb_strtolower(implode('/', $classArr)).'/'.$className.'.php';
-        
+
         if ((bool) is_readable(path($className))) {
             require_once path($className);
         }

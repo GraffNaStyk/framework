@@ -16,15 +16,15 @@ use ReflectionMethod;
 final class Router extends Route
 {
     private static array $params = [];
-    
+
     private static ?string $url = null;
 
     public Request $request;
-    
+
     private Csrf $csrf;
-    
+
     private static ?Collection $route = null;
-    
+
     private static ?Router $instance = null;
 
     public function __construct()
@@ -32,47 +32,47 @@ final class Router extends Route
         if (self::$instance === null) {
             self::$instance = $this;
         }
-        
+
         $this->request = new Request();
         $this->csrf = new Csrf();
         $this->boot();
     }
-    
+
     public static function getInstance(): Router
     {
         return self::$instance;
     }
-	
-	private function boot()
-	{
-		$this->parseUrl();
-		$this->setParams();
-		$this->request->sanitize();
-		$this->runMiddlewares('before');
 
-		if ($this->request->getMethod() === 'post' && !defined('API')) {
-			if (! $this->csrf->valid($this->request)) {
-				self::abort(403);
-			}
-		}
+    private function boot()
+    {
+        $this->parseUrl();
+        $this->setParams();
+        $this->request->sanitize();
+        $this->runMiddlewares('before');
 
-		$this->create(self::$route->getNamespace().'\\'.self::getClass().'Controller');
-		$this->runMiddlewares('after');
-		$this->dispatchEvents();
-	}
-	
-	private function dispatchEvents()
-	{
-		$events = EventServiceProvider::getListener(
-			self::$route->getNamespace().'\\'.self::getClass().'Controller'
-		)[self::getAction()];
+        if ($this->request->getMethod() === 'post' && ! defined('API')) {
+            if (! $this->csrf->valid($this->request)) {
+                self::abort(403);
+            }
+        }
 
-		if (! empty($events)) {
-			foreach ($events as $event) {
-				(new $event)->handle();
-			}
-		}
-	}
+        $this->create(self::$route->getNamespace().'\\'.self::getClass().'Controller');
+        $this->runMiddlewares('after');
+        $this->dispatchEvents();
+    }
+
+    private function dispatchEvents()
+    {
+        $events = EventServiceProvider::getListener(
+            self::$route->getNamespace().'\\'.self::getClass().'Controller'
+        )[self::getAction()];
+
+        if (! empty($events)) {
+            foreach ($events as $event) {
+                (new $event)->handle();
+            }
+        }
+    }
 
     private function runMiddlewares(string $when): void
     {
@@ -80,14 +80,14 @@ final class Router extends Route
             $middlewares = Kernel::getMiddlewares(self::$route->getMiddleware());
 
             foreach ($middlewares as $middleware) {
-	            if (method_exists($middleware, $when)) {
-		            (new $middleware())->$when($this->request, $this);
-	            }
+                if (method_exists($middleware, $when)) {
+                    (new $middleware())->$when($this->request, $this);
+                }
             }
         }
-    
+
         $everyMiddlewares = Kernel::getEveryMiddleware();
-        
+
         if (! empty($everyMiddlewares)) {
             foreach ($everyMiddlewares as $middleware) {
                 if (method_exists($middleware, $when)) {
@@ -96,25 +96,25 @@ final class Router extends Route
             }
         }
     }
-    
+
     public function getCurrentRoute(): Collection
     {
         return self::$route;
     }
-    
+
     public function routeParams(): array
     {
-    	return [
-    		'controller'  => self::getClass(),
-		    'action'      => self::getAction(),
-		    'namespace'   => self::$route->getNamespace(),
-		    'rights'      => self::$route->getRights(),
-		    'middlewares' => self::$route->getMiddleware(),
-		    'method'      => self::$route->getMethod(),
-		    'params'      => $this->request->getData()
-	    ];
+        return [
+            'controller' => self::getClass(),
+            'action' => self::getAction(),
+            'namespace' => self::$route->getNamespace(),
+            'rights' => self::$route->getRights(),
+            'middlewares' => self::$route->getMiddleware(),
+            'method' => self::$route->getMethod(),
+            'params' => $this->request->getData()
+        ];
     }
-    
+
     private function setCurrentRoute(Collection $route): void
     {
         self::$route = $route;
@@ -129,48 +129,48 @@ final class Router extends Route
     {
         return self::$route->getAction();
     }
-    
+
     public static function getNamespace(): ?string
     {
-    	if (self::$route instanceof Collection) {
-    		return self::$route->getNamespace();
-	    }
-    	
-    	return null;
+        if (self::$route instanceof Collection) {
+            return self::$route->getNamespace();
+        }
+
+        return null;
     }
-    
+
     public static function getAlias(): string
     {
         $alias = mb_strtolower(end(explode('\\', self::getNamespace())));
 
-		return $alias === 'http' ? $alias : 'admin';
+        return $alias === 'http' ? $alias : 'admin';
     }
-    
+
     private function create(string $controller)
     {
         if (method_exists($controller, self::getAction())) {
             try {
                 $reflectionClass = new ReflectionClass($controller);
-                
+
                 if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
                     self::abort();
                 }
             } catch (\ReflectionException $e) {
-	            Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+                Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
                 self::abort();
             }
 
             try {
                 $reflection = new ReflectionMethod($controller, self::getAction());
-                
+
                 if ($reflection->isProtected() || $reflection->isPrivate()) {
-	                Log::custom('router', ['msg' => 'Aborted by access to private or protected method']);
+                    Log::custom('router', ['msg' => 'Aborted by access to private or protected method']);
                     self::abort();
                 }
-                
+
                 $controller = new $controller();
-                $params     = $reflection->getParameters();
-                
+                $params = $reflection->getParameters();
+
                 if (empty($params)) {
                     return $controller->{self::getAction()}();
                 }
@@ -178,82 +178,82 @@ final class Router extends Route
                 if ((string) $params[0]->name === 'request' && ! empty($this->request->all())) {
                     return $controller->{self::getAction()}($this->request);
                 } else if ((string) $params[0]->name === 'request' && empty($this->request->all())) {
-	                Log::custom('router', ['msg' => 'Trying to access with empty request']);
-                	self::abort(403);
+                    Log::custom('router', ['msg' => 'Trying to access with empty request']);
+                    self::abort(403);
                 }
 
-	            $requestParams = $this->request->getData();
-                $paramCount    = count($requestParams);
+                $requestParams = $this->request->getData();
+                $paramCount = count($requestParams);
 
                 if ($reflection->getNumberOfRequiredParameters() > $paramCount) {
-	                Log::custom('router', ['msg' => 'Not enough params']);
+                    Log::custom('router', ['msg' => 'Not enough params']);
                     self::abort();
                 }
 
                 $this->checkParamTypes($paramCount, $requestParams, $controller);
-                
+
                 return call_user_func_array([$controller, self::getAction()], $requestParams);
 
             } catch (\ReflectionException $e) {
-	            Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+                Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
                 self::abort();
             }
         }
-        
-	    self::abort();
+
+        self::abort();
     }
-    
+
     private function checkParamTypes(int $count, array $requestParams, object $controller)
     {
-	    if (! empty($requestParams)) {
-	    	try {
-			    for ($i=0; $i < $count; $i++) {
-				    $refParam = new \ReflectionParameter([$controller, self::getAction()], $i);
-				    $type     = preg_replace(
-				    	'/.*?(\w+)\s+\$'.$refParam->name.'.*/',
-					    '\\1',
-					    $refParam->__toString()
-				    );
-				    
-				    if ($type === 'int') {
-					    $type = 'integer';
-				    }
-				
-				    if ($type === 'float') {
-					    $type = 'double';
-				    }
-				
-				    if (gettype($requestParams[$i]) !== $type) {
-					    self::abort(400, 'Wrong param type, param: '.$requestParams[$i]);
-				    }
-				    
-				    unset($refParam);
-			    }
-		    } catch (\ReflectionException $e) {
-			    Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
-			    self::abort();
-		    }
-	    }
+        if (! empty($requestParams)) {
+            try {
+                for ($i = 0; $i < $count; $i ++) {
+                    $refParam = new \ReflectionParameter([$controller, self::getAction()], $i);
+                    $type = preg_replace(
+                        '/.*?(\w+)\s+\$'.$refParam->name.'.*/',
+                        '\\1',
+                        $refParam->__toString()
+                    );
+
+                    if ($type === 'int') {
+                        $type = 'integer';
+                    }
+
+                    if ($type === 'float') {
+                        $type = 'double';
+                    }
+
+                    if (gettype($requestParams[$i]) !== $type) {
+                        self::abort(400, 'Wrong param type, param: '.$requestParams[$i]);
+                    }
+
+                    unset($refParam);
+                }
+            } catch (\ReflectionException $e) {
+                Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+                self::abort();
+            }
+        }
     }
-    
+
     public function setParams(): void
     {
         $routeExist = false;
 
-	    foreach (self::$routes as $key => $route) {
-		    $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
-		
-		    if (preg_match('#^'.$pattern.'$#', self::$url, $matches)) {
-			    if ((string) $this->request->getMethod() !== (string)$route->getMethod()) {
-				    self::abort(405);
-			    }
-			
-			    $routeExist = true;
-			    $this->setCurrentRoute($route);
-			    $this->setMatches(array_slice($matches, 1));
-			    break;
-		    }
-	    }
+        foreach (self::$routes as $key => $route) {
+            $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
+
+            if (preg_match('#^'.$pattern.'$#', self::$url, $matches)) {
+                if ((string) $this->request->getMethod() !== (string) $route->getMethod()) {
+                    self::abort(405);
+                }
+
+                $routeExist = true;
+                $this->setCurrentRoute($route);
+                $this->setMatches(array_slice($matches, 1));
+                break;
+            }
+        }
 
         if (! $routeExist) {
             self::abort();
@@ -263,23 +263,23 @@ final class Router extends Route
             $this->request->setData(self::$params);
         }
     }
-    
+
     private function setMatches(array $matches): void
     {
-    	if (! empty($matches)) {
-		    $matches = explode('/', $matches[0]);
-		
-		    foreach ($matches as $value) {
-			    self::$params[] = $value;
-		    }
-	    }
+        if (! empty($matches)) {
+            $matches = explode('/', $matches[0]);
+
+            foreach ($matches as $value) {
+                self::$params[] = $value;
+            }
+        }
     }
 
     public static function url(): string
     {
         return $_SERVER['REQUEST_URI'];
     }
-    
+
     private function parseUrl(): void
     {
         if ((string) app('url') !== '/') {
@@ -289,48 +289,48 @@ final class Router extends Route
         }
 
         $this->setQueryStringParams();
-        
+
         self::$url = preg_replace('/\?.*/',
             '',
             filter_var(self::$url, FILTER_SANITIZE_URL)
         );
-        
+
         if ((string) self::$url !== '/') {
             self::$url = rtrim(self::$url, '/');
         }
     }
-    
+
     private function setQueryStringParams()
     {
         parse_str(parse_url(self::$url)['query'], $str);
-        
+
         if (! empty($str)) {
             foreach ($str as $key => $item) {
                 self::$params[$key] = $item;
             }
         }
     }
-    
-    private static function abort(int $code=404, ?string $message=null): void
+
+    private static function abort(int $code = 404, ?string $message = null): void
     {
-    	Log::custom('aborted', [
-		    'message'    => 'Aborted operation from router, code: '.$code.' '.Header::RESPONSE_CODES[$code],
-		    'custom_msg' => $message,
-		    'user'       => Auth::user() 
-	    ]);
+        Log::custom('aborted', [
+            'message' => 'Aborted operation from router, code: '.$code.' '.Header::RESPONSE_CODES[$code],
+            'custom_msg' => $message,
+            'user' => Auth::user()
+        ]);
 
         header("HTTP/1.1 {$code} ".Header::RESPONSE_CODES[$code]);
         http_response_code($code);
 
         if ((API && defined('API')) || Request::isAjax()) {
-        	Response::json(['msg' => Header::RESPONSE_CODES[$code]], $code);
+            Response::json(['msg' => Header::RESPONSE_CODES[$code]], $code);
         } else {
-	        exit(require_once (view_path('errors/error.php')));
+            exit(require_once(view_path('errors/error.php')));
         }
     }
 
-	public static function csrfPath(): string
-	{
-		return self::$route->getController().'@'.self::$route->getAction();
-	}
+    public static function csrfPath(): string
+    {
+        return self::$route->getController().'@'.self::$route->getAction();
+    }
 }
