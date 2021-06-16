@@ -24,6 +24,7 @@ class Loader
     public static function css(): string
     {
         $folder = Router::getAlias();
+
         if (app('dev')) {
             $cssArr = [
                 ...array_diff(scandir(css_path($folder)), ['.', '..', '.htaccess']),
@@ -32,7 +33,7 @@ class Loader
 
             $rebuild = false;
             $mtime = filemtime(css_path($folder.'.css'));
-            
+
             foreach ($cssArr as $item) {
                 if (filemtime(css_path($folder.'/'.$item)) > $mtime) {
                     $rebuild = true;
