@@ -32,9 +32,9 @@ class Loader
 
             $rebuild = false;
             $mtime = filemtime(css_path($folder.'.css'));
-
+            
             foreach ($cssArr as $item) {
-                if (filemtime($item) > $mtime) {
+                if (filemtime(css_path($folder.'/'.$item)) > $mtime) {
                     $rebuild = true;
                     break;
                 }
@@ -45,8 +45,12 @@ class Loader
                 $cssString = null;
 
                 foreach ($cssArr as $css) {
-                    if ((bool) is_readable($css)) {
-                        $cssString .= preg_replace('/\s\s+/', '', file_get_contents($css));
+                    if ((bool) is_readable(css_path($folder.'/'.$css))) {
+                        $cssString .= preg_replace(
+                        	'/\s\s+/',
+	                        '',
+	                        file_get_contents(css_path($folder.'/'.$css))
+                        );
                     }
                 }
 
@@ -74,7 +78,7 @@ class Loader
             $mtime = filemtime(js_path('main.js'));
 
             foreach ($jsArr as $item) {
-                if (filemtime($item) > $mtime) {
+                if (filemtime(js_path('components'.'/'.$item)) > $mtime) {
                     $rebuild = true;
                     break;
                 }
@@ -85,8 +89,12 @@ class Loader
                 $jsString = null;
 
                 foreach ($jsArr as $js) {
-                    if ((bool) is_readable($js)) {
-                        $jsString .= preg_replace('/\s\s+/', ' ', file_get_contents($js)).' ; ';
+                    if ((bool) is_readable(js_path('components'.'/'.$js))) {
+                        $jsString .= preg_replace(
+                        	'/\s\s+/',
+	                        ' ',
+	                        file_get_contents(js_path('components'.'/'.$js))
+	                        ).' ; ';
                     }
                 }
 

@@ -5,7 +5,6 @@ namespace App\Observers;
 
 class UsersObserver
 {
-
     public function created()
     {
 
