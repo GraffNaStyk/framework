@@ -1,7 +1,6 @@
 # Graff framework
 
 ## Configuration
-
 Application configuration app/config/app.php
 ```php
 [
@@ -70,7 +69,7 @@ Application configuration app/config/app.php
 ];
 
 ```
-
+## Env
 Database configuration app/config/.env
 ```dotenv
 DB_USER=user
@@ -113,7 +112,10 @@ Route::when('/url1', '/url2');
 Route::crud('url', 'Controller');
 ```
 
-# Console
+## Console
+
+php console {args}
+
 | Typ | Opis |
 | ------ | ------ |
 | Crontab | time php path/to/console cron {fileName} run |
@@ -126,7 +128,7 @@ Route::crud('url', 'Controller');
 | Observer | php console observer {fileName} |
 | Commands | php console commands - show all commands in terminal |
 
-# Model
+## Model
 app/model
 ```php
 Model::insert('array')
@@ -179,7 +181,9 @@ Model::decrement('field', 'value')->where('param1', 'is', 'param2')->exec();
 Model::lastId();
 ```
 
-# Javascript responses
+## Javascript responses
+Javscript responses
+
 | Typ | Opis |
 | ------ | ------ |
 | res.params.modal | Otwiera kolejny modal |
