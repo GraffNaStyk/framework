@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Facades\Log\Log;
 use App\Facades\Http\Session;
+use App\Facades\Log\Log;
 use App\Model\User;
 
 class Auth
