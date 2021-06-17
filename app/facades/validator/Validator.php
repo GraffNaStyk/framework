@@ -54,9 +54,7 @@ class Validator
                     static::$validatorErrors[] = $fnName::$validateRule($request[$key], $key);
                 } else {
                     if (((string) $request[$key] === '' && isset($item['required'])) || (string) $request[$key] !== '') {
-                        if (method_exists(Rules::class, $fnName)) {
-                            static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
-                        }
+                        static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
                     }
                 }
             }
