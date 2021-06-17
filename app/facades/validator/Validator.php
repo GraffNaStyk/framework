@@ -31,6 +31,11 @@ class Validator
 
     private static function refactorRules(array $rules)
     {
+        if (isset($rules['lang'])) {
+            Rules::$lang = $rules['lang'];
+            unset($rules['lang']);
+        }
+
         foreach ($rules as $key => $rule) {
             $eachRule = explode('|', $rule);
 
@@ -49,7 +54,9 @@ class Validator
                     static::$validatorErrors[] = $fnName::$validateRule($request[$key], $key);
                 } else {
                     if (((string) $request[$key] === '' && isset($item['required'])) || (string) $request[$key] !== '') {
-                        static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
+                        if (method_exists(Rules::class, $fnName)) {
+                            static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
+                        }
                     }
                 }
             }

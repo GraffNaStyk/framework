@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class CLASSNAME
+class Example
 {
     public function __construct()
     {
