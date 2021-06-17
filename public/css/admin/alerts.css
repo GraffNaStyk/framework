@@ -20,4 +20,5 @@ span.err {
 
 .input_error, .input_error:focus, .input_error:active {
     border: 1px solid #ce2e22 !important;
+    border-radius: 8px;
 }
