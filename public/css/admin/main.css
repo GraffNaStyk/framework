@@ -35,7 +35,7 @@ body {
 }
 
 .grid aside.left-panel {
-    background: #2d2b32;
+    background: #252e39;
     flex-direction: column;
 }
 
@@ -90,7 +90,7 @@ body {
 .grid aside.left-panel div.parent {
     display: none;
     flex-direction: column;
-    background: #242229;
+    background: #323c48;
 }
 
 .grid aside.left-panel div.parent a {
@@ -108,7 +108,7 @@ body {
 }
 
 nav.top__nav {
-    background: #2d2b32;
+    background: #252e39;
     border-bottom: 1px solid white;
 }
 
