@@ -31,9 +31,9 @@ class Validator
 
     private static function refactorRules(array $rules)
     {
-        if (isset($rules['lang'])) {
-            Rules::$lang = $rules['lang'];
-            unset($rules['lang']);
+        if (isset($rules['__lang'])) {
+            Rules::$lang = $rules['__lang'];
+            unset($rules['__lang']);
         }
 
         foreach ($rules as $key => $rule) {
