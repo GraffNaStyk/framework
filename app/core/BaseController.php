@@ -19,7 +19,7 @@ abstract class BaseController
         $this->boot();
     }
 
-    public function boot()
+    public function boot(): void
     {
         Storage::private()->make('logs');
         Storage::private()->make('cache');

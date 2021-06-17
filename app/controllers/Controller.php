@@ -15,7 +15,7 @@ abstract class Controller extends BaseController
         $this->setLayout();
     }
 
-    private function setLayout()
+    private function setLayout(): void
     {
         $layout = strtolower(
             Url::segment(Router::getInstance()->getCurrentRoute()->getNamespace(), 2, '\\')
