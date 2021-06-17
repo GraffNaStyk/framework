@@ -55,7 +55,7 @@ abstract class BaseController
 
     public function validate(array $request, string $rule, array $optional = []): bool
     {
-        return Validator::make($request, (new $rule())->getRule($optional));
+        return Validator::validate($request, (new $rule())->getRule($optional));
     }
 
     public function sendSuccess(string $message = null, array $params = [], int $status = 200): ?string

@@ -10,7 +10,7 @@ class Validator
     protected static array $rules = [];
     private static array $validatorErrors = [];
 
-    public static function make($request, array $rules): bool
+    public static function validate($request, array $rules): bool
     {
         static::$validatorErrors = [];
         static::$rules = [];
