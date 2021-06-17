@@ -10,12 +10,6 @@ if (window.innerWidth <= 990) {
     $.el('.left-panel').classList.remove('d-flex');
 }
 
-let element = $.el(className);
-
-if (element !== undefined && element !== null) {
-    element.style.minHeight = window.innerHeight - $.el('nav').clientHeight + 'px';
-}
-
 const menu = (e) => {
     if (e.target.nextElementSibling.classList.contains('d-flex')) {
         e.target.nextElementSibling.classList.remove('d-flex');

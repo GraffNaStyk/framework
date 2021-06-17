@@ -55,51 +55,10 @@ button.navbar-toggler {
     }
 }
 
-.form__label, .area__label {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+main {
+    height: 86.9vh;
 }
 
-.form__label .form__styled {
-    border: none;
-    transition: .6s;
-    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .3);
-    background: var(--bgcolor);
-}
-
-.area__label .form__styled__area {
-    transition: .6s;
-    border: 1px solid rgba(0, 0, 0, .3);
-    background: var(--bgcolor);
-}
-
-.area__label .form__styled__area:active, .area__label .form__styled__area:focus {
-    transition: .6s;
-    border: 1px solid var(--maincolor);
-}
-
-.form__label .form__styled:active, .form__label .form__styled:focus {
-    box-shadow: inset 0 -1px 0 var(--maincolor);
-    transition: .6s;
-}
-
-.form__desc {
-    transition: .6s;
-    opacity: 1;
-}
-
-.form__accept {
-    border: 1px solid var(--maincolor);
-    padding: .4rem 3rem;
-    color: var(--textcolor);
-    background: transparent;
-    margin-top: .4rem;
-    transition: .6s;
-}
-
-.form__accept:hover, .form__accept:focus {
-    background: var(--maincolor);
-    color: white;
-    transition: .6s;
+.btn-outline-secondary:not(:disabled):not(.disabled):active:focus {
+    box-shadow: none!important;
 }

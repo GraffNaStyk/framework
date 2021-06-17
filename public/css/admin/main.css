@@ -6,6 +6,7 @@ body {
 .grid {
     display: grid;
     grid-template-columns: 15% 85%;
+    height: 94.1vh;
 }
 
 @media (max-width: 1200px) {
