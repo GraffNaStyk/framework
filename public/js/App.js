@@ -2,7 +2,7 @@ class App {
 
     constructor() {
         this.events = [];
-        this.loader = `<div class="preloader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div></div>`;
+        this.loader = `<div class="loader"><div class="lds-ring"><div></div><div></div><div></div><div></div></div><div class="preloader"></div></div>`;
         this.setDocumentUrl();
         this.bindActions();
         this.bindConfirms();
@@ -186,7 +186,7 @@ class App {
 
     loaderStop = () => {
         setTimeout(() => {
-            this.el('.preloader').remove();
+            this.el('.loader').remove();
             this.loaderExist = false;
         }, 200)
     }
@@ -194,7 +194,7 @@ class App {
     loaderStart = () => {
         if (this.loaderExist === false) {
             this.adjacent(document.body, this.loader);
-            this.el('.preloader').style.opacity = .6;
+            this.el('.preloader').style.opacity = .4;
             this.loaderExist = true;
         }
     }
