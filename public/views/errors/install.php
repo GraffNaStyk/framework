@@ -9,9 +9,26 @@
     <title> Welcome! </title>
     <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
 </head>
+<style>
+  body {
+    background: #252e39;
+    color: rgba(160, 174, 192, 1) !important;
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+    margin: 30px;
+    overflow: hidden;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    display: inline-block;
+    margin: 0;
+  }
+</style>
 <body>
 <div style="height: 600px; display: flex; justify-content: center; align-items: center; flex-direction: column">
-    <h2 style="font-size: 3rem; color: rgba(0,0,0,0.6); font-family: 'Nunito', sans-serif; font-weight: 200">
+    <h2 style="font-family: 'Nunito', sans-serif; font-weight: 200">
         Please run command "composer install"
     </h2>
 </div>
