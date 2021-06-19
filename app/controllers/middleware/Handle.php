@@ -10,8 +10,10 @@ class Handle
 {
     public function before(Request $request, Router $router)
     {
-        Log::custom('request', [
-            'routeParams' => $router->routeParams(),
-        ]);
+    	if ($request->isPost()) {
+		    Log::custom('request', [
+			    'routeParams' => $router->routeParams(),
+		    ]);
+	    }
     }
 }
