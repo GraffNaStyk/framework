@@ -13,7 +13,7 @@ class Migrate
     {
         $this->args = $args;
         $this->migrate = new Migration();
-        $this->{$args[0]}();
+        $this->{$args[0]}($args[1] ?? null);
     }
 
     public function up()
@@ -39,5 +39,10 @@ class Migrate
         array_shift($this->args);
         $this->migrate->make($this->args);
         Console::output('Migration create!', 'green');
+    }
+
+    public function db(string $database)
+    {
+    	$this->migrate->db($database);
     }
 }

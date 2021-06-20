@@ -4,6 +4,7 @@ namespace App\Facades\Migrations;
 
 use App\Facades\Console\Console;
 use App\Facades\Console\Model;
+use App\Facades\Db\Db;
 use App\Facades\Storage\Storage;
 
 class Migration
@@ -73,6 +74,15 @@ class Migration
     public function dump()
     {
         $this->up(true);
+    }
+
+    public function db(string $database): void
+    {
+	    try {
+		    Db::getInstance()->query('CREATE DATABASE '.$database)->execute();
+	    } catch (\PDOException $e) {
+	    	Console::output($e->getMessage());
+	    }
     }
 
     private function makeJsonFile($replace = false)
