@@ -117,7 +117,7 @@ class Blueprint
             .$this->db->getDbName().'"');
 
         foreach ($triggers as $trigger) {
-            if ((string) $this->db->table === (string) $triggers->event_object_table) {
+            if ((string) mb_strtolower($this->db->table) === (string) mb_strtolower($triggers->event_object_table)) {
                 $this->db->query('DROP TRIGGER '.$trigger->trigger_name);
             }
         }
