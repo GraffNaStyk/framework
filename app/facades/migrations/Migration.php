@@ -12,7 +12,7 @@ class Migration
     public function make($args)
     {
         $migration = file_get_contents(app_path('app/facades/migrations/migration'));
-        $migration = str_replace('CLASSNAME', 'Migration_'.$args[0].'_'.date('Y_m_d__H_i'), $migration);
+        $migration = str_replace('CLASSNAME', 'Migration_'.$args[0].'_'.date('Y_m_d__H_i_s'), $migration);
         $migration = str_replace('MODEL', $args[0], $migration);
 
         if (is_dir(app_path('app/migrate/')) === false) {
@@ -20,11 +20,11 @@ class Migration
         }
 
         if (file_put_contents(
-            app_path('app/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').'.php'),
+            app_path('app/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i_s').'.php'),
             $migration
         )) {
             Console::output(
-                'Migration app/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i').' has been created',
+                'Migration app/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i_s').' has been created',
                 'blue'
             );
         }

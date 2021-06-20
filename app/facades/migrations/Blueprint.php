@@ -132,7 +132,7 @@ class Blueprint
 
     protected function storeMigration()
     {
-        $name = 'dump_'.date('Y_m_d__H_i').'.sql';
+        $name = 'dump_'.date('Y_m_d__H_i_s').'.sql';
         file_put_contents(app_path('app/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);
 
         if (! empty($this->queries)) {
