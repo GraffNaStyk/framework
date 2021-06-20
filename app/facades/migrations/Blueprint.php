@@ -133,29 +133,29 @@ class Blueprint
     protected function storeMigration()
     {
         $name = 'dump_'.date('Y_m_d__H_i').'.sql';
-        file_put_contents(app_path('app/db/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);
+        file_put_contents(app_path('app/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);
 
         if (! empty($this->queries)) {
             foreach ($this->queries as $query) {
-                file_put_contents(app_path('app/db/migrate/'.$name), $query.';'.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/migrate/'.$name), $query.';'.PHP_EOL, FILE_APPEND);
             }
         }
 
         if (! empty($this->alter)) {
             foreach ($this->alter as $alter) {
-                file_put_contents(app_path('app/db/migrate/'.$name), $alter.';'.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/migrate/'.$name), $alter.';'.PHP_EOL, FILE_APPEND);
             }
         }
 
         if (! empty($this->foreign)) {
             foreach ($this->foreign as $foreign) {
-                file_put_contents(app_path('app/db/migrate/'.$name), $foreign.';'.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/migrate/'.$name), $foreign.';'.PHP_EOL, FILE_APPEND);
             }
         }
 
         if (! empty($this->trigger)) {
             foreach ($this->trigger as $trigger) {
-                file_put_contents(app_path('app/db/migrate/'.$name), $trigger.';'.PHP_EOL, FILE_APPEND);
+                file_put_contents(app_path('app/migrate/'.$name), $trigger.';'.PHP_EOL, FILE_APPEND);
             }
         }
     }
