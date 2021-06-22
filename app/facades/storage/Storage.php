@@ -3,6 +3,7 @@
 namespace App\Facades\Storage;
 
 use App\Facades\Faker\Faker;
+use App\Helpers\Dir;
 use App\Model\File;
 
 class Storage
@@ -59,13 +60,8 @@ class Storage
 
     private static function checkDirectories()
     {
-        if (! is_dir(storage_path('public/'))) {
-            mkdir(storage_path('public/'), 0775);
-        }
-
-        if (! is_dir(storage_path('private/'))) {
-            mkdir(storage_path('private/'), 0775);
-        }
+    	Dir::create(storage_path('public/'));
+	    Dir::create(storage_path('private/'));
     }
 
     public function put($file, $content, $replace = false): bool

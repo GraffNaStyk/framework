@@ -6,6 +6,7 @@ use App\Facades\Console\Console;
 use App\Facades\Console\Model;
 use App\Facades\Db\Db;
 use App\Facades\Storage\Storage;
+use App\Helpers\Dir;
 
 class Migration
 {
@@ -14,10 +15,7 @@ class Migration
         $migration = file_get_contents(app_path('app/facades/migrations/migration'));
         $migration = str_replace('CLASSNAME', 'Migration_'.$args[0].'_'.date('Y_m_d__H_i_s'), $migration);
         $migration = str_replace('MODEL', $args[0], $migration);
-
-        if (is_dir(app_path('app/migrate/')) === false) {
-            mkdir(app_path('app/migrate/'), 0775, true);
-        }
+        Dir::create(app_path('app/migrate/'));
 
         if (file_put_contents(
             app_path('app/migrate/Migration_'.$args[0].'_'.date('Y_m_d__H_i_s').'.php'),
