@@ -24,8 +24,8 @@ class Type
 	        }
 
             return (int) $item;
-        } else {
-            return (string) trim($item);
         }
+
+	    return trim($item);
     }
 }
