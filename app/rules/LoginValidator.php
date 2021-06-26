@@ -7,8 +7,8 @@ class LoginValidator
     public function getRule(array $optional = []): array
     {
         return [
-            'name' => 'string|required|min:3|'.LoginValidator::class.':example',
-            'password' => 'string|required|min:3',
+            'name' => 'string|required|min_len:3|'.LoginValidator::class.':example',
+            'password' => 'string|required|min_len:3',
             '__lang' => $this->getLang()
         ];
     }
@@ -17,7 +17,8 @@ class LoginValidator
     {
         return [
             'name' => [
-                'required' => 'Custom error test'
+                'required' => 'Custom error test',
+	            'min_len' => 'test'
             ]
         ];
     }
