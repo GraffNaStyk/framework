@@ -12,7 +12,7 @@ class Commands
         'Migrate' => 'php console migrate {method - up,down,make,dump} optional:{fileName table}',
         'Middleware' => 'php console middleware {fileName}',
         'Rule' => 'php console rule {fileName}',
-        'Observer' => 'php console observer {fileName}',
+        'Trigger' => 'php console trigger {fileName}',
         'Service' => 'php console service {fileName}',
     ];
 

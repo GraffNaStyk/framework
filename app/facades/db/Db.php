@@ -32,8 +32,8 @@ class Db
     {
         $this->table = $model::$table;
 
-        if (property_exists($model, 'observe')) {
-            $this->isObserve = $model::$observe;
+        if (property_exists($model, 'trigger')) {
+            $this->hasTrigger = $model::$trigger;
         }
     }
 
@@ -112,7 +112,7 @@ class Db
 
     public function insert(array $values): Db
     {
-        $this->observeMethod = 'created';
+        $this->triggerMethod = 'created';
 
         if (empty($values)) {
             return $this;
@@ -188,7 +188,7 @@ class Db
 
     public function update(array $values): Db
     {
-        $this->observeMethod = 'updated';
+        $this->triggerMethod = 'updated';
         $this->isUpdate = true;
         $this->query = "UPDATE `{$this->table}` SET ";
 
@@ -207,7 +207,7 @@ class Db
 
     public function delete(): Db
     {
-        $this->observeMethod = 'deleted';
+        $this->triggerMethod = 'deleted';
         $this->query = "DELETE FROM `{$this->table}`";
 
         return $this;
@@ -443,9 +443,9 @@ class Db
         if (preg_match('/^(INSERT|UPDATE|DELETE)/', $this->query)) {
             try {
                 if (self::$db->prepare($this->query)->execute($this->data)) {
-                    if ($this->isObserve && $this->observeMethod !== null) {
-                        ObserverResolver::resolve($this->table, $this->observeMethod);
-                        $this->observeMethod = null;
+                    if ($this->hasTrigger && $this->triggerMethod !== null) {
+                        TriggerResolver::resolve($this->table, $this->triggerMethod);
+                        $this->triggerMethod = null;
                     }
 
                     return true;

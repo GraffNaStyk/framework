@@ -2,7 +2,7 @@
 
 namespace App\Facades\Console;
 
-class Observer
+class Trigger
 {
     use FileCreator;
 

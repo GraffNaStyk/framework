@@ -30,7 +30,7 @@ trait Variables
 
     private bool $multiple = false;
 
-    private bool $isObserve = false;
+    private bool $hasTrigger = false;
 
-    private ?string $observeMethod;
+    private ?string $triggerMethod;
 }
