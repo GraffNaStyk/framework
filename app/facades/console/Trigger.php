@@ -12,7 +12,7 @@ class Trigger
     public function __construct($args = [])
     {
         $this->name = $args[0];
-        $this->file = file_get_contents(app_path('app/facades/http/observer'));
+        $this->file = file_get_contents(app_path('app/facades/http/trigger'));
         $this->make();
     }
 
@@ -20,10 +20,10 @@ class Trigger
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Observer', $this->file);
 
-        if (! is_dir(app_path('app/observers/'))) {
-            mkdir(app_path('app/observers/'), 0775, true);
+        if (! is_dir(app_path('app/triggers/'))) {
+            mkdir(app_path('app/triggers/'), 0775, true);
         }
 
-        $this->putFile('app/observers/'.ucfirst($this->name).'Observer.php', $this->file);
+        $this->putFile('app/triggers/'.ucfirst($this->name).'Observer.php', $this->file);
     }
 }
