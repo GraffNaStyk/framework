@@ -7,7 +7,6 @@ use App\Facades\Http\Router\Router;
 
 class CLASSNAME
 {
-
     public function after(Request $request, Router $router)
     {
 

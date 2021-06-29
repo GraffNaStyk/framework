@@ -5,7 +5,6 @@ namespace App\Triggers;
 
 class CLASSNAME
 {
-
     public function created()
     {
 
