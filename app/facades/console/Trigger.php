@@ -18,12 +18,12 @@ class Trigger
 
     public function make()
     {
-        $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Observer', $this->file);
+        $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Trigger', $this->file);
 
         if (! is_dir(app_path('app/triggers/'))) {
             mkdir(app_path('app/triggers/'), 0775, true);
         }
 
-        $this->putFile('app/triggers/'.ucfirst($this->name).'Observer.php', $this->file);
+        $this->putFile('app/triggers/'.ucfirst($this->name).'Trigger.php', $this->file);
     }
 }

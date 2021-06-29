@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Observers;
+namespace App\Triggers;
 
 
 class UsersTrigger
@@ -17,6 +17,6 @@ class UsersTrigger
 
     public function deleted()
     {
-		exit('im delete mordo');
+
     }
 }
