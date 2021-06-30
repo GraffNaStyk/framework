@@ -23,7 +23,7 @@
     border-top: 1.1em solid #252e39;
     border-right: 1.1em solid #252e39;
     border-bottom: 1.1em solid #252e39;
-    border-left: 1.1em solid #ffffff;
+    border-left: 1.1em solid rgba(37, 46, 57, 0.4);
     -webkit-transform: translateZ(0);
     -ms-transform: translateZ(0);
     transform: translateZ(0);
