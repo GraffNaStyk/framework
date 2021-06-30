@@ -14,6 +14,7 @@ class Commands
         'Rule' => 'php console rule {fileName}',
         'Trigger' => 'php console trigger {fileName}',
         'Service' => 'php console service {fileName}',
+	    'Helper' => 'php console helper {fileName}',
     ];
 
     public function __construct()

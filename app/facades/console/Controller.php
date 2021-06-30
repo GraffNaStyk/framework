@@ -24,7 +24,7 @@ class Controller
         $this->file = file_get_contents(app_path('app/facades/http/controller'));
         $this->make();
         $this->putFile(
-            'app/controllers/'.ucfirst($this->namespace).'/'.$this->name.'Controller.php',
+            'app/controllers/'.$this->namespace.'/'.$this->name.'Controller.php',
             $this->file
         );
     }

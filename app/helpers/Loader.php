@@ -25,39 +25,52 @@ class Loader
     {
         $folder = Router::getAlias();
 
-        if (app('dev')) {
-            $cssArr = [
-                ...array_diff(scandir(css_path($folder)), ['.', '..', '.htaccess']),
-                ...array_diff(scandir(css_path('components')), ['.', '..', '.htaccess']),
-            ];
+	    if (app('dev')) {
+		    $cssArr = [
+			    ...array_diff(scandir(css_path($folder)), ['.', '..', '.htaccess']),
+			    ...array_diff(scandir(css_path('components')), ['.', '..', '.htaccess']),
+		    ];
 
-            $rebuild = false;
-            $mtime = filemtime(css_path($folder.'.css'));
+		    $rebuild = false;
+		    $mtime = filemtime(css_path($folder.'.css'));
 
-            foreach ($cssArr as $item) {
-                if (filemtime(css_path($folder.'/'.$item)) > $mtime) {
-                    $rebuild = true;
-                    break;
-                }
-            }
+		    foreach ($cssArr as $item) {
+			    if (file_exists(css_path($folder.'/'.$item))) {
+				    if (filemtime(css_path($folder.'/'.$item)) > $mtime) {
+					    $rebuild = true;
+					    break;
+				    }
+			    } else {
+				    if (filemtime(css_path('components/'.$item)) > $mtime) {
+					    $rebuild = true;
+					    break;
+				    }
+			    }
+		    }
 
-            if ($rebuild) {
-                unlink(css_path($folder.'.css'));
-                $cssString = null;
+		    if ($rebuild) {
+			    unlink(css_path($folder.'.css'));
+			    $cssString = null;
 
-                foreach ($cssArr as $css) {
-                    if ((bool) is_readable(css_path($folder.'/'.$css))) {
-                        $cssString .= preg_replace(
-                        	'/\s\s+/',
-	                        '',
-	                        file_get_contents(css_path($folder.'/'.$css))
-                        );
-                    }
-                }
+			    foreach ($cssArr as $css) {
+				    if ((bool) is_readable(css_path($folder.'/'.$css))) {
+					    $cssString .= preg_replace(
+						    '/\s\s+/',
+						    '',
+						    file_get_contents(css_path($folder.'/'.$css))
+					    );
+				    } else {
+					    $cssString .= preg_replace(
+						    '/\s\s+/',
+						    '',
+						    file_get_contents(css_path('components/'.$css))
+					    );
+				    }
+			    }
 
-                file_put_contents(css_path($folder.'.css'), $cssString);
-            }
-        }
+			    file_put_contents(css_path($folder.'.css'), $cssString);
+		    }
+	    }
 
         $applyCss = null;
 
