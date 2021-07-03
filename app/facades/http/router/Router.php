@@ -169,30 +169,21 @@ final class Router extends Route
                 }
 
                 $controller = new $controller();
-                $params = $reflection->getParameters();
+                $params     = $reflection->getParameters();
+	            $paramCount = count($params);
 
                 if (empty($params)) {
                     return $controller->{self::getAction()}();
                 }
 
-                if ((string) $params[0]->name === 'request' && ! empty($this->request->all())) {
-                    return $controller->{self::getAction()}($this->request);
-                } else if ((string) $params[0]->name === 'request' && empty($this->request->all())) {
-                    Log::custom('router', ['msg' => 'Trying to access with empty request']);
-                    self::abort(403);
-                }
+	            if ($reflection->getNumberOfRequiredParameters() > $paramCount) {
+		            Log::custom('router', ['msg' => 'Not enough params']);
+		            self::abort();
+	            }
 
-                $requestParams = $this->request->getData();
-                $paramCount = count($requestParams);
+	            $combinedParams = $this->checkParamTypes($paramCount, $params, $controller);
 
-                if ($reflection->getNumberOfRequiredParameters() > $paramCount) {
-                    Log::custom('router', ['msg' => 'Not enough params']);
-                    self::abort();
-                }
-
-                $this->checkParamTypes($paramCount, $requestParams, $controller);
-
-                return call_user_func_array([$controller, self::getAction()], $requestParams);
+                return call_user_func_array([$controller, self::getAction()], $combinedParams);
 
             } catch (\ReflectionException $e) {
                 Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
@@ -203,12 +194,31 @@ final class Router extends Route
         self::abort();
     }
 
-    private function checkParamTypes(int $count, array $requestParams, object $controller)
+    private function checkParamTypes(int $count, array $reflectionParams, object $controller): array
     {
-        if (! empty($requestParams)) {
+        if (! empty($reflectionParams)) {
+
+	        $requestParams  = $this->request->getData();
+	        $combinedParams = [];
+
             try {
                 for ($i = 0; $i < $count; $i ++) {
                     $refParam = new \ReflectionParameter([$controller, self::getAction()], $i);
+
+                    if (! empty($class = $refParam->getClass()->name)) {
+                    	if ($class === Request::class) {
+		                    $combinedParams[$i] = $this->request;
+	                    } else {
+		                    $combinedParams[$i] = new $class;
+	                    }
+
+                    	continue;
+                    }
+
+                    if ($refParam->isOptional() && ! isset($requestParams[$i])) {
+                    	continue;
+                    }
+
                     $type = preg_replace(
                         '/.*?(\w+)\s+\$'.$refParam->name.'.*/',
                         '\\1',
@@ -227,6 +237,8 @@ final class Router extends Route
                         self::abort(400, 'Wrong param type, param: '.$requestParams[$i]);
                     }
 
+	                $combinedParams[$i] = $requestParams[$i];
+
                     unset($refParam);
                 }
             } catch (\ReflectionException $e) {
@@ -234,6 +246,8 @@ final class Router extends Route
                 self::abort();
             }
         }
+
+        return $combinedParams;
     }
 
     public function setParams(): void
