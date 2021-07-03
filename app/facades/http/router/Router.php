@@ -155,6 +155,11 @@ final class Router extends Route
                 if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
                     self::abort();
                 }
+
+	            $constructorParams = $this->reflectConstructorParams(
+	            	$reflectionClass->getConstructor()->getParameters()
+	            );
+
             } catch (\ReflectionException $e) {
                 Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
                 self::abort();
@@ -168,7 +173,7 @@ final class Router extends Route
                     self::abort();
                 }
 
-                $controller = new $controller();
+                $controller = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
                 $params     = $reflection->getParameters();
 	            $paramCount = count($params);
 
@@ -194,12 +199,27 @@ final class Router extends Route
         self::abort();
     }
 
+    private function reflectConstructorParams(array $reflectionParams): array
+    {
+	    $combinedParams = [];
+
+		if (! empty($reflectionParams)) {
+			foreach ($reflectionParams as $refParam) {
+				if (! empty($class = $refParam->getClass()->name)) {
+					$combinedParams[] = new $class;
+				}
+			}
+		}
+
+		return $combinedParams;
+    }
+
     private function checkParamTypes(int $count, array $reflectionParams, object $controller): array
     {
-        if (! empty($reflectionParams)) {
+	    $combinedParams = [];
 
+        if (! empty($reflectionParams)) {
 	        $requestParams  = $this->request->getData();
-	        $combinedParams = [];
 
             try {
                 for ($i = 0; $i < $count; $i ++) {
