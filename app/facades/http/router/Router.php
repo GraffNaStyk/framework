@@ -155,11 +155,6 @@ final class Router extends Route
                 if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
                     self::abort();
                 }
-
-	            $constructorParams = $this->reflectConstructorParams(
-	            	$reflectionClass->getConstructor()->getParameters()
-	            );
-
             } catch (\ReflectionException $e) {
                 Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
                 self::abort();
@@ -172,6 +167,10 @@ final class Router extends Route
                     Log::custom('router', ['msg' => 'Aborted by access to private or protected method']);
                     self::abort();
                 }
+
+	            $constructorParams = $this->reflectConstructorParams(
+		            $reflectionClass->getConstructor()->getParameters()
+	            );
 
                 $controller = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
                 $params     = $reflection->getParameters();
