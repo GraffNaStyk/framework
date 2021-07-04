@@ -223,7 +223,7 @@ final class Router extends Route
 	    $combinedParams = [];
 
         if (! empty($reflectionParams)) {
-	        $requestParams  = $this->request->getData();
+	        $requestParams = $this->request->getData();
 
             try {
                 for ($i = 0; $i < $count; $i ++) {
@@ -236,6 +236,7 @@ final class Router extends Route
 		                    $combinedParams[$i] = new $class();
 	                    }
 
+                    	unset($refParam);
                     	continue;
                     }
 
