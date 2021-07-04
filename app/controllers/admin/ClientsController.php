@@ -23,7 +23,7 @@ class ClientsController extends Controller
         return $this->render([
             'clients' => Cache::remember(50, function () use ($page) {
                 return Client::select()->paginate($page)->get();
-            })
+            }),
         ]);
     }
 
@@ -41,7 +41,7 @@ class ClientsController extends Controller
         Client::create($request->all());
 
         return $this->sendSuccess('Użytkownik dodany', [
-            'to' => '/clients'
+            'to' => '/clients',
         ]);
     }
 
@@ -56,7 +56,8 @@ class ClientsController extends Controller
 
         if ($client) {
             return $this->render(['client' => $client]);
-        } else {
+        }
+        else {
             $this->redirect('/clients');
         }
     }
@@ -71,7 +72,7 @@ class ClientsController extends Controller
         Client::delete()->where('id', '=', $request->get('id'))->exec();
 
         $this->sendSuccess('Usunięto', [
-            'to' => '/clients'
+            'to' => '/clients',
         ]);
     }
 }
