@@ -43,7 +43,7 @@ final class Router extends Route
         return self::$instance;
     }
 
-    private function boot()
+    private function boot(): void
     {
         $this->parseUrl();
         $this->setParams();
@@ -61,7 +61,7 @@ final class Router extends Route
         $this->dispatchEvents();
     }
 
-    private function dispatchEvents()
+    private function dispatchEvents(): void
     {
         $events = EventServiceProvider::getListener(
             self::$route->getNamespace().'\\'.self::getClass().'Controller'
@@ -337,7 +337,7 @@ final class Router extends Route
         }
     }
 
-    private function setQueryStringParams()
+    private function setQueryStringParams(): void
     {
         parse_str(parse_url(self::$url)['query'], $str);
 
