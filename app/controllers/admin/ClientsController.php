@@ -56,8 +56,7 @@ class ClientsController extends Controller
 
         if ($client) {
             return $this->render(['client' => $client]);
-        }
-        else {
+        } else {
             $this->redirect('/clients');
         }
     }

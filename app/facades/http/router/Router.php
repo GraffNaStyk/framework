@@ -176,6 +176,8 @@ final class Router extends Route
                 $params     = $reflection->getParameters();
 	            $paramCount = count($params);
 
+	            unset($reflectionClass);
+
                 if (empty($params)) {
                     return $controller->{self::getAction()}();
                 }
@@ -185,9 +187,12 @@ final class Router extends Route
 		            self::abort();
 	            }
 
-	            $combinedParams = $this->checkParamTypes($paramCount, $params, $controller);
+	            unset($reflection);
 
-                return call_user_func_array([$controller, self::getAction()], $combinedParams);
+                return call_user_func_array(
+                    [$controller, self::getAction()],
+                    $this->getMethodParams($paramCount, $params, $controller)
+                );
 
             } catch (\ReflectionException $e) {
                 Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
@@ -205,7 +210,7 @@ final class Router extends Route
 		if (! empty($reflectionParams)) {
 			foreach ($reflectionParams as $refParam) {
 				if (! empty($class = $refParam->getClass()->name)) {
-					$combinedParams[] = new $class;
+					$combinedParams[] = new $class();
 				}
 			}
 		}
@@ -213,7 +218,7 @@ final class Router extends Route
 		return $combinedParams;
     }
 
-    private function checkParamTypes(int $count, array $reflectionParams, object $controller): array
+    private function getMethodParams(int $count, array $reflectionParams, object $controller): array
     {
 	    $combinedParams = [];
 
@@ -228,13 +233,14 @@ final class Router extends Route
                     	if ($class === Request::class) {
 		                    $combinedParams[$i] = $this->request;
 	                    } else {
-		                    $combinedParams[$i] = new $class;
+		                    $combinedParams[$i] = new $class();
 	                    }
 
                     	continue;
                     }
 
                     if ($refParam->isOptional() && ! isset($requestParams[$i])) {
+                        unset($refParam);
                     	continue;
                     }
 
