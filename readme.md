@@ -191,6 +191,24 @@ Model::decrement('field', 'value')->where('param1', 'is', 'param2')->exec();
 Model::lastId();
 ```
 
+##Directories
+
+| Nazwa | Opis |
+| ------ | ------ |
+| Controller | Kontrollery zarządzające treściami dla użytkownika |
+| Core | Bazowa logika |
+| Cron | Serwisy które mają się wykonać w crontabie |
+| Events | Eventy wykonywane po danej akcji kontrolera, wyślij maila do użytkownika etc |
+| Facades | Fasady aplikacji |
+| Filters | Filtry dla zapytań do bazy danych |
+| Helpers | Metody przydatne wszędzie |
+| Migrate | Migracje bazy danych |
+| Model | Modele odpytujące bazę |
+| Routes | Routing aplikacji |
+| Rules | Walidatory requestów |
+| Services | Servisy dla controllerów wykonujące logike aplikacji |
+| Triggers | Triggery bazy danych utworzono, zaktualizowano, usunięto |
+
 ## Javascript responses
 
 Javscript responses
