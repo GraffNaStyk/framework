@@ -18,7 +18,7 @@ class Service
 
     public function make()
     {
-        $this->file = str_replace('CLASSNAME', ucfirst($this->name), $this->file);
-        $this->putFile('app/services/'.ucfirst($this->name).'.php', $this->file);
+        $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Service', $this->file);
+        $this->putFile('app/services/'.ucfirst($this->name).'Service.php', $this->file);
     }
 }
