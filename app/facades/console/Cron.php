@@ -13,7 +13,7 @@ class Cron
     public function __construct($args = [])
     {
         $this->name = $args[0];
-        $this->file = file_get_contents(app_path('app/facades/http/cron'));
+        $this->file = file_get_contents(app_path('app/facades/files/cron'));
 
         if (isset($args[1])) {
             $this->run();

@@ -2,7 +2,6 @@
 
 namespace App\Triggers;
 
-
 class UsersTrigger
 {
     public function created()

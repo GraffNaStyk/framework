@@ -12,7 +12,7 @@ class Helper
     public function __construct($args = [])
     {
         $this->name = $args[0];
-        $this->file = file_get_contents(app_path('app/facades/http/helper'));
+        $this->file = file_get_contents(app_path('app/facades/files/helper'));
         $this->make();
     }
 

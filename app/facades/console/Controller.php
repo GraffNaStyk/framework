@@ -21,7 +21,7 @@ class Controller
         $this->namespace = $args[0];
         $this->name = ucfirst($args[1]);
         $this->withView = (isset($args[2]) && $args[2] === '-v');
-        $this->file = file_get_contents(app_path('app/facades/http/controller'));
+        $this->file = file_get_contents(app_path('app/facades/files/controller'));
         $this->make();
         $this->putFile(
             'app/controllers/'.$this->namespace.'/'.$this->name.'Controller.php',
@@ -43,7 +43,7 @@ class Controller
                 if (! file_exists(view_path(strtolower($this->namespace).'/'.$this->name.'/'.$view))) {
                     file_put_contents(
                         view_path(strtolower($this->namespace).'/'.$this->name.'/'.$view),
-                        file_get_contents(app_path('app/facades/http/view'))
+                        file_get_contents(app_path('app/facades/files/view'))
                     );
                 }
             }

@@ -12,7 +12,7 @@ class Middleware
     public function __construct($args = [])
     {
         $this->name = $args[0];
-        $this->file = file_get_contents(app_path('app/facades/http/middleware'));
+        $this->file = file_get_contents(app_path('app/facades/files/middleware'));
         $this->make();
     }
 

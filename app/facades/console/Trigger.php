@@ -12,7 +12,7 @@ class Trigger
     public function __construct($args = [])
     {
         $this->name = $args[0];
-        $this->file = file_get_contents(app_path('app/facades/http/trigger'));
+        $this->file = file_get_contents(app_path('app/facades/files/trigger'));
         $this->make();
     }
 
