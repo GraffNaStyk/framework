@@ -8,7 +8,7 @@ trait FileCreator
     public function putFile(string $file, string $content)
     {
         if (file_exists(app_path($file))) {
-            Console::output('File exist', 'red');
+            Console::output('File '.app_path($file).' exist', 'red');
             exit;
         }
 
