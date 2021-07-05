@@ -59,16 +59,6 @@ function pd($item, $die = true): void
 	}
 }
 
-function dd($item, $die = true): void
-{
-	echo '<pre>';
-	var_dump($item);
-	echo '</pre>';
-	if ($die) {
-		die();
-	}
-}
-
 function app($key)
 {
 	return \App\Facades\Property\Get::check(app, $key);
