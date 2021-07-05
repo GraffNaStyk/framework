@@ -191,7 +191,9 @@ Model::decrement('field', 'value')->where('param1', 'is', 'param2')->exec();
 Model::lastId();
 ```
 
-##Directories
+## Directories
+
+application directories
 
 | Nazwa | Opis |
 | ------ | ------ |
