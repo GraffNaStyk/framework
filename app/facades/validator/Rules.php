@@ -126,4 +126,13 @@ class Rules
             return ['msg' => self::$lang[$field][__FUNCTION__] ?? 'Wymagana wartość zmniennoprzecinkowa', 'field' => $field];
         }
     }
+
+    public static function allowed($item, $rule, $field)
+    {
+        $rule = explode(',', $rule);
+
+        if (! in_array($item, $rule, true)) {
+            return ['msg' => self::$lang[$field][__FUNCTION__] ?? 'Nieprawidłowa wartość', 'field' => $field];
+        }
+    }
 }
