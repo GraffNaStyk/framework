@@ -16,7 +16,7 @@ class Helper
         $this->make();
     }
 
-    public function make()
+    public function make(): void
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name), $this->file);
         $this->putFile('app/helpers/'.ucfirst($this->name).'.php', $this->file);

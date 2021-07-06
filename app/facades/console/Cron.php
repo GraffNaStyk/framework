@@ -22,13 +22,13 @@ class Cron
         }
     }
 
-    public function make()
+    public function make(): void
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Cron', $this->file);
         $this->putFile('app/cron/'.ucfirst($this->name).'Cron.php', $this->file);
     }
 
-    public function run()
+    public function run(): void
     {
         $class = $this->path.$this->name.'Cron';
         (new $class());

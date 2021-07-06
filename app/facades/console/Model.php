@@ -18,7 +18,7 @@ class Model
         $this->make();
     }
 
-    public function make()
+    public function make(): void
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name), $this->file);
         $this->file = str_replace('TABLE', mb_strtolower($this->table), $this->file);

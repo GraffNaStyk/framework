@@ -16,7 +16,7 @@ class Trigger
         $this->make();
     }
 
-    public function make()
+    public function make(): void
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Trigger', $this->file);
 

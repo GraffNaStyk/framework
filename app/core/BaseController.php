@@ -26,7 +26,7 @@ abstract class BaseController
 
         $this->set([
             'css' => Loader::css(),
-            'js' => Loader::js()
+            'js' => Loader::js(),
         ]);
 
         Session::remove('beAjax');
@@ -85,7 +85,7 @@ abstract class BaseController
                 'msg' => $message,
                 'inputs' => Validator::getErrors(),
                 'csrf' => Session::get('@csrf.'.Router::csrfPath()),
-                'params' => $params
+                'params' => $params,
             ],
                 $status,
                 []

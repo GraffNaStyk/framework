@@ -19,7 +19,7 @@ class Console
         'light grey' => 47,
     ];
 
-    public static function dispatch(array $argv)
+    public static function dispatch(array $argv): void
     {
         array_shift($argv);
         self::$argv = $argv;
@@ -38,7 +38,7 @@ class Console
         exit;
     }
 
-    public static function output($output, $background = 'black')
+    public static function output($output, $background = 'black'): void
     {
         if (php_sapi_name() === 'cli') {
             echo "\e[".self::$backgrounds[mb_strtolower($background)]."m".$output."\e[0m\n";

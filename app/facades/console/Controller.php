@@ -2,6 +2,8 @@
 
 namespace App\Facades\Console;
 
+use App\Helpers\Dir;
+
 class Controller
 {
     use FileCreator;
@@ -29,15 +31,13 @@ class Controller
         );
     }
 
-    public function make()
+    public function make(): void
     {
         $this->file = str_replace('CLASSNAME', $this->name.'Controller', $this->file);
         $this->file = str_replace('PATH', ucfirst($this->namespace), $this->file);
 
         if ($this->withView) {
-            if (! is_dir(view_path(strtolower($this->namespace).'/'.$this->name))) {
-                mkdir(view_path(strtolower($this->namespace).'/'.$this->name), 0775, true);
-            }
+            Dir::create(view_path(strtolower($this->namespace).'/'.$this->name));
 
             foreach ($this->views as $view) {
                 if (! file_exists(view_path(strtolower($this->namespace).'/'.$this->name.'/'.$view))) {

@@ -16,7 +16,7 @@ class Rule
         $this->make();
     }
 
-    public function make()
+    public function make(): void
     {
         $this->file = str_replace('CLASSNAME', ucfirst($this->name).'Validator', $this->file);
         $this->putFile('app/rules/'.ucfirst($this->name).'Validator.php', $this->file);
