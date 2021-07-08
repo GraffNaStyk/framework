@@ -13,6 +13,7 @@ class Commands
         'Middleware' => 'php console middleware {fileName}',
         'Rule' => 'php console rule {fileName}',
         'Trigger' => 'php console trigger {fileName}',
+        'Event' => 'php console event {fileName}',
         'Service' => 'php console service {fileName}',
 	    'Helper' => 'php console helper {fileName}',
     ];

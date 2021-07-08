@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Events;
+
+use App\Facades\Http\Request;
+
+class CLASSNAME
+{
+    public function handle(Request $request)
+    {
+
+    }
+}

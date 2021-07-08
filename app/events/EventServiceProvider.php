@@ -2,14 +2,14 @@
 
 namespace App\Events;
 
-use App\Controllers\Admin\ClientsController;
+use App\Controllers\Admin\LoginController;
 
 class EventServiceProvider
 {
     protected static array $listeners = [
-        ClientsController::class => [
-            'index' => [
-                ExampleEventProvider::class
+        LoginController::class => [
+            'check' => [
+                UserLoginEvent::class
             ]
         ]
     ];
