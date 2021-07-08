@@ -349,7 +349,7 @@ class Db
     public function create(array $values)
     {
         $this->insert($values);
-        $this->execute();
+        return $this->execute();
     }
 
     public function first()
@@ -446,6 +446,10 @@ class Db
                     if ($this->hasTrigger && $this->triggerMethod !== null) {
                         TriggerResolver::resolve($this->table, $this->triggerMethod);
                         $this->triggerMethod = null;
+                    }
+
+                    if (preg_match('/^(INSERT)/', $this->query)) {
+                        return self::lastId();
                     }
 
                     return true;
