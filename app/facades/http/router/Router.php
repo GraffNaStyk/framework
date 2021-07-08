@@ -171,6 +171,10 @@ final class Router extends Route
                     self::abort();
                 }
 
+                if ($reflection->getReturnType() === null) {
+                    throw new \Exception('Method must have a return type declaration');
+                }
+
                 $constructorParams = [];
 
                 if ($reflectionClass->hasMethod('__construct')) {

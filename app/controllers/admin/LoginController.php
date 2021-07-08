@@ -23,7 +23,7 @@ class LoginController extends Controller
         return $this->render(['title' => 'Panel Administracyjny - logowanie']);
     }
 
-    public function check(Request $request)
+    public function check(Request $request): string
     {
         if (! $this->validate($request->all(), LoginValidator::class)) {
              return $this->sendError('Formularz nie zostal wysłany');

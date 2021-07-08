@@ -16,7 +16,7 @@ class ClientsController extends Controller
         parent::__construct();
     }
 
-    public function index(int $page = 1)
+    public function index(int $page = 1): string
     {
         Pagination::make(Client::class, $page, '/clients/page');
 
@@ -27,7 +27,7 @@ class ClientsController extends Controller
         ]);
     }
 
-    public function add()
+    public function add(): string
     {
         return $this->render();
     }
@@ -45,12 +45,12 @@ class ClientsController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): void
     {
 
     }
 
-    public function show(int $id)
+    public function show(int $id): ?string
     {
         $client = Client::select()->where('id', '=', $id)->exist();
 
@@ -61,12 +61,12 @@ class ClientsController extends Controller
         }
     }
 
-    public function edit(int $id)
+    public function edit(int $id): string
     {
         return $this->render();
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): string
     {
         Client::delete()->where('id', '=', $request->get('id'))->exec();
 

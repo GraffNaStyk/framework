@@ -25,7 +25,7 @@ class DashController extends Controller
         ]);
     }
 
-    public function upload(Request $request)
+    public function upload(Request $request): void
     {
         Storage::disk()->upload($request->file('file'));
     }

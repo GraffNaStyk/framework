@@ -7,7 +7,7 @@ use App\Facades\Http\Session;
 
 class LogoutController
 {
-    public function index()
+    public function index(): void
     {
         Session::destroy();
         Route::redirect('/');
