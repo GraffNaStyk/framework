@@ -17,7 +17,7 @@ class LoginController extends Controller
         parent::__construct();
     }
 
-    public function index()
+    public function index(): string
     {
         View::layout('login');
         return $this->render(['title' => 'Panel Administracyjny - logowanie']);
@@ -26,7 +26,7 @@ class LoginController extends Controller
     public function check(Request $request)
     {
         if (! $this->validate($request->all(), LoginValidator::class)) {
-            $this->sendError('Formularz nie zostal wysłany');
+             return $this->sendError('Formularz nie zostal wysłany');
         }
 
         $user = User::select()
@@ -35,7 +35,7 @@ class LoginController extends Controller
 
         if ($user && Password::verify($request->get('password'), $user->password)) {
             Auth::login($user);
-            $this->sendSuccess('Zalogowano poprawnie', [
+            return $this->sendSuccess('Zalogowano poprawnie', [
                     'to' => '/dash'
                 ]
             );

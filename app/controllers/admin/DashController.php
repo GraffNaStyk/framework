@@ -16,7 +16,7 @@ class DashController extends Controller
         parent::__construct();
     }
 
-    public function index()
+    public function index(): string
     {
         return View::render([
             'users' => User::select(['name as value', 'password as text'])->get(),

@@ -57,8 +57,11 @@ final class Router extends Route
         }
 
         $this->create(self::$route->getNamespace().'\\'.self::getClass().'Controller');
-        $this->runMiddlewares('after');
-        $this->dispatchEvents();
+
+        if (in_array(http_response_code(), [200,201], true)) {
+            $this->runMiddlewares('after');
+            $this->dispatchEvents();
+        }
     }
 
     private function dispatchEvents(): void
@@ -69,7 +72,7 @@ final class Router extends Route
 
         if (! empty($events)) {
             foreach ($events as $event) {
-                (new $event)->handle();
+                (new $event)->handle($this->request);
             }
         }
     }
@@ -168,19 +171,19 @@ final class Router extends Route
                     self::abort();
                 }
 
-	            $constructorParams = $this->reflectConstructorParams(
-		            $reflectionClass->getConstructor()->getParameters()
-	            );
+                $constructorParams = [];
+
+                if ($reflectionClass->hasMethod('__construct')) {
+                    $constructorParams = $this->reflectConstructorParams(
+                        $reflectionClass->getConstructor()->getParameters()
+                    );
+                }
 
                 $controller = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
                 $params     = $reflection->getParameters();
 	            $paramCount = count($params);
 
 	            unset($reflectionClass);
-
-                if (empty($params)) {
-                    return $controller->{self::getAction()}();
-                }
 
 	            if ($reflection->getNumberOfRequiredParameters() > $paramCount) {
 		            Log::custom('router', ['msg' => 'Not enough params']);
@@ -189,18 +192,20 @@ final class Router extends Route
 
 	            unset($reflection);
 
-                return call_user_func_array(
+                ob_flush();
+                ob_clean();
+
+                echo call_user_func_array(
                     [$controller, self::getAction()],
                     $this->getMethodParams($paramCount, $params, $controller)
                 );
 
+                return;
             } catch (\ReflectionException $e) {
                 Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
                 self::abort();
             }
         }
-
-        self::abort();
     }
 
     private function reflectConstructorParams(array $reflectionParams): array

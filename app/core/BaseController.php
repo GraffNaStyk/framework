@@ -48,7 +48,7 @@ abstract class BaseController
         View::set($data);
     }
 
-    public function render(array $data = [], $html = false)
+    public function render(array $data = [])
     {
         return View::render($data, $html);
     }
@@ -62,7 +62,7 @@ abstract class BaseController
     {
         if (Request::isAjax() || (API && defined('API'))) {
             Session::set('beAjax', true);
-            Response::json([
+            return Response::json([
                 'ok' => true,
                 'msg' => $message ?? 'Dane zostały zapisane',
                 'params' => $params,
@@ -80,7 +80,7 @@ abstract class BaseController
     {
         if (Request::isAjax() || (API && defined('API'))) {
             Session::set('beAjax', true);
-            Response::json([
+            return Response::json([
                 'ok' => false,
                 'msg' => $message,
                 'inputs' => Validator::getErrors(),
