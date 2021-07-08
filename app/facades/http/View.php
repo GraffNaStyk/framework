@@ -8,6 +8,10 @@ use Twig;
 
 final class View
 {
+
+    /**
+     * @var Twig\Environment
+     */
     protected static ?object $twig = null;
 
     private static array $data = [];
@@ -20,7 +24,7 @@ final class View
 
     public static ?string $view = null;
 
-    public static function render(array $data = [], $html = false)
+    public static function render(array $data = [])
     {
         self::set($data);
         self::register();
@@ -30,11 +34,7 @@ final class View
         self::setView();
 
         if (is_readable(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
-            if ($html) {
-                return self::$twig->render(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
-            } else {
-                return self::$twig->display(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
-            }
+            return self::$twig->render(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
         }
 
         exit(require_once view_path('errors/view-not-found.php'));

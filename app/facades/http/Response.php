@@ -4,12 +4,11 @@ namespace App\Facades\Http;
 
 class Response
 {
-    public static function json($response, $status = 200, $headers = []): void
+    public static function json($response, $status = 200, $headers = []): string
     {
         self::setHeaders($headers);
         http_response_code($status);
-        echo json_encode($response, true);
-        die();
+        return json_encode($response);
     }
 
     private static function setHeaders(array $headers = []): void
