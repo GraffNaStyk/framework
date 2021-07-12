@@ -2,6 +2,7 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Header\Header;
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
 use App\Facades\Property\Remove;
@@ -25,8 +26,17 @@ final class Request
 
     public function boot(): void
     {
+        $this->isOptionsCall();
         $this->setHeaders();
         $this->setMethod();
+    }
+
+    private function isOptionsCall(): void
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            Header::getAllowedOptions();
+            return;
+        }
     }
 
     private function setMethod()

@@ -26,7 +26,7 @@ class Session
         return $_SESSION;
     }
 
-    public static function has($item)
+    public static function has($item): bool
     {
         return Has::check($_SESSION, $item);
     }
@@ -36,12 +36,12 @@ class Session
         $_SESSION = Remove::remove($_SESSION, $item);
     }
 
-    public static function flash($item, $value = 1, $seconds = 60)
+    public static function flash($item, $value = 1, $seconds = 60): void
     {
         setcookie($item, $value, time() + $seconds, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
     }
 
-    public static function getFlash($item)
+    public static function getFlash($item): ?bool
     {
         return Get::check($_COOKIE, $item);
     }
@@ -51,7 +51,7 @@ class Session
         return Has::check($_COOKIE, $item);
     }
 
-    public static function removeFlash($item)
+    public static function removeFlash($item): void
     {
         unset($_COOKIE[$item]);
         setcookie($item, false, - 1, '/', getenv('SERVER_NAME'), Router::checkProtocol() === 'https', true);
@@ -62,7 +62,7 @@ class Session
         return $_COOKIE;
     }
 
-    public static function msg($items, $color = 'success')
+    public static function msg($items, $color = 'success'): void
     {
         if (is_array($items)) {
             foreach ($items as $val)
@@ -74,17 +74,17 @@ class Session
         $_SESSION['color'] = $color;
     }
 
-    public static function getMsg()
+    public static function getMsg(): array
     {
         return $_SESSION['msg'] ?: [];
     }
 
-    public static function getColor()
+    public static function getColor(): ?string
     {
         return $_SESSION['color'] ?: '';
     }
 
-    public static function clearMsg()
+    public static function clearMsg(): void
     {
         unset($_SESSION['msg']);
         unset($_SESSION['color']);
@@ -105,7 +105,7 @@ class Session
         return null;
     }
 
-    public static function destroy()
+    public static function destroy(): void
     {
         session_destroy();
     }

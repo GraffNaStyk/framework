@@ -36,4 +36,11 @@ class Header
         header('X-XSS-Protection: 1; mode=block');
         header('X-Permitted-Cross-Domain-Policies: none');
     }
+
+    public static function getAllowedOptions()
+    {
+        header('Access-Control-Allow-Origin', '*');
+        header('Access-Control-Allow-Headers', '*');
+        header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    }
 }
