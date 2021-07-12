@@ -37,7 +37,7 @@ class Header
         header('X-Permitted-Cross-Domain-Policies: none');
     }
 
-    public static function getAllowedOptions()
+    public static function setAllowedOptions()
     {
         header('Access-Control-Allow-Origin', '*');
         header('Access-Control-Allow-Headers', '*');

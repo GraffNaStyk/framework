@@ -31,12 +31,14 @@ final class Request
         $this->setMethod();
     }
 
-    private function isOptionsCall(): void
+    public function isOptionsCall(): bool
     {
         if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            Header::getAllowedOptions();
-            return;
+            Header::setAllowedOptions();
+            return true;
         }
+
+        return false;
     }
 
     private function setMethod()

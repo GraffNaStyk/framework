@@ -34,6 +34,11 @@ final class Router extends Route
         }
 
         $this->request = new Request();
+
+        if ($this->request->isOptionsCall()) {
+            return;
+        }
+
         $this->csrf = new Csrf();
         $this->boot();
     }
