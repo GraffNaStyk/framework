@@ -8,7 +8,7 @@ use App\Facades\Url\Url;
 class Mail
 {
     protected static object $mailer;
-    public object $message;
+    private \Swift_Message $message;
 
     public static function init(array $data = []): Mail
     {
@@ -47,14 +47,15 @@ class Mail
         return $this;
     }
 
-    public function body(string $body, bool $isTemplate = false, array $data = []): Mail
+    public function html(string $template, array $data = []): Mail
     {
-        if ($isTemplate) {
-            $this->message->setBody(View::mail($body, $data), 'text/html');
-        } else {
-            $this->message->setBody($body);
-        }
+        $this->message->setBody(View::mail($template, $data), 'text/html');
+        return $this;
+    }
 
+    public function text(string $text): Mail
+    {
+        $this->message->setBody($text);
         return $this;
     }
 
