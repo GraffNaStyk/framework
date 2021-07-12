@@ -22,7 +22,7 @@ class Mail
 
         self::$mailer = new \Swift_Mailer($transport);
 
-        return new self();
+        return new static();
     }
 
     public function subject(string $subject): Mail
