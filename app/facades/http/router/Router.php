@@ -53,7 +53,11 @@ final class Router extends Route
         $this->parseUrl();
         $this->setParams();
         $this->request->sanitize();
-        $this->runMiddlewares('before');
+        $res = $this->runMiddlewares('before');
+
+        if (! $res) {
+            self::abort(401);
+        }
 
         if ($this->request->getMethod() === 'post' && ! defined('API')) {
             if (! $this->csrf->valid($this->request)) {
@@ -82,14 +86,18 @@ final class Router extends Route
         }
     }
 
-    private function runMiddlewares(string $when): void
+    private function runMiddlewares(string $when): ?bool
     {
         if (self::$route->getMiddleware() !== null) {
             $middlewares = Kernel::getMiddlewares(self::$route->getMiddleware());
 
             foreach ($middlewares as $middleware) {
                 if (method_exists($middleware, $when)) {
-                    (new $middleware())->$when($this->request, $this);
+                    $res = (new $middleware())->$when($this->request, $this);
+
+                    if ($res === false) {
+                        return false;
+                    }
                 }
             }
         }
@@ -99,10 +107,16 @@ final class Router extends Route
         if (! empty($everyMiddlewares)) {
             foreach ($everyMiddlewares as $middleware) {
                 if (method_exists($middleware, $when)) {
-                    (new $middleware())->$when($this->request, $this);
+                    $res = (new $middleware())->$when($this->request, $this);
+
+                    if ($res === false) {
+                        return false;
+                    }
                 }
             }
         }
+
+        return true;
     }
 
     public function getCurrentRoute(): Collection
@@ -375,7 +389,8 @@ final class Router extends Route
         http_response_code($code);
 
         if ((API && defined('API')) || Request::isAjax()) {
-            Response::json(['msg' => Header::RESPONSE_CODES[$code]], $code);
+            echo Response::json(['msg' => Header::RESPONSE_CODES[$code]], $code);
+            exit;
         } else {
             exit(require_once(view_path('errors/error.php')));
         }

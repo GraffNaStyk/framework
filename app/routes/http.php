@@ -29,10 +29,10 @@ Route::alias('/admin', function () {
                     '/clients/page/{page}'
                 ],
                 'Clients@index',
-                'get'
+                'get',
             )->middleware(['example']);
 
-            Route::post('/clients/store', 'Clients@store');
+            Route::post('/clients/store', 'Clients@store', 1);
             Route::get('/clients/add', 'Clients@add');
             Route::get('/clients/edit/{id}', 'Clients@edit');
             Route::get('/clients/show/{id}', 'Clients@show');

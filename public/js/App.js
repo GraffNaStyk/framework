@@ -80,6 +80,7 @@ class App {
       },
       body: data
     }).then(res => {
+
       if ([404, 500, 405, 403, 401].includes(res.status)) {
         res.msg = this.msgCodes[res.status];
         res.isError = true;
@@ -98,14 +99,14 @@ class App {
         "Is-Fetch-Request": "true",
       },
     }).then(res => {
+      if (res.status === 401) {
+        window.location.reload();
+      }
+
       if ([404, 500, 405, 403].includes(res.status)) {
         res.msg = this.msgCodes[res.status];
         res.isError = true;
         return res;
-      }
-
-      if (res.status === 401) {
-        window.location.reload();
       }
 
       return res;
