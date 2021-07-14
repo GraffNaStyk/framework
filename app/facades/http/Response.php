@@ -11,6 +11,12 @@ class Response
         return json_encode($response);
     }
 
+    public static function jsonWithForceExit($response, $status = 200, $headers = []): string
+    {
+        echo self::json($response, $status, $headers);
+        exit;
+    }
+
     private static function setHeaders(array $headers = []): void
     {
         if (! empty($headers) && ! headers_sent()) {
