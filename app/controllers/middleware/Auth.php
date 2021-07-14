@@ -26,10 +26,11 @@ final class Auth
         $user = User::select(['id'])->where('id', '=', \App\Controllers\Auth::id())->exist();
 
         if (! Session::has('user') || ! $user) {
-            Log::custom('unauthorized', [
-                'message' => 'Unauthorized access, user not exist',
-                'user_id' => \App\Controllers\Auth::id()
-            ]);
+            if (! $user) {
+                Log::custom('unauthorized', [
+                    'message' => 'Unauthorized access, user not exist',
+                ]);
+            }
 
             if (Request::isAjax()) {
                 return Response::jsonWithForceExit([], 401);
@@ -38,7 +39,7 @@ final class Auth
             }
         }
 
-        if (! self::middleware($router->getCurrentRoute())) {
+        if (! $this->checkRights($router->getCurrentRoute())) {
             Log::custom('unauthorized', [
                 'message' => 'Unauthorized access',
                 'user' => \App\Controllers\Auth::user()
@@ -52,7 +53,7 @@ final class Auth
         }
     }
 
-    public static function middleware(Collection $route): bool
+    public function checkRights(Collection $route): bool
     {
         if ($route->getRights() === 0) {
             return false;
