@@ -70,7 +70,11 @@ trait Builder
         }
 
         if ($this->startBracket) {
-            $this->query .= ' ( ';
+            for ($i = 1; $i <= $this->startBracketCount; $i++) {
+                $this->query .= '( ';
+            }
+
+            $this->startBracketCount = 0;
             $this->startBracket = false;
         }
     }

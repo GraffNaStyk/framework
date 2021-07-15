@@ -70,7 +70,7 @@ class ClientsController extends Controller
     {
         Client::delete()->where('id', '=', $request->get('id'))->exec();
 
-        $this->sendSuccess('Usunięto', [
+        return $this->sendSuccess('Usunięto', [
             'to' => '/clients',
         ]);
     }

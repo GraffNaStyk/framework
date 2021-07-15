@@ -536,6 +536,7 @@ class Db
 
     public function startBracket(): Db
     {
+        $this->startBracketCount++;
         $this->startBracket = true;
         return $this;
     }

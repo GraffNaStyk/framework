@@ -33,4 +33,6 @@ trait Variables
     private bool $hasTrigger = false;
 
     private ?string $triggerMethod;
+
+    private int $startBracketCount = 0;
 }
