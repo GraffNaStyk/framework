@@ -6,8 +6,8 @@ use App\Core\BaseController;
 
 class ExampleController extends BaseController
 {
-    public function index()
+    public function index(): ?string
     {
-
+        return var_dump(API);
     }
 }
