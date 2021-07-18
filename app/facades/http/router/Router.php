@@ -363,7 +363,7 @@ final class Router extends Route
         }
     }
 
-    private static function abort(int $code = 404, ?string $message = null): void
+    public static function abort(int $code = 404, ?string $message = null): void
     {
         Log::custom('aborted', [
             'message' => 'Aborted operation from router, code: '.$code.' '.Header::RESPONSE_CODES[$code],

@@ -3,7 +3,6 @@
 namespace App\Controllers\Middleware;
 
 use App\Facades\Http\Request;
-use App\Facades\Http\Response;
 use App\Facades\Http\Router\Collection;
 use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\Router;
@@ -21,7 +20,7 @@ final class Auth
         3 => ['delete']
     ];
 
-    public function before(Request $request, Router $router)
+    public function before(Request $request, Router $router): void
     {
         $user = User::select(['id'])->where('id', '=', \App\Controllers\Auth::id())->exist();
 
@@ -33,7 +32,7 @@ final class Auth
             }
 
             if (Request::isAjax()) {
-                return Response::jsonWithForceExit([], 401);
+                Router::abort(401);
             } else {
                 Route::redirect('/login');
             }
@@ -46,7 +45,7 @@ final class Auth
             ]);
 
             if (Request::isAjax()) {
-                return Response::jsonWithForceExit([], 401);
+                Router::abort(401);
             } else {
                 Route::redirect(Url::base());
             }
