@@ -8,6 +8,6 @@ class ExampleController extends BaseController
 {
     public function index(): ?string
     {
-        return var_dump(API);
+        return null;
     }
 }
