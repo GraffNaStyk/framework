@@ -156,64 +156,66 @@ final class Router extends Route
 
     private function create(string $controller)
     {
-        if (method_exists($controller, self::getAction())) {
-            try {
-                $reflectionClass = new ReflectionClass($controller);
+        if (! class_exists($controller) || ! method_exists($controller, self::getAction())) {
+            self::abort();
+        }
 
-                if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
-                    self::abort();
-                }
-            } catch (\ReflectionException $e) {
-                Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+        try {
+            $reflectionClass = new ReflectionClass($controller);
+
+            if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
+                self::abort();
+            }
+        } catch (\ReflectionException $e) {
+            Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            self::abort();
+        }
+
+        try {
+            $reflection = new ReflectionMethod($controller, self::getAction());
+
+            if ($reflection->isProtected() || $reflection->isPrivate()) {
+                Log::custom('router', ['msg' => 'Aborted by access to private or protected method']);
                 self::abort();
             }
 
-            try {
-                $reflection = new ReflectionMethod($controller, self::getAction());
+            if ($reflection->getReturnType() === null) {
+                throw new \Exception('Method must have a return type declaration');
+            }
 
-                if ($reflection->isProtected() || $reflection->isPrivate()) {
-                    Log::custom('router', ['msg' => 'Aborted by access to private or protected method']);
-                    self::abort();
-                }
+            $constructorParams = [];
 
-                if ($reflection->getReturnType() === null) {
-                    throw new \Exception('Method must have a return type declaration');
-                }
-
-                $constructorParams = [];
-
-                if ($reflectionClass->hasMethod('__construct')) {
-                    $constructorParams = $this->reflectConstructorParams(
-                        $reflectionClass->getConstructor()->getParameters()
-                    );
-                }
-
-                $controller = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
-                $params     = $reflection->getParameters();
-	            $paramCount = count($params);
-
-	            unset($reflectionClass);
-
-	            if ($reflection->getNumberOfRequiredParameters() > $paramCount) {
-		            Log::custom('router', ['msg' => 'Not enough params']);
-		            self::abort();
-	            }
-
-	            unset($reflection);
-
-                ob_flush();
-                ob_clean();
-
-                echo call_user_func_array(
-                    [$controller, self::getAction()],
-                    $this->getMethodParams($paramCount, $params, $controller)
+            if ($reflectionClass->hasMethod('__construct')) {
+                $constructorParams = $this->reflectConstructorParams(
+                    $reflectionClass->getConstructor()->getParameters()
                 );
+            }
 
-                return;
-            } catch (\ReflectionException $e) {
-                Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            $controller = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
+            $params     = $reflection->getParameters();
+            $paramCount = count($params);
+
+            unset($reflectionClass);
+
+            if ($reflection->getNumberOfRequiredParameters() > $paramCount) {
+                Log::custom('router', ['msg' => 'Not enough params']);
                 self::abort();
             }
+
+            unset($reflection);
+
+            ob_flush();
+            ob_clean();
+
+            echo call_user_func_array(
+                [$controller, self::getAction()],
+                $this->getMethodParams($paramCount, $params, $controller)
+            );
+
+            return;
+        } catch (\ReflectionException $e) {
+            Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
+            self::abort();
         }
     }
 
