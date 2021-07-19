@@ -42,16 +42,17 @@ abstract class Route
         return self::match($url, $controller, 'put', $rights);
     }
 
-    public static function group(array $urls, string $controller, string $method = 'post', int $rights = 4): Collection
+    public static function group(
+        array $urls,
+        string $controller,
+        string $method = 'post',
+        int $rights = 4,
+        array $middlewares = []
+    ): void
     {
-        $lastKey = array_key_last($urls);
-
         foreach ($urls as $key => $url) {
-            if ($lastKey === $key) {
-                return self::match($url, $controller, $method, $rights);
-            }
-
-            self::match($url, $controller, $method, $rights);
+            $collection = self::match($url, $controller, $method, $rights);
+            $collection->middleware($middlewares);
         }
     }
 

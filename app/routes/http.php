@@ -30,7 +30,9 @@ Route::alias('/admin', function () {
                 ],
                 'Clients@index',
                 'get',
-            )->middleware(['example']);
+                4,
+                ['example']
+            );
 
             Route::post('/clients/store', 'Clients@store');
             Route::get('/clients/add', 'Clients@add');
