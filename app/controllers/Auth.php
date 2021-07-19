@@ -34,4 +34,9 @@ class Auth
             Log::custom('error', ['msg' => 'Cannot reload user on id: '.self::id()]);
         }
     }
+
+    public static function isLogged(): bool
+    {
+        return Session::has('user');
+    }
 }
