@@ -35,6 +35,7 @@ class LoginController extends Controller
 
         if ($user && Password::verify($request->get('password'), $user->password)) {
             Auth::login($user);
+
             return $this->sendSuccess('Zalogowano poprawnie', [
                     'to' => '/dash'
                 ]

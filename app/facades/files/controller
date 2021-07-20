@@ -12,37 +12,37 @@ class CLASSNAME extends Controller
         parent::__construct();
     }
 
-    public function index()
+    public function index(): string
     {
 
     }
 
-    public function add()
+    public function add(): string
     {
 
     }
 
-    public function store(Request $request)
+    public function store(Request $request): string
     {
 
     }
 
-    public function update(Request $request)
+    public function update(Request $request): string
     {
 
     }
 
-    public function show(int $id)
+    public function show(int $id): string
     {
 
     }
 
-    public function edit(int $id)
+    public function edit(int $id): string
     {
 
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): string
     {
 
     }
