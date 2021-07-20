@@ -14,7 +14,7 @@ class Model
     {
         $this->name = $args[0];
         $this->table = $args[1];
-        $this->file = file_get_contents(app_path('app/facades/migrations/model'));
+        $this->file = file_get_contents(app_path('app/facades/files/model'));
         $this->make();
     }
 

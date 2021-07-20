@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Model;
+
+use App\Facades\Db\Model;
+
+class CLASSNAME extends Model
+{
+    public static string $table = 'TABLE';
+}
