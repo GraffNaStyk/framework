@@ -17,7 +17,7 @@ Header::set();
 (new \App\Core\App())->run();
 
 if (php_sapi_name() !== 'cli') {
-    if (strpos($_SERVER['SERVER_SOFTWARE'], 'Apache') === false) {
+    if (php_sapi_name() === 'cli-server') {
         define('API', true);
         require_once __DIR__.'/routes/api.php';
     } else {
