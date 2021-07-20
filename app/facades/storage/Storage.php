@@ -60,8 +60,8 @@ class Storage
 
     private static function checkDirectories()
     {
-    	Dir::create(storage_path('public/'));
-	    Dir::create(storage_path('private/'));
+        Dir::create(storage_path('public/'));
+        Dir::create(storage_path('private/'));
     }
 
     public function put($file, $content, $replace = false): bool
