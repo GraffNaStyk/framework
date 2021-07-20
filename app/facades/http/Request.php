@@ -73,23 +73,23 @@ final class Request
 
     public function isPost(): bool
     {
-    	return $this->method === 'post';
+        return $this->method === 'post';
     }
 
-	public function isGet(): bool
-	{
-		return $this->method === 'get';
-	}
+    public function isGet(): bool
+    {
+        return $this->method === 'get';
+    }
 
-	public function isDelete(): bool
-	{
-		return $this->method === 'delete';
-	}
+    public function isDelete(): bool
+    {
+        return $this->method === 'delete';
+    }
 
-	public function isPut(): bool
-	{
-		return $this->method === 'put';
-	}
+    public function isPut(): bool
+    {
+        return $this->method === 'put';
+    }
 
     private function setHeaders(): void
     {
