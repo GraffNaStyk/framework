@@ -86,22 +86,16 @@ final class Router extends Route
     {
         $middlewarePath = '\\App\\Controllers\\Middleware\\';
 
-        if (self::$route->getMiddleware() !== null) {
-            foreach (self::$route->getMiddleware() as $middleware) {
-                $middleware = $middlewarePath.ucfirst($middleware);
-                if (method_exists($middleware, $when)) {
-                    (new $middleware())->$when($this->request, $this);
-                }
+        foreach (self::$route->getMiddleware() as $middleware) {
+            $middleware = $middlewarePath.ucfirst($middleware);
+            if (method_exists($middleware, $when)) {
+                (new $middleware())->$when($this->request, $this);
             }
         }
 
-        $everyMiddlewares = Kernel::getEveryMiddleware();
-
-        if (! empty($everyMiddlewares)) {
-            foreach ($everyMiddlewares as $middleware) {
-                if (method_exists($middleware, $when)) {
-                    (new $middleware())->$when($this->request, $this);
-                }
+        foreach (Kernel::getEveryMiddleware() as $middleware) {
+            if (method_exists($middleware, $when)) {
+                (new $middleware())->$when($this->request, $this);
             }
         }
     }
