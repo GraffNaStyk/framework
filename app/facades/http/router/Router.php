@@ -75,10 +75,8 @@ final class Router extends Route
             self::$route->getNamespace().'\\'.self::getClass().'Controller'
         )[self::getAction()];
 
-        if (! empty($events)) {
-            foreach ($events as $event) {
-                (new $event)->handle($this->request);
-            }
+        foreach ($events as $event) {
+            (new $event)->handle($this->request);
         }
     }
 
