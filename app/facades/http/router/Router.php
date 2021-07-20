@@ -214,44 +214,44 @@ final class Router extends Route
 
     private function reflectConstructorParams(array $reflectionParams): array
     {
-	    $combinedParams = [];
+        $combinedParams = [];
 
-		if (! empty($reflectionParams)) {
-			foreach ($reflectionParams as $refParam) {
-				if (! empty($class = $refParam->getClass()->name)) {
-					$combinedParams[] = new $class();
-				}
-			}
-		}
+        if (! empty($reflectionParams)) {
+            foreach ($reflectionParams as $refParam) {
+                if (! empty($class = $refParam->getClass()->name)) {
+                    $combinedParams[] = new $class();
+                }
+            }
+        }
 
-		return $combinedParams;
+        return $combinedParams;
     }
 
     private function getMethodParams(int $count, array $reflectionParams, object $controller): array
     {
-	    $combinedParams = [];
+        $combinedParams = [];
 
         if (! empty($reflectionParams)) {
-	        $requestParams = $this->request->getData();
+            $requestParams = $this->request->getData();
 
             try {
-                for ($i = 0; $i < $count; $i ++) {
+                for ($i = 0; $i < $count; $i++) {
                     $refParam = new \ReflectionParameter([$controller, self::getAction()], $i);
 
                     if (! empty($class = $refParam->getClass()->name)) {
-                    	if ($class === Request::class) {
-		                    $combinedParams[$i] = $this->request;
-	                    } else {
-		                    $combinedParams[$i] = new $class();
-	                    }
+                        if ($class === Request::class) {
+                            $combinedParams[$i] = $this->request;
+                        } else {
+                            $combinedParams[$i] = new $class();
+                        }
 
-                    	unset($refParam);
-                    	continue;
+                        unset($refParam);
+                        continue;
                     }
 
                     if ($refParam->isOptional() && ! isset($requestParams[$i])) {
                         unset($refParam);
-                    	continue;
+                        continue;
                     }
 
                     $type = preg_replace(
@@ -272,7 +272,7 @@ final class Router extends Route
                         self::abort(400, 'Wrong param type, param: '.$requestParams[$i]);
                     }
 
-	                $combinedParams[$i] = $requestParams[$i];
+                    $combinedParams[$i] = $requestParams[$i];
 
                     unset($refParam);
                 }
