@@ -138,11 +138,7 @@ class Storage
     public function make(string $path, int $mode = 0775): Storage
     {
         $path = ltrim($path, '/');
-
-        if (! is_dir(self::$disk.'/'.$path)) {
-            mkdir(self::$disk.'/'.$path, $mode, true);
-        }
-
+        Dir::create(self::$disk.'/'.$path);
         return $this;
     }
 

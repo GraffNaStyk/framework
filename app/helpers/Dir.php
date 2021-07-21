@@ -5,10 +5,10 @@ namespace App\Helpers;
 
 class Dir
 {
-    public static function create(string $path): void
+    public static function create(string $path, int $permission = 0775): void
     {
         if (! is_dir($path)) {
-            mkdir($path, 0775, true);
+            mkdir($path, $permission, true);
         }
     }
 }
