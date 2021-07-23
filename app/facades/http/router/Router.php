@@ -219,11 +219,9 @@ final class Router extends Route
     {
         $combinedParams = [];
 
-        if (! empty($reflectionParams)) {
-            foreach ($reflectionParams as $refParam) {
-                if (! empty($class = $refParam->getClass()->name)) {
-                    $combinedParams[] = new $class();
-                }
+        foreach ($reflectionParams as $refParam) {
+            if (! empty($class = $refParam->getClass()->name)) {
+                $combinedParams[] = new $class();
             }
         }
 
