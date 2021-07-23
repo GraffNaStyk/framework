@@ -165,14 +165,14 @@ final class Router extends Route
         }
 
         try {
-            $reflection = new ReflectionMethod($controller, self::getAction());
+            $reflectionMethod = new ReflectionMethod($controller, self::getAction());
 
-            if ($reflection->isProtected() || $reflection->isPrivate()) {
+            if ($reflectionMethod->isProtected() || $reflectionMethod->isPrivate()) {
                 Log::custom('router', ['msg' => 'Aborted by access to private or protected method']);
                 self::abort();
             }
 
-            if ($reflection->getReturnType() === null) {
+            if ($reflectionMethod->getReturnType() === null) {
                 throw new \Exception('Method must have a return type declaration');
             }
 
@@ -185,17 +185,18 @@ final class Router extends Route
             }
 
             $controller = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
-            $params     = $reflection->getParameters();
+            $params     = $reflectionMethod->getParameters();
             $paramCount = count($params);
 
             unset($reflectionClass);
 
-            if ($reflection->getNumberOfRequiredParameters() > $paramCount) {
+            if ($reflectionMethod->getNumberOfRequiredParameters() > $paramCount) {
                 Log::custom('router', ['msg' => 'Not enough params']);
                 self::abort();
             }
 
-            unset($reflection);
+            unset($reflectionMethod);
+            unset($reflectionClass);
 
             ob_flush();
             ob_clean();
@@ -204,6 +205,9 @@ final class Router extends Route
                 [$controller, self::getAction()],
                 $this->getMethodParams($paramCount, $params, $controller)
             );
+
+            ob_end_flush();
+            ob_end_clean();
 
             return;
         } catch (\ReflectionException $e) {
