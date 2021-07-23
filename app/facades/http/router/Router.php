@@ -187,8 +187,6 @@ final class Router extends Route
             $params     = $reflectionMethod->getParameters();
             $paramCount = count($params);
 
-            unset($reflectionClass);
-
             if ($reflectionMethod->getNumberOfRequiredParameters() > $paramCount) {
                 Log::custom('router', ['msg' => 'Not enough params']);
                 self::abort();
