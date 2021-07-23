@@ -184,7 +184,6 @@ final class Router extends Route
                 );
             }
 
-            $controller = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
             $params     = $reflectionMethod->getParameters();
             $paramCount = count($params);
 
@@ -194,6 +193,8 @@ final class Router extends Route
                 Log::custom('router', ['msg' => 'Not enough params']);
                 self::abort();
             }
+
+            $controller = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
 
             unset($reflectionMethod);
             unset($reflectionClass);
