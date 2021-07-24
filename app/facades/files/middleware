@@ -7,12 +7,12 @@ use App\Facades\Http\Router\Router;
 
 class CLASSNAME
 {
-    public function after(Request $request, Router $router)
+    public function before(Request $request, Router $router)
     {
 
     }
 
-    public function before(Request $request, Router $router)
+    public function after(Request $request, Router $router)
     {
 
     }
