@@ -1,0 +1,59 @@
+{% extends layout %}
+{% import 'components/form.twig' as form %}
+{% block content %}
+  <div class="box">
+    <form data-action="/clients/store" method="post">
+      <h5 class="modal-title">Dodaj klienta</h5>
+      <div class="form__long__modal__grid">
+        {{ form.input({
+          type: 'text',
+          name: 'name',
+          label: 'Nazwa',
+          value: ''
+        }) }}
+        {{ form.input({
+          type: 'text',
+          name: 'www',
+          label: 'Strona'
+        }) }}
+        {{ form.input({
+          type: 'text',
+          name: 'ftp_server',
+          label: 'Server ftp'
+        }) }}
+        {{ form.input({
+          type: 'text',
+          name: 'ftp_user',
+          label: 'User ftp'
+        }) }}
+        {{ form.input({
+          type: 'password',
+          name: 'ftp_password',
+          label: 'Ftp Password'
+        }) }}
+        {{ form.input({
+          type: 'db password',
+          name: 'db_password',
+          label: 'Db Password'
+        }) }}
+        {{ form.input({
+          type: 'db name',
+          name: 'db_name',
+          label: 'Db name'
+        }) }}
+        {{ form.input({
+          type: 'text',
+          name: 'db_link',
+          label: 'Link do bazy'
+        }) }}
+        {{ form.input({
+          type: 'text',
+          name: 'db_user',
+          label: 'User db'
+        }) }}
+      </div>
+      {{ form.csrf('Clients@store') }}
+      {{ form.submit({value: 'Zapisz', class: 'btn-outline-success mt-3'}) }}
+    </form>
+  </div>
+{% endblock %}

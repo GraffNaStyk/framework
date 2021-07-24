@@ -26,7 +26,7 @@ function js_path($path = null): string
 
 function view_path($path = null): string
 {
-	return __DIR__.'/public/views/'.$path;
+	return __DIR__.'/app/views/'.$path;
 }
 
 function app_path($path = null): string
@@ -37,6 +37,11 @@ function app_path($path = null): string
 function storage_path($path = null): string
 {
 	return __DIR__.'/storage/'.$path;
+}
+
+function assets_path($path = null): string
+{
+    return __DIR__.'/public/assets/'.$path;
 }
 
 function vendor_path($path = null): string

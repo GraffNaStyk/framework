@@ -17,12 +17,11 @@ class TwigExt extends AbstractExtension
         return [
             $this->print(),
             $this->csrf(),
-            $this->img(),
             $this->url(),
-            $this->base(),
             $this->tooltip(),
             $this->options(),
-            $this->route()
+            $this->route(),
+            $this->assets()
         ];
     }
 
@@ -42,10 +41,10 @@ class TwigExt extends AbstractExtension
         });
     }
 
-    public function img(): TwigFunction
+    public function assets(): TwigFunction
     {
-        return new TwigFunction('img', function ($url) {
-            echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
+        return new TwigFunction('assets', function ($url) {
+            echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().'/public/assets'.$url;
         });
     }
 
@@ -76,12 +75,6 @@ class TwigExt extends AbstractExtension
         });
     }
 
-    public function base(): TwigFunction
-    {
-        return new TwigFunction('base', function ($url = null) {
-            echo Url::base().$url;
-        });
-    }
 
     public function tooltip(): TwigFunction
     {
