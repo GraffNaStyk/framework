@@ -46,7 +46,7 @@ class Log
             http_response_code(500);
 
             if (app('dev')) {
-                pd($lastError, true);
+                pd($lastError);
             } else {
                 static::make('php', $lastError);
                 exit (require_once view_path('errors/error.php'));
