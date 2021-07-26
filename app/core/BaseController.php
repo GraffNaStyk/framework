@@ -21,8 +21,7 @@ abstract class BaseController
 
     public function boot(): void
     {
-        Storage::private()->make('logs');
-        Storage::private()->make('cache');
+        Storage::private()->make('logs')->make('cache');
 
         $this->set([
             'css' => Loader::css(),
