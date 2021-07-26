@@ -48,9 +48,9 @@ abstract class BaseController
         View::set($data);
     }
 
-    public function render(array $data = [])
+    public function render(array $data = []): string
     {
-        return View::render($data, $html);
+        return View::render($data);
     }
 
     public function validate(array $request, string $rule, array $optional = []): bool
