@@ -98,6 +98,6 @@ abstract class BaseController
 
     public function response(array $response = [], int $status = 200, array $headers = []): string
     {
-        Response::json($response, $status, $headers);
+        return Response::json($response, $status, $headers);
     }
 }
