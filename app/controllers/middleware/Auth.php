@@ -63,6 +63,15 @@ final class Auth
         }
 
         if (class_exists(Right::class)) {
+            $fields = array_column(Right::getColumnsInfo(), 'field');
+
+            if (! in_array(strtolower($route->getController()), $fields, true)) {
+                Log::custom('rightColumnNotExist', [
+                    'column' => strtolower($route->getController())
+                ]);
+                return false;
+            }
+
             $result = Right::select([strtolower($route->getController())])
                 ->where('user_id', '=', \App\Controllers\Auth::id())
                 ->first();

@@ -496,12 +496,7 @@ class Db
     {
         $pdo = self::$db->prepare($query);
         $pdo->execute();
-
-        if (preg_match('/^(SELECT)/', $query)) {
-            return $pdo->fetchAll(PDO::FETCH_OBJ);
-        }
-
-        return null;
+        return $pdo->fetchAll(PDO::FETCH_OBJ);
     }
 
     private function develop($return = false): ?string
@@ -528,9 +523,7 @@ class Db
     public function getColumnsInfo(): ?array
     {
         return $this->query(
-            'SELECT COLUMN_NAME as name, DATA_TYPE as type
-                            FROM INFORMATION_SCHEMA.COLUMNS
-                                WHERE TABLE_NAME = "'.$this->table.'"'
+            'DESCRIBE '.$this->table
         );
     }
 
