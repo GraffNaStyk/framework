@@ -45,6 +45,8 @@ Route::alias('/admin', function () {
             //@Route password reset
             Route::get('/password', 'Password@index');
             Route::post('/password/store', 'Password@store');
+            
+            Route::get('/test', 'Clients@testFunc');
         });
     });
 });

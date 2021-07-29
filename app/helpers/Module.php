@@ -6,7 +6,7 @@ use App\Facades\Http\View;
 
 class Module
 {
-	public static function load(array $modules): void
+	public static function load(string ...$modules): void
 	{
 		$result = [];
 

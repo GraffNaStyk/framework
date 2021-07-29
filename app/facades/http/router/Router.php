@@ -165,6 +165,10 @@ final class Router extends Route
         }
 
         try {
+        	if (substr(self::getAction(), 0, 4) === 'test' && !app('dev')) {
+        		self::abort();
+	        }
+
             $reflectionMethod = new ReflectionMethod($controller, self::getAction());
 
             if ($reflectionMethod->isProtected() || $reflectionMethod->isPrivate()) {

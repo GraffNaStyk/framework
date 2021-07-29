@@ -50,7 +50,7 @@ abstract class Route
         array $middlewares = []
     ): void
     {
-        foreach ($urls as $key => $url) {
+        foreach ($urls as $url) {
             $collection = self::match($url, $controller, $method, $rights);
             $collection->middleware($middlewares);
         }
@@ -85,7 +85,7 @@ abstract class Route
 
         $collection = new Collection(
             ucfirst($routes[0]),
-            strtolower($routes[1]) ?? 'index',
+            $routes[1] ?? 'index',
             self::$namespace,
             $method,
             $rights,
