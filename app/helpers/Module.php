@@ -17,10 +17,14 @@ class Module
 		}
 
 		foreach ($modules as $module) {
-			$result[] = trim('<script type="module" src="'.
-				$url.str_replace(app_path(), '', js_path('modules/'.$module.'.js')).'"></script>');
+			if (is_readable(js_path('modules/'.$module.'.js'))) {
+				$result[] = trim('<script type="module" src="'.
+					$url.str_replace(app_path(), '', js_path('modules/'.$module.'.js')).'"></script>');
+			}
 		}
 
-		View::set(['modules' => $result]);
+		if (! empty($result)) {
+			View::set(['modules' => $result]);
+		}
 	}
 }

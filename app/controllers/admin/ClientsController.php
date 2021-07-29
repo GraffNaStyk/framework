@@ -5,7 +5,6 @@ namespace App\Controllers\Admin;
 use App\Controllers\Controller;
 use App\Facades\Cache\Cache;
 use App\Facades\Http\Request;
-use App\Helpers\Module;
 use App\Helpers\Pagination;
 use App\Model\Client;
 use App\Rules\ClientValidator;
@@ -20,7 +19,7 @@ class ClientsController extends Controller
     public function index(int $page = 1): string
     {
         Pagination::make(Client::class, $page, '/clients/page');
-		Module::load('http');
+
         return $this->render([
             'clients' => Cache::remember(50, function () use ($page) {
                 return Client::select()->paginate($page)->get();
