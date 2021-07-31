@@ -316,15 +316,20 @@ final class Router extends Route
             $this->request->setData(self::$params);
         }
     }
-
-    private function setMatches(array $matches): void
-    {
-        if (! empty($matches)) {
-            foreach (explode('/', $matches[0]) as $value) {
-                self::$params[] = $value;
-            }
-        }
-    }
+	
+	private function setMatches(array $matches): void
+	{
+		if ((bool) strpos($matches[0][0], '/') === true) {
+			$matches = explode('/', $matches[0][0]);
+			foreach ($matches as $value) {
+				self::$params[] = $value;
+			}
+		} else {
+			foreach ($matches as $value) {
+				self::$params[] = $value[0];
+			}
+		}
+	}
 
     public static function url(): string
     {
