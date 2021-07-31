@@ -112,6 +112,15 @@ class Rules
             return ['msg' => self::$lang[$field][__FUNCTION__] ?? 'Taka nazwa już istnieje', 'field' => $field];
         }
     }
+	
+	public static function unique_if_exist($item, $rule, $field)
+	{
+		$rule = explode(',', $rule);
+		
+		if ($rule[0]::select([$field])->where($field, '=', $item)->where('id', '<>', $rule[1])->exist()) {
+			return ['msg' => self::$lang[$field][__FUNCTION__] ?? 'Taka nazwa już istnieje', 'field' => $field];
+		}
+	}
 
     public static function check_file($item, $rule, $field)
     {
