@@ -326,7 +326,7 @@ final class Router extends Route
 			}
 		} else {
 			foreach ($matches as $value) {
-				self::$params[] = $value[0];
+				self::$params[] = $value;
 			}
 		}
 	}
