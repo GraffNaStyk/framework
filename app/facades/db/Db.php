@@ -3,6 +3,7 @@
 namespace App\Facades\Db;
 
 use App\Core\App;
+use App\Facades\Url\Url;
 use PDO;
 use PDOException;
 
@@ -31,6 +32,7 @@ class Db
     public function __construct($model)
     {
         $this->table = $model::$table;
+	    $this->model = Url::segment($model, 'end', '\\');
 
         if (property_exists($model, 'trigger')) {
             $this->hasTrigger = $model::$trigger;
@@ -444,7 +446,7 @@ class Db
             try {
                 if (self::$db->prepare($this->query)->execute($this->data)) {
                     if ($this->hasTrigger && $this->triggerMethod !== null) {
-                        TriggerResolver::resolve($this->table, $this->triggerMethod);
+                        TriggerResolver::resolve($this->model, $this->triggerMethod);
                         $this->triggerMethod = null;
                     }
 

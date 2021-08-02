@@ -35,4 +35,6 @@ trait Variables
     private ?string $triggerMethod;
 
     private int $startBracketCount = 0;
+	
+	private ?string $model;
 }
