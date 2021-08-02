@@ -446,7 +446,7 @@ class Db
             try {
                 if (self::$db->prepare($this->query)->execute($this->data)) {
                     if ($this->hasTrigger && $this->triggerMethod !== null) {
-                        TriggerResolver::resolve($this->model, $this->triggerMethod);
+                        TriggerResolver::resolve($this->model, $this->triggerMethod, $this);
                         $this->triggerMethod = null;
                     }
 
