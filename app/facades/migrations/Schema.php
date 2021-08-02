@@ -149,21 +149,22 @@ class Schema extends Blueprint
         $this->otherImplementation .= ' INDEX ('.$this->currentFieldName.'), ';
         return $this;
     }
-
-    public function alter(string $field, $type, $length = null, $isNull = false, $default = null, $where = null): Schema
-    {
-        $null = $isNull ? 'DEFAULT NULL' : 'NOT NULL DEFAULT ';
-
-        if ($default !== null) {
-            $default = $default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'";
-        }
-
-        $null .= $default;
-        $length = $length ? '('.$length.')' : $this->length[$type];
-        $this->alter[] = 'ALTER TABLE `'.$this->table.'` ADD `'.$field.'` '.$type.' '.$length.' '.$null.' AFTER '.$where.';';
-
-        return $this;
-    }
+	
+	public function alter(string $field, $type, $length = null, $isNull = false, $default = null, $where = null): Schema
+	{
+		if ($isNull) {
+			$qStr = ' DEFAULT NULL ';
+		} else if ($isNull === false && $default !== null) {
+			$qStr = ' NOT NULL DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
+		} else if ($isNull === true && $default !== null) {
+			$qStr = ' DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
+		}
+		
+		$length = $length ? '('.$length.')' : $this->length[$type];
+		$this->alter[] = 'ALTER TABLE `'.$this->table.'` ADD `'.$field.'` '.$type.' '.$length.' '.$qStr.' AFTER `'.$where.'`;';
+		
+		return $this;
+	}
 
     public function foreign(array $reference = []): void
     {
