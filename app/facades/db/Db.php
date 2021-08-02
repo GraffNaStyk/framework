@@ -438,6 +438,10 @@ class Db
 
     private function execute()
     {
+	    if (empty($this->query)) {
+		    return null;
+	    }
+	    
         if ($this->debug) {
             $this->develop();
         }
