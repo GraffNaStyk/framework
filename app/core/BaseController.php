@@ -51,11 +51,17 @@ abstract class BaseController
     {
         return View::render($data);
     }
-
-    public function validate(array $request, string $rule, array $optional = []): bool
-    {
-        return Validator::validate($request, (new $rule())->getRule($optional));
-    }
+	
+	public function validate(array $request, string $rule, array $optional = []): bool
+	{
+		$result = Validator::validate($request, (new $rule())->getRule($optional));
+		
+		if (method_exists($rule, 'beforeValidate') && ! $result) {
+			Validator::setErrors($rule::beforeValidate(Validator::getErrors()));
+		}
+		
+		return $result;
+	}
 
     public function sendSuccess(string $message = null, array $params = [], int $status = 200): ?string
     {

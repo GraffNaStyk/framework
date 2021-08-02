@@ -65,4 +65,9 @@ class Validator
     {
         return array_values(static::$validatorErrors);
     }
+	
+	public static function setErrors(array $errors): void
+	{
+		static::$validatorErrors = $errors;
+	}
 }

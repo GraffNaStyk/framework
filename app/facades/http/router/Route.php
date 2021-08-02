@@ -142,6 +142,7 @@ abstract class Route
                 $code
             );
         }
+
         exit;
     }
 
