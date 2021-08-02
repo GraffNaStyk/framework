@@ -158,6 +158,8 @@ class Schema extends Blueprint
 			$qStr = ' NOT NULL DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
 		} else if ($isNull === true && $default !== null) {
 			$qStr = ' DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
+		} else if ($isNull === false && $default === null) {
+			$qStr = ' NOT NULL ';
 		}
 		
 		$length = $length ? '('.$length.')' : $this->length[$type];
