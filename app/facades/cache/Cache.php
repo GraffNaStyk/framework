@@ -27,4 +27,19 @@ class Cache
 
         return $result;
     }
+    
+    public static function clear(int $olderThanSeconds, array $files = []): void
+    {
+    	if (empty($files)) {
+		    $files = glob(storage_path('/private/cache/*'));
+	    }
+	
+	    $date = date('Y-m-d H:i:s', strtotime('+ '.$olderThanSeconds.' sec'));
+
+    	foreach ($files as $file) {
+    		if (filemtime($file) >= $date) {
+    			unlink($file);
+		    }
+	    }
+    }
 }
