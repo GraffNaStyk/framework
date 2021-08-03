@@ -431,6 +431,13 @@ class Db
         } else {
             $twoValue = $this->prepareValueForWhere($value2);
         }
+	
+	    $object       = explode(' ', $table)[0];
+	    $stringObject = 'App\\Model\\'.$object;
+	
+	    if (class_exists('App\\Model\\'.$object)) {
+		    $table = str_replace($object, $stringObject::$table, $table);
+	    }
 
         $this->query .= " {$type} JOIN {$this->prepareValueForWhere($table)} ON
                             {$this->prepareValueForWhere($value1)} {$by} {$twoValue}";
