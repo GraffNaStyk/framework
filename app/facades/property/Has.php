@@ -19,7 +19,7 @@ class Has
         $i = 0;
 
         while ($i <= $count) {
-            if (empty($item[$i])) {
+            if ((string) $item[$i] === '' || $item[$i] === null) {
                 return true;
             }
 
