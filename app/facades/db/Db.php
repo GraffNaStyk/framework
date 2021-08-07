@@ -4,6 +4,7 @@ namespace App\Facades\Db;
 
 use App\Core\App;
 use App\Facades\Url\Url;
+use App\Facades\Validator\Type;
 use PDO;
 use PDOException;
 
@@ -427,7 +428,7 @@ class Db
     ): void
     {
         if ($isRigidly) {
-            $twoValue = $value2;
+            $twoValue = Type::get($value2);
         } else {
             $twoValue = $this->prepareValueForWhere($value2);
         }

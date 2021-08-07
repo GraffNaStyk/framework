@@ -25,7 +25,8 @@ trait Builder
 
     public function prepareValueForWhere($value): string
     {
-        $ret = '';
+        $ret   = '';
+	    $value = Type::get($value);
 
         if ((bool) strpos($value, '.') === true && (bool) preg_match('/( as )/', $value)) {
             $value = explode('.', $value);
