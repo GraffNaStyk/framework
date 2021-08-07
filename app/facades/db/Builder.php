@@ -2,6 +2,8 @@
 
 namespace App\Facades\Db;
 
+use App\Facades\Validator\Type;
+
 trait Builder
 {
     use Variables;
@@ -54,7 +56,7 @@ trait Builder
             $key = str_replace('.', '__', $key).'__'.rand(100, 10000);
         } while (isset($this->data[$key]));
 
-        $this->data[$key] = $value;
+        $this->data[$key] = Type::get($value);
         return $key;
     }
 
