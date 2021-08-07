@@ -69,7 +69,7 @@ abstract class BaseController
             Session::set('beAjax', true);
             return Response::json([
                 'ok' => true,
-                'msg' => $message ?? 'Dane zostały zapisane',
+                'msg' => $message ?: 'Dane zostały zapisane',
                 'params' => $params,
             ],
                 $status,
@@ -87,7 +87,7 @@ abstract class BaseController
             Session::set('beAjax', true);
             return Response::json([
                 'ok' => false,
-                'msg' => $message,
+	            'msg' => $message ?: 'Wystąpił błąd',
                 'inputs' => Validator::getErrors(),
                 'csrf' => Session::get('@csrf.'.Router::csrfPath()),
                 'params' => $params,
