@@ -271,8 +271,14 @@ class Db
 
     public function whereIn(string $item, array $items): Db
     {
-        $items = "'".implode("', '", $items)."'";
         $this->appendToQuery();
+        
+        foreach ($items as $value) {
+        	$arr[] = $this->setValue($item, $value);
+        }
+
+	    $items = ":".implode(", :", $arr)."";
+
         $this->query .= "{$this->prepareValueForWhere($item)} IN ({$items}) ";
 
         return $this;
@@ -280,8 +286,14 @@ class Db
 
     public function whereNotIn(string $item, array $items): Db
     {
-        $items = "'".implode("', '", $items)."'";
         $this->appendToQuery();
+	
+	    foreach ($items as $value) {
+		    $arr[] = $this->setValue($item, $value);
+	    }
+	
+	    $items = ":".implode(", :", $arr)."";
+
         $this->query .= "{$this->prepareValueForWhere($item)} NOT IN ({$items}) ";
 
         return $this;
