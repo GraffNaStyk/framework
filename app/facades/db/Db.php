@@ -5,6 +5,7 @@ namespace App\Facades\Db;
 use App\Core\App;
 use App\Facades\Url\Url;
 use App\Facades\Validator\Type;
+use App\Helpers\Arr;
 use PDO;
 use PDOException;
 
@@ -570,4 +571,19 @@ class Db
     {
         self::$db->{$name}();
     }
+	
+	public function getEnumValues(string $field): array
+	{
+		$this->first = true;
+		$res = $this->query("SELECT SUBSTRING(COLUMN_TYPE,5) as params
+								FROM information_schema.COLUMNS
+								WHERE TABLE_NAME='{$this->table}' AND COLUMN_NAME='{$field}'"
+		);
+		
+		if (Arr::has($res, '0.params')) {
+			return explode(',', str_replace(['(', ')', "'"], ['', '', ''], $res[0]->params));
+		}
+		
+		return [];
+	}
 }
