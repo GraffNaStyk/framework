@@ -4,7 +4,7 @@ namespace App\Facades\Property;
 
 class Remove
 {
-    public static function remove($data, $item)
+    public static function remove($data, $item): array
     {
         $item = explode('.', $item);
 
