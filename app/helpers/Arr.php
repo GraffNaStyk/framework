@@ -15,7 +15,13 @@ class Arr
 	public static function each(array $arr, callable $function): array
 	{
 		foreach ($arr as $key => $item) {
-			$arr[$key] = $function($key, $item);
+			$res = $function($key, $item);
+			
+			if ($res !== null) {
+				$arr[$key] = $function($key, $item);
+			} else {
+				unset($arr[$key]);
+			}
 		}
 		
 		return $arr;
