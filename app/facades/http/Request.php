@@ -138,7 +138,7 @@ final class Request
     {
         foreach ($data as $key => $item) {
             if (is_array($item)) {
-                $this->reSanitize($item);
+	            $data[$key] = $this->reSanitize($item);
             } else {
                 $data[$key] = $this->clear($item);
             }
