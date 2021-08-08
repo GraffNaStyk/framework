@@ -152,19 +152,21 @@ class Schema extends Blueprint
 	
 	public function alter(string $field, $type, $length = null, $isNull = false, $default = null, $where = null): Schema
 	{
-		if ($isNull) {
-			$qStr = ' DEFAULT NULL ';
-		} else if ($isNull === false && $default !== null) {
-			$qStr = ' NOT NULL DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
-		} else if ($isNull === true && $default !== null) {
-			$qStr = ' DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
-		} else if ($isNull === false && $default === null) {
-			$qStr = ' NOT NULL ';
+		if (! $this->hasColumn($this->table, $field)) {
+			if ($isNull) {
+				$qStr = ' DEFAULT NULL ';
+			} else if ($isNull === false && $default !== null) {
+				$qStr = ' NOT NULL DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
+			} else if ($isNull === true && $default !== null) {
+				$qStr = ' DEFAULT '.($default === 'CURRENT_TIMESTAMP' ? $default : "'{$default}'");
+			} else if ($isNull === false && $default === null) {
+				$qStr = ' NOT NULL ';
+			}
+			
+			$length = $length ? '('.$length.')' : $this->length[$type];
+			$this->alter[] = 'ALTER TABLE `'.$this->table.'` ADD `'.$field.'` '.$type.' '.$length.' '.$qStr.' AFTER `'.$where.'`;';
 		}
-		
-		$length = $length ? '('.$length.')' : $this->length[$type];
-		$this->alter[] = 'ALTER TABLE `'.$this->table.'` ADD `'.$field.'` '.$type.' '.$length.' '.$qStr.' AFTER `'.$where.'`;';
-		
+
 		return $this;
 	}
 

@@ -8,7 +8,7 @@ class Blueprint
 {
     protected string $startSql = 'CREATE TABLE IF NOT EXISTS ';
     protected string $endSql = ' )';
-    protected string $sql;
+    protected ?string $sql = null;
     protected string $table;
     protected string $notNull = ' NOT NULL';
     protected array $tableFields = [];
@@ -79,6 +79,11 @@ class Blueprint
                 $this->db->query($this->sql);
             }
         }
+	
+	    if ($this->store && ! empty($this->alter)) {
+		    $this->storeMigration();
+		    return true;
+	    }
 
         if (! $this->store) {
             if (! empty($this->queries)) {
@@ -132,7 +137,7 @@ class Blueprint
 
     protected function storeMigration()
     {
-        $name = 'dump_'.date('Y_m_d__H_i_s').'.sql';
+	    $name = 'dump_'.date('Y_m_d__H_i').'.sql';
         file_put_contents(app_path('app/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);
 
         if (! empty($this->queries)) {
