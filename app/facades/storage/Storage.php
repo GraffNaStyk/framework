@@ -93,7 +93,7 @@ class Storage
         return false;
     }
 
-    public function upload($file, $destination = '/', $as = null): bool
+    public function upload(array $file, string $destination = '/', ?string $as = null, ?callable $closure = null): bool
     {
         if ($file['error'] === UPLOAD_ERR_OK) {
             $this->make($destination);
@@ -112,17 +112,29 @@ class Storage
 
             if (move_uploaded_file($file['tmp_name'], $location)) {
                 if ($this->checkFile($location) === true) {
-                    chmod($location, 0775);
-                    if (class_exists(File::class)) {
-                        File::insert([
-                            'name' => $pathInfo['filename'],
-                            'hash' => $hash,
-                            'dir' => self::$relativePath.$destination,
-                            'ext' => '.'.$pathInfo['extension'],
-                            'sha1' => sha1_file($location)
-                        ])->exec();
-                    }
-                    return true;
+	                chmod($location, 0775);
+	
+	                if (class_exists(File::class)) {
+		                if ($closure !== null) {
+			                $closure([
+				                'name' => $pathInfo['filename'],
+				                'hash' => $hash,
+				                'dir' => self::$relativePath.$destination,
+				                'ext' => '.'.$pathInfo['extension'],
+				                'sha1' => sha1_file($location)
+			                ]);
+		                } else {
+			                File::insert([
+				                'name' => $pathInfo['filename'],
+				                'hash' => $hash,
+				                'dir' => self::$relativePath.$destination,
+				                'ext' => '.'.$pathInfo['extension'],
+				                'sha1' => sha1_file($location)
+			                ])->exec();
+		                }
+	                }
+	                
+	                return true;
                 }
             }
         }
