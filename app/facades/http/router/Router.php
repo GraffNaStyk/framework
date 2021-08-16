@@ -223,7 +223,17 @@ final class Router extends Route
 
         foreach ($reflectionParams as $refParam) {
             if (! empty($class = $refParam->getClass()->name)) {
-                $combinedParams[] = new $class();
+	            $reflector = new ReflectionClass($class);
+
+	            if ($reflector->hasMethod('__construct')) {
+		            $combinedParams[] = call_user_func_array(
+		            	[$reflector, 'newInstance'],
+			            $this->reflectConstructorParams($reflector->getConstructor()->getParameters())
+		            );
+		            unset($reflector);
+	            } else {
+		            $combinedParams[] = new $class();
+	            }
             }
         }
 
@@ -245,7 +255,15 @@ final class Router extends Route
                         if ($class === Request::class) {
                             $combinedParams[$i] = $this->request;
                         } else {
-                            $combinedParams[$i] = new $class();
+	                        $reflector = new ReflectionClass($class);
+	                        
+                        	if ($reflector->hasMethod('__construct')) {
+		                        $params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
+		                        $combinedParams[$i] = call_user_func_array([$reflector, 'newInstance'], $params);
+		                        unset($reflector);
+	                        } else {
+		                        $combinedParams[$i] = new $class();
+	                        }
                         }
 
                         unset($refParam);
