@@ -94,9 +94,9 @@ class Schema extends Blueprint
         return $this;
     }
 
-    public function default(string $name): Schema
+    public function default(string $value): Schema
     {
-        $this->implicitly($name);
+        $this->implicitly($value);
         return $this;
     }
 
