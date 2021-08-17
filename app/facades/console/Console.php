@@ -33,18 +33,18 @@ class Console
         }
     }
 
-    public static function end()
+    public static function end(): void
     {
         exit;
     }
 
-    public static function output($output, $background = 'black'): void
+    public static function output(string $output, string $background = 'black'): void
     {
         if (php_sapi_name() === 'cli') {
             echo "\e[".self::$backgrounds[mb_strtolower($background)]."m".$output."\e[0m\n";
         } else {
             if (is_array($output) || is_object($output)) {
-                pd($output, false);
+                pd($output, true);
             } else {
                 echo date('Y-m-d H:i:s').' '.$output.'<br />';
             }
