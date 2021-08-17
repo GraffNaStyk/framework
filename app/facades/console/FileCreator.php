@@ -17,6 +17,11 @@ trait FileCreator
                 'File in path:'.app_path($file).' created',
                 'green'
             );
+        } else {
+	        Console::output(
+		        'Cannot create file: '.app_path($file),
+		        'red'
+	        );
         }
     }
 }

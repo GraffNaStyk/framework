@@ -16,6 +16,7 @@ class Commands
         'Event' => 'php console event {fileName}',
         'Service' => 'php console service {fileName}',
 	    'Helper' => 'php console helper {fileName}',
+	    'Filter' => 'php console filter {fileName}',
     ];
 
     public function __construct()
