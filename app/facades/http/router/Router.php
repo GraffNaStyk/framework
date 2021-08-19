@@ -78,9 +78,9 @@ final class Router extends Route
     {
         $events = EventServiceProvider::getListener(
             self::$route->getNamespace().'\\'.self::getClass().'Controller'
-        )[self::getAction()];
+        );
 
-        foreach ($events as $event) {
+        foreach ($events[self::getAction()] as $event) {
             (new $event)->handle($this->request);
         }
     }
@@ -170,7 +170,7 @@ final class Router extends Route
         }
 
         try {
-        	if (substr(self::getAction(), 0, 4) === 'test' && !app('dev')) {
+        	if (substr(self::getAction(), 0, 4) === 'test' && ! app('dev')) {
         		self::abort();
 	        }
 
@@ -271,8 +271,7 @@ final class Router extends Route
 
 	                    $this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
 	                    $combinedParams[$i] = $this->container->get($class);
-	                    unset($reflector);
-                        unset($refParam);
+	                    unset($reflector, $refParam);
                         continue;
                     }
 
@@ -342,7 +341,7 @@ final class Router extends Route
 	
 	private function setMatches(array $matches): void
 	{
-		if ((bool) strpos($matches[0][0], '/') === true) {
+		if (strpos($matches[0][0], '/') !== false) {
 			$matches = explode('/', $matches[0][0]);
 			foreach ($matches as $value) {
 				self::$params[] = $value;
