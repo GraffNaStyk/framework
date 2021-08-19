@@ -343,13 +343,10 @@ final class Router extends Route
 	{
 		if (strpos($matches[0][0], '/') !== false) {
 			$matches = explode('/', $matches[0][0]);
-			foreach ($matches as $value) {
-				self::$params[] = $value;
-			}
-		} else {
-			foreach ($matches as $value) {
-				self::$params[] = $value;
-			}
+		}
+
+		foreach ($matches as $value) {
+			self::$params[] = $value;
 		}
 	}
 
