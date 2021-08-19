@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\Controller;
 use App\Facades\Cache\Cache;
 use App\Facades\Http\Request;
+use App\Filters\UserFilter;
 use App\Helpers\Pagination;
 use App\Model\Client;
 use App\Rules\ClientValidator;
@@ -16,7 +17,7 @@ class ClientsController extends Controller
         parent::__construct();
     }
 
-    public function index(int $page = 1): string
+    public function index(Request $request, UserFilter $filter, int $page = 1): string
     {
         Pagination::make(Client::class, $page, '/clients/page');
 

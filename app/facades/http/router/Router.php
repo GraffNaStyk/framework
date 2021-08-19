@@ -6,6 +6,7 @@ use App\Controllers\Auth;
 use App\Core\Kernel;
 use App\Events\EventServiceProvider;
 use App\Facades\Csrf\Csrf;
+use App\Facades\Dependency\Container;
 use App\Facades\Header\Header;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
@@ -22,6 +23,8 @@ final class Router extends Route
     public Request $request;
 
     private Csrf $csrf;
+    
+    private Container $container;
 
     private static ?Collection $route = null;
 
@@ -33,13 +36,15 @@ final class Router extends Route
             self::$instance = $this;
         }
 
-        $this->request = new Request();
+        $this->container = new Container();
+        $this->request   = new Request();
 
         if ($this->request->isOptionsCall()) {
             return;
         }
 
         $this->csrf = new Csrf();
+        $this->container->add(Request::class, $this->request);
         $this->boot();
     }
 
@@ -201,7 +206,7 @@ final class Router extends Route
 	
 	        ob_flush();
 	        ob_clean();
-	
+
 	        echo call_user_func_array(
 		        [$controller, self::getAction()],
 		        $methodParams
@@ -224,16 +229,20 @@ final class Router extends Route
         foreach ($reflectionParams as $refParam) {
             if (! empty($class = $refParam->getClass()->name)) {
 	            $reflector = new ReflectionClass($class);
-
-	            if ($reflector->hasMethod('__construct')) {
-		            $combinedParams[] = call_user_func_array(
-		            	[$reflector, 'newInstance'],
-			            $this->reflectConstructorParams($reflector->getConstructor()->getParameters())
-		            );
-		            unset($reflector);
-	            } else {
-		            $combinedParams[] = new $class();
+	
+	            if (! $this->container->has($class)) {
+		            if ($reflector->hasMethod('__construct')) {
+			            $this->container->add($class,  call_user_func_array(
+				            [$reflector, 'newInstance'],
+				            $this->reflectConstructorParams($reflector->getConstructor()->getParameters())
+			            ));
+		            } else {
+		            	$this->container->add($class, new $class());
+		            }
 	            }
+
+	            $combinedParams[] = $this->container->get($class);
+	            unset($reflector);
             }
         }
 
@@ -252,20 +261,17 @@ final class Router extends Route
                     $refParam = new \ReflectionParameter([$controller, self::getAction()], $i);
 
                     if (! empty($class = $refParam->getClass()->name)) {
-                        if ($class === Request::class) {
-                            $combinedParams[$i] = $this->request;
-                        } else {
-	                        $reflector = new ReflectionClass($class);
-	                        
-                        	if ($reflector->hasMethod('__construct')) {
-		                        $params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
-		                        $combinedParams[$i] = call_user_func_array([$reflector, 'newInstance'], $params);
-		                        unset($reflector);
-	                        } else {
-		                        $combinedParams[$i] = new $class();
-	                        }
-                        }
+	                    $reflector = new ReflectionClass($class);
 
+                    	if (! $this->container->has($class)) {
+		                    if ($reflector->hasMethod('__construct')) {
+			                    $params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
+		                    }
+	                    }
+
+	                    $this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
+	                    $combinedParams[$i] = $this->container->get($class);
+	                    unset($reflector);
                         unset($refParam);
                         continue;
                     }

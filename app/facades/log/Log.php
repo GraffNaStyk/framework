@@ -48,6 +48,7 @@ class Log
             if (app('dev')) {
                 pd($lastError);
             } else {
+            	$code = 500;
                 static::make('php', $lastError);
                 exit (require_once view_path('errors/error.php'));
             }
