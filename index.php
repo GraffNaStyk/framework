@@ -1,5 +1,7 @@
 <?php
 
+define('APP_START', microtime(true));
+
 if (! file_exists(__DIR__.'/app/config/app.php')) {
 	exit('No app config file');
 }

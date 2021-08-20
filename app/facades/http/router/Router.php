@@ -10,6 +10,7 @@ use App\Facades\Dependency\Container;
 use App\Facades\Header\Header;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
+use App\Facades\Http\View;
 use App\Facades\Log\Log;
 use ReflectionClass;
 use ReflectionMethod;
@@ -206,6 +207,10 @@ final class Router extends Route
 	
 	        ob_flush();
 	        ob_clean();
+	
+	        if (app('dev')) {
+	        	View::set(['loadTime' => round(microtime(true) - APP_START, 4)]);
+	        }
 
 	        echo call_user_func_array(
 		        [$controller, self::getAction()],
@@ -214,7 +219,6 @@ final class Router extends Route
 
             ob_end_flush();
             ob_end_clean();
-
             return;
         } catch (\ReflectionException $e) {
             Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
