@@ -2,9 +2,9 @@
 
 namespace App\Controllers\Api;
 
-use App\Core\BaseController;
+use App\Core\AbstractController;
 
-class ExampleController extends BaseController
+class ExampleController extends AbstractController
 {
     public function index(): ?string
     {

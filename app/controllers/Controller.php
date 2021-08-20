@@ -2,12 +2,12 @@
 
 namespace App\Controllers;
 
-use App\Core\BaseController;
+use App\Core\AbstractController;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
 
-abstract class Controller extends BaseController
+abstract class Controller extends AbstractController
 {
     public function __construct()
     {

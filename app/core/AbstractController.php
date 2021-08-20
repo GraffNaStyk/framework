@@ -12,7 +12,7 @@ use App\Facades\Storage\Storage;
 use App\Facades\Validator\Validator;
 use App\Helpers\Loader;
 
-abstract class BaseController
+abstract class AbstractController
 {
     public function __construct()
     {
@@ -56,8 +56,8 @@ abstract class BaseController
 	{
 		$result = Validator::validate($request, (new $rule())->getRule($optional));
 		
-		if (method_exists($rule, 'beforeValidate') && ! $result) {
-			Validator::setErrors($rule::beforeValidate(Validator::getErrors()));
+		if (method_exists($rule, 'afterValidate') && ! $result) {
+			Validator::setErrors($rule::afterValidate(Validator::getErrors()));
 		}
 		
 		return $result;
