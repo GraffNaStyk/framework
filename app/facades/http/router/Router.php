@@ -7,6 +7,7 @@ use App\Core\Kernel;
 use App\Events\EventServiceProvider;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Dependency\Container;
+use App\Facades\Devtool\DevTool;
 use App\Facades\Header\Header;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
@@ -209,7 +210,7 @@ final class Router extends Route
 	        ob_clean();
 	
 	        if (app('dev')) {
-	        	View::set(['loadTime' => round(microtime(true) - APP_START, 4)]);
+	        	View::set(['devTool' => DevTool::boot()]);
 	        }
 
 	        echo call_user_func_array(
