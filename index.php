@@ -2,7 +2,7 @@
 
 define('APP_START', microtime(true));
 
-if (! file_exists(__DIR__.'/app/config/app.php')) {
+if (! file_exists(__DIR__ . '/app/config/app.php')) {
 	exit('No app config file');
 }
 
@@ -18,42 +18,42 @@ define('app', require_once app_path('app/config/app.php'));
 
 function css_path($path = null): string
 {
-	return __DIR__.'/public/css/'.$path;
+	return __DIR__ . '/public/css/' . $path;
 }
 
 function js_path($path = null): string
 {
-	return __DIR__.'/public/js/'.$path;
+	return __DIR__ . '/public/js/' . $path;
 }
 
 function view_path($path = null): string
 {
-	return __DIR__.'/app/views/'.$path;
+	return __DIR__ . '/app/views/' . $path;
 }
 
 function app_path($path = null): string
 {
-	return __DIR__.'/'.$path;
+	return __DIR__ . '/' . $path;
 }
 
 function storage_path($path = null): string
 {
-	return __DIR__.'/storage/'.$path;
+	return __DIR__ . '/storage/' . $path;
 }
 
 function assets_path($path = null): string
 {
-    return __DIR__.'/public/assets/'.$path;
+	return __DIR__ . '/public/assets/' . $path;
 }
 
 function vendor_path($path = null): string
 {
-	return __DIR__.'/vendor/'.$path;
+	return __DIR__ . '/vendor/' . $path;
 }
 
 function path($path = null): string
 {
-	return __DIR__.'/'.$path;
+	return __DIR__ . '/' . $path;
 }
 
 function pd($item, $die = true): void
@@ -73,8 +73,8 @@ function app($key)
 
 function config($key)
 {
-	if (file_exists(app_path('app/config/'.$key.'.php'))) {
-		return require_once app_path('app/config/'.$key.'.php');
+	if (file_exists(app_path('app/config/' . $key . '.php'))) {
+		return require_once app_path('app/config/' . $key . '.php');
 	}
 }
 

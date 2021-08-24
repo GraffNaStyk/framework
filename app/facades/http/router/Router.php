@@ -198,7 +198,7 @@ final class Router extends Route
 	        $params       = $reflectionMethod->getParameters();
 	        $controller   = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
 	        $methodParams = $this->getMethodParams($params, $controller);
-	
+
 	        if ($reflectionMethod->getNumberOfRequiredParameters() > count($methodParams)) {
 		        Log::custom('router', ['msg' => 'Not enough params']);
 		        self::abort();
@@ -226,53 +226,55 @@ final class Router extends Route
             self::abort();
         }
     }
-
-    private function reflectConstructorParams(array $reflectionParams): array
-    {
-        $combinedParams = [];
-
-        foreach ($reflectionParams as $refParam) {
-            if (! empty($class = $refParam->getClass()->name)) {
-	            $reflector = new ReflectionClass($class);
 	
-	            if (! $this->container->has($class)) {
-		            if ($reflector->hasMethod('__construct')) {
-			            $this->container->add($class,  call_user_func_array(
-				            [$reflector, 'newInstance'],
-				            $this->reflectConstructorParams($reflector->getConstructor()->getParameters())
-			            ));
-		            } else {
-		            	$this->container->add($class, new $class());
-		            }
-	            }
+	private function reflectConstructorParams(array $reflectionParams): array
+	{
+		$combinedParams = [];
+		
+		foreach ($reflectionParams as $refParam) {
+			$class = $refParam->getClass()->name;
+			
+			if (! empty($class)) {
+				$reflector = new ReflectionClass($class);
+				
+				if ($reflector->hasMethod('__construct')) {
+					$combinedParams[] = call_user_func_array(
+						[$reflector, 'newInstance'],
+						$this->reflectConstructorParams($reflector->getConstructor()->getParameters())
+					);
+				} else {
+					$combinedParams[] = new $class();
+				}
+				
+				unset($reflector);
+			}
+		}
 
-	            $combinedParams[] = $this->container->get($class);
-	            unset($reflector);
-            }
-        }
-
-        return $combinedParams;
-    }
+		return $combinedParams;
+	}
 
     private function getMethodParams(array $reflectionParams, object $controller): array
     {
         $combinedParams   = [];
         $requestParams    = $this->request->getData();
         $reqParamIterator = 0;
-		
+
         foreach ($reflectionParams as $key => $param) {
 	        $refParam = new \ReflectionParameter([$controller, self::getAction()], $key);
-	
-	        if (! empty($class = $refParam->getClass()->name)) {
+	        $class    = $refParam->getClass()->name;
+
+	        if (! empty($class)) {
 		        $reflector = new ReflectionClass($class);
-		
+
 		        if (! $this->container->has($class)) {
 			        if ($reflector->hasMethod('__construct')) {
 				        $params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
+				        $this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
+			        } else {
+				        $this->container->add($class, new $class());
 			        }
 		        }
-		
-		        $this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
+
 		        $combinedParams[$key] = $this->container->get($class);
 		        unset($reflector, $refParam, $reflectionParams[$key]);
 	        } else {
