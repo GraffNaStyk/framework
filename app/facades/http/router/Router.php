@@ -197,7 +197,7 @@ final class Router extends Route
 	
 	        $params       = $reflectionMethod->getParameters();
 	        $controller   = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
-	        $methodParams = $this->getMethodParams(count($params), $params, $controller);
+	        $methodParams = $this->getMethodParams($params, $controller);
 	
 	        if ($reflectionMethod->getNumberOfRequiredParameters() > count($methodParams)) {
 		        Log::custom('router', ['msg' => 'Not enough params']);
@@ -254,63 +254,56 @@ final class Router extends Route
         return $combinedParams;
     }
 
-    private function getMethodParams(int $count, array $reflectionParams, object $controller): array
+    private function getMethodParams(array $reflectionParams, object $controller): array
     {
-        $combinedParams = [];
+        $combinedParams   = [];
+        $requestParams    = $this->request->getData();
+        $reqParamIterator = 0;
+		
+        foreach ($reflectionParams as $key => $param) {
+	        $refParam = new \ReflectionParameter([$controller, self::getAction()], $key);
+	
+	        if (! empty($class = $refParam->getClass()->name)) {
+		        $reflector = new ReflectionClass($class);
+		
+		        if (! $this->container->has($class)) {
+			        if ($reflector->hasMethod('__construct')) {
+				        $params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
+			        }
+		        }
+		
+		        $this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
+		        $combinedParams[$key] = $this->container->get($class);
+		        unset($reflector, $refParam, $reflectionParams[$key]);
+	        } else {
+		        if ($refParam->isOptional() && ! isset($requestParams[$reqParamIterator])) {
+			        unset($refParam, $reflector);
+			        $reqParamIterator++;
+			        continue;
+		        }
 
-        if (! empty($reflectionParams)) {
-            $requestParams = $this->request->getData();
-
-            try {
-                for ($i = 0; $i < $count; $i++) {
-                    $refParam = new \ReflectionParameter([$controller, self::getAction()], $i);
-
-                    if (! empty($class = $refParam->getClass()->name)) {
-	                    $reflector = new ReflectionClass($class);
-
-                    	if (! $this->container->has($class)) {
-		                    if ($reflector->hasMethod('__construct')) {
-			                    $params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
-		                    }
-	                    }
-
-	                    $this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
-	                    $combinedParams[$i] = $this->container->get($class);
-	                    unset($reflector, $refParam);
-                        continue;
-                    }
-
-                    if ($refParam->isOptional() && ! isset($requestParams[$i])) {
-                        unset($refParam);
-                        continue;
-                    }
-
-                    $type = preg_replace(
-                        '/.*?(\w+)\s+\$'.$refParam->name.'.*/',
-                        '\\1',
-                        $refParam->__toString()
-                    );
-
-                    if ($type === 'int') {
-                        $type = 'integer';
-                    }
-
-                    if ($type === 'float') {
-                        $type = 'double';
-                    }
-
-                    if (gettype($requestParams[$i]) !== $type) {
-                        self::abort(400, 'Wrong param type, param: '.$requestParams[$i]);
-                    }
-
-                    $combinedParams[$i] = $requestParams[$i];
-
-                    unset($refParam);
-                }
-            } catch (\ReflectionException $e) {
-                Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
-                self::abort();
-            }
+		        $type = preg_replace(
+			        '/.*?(\w+)\s+\$'.$refParam->name.'.*/',
+			        '\\1',
+			        $refParam->__toString()
+		        );
+		
+		        if ($type === 'int') {
+			        $type = 'integer';
+		        }
+		
+		        if ($type === 'float') {
+			        $type = 'double';
+		        }
+		
+		        if (gettype($requestParams[$reqParamIterator]) !== $type) {
+			        self::abort(400, 'Wrong param type, param: '.$requestParams[$reqParamIterator]);
+		        }
+		
+		        $combinedParams[$key] = $requestParams[$reqParamIterator];
+		        $reqParamIterator++;
+		        unset($refParam);
+	        }
         }
 
         return $combinedParams;
