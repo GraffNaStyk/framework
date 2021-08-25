@@ -304,7 +304,7 @@ final class Router extends Route
 		
 		        $combinedParams[$key] = $requestParams[$reqParamIterator];
 		        $reqParamIterator++;
-		        unset($refParam);
+		        unset($refParam, $reflector);
 	        }
         }
 
