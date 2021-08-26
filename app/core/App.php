@@ -16,12 +16,8 @@ final class App
             session_start();
         }
 
-        $environment = Env::set();
-
-        if (! empty($environment)) {
-            Db::init($environment);
-        }
-
+        Env::set();
+	    Db::init();
         Loader::set();
     }
 }

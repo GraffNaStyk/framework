@@ -2,10 +2,18 @@
 
 namespace App\Facades\Env;
 
+use App\Facades\Property\Get;
+
 class Env
 {
-    public static function set(): array
+	private static array $env;
+	
+    public static function set(): void
     {
+    	if (! empty(static::$env)) {
+    		return;
+	    }
+    	
         $env = file_get_contents(app_path('app/config/.env'));
         $environment = [];
 
@@ -13,7 +21,16 @@ class Env
             $item = explode('=', $item);
             $environment[trim($item[0])] = trim($item[1]);
         }
-
-        return $environment;
+	
+	    static::$env = $environment;
+    }
+    
+    public static function get(string $item = null)
+    {
+    	if ($item) {
+		    return Get::check(static::$env, $item);
+	    }
+    	
+    	return static::$env;
     }
 }

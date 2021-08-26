@@ -3,6 +3,7 @@
 namespace App\Facades\Db;
 
 use App\Core\App;
+use App\Facades\Env\Env;
 use App\Facades\Url\Url;
 use App\Facades\Validator\Type;
 use App\Helpers\Arr;
@@ -41,9 +42,9 @@ class Db
         }
     }
 
-    public static function init(array $env)
+    public static function init()
     {
-        self::$env = $env;
+        self::$env = Env::get();
         self::connect();
     }
 
