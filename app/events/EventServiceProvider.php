@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Controllers\Admin\DashController;
 use App\Controllers\Admin\LoginController;
 
 class EventServiceProvider
@@ -11,7 +12,12 @@ class EventServiceProvider
             'check' => [
                 UserLoginEvent::class
             ]
-        ]
+        ],
+	    DashController::class => [
+	    	'index' => [
+			    UserLoginEvent::class
+		    ]
+	    ]
     ];
 
     public static function getListener(string $listener): ?array

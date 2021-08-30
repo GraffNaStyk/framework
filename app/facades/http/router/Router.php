@@ -81,9 +81,17 @@ final class Router extends Route
         $events = EventServiceProvider::getListener(
             self::$route->getNamespace().'\\'.self::getClass().'Controller'
         );
-
+		
         foreach ($events[self::getAction()] as $event) {
-            (new $event)->handle($this->request);
+	        $reflector = new ReflectionClass($event);
+
+	        if ($reflector->hasMethod('__construct')) {
+		        $constructorParams = $this->reflectConstructorParams(
+			        $reflector->getConstructor()->getParameters()
+		        );
+	        }
+	
+	        (call_user_func_array([$reflector, 'newInstance'], $constructorParams ?? []))->handle();
         }
     }
 
@@ -231,21 +239,22 @@ final class Router extends Route
 	{
 		$combinedParams = [];
 		
-		foreach ($reflectionParams as $refParam) {
+		foreach ($reflectionParams as $key => $refParam) {
 			$class = $refParam->getClass()->name;
 			
 			if (! empty($class)) {
 				$reflector = new ReflectionClass($class);
 				
-				if ($reflector->hasMethod('__construct')) {
-					$combinedParams[] = call_user_func_array(
-						[$reflector, 'newInstance'],
-						$this->reflectConstructorParams($reflector->getConstructor()->getParameters())
-					);
-				} else {
-					$combinedParams[] = new $class();
+				if (! $this->container->has($class)) {
+					if ($reflector->hasMethod('__construct')) {
+						$params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
+						$this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
+					} else {
+						$this->container->add($class, new $class());
+					}
 				}
 				
+				$combinedParams[$key] = $this->container->get($class);
 				unset($reflector);
 			}
 		}
@@ -265,14 +274,12 @@ final class Router extends Route
 
 	        if (! empty($class)) {
 		        $reflector = new ReflectionClass($class);
-
-		        if (! $this->container->has($class)) {
-			        if ($reflector->hasMethod('__construct')) {
-				        $params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
-				        $this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
-			        } else {
-				        $this->container->add($class, new $class());
-			        }
+		
+		        if ($reflector->hasMethod('__construct')) {
+			        $params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
+			        $this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
+		        } else {
+			        $this->container->add($class, new $class());
 		        }
 
 		        $combinedParams[$key] = $this->container->get($class);

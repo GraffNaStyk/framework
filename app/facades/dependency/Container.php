@@ -8,7 +8,9 @@ class Container
 	
 	public function add(string $name, object $object): void
 	{
-		$this->items[$name] = $object;
+		if (! $this->has($name)) {
+			$this->items[$name] = $object;
+		}
 	}
 	
 	public function has(string $name): bool
