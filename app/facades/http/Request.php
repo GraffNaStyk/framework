@@ -93,9 +93,11 @@ final class Request
 
     private function setHeaders(): void
     {
-        foreach (getallheaders() as $key => $item) {
-            $this->headers[mb_strtolower($key)] = $item;
-        }
+    	if (function_exists('getallheaders')) {
+		    foreach (getallheaders() as $key => $item) {
+			    $this->headers[mb_strtolower($key)] = $item;
+		    }
+	    }
     }
 
     public function header(string $header)

@@ -2,6 +2,10 @@
 
 namespace App\Facades\Console;
 
+use App\Facades\Dependency\Container;
+use App\Facades\Dependency\ContainerBuilder;
+use ReflectionClass;
+
 class Cron
 {
     use FileCreator;
@@ -30,7 +34,16 @@ class Cron
 
     public function run(): void
     {
-        $class = $this->path.$this->name.'Cron';
-        (new $class());
+        $class     = $this->path.$this->name.'Cron';
+        $reflector = new ReflectionClass($class);
+
+        if ($reflector->hasMethod('__construct')) {
+	        $container = new ContainerBuilder(new Container());
+	        call_user_func_array([$reflector, 'newInstance'],
+		        $container->reflectConstructorParams($reflector->getConstructor()->getParameters())
+	        );
+        } else {
+	        (new $class());
+        }
     }
 }

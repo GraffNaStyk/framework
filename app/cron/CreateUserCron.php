@@ -7,9 +7,9 @@ use App\Model\Client;
 
 class CreateUserCron
 {
-    public function __construct()
+    public function __construct(Client $client)
     {
-        Client::insert([
+	    $client::insert([
             'name' => Faker::string(10),
             'www' => Faker::string(10),
             'ftp_server' => Faker::string(10),
