@@ -48,7 +48,6 @@ final class Router extends Route
 
         $this->csrf = new Csrf();
         $this->builder->container->add(Request::class, $this->request);
-        $this->boot();
     }
 
     public static function getInstance(): Router
@@ -56,7 +55,7 @@ final class Router extends Route
         return self::$instance;
     }
 
-    private function boot(): void
+    public function boot(): void
     {
         $this->parseUrl();
         $this->setParams();

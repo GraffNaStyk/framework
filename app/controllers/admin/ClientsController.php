@@ -20,7 +20,7 @@ class ClientsController extends Controller
     public function index(Request $request, UserFilter $filter, Client $client, int $page = 1): string
     {
         Pagination::make(Client::class, $page, '/clients/page');
-
+		
         return $this->render([
             'clients' => Cache::remember(50, function () use ($page) {
                 return Client::select()->paginate($page)->get();

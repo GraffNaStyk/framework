@@ -2,6 +2,7 @@
 
 namespace App\Facades\Log;
 
+use App\Facades\Http\Request;
 use App\Facades\Http\Router\Router;
 use App\Facades\Storage\Storage;
 
@@ -41,12 +42,16 @@ class Log
     {
         $lastError = error_get_last();
 
-        if (! empty($lastError) && in_array($lastError['type'], [E_USER_ERROR, E_ERROR, E_PARSE, E_COMPILE_ERROR])) {
+        if (! empty($lastError) && in_array($lastError['type'], [E_USER_ERROR, E_ERROR, E_PARSE, E_COMPILE_ERROR, E_CORE_ERROR])) {
             header('HTTP/1.0 500 Internal Server Error');
             http_response_code(500);
 
             if (app('dev')) {
-                pd($lastError);
+            	if (Request::isAjax()) {
+            		pd($lastError);
+	            } else {
+		            (new LogErrorFormatter($lastError))->format();
+	            }
             } else {
             	$code = 500;
                 static::make('php', $lastError);
@@ -59,7 +64,7 @@ class Log
     {
         if (app('dev')) {
             ini_set('display_startup_errors', 1);
-            error_reporting(E_ERROR | E_PARSE | E_COMPILE_ERROR);
+            error_reporting(E_ERROR | E_USER_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_PARSE);
         } else {
             ini_set('display_startup_errors', 0);
             error_reporting(0);

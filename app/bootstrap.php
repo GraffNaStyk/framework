@@ -14,7 +14,8 @@ register_shutdown_function(fn () => Log::handleError());
 
 Header::set();
 
-(new \App\Core\App())->run();
+$app = (new \App\Core\App(new \App\Facades\Http\Router\Router()));
+$app->run();
 
 if (php_sapi_name() !== 'cli') {
     if (php_sapi_name() === 'cli-server') {
@@ -23,4 +24,6 @@ if (php_sapi_name() !== 'cli') {
     } else {
         require_once __DIR__.'/routes/http.php';
     }
+    
+	$app->router->boot();
 }

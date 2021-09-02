@@ -1,7 +1,6 @@
 <?php
 
 use App\Facades\Http\Router\Route;
-use App\Facades\Http\Router\Router;
 
 Route::when('/admin', '/dash');
 
@@ -50,5 +49,3 @@ Route::alias('/admin', function () {
         });
     });
 });
-
-new Router();
