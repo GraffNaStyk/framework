@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-class LoginValidator
+class LoginValidator implements ValidatorInterface
 {
     public function getRule(array $optional = []): array
     {

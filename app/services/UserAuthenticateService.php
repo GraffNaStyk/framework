@@ -7,7 +7,7 @@ use App\Facades\Faker\Password;
 use App\Facades\Http\Request;
 use App\Model\User;
 
-class UserAuthenticateService
+class UserAuthenticateService implements UserAuthenticateInterface
 {
 	private User $user;
 	
