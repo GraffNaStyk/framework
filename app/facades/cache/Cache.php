@@ -3,9 +3,13 @@
 namespace App\Facades\Cache;
 
 use App\Facades\Http\Router\Router;
+use App\Facades\Property\Get;
+use App\Facades\Property\Has;
 
 class Cache
 {
+	private static array $memory = [];
+	
     public static function remember(int $seconds, callable $query)
     {
         $route = Router::getInstance()->routeParams();
@@ -41,5 +45,20 @@ class Cache
     			unlink($file);
 		    }
 	    }
+    }
+    
+    public static function saveInMemory(string $key, $value): void
+    {
+    	static::$memory[$key] = $value;
+    }
+    
+    public static function inMemory(string $key): bool
+    {
+    	return Has::check(self::$memory, $key);
+    }
+    
+    public static function getFromMemory(string $key)
+    {
+    	return Get::check(static::$memory, $key);
     }
 }

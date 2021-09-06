@@ -73,9 +73,16 @@ function app($key)
 
 function config($key)
 {
-	if (file_exists(app_path('app/config/' . $key . '.php'))) {
-		return require_once app_path('app/config/' . $key . '.php');
+	if (file_exists(app_path('app/config/'.$key.'.php'))
+		&& ! \App\Facades\Cache\Cache::inMemory(app_path('app/config/'.$key))
+	) {
+		$var = require_once app_path('app/config/'.$key.'.php');
+		\App\Facades\Cache\Cache::saveInMemory(app_path('app/config/'.$key),
+			$var
+		);
 	}
+
+	return \App\Facades\Cache\Cache::getFromMemory(app_path('app/config/'.$key));
 }
 
 require_once app_path('app/bootstrap.php');
