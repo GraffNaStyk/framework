@@ -28,11 +28,11 @@ class Config
 	
 	public static function init()
 	{
-	    foreach (scandir(app_path('app/config')) as $item) {
-	        if (pathinfo($item, PATHINFO_EXTENSION) === 'php' && strpos($item, 'example') === false) {
-	        	$val = require_once app_path('app/config/'.$item);
-	            static::set(pathinfo($item, PATHINFO_FILENAME), $val);
-	        }
-	    }
+		foreach (scandir(app_path('app/config')) as $item) {
+			if (pathinfo($item, PATHINFO_EXTENSION) === 'php' && strpos($item, 'example') === false) {
+				$val = require_once app_path('app/config/' . $item);
+				static::set(pathinfo($item, PATHINFO_FILENAME), $val);
+			}
+		}
 	}
 }
