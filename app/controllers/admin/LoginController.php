@@ -6,7 +6,7 @@ use App\Controllers\Controller;
 use App\Facades\Http\Request;
 use App\Facades\Http\View;
 use App\Rules\LoginValidator;
-use App\Services\UserAuthenticateService;
+use App\Services\UserAuthenticateInterface;
 
 class LoginController extends Controller
 {
@@ -21,7 +21,7 @@ class LoginController extends Controller
         return $this->render(['title' => 'Panel Administracyjny - logowanie']);
     }
 
-    public function check(Request $request, UserAuthenticateService $userAuthenticateService): string
+    public function check(Request $request, UserAuthenticateInterface $userAuthenticateService): string
     {
         if (! $this->validate($request->all(), LoginValidator::class)) {
              return $this->sendError('Formularz nie zostal wysłany');

@@ -4,13 +4,13 @@ namespace App\Facades\Property;
 
 class Has
 {
-    public static function check($method, $item = []): bool
+    public static function check($iterable, $offset): bool
     {
-        if (! is_array($item)) {
-            $item = explode('.', $item);
+        if (! is_array($offset)) {
+            $offset = explode('.', $offset);
         }
 
-        $count = array_key_last($item);
+        $count = array_key_last($offset);
 
         if ($count === 0) {
             $count = 1;
@@ -19,11 +19,11 @@ class Has
         $i = 0;
 
         while ($i <= $count) {
-            if ((string) $item[$i] === '' || $item[$i] === null) {
+            if ((string) $offset[$i] === '' || $offset[$i] === null) {
                 return true;
             }
 
-            $res = Property::exist($i === 0 ? $method : $tmp, $item, $i);
+            $res = Property::exist($i === 0 ? $iterable : $tmp, $offset, $i);
 
             if (! $res) {
                 return false;
