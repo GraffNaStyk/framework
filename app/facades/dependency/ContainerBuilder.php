@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Facades\Dependency;
-use App\Helpers\Arr;
+use App\Facades\Config\Config;
 use ReflectionClass;
 
 class ContainerBuilder
@@ -23,8 +23,8 @@ class ContainerBuilder
 			if (! empty($class)) {
 				$reflector = new ReflectionClass($class);
 				
-				if ($reflector->isInterface() && Arr::has((array) config('interfaces'), $reflector->getName())) {
-					$reflector = new ReflectionClass(Arr::get(config('interfaces'), $reflector->getName()));
+				if ($reflector->isInterface() && Config::has('interfaces.'.$reflector->getName())) {
+					$reflector = new ReflectionClass(Config::get('interfaces.'.$reflector->getName()));
 				} else if ($reflector->isInterface()) {
 					throw new \LogicException($reflector->getName().' is not register in interfaces.php');
 				}

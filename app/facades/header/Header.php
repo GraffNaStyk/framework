@@ -2,6 +2,8 @@
 
 namespace App\Facades\Header;
 
+use App\Facades\Config\Config;
+
 class Header
 {
     const RESPONSE_CODES = [
@@ -27,8 +29,8 @@ class Header
         header('Pragma: no-cache');
         header('Referrer-Policy: no-referrer');
 
-        if (app('security.enabled')) {
-            header('Content-Security-Policy: '.app('security.protection'));
+        if (Config::get('app.security.enabled')) {
+            header('Content-Security-Policy: '.Config::get('app.security.protection'));
         }
 
         header('Strict-Transport-Security: max-age=31536000');

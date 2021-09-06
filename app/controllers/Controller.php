@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\AbstractController;
+use App\Facades\Config\Config;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
@@ -24,7 +25,7 @@ abstract class Controller extends AbstractController
         View::layout($layout);
 
         if ($layout === 'admin') {
-            $this->set(['menu' => config('menu')]);
+            $this->set(['menu' => Config::get('menu')]);
         }
     }
 }

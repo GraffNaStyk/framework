@@ -2,6 +2,7 @@
 
 namespace App\Facades\Log;
 
+use App\Facades\Config\Config;
 use App\Facades\Http\Request;
 use App\Facades\Http\Router\Router;
 use App\Facades\Storage\Storage;
@@ -45,8 +46,8 @@ class Log
         if (! empty($lastError) && in_array($lastError['type'], [E_USER_ERROR, E_ERROR, E_PARSE, E_COMPILE_ERROR, E_CORE_ERROR])) {
             header('HTTP/1.0 500 Internal Server Error');
             http_response_code(500);
-
-            if (app('dev')) {
+			
+            if (Config::get('app.dev')) {
             	if (Request::isAjax()) {
             		pd($lastError);
 	            } else {
@@ -62,7 +63,7 @@ class Log
 
     public static function setDisplayErrors(): void
     {
-        if (app('dev')) {
+        if (Config::get('app.dev')) {
             ini_set('display_startup_errors', 1);
             error_reporting(E_ERROR | E_USER_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_PARSE);
         } else {

@@ -2,6 +2,7 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Config\Config;
 use App\Facades\Http\Router\Router;
 use App\Facades\TwigExt\TwigExt;
 use Twig;
@@ -85,7 +86,7 @@ final class View
     private static function register()
     {
         if (! self::$twig instanceof Twig\Environment) {
-            if (app('cache_view')) {
+            if (Config::get('app.cache_view')) {
                 $config['cache'] = storage_path('private/framework/views');
             }
 

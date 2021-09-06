@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Facades\Config\Config;
 use App\Facades\Http\Router\Router;
 
 class Loader
@@ -12,12 +13,12 @@ class Loader
 
     public static function set(): void
     {
-        self::$loaded = app('is_loaded');
+        self::$loaded = Config::get('app.is_loaded');
 
-        if (app('url') === '/') {
-            self::$url = app('url');
+        if (Config::get('app.url') === '/') {
+            self::$url = Config::get('app.url');
         } else {
-            self::$url = app('url').'/';
+            self::$url = Config::get('app.url').'/';
         }
     }
 
@@ -25,7 +26,7 @@ class Loader
     {
         $folder = Router::getAlias();
 
-	    if (app('dev')) {
+	    if (Config::get('app.dev')) {
 		    $cssArr = [
 			    ...array_diff(scandir(css_path($folder)), ['.', '..', '.htaccess']),
 			    ...array_diff(scandir(css_path('components')), ['.', '..', '.htaccess']),
@@ -86,7 +87,7 @@ class Loader
 
     public static function js(): string
     {
-        if (app('dev')) {
+        if (Config::get('app.dev')) {
             $jsArr = array_diff(scandir(js_path('components')), ['.', '..', '.htaccess']);
             $rebuild = false;
             $mtime = filemtime(js_path('main.js'));

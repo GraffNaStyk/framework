@@ -2,6 +2,7 @@
 
 namespace App\Facades\Http\Router;
 
+use App\Facades\Config\Config;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Url\Url;
 
@@ -113,8 +114,8 @@ abstract class Route
 
     public static function when(string $when, string $then): void
     {
-        if (app('url') !== '/') {
-            $route = rtrim(str_replace(app('url'), '', Router::url()), '/');
+        if (Config::get('app.url') !== '/') {
+            $route = rtrim(str_replace(Config::get('app.url'), '', Router::url()), '/');
         } else {
             $route = rtrim(Router::url(), '/');
         }

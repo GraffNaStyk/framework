@@ -2,6 +2,7 @@
 
 namespace App\Facades\Url;
 
+use App\Facades\Config\Config;
 use App\Facades\Http\Router\Router;
 
 class Url
@@ -19,11 +20,11 @@ class Url
 
     public static function base(): string
     {
-        if (app('url') === '/') {
+        if (Config::get('app.url') === '/') {
             return '';
         }
 
-        return app('url');
+        return Config::get('app.url');
     }
 
     public static function segment($string, $offset, $delimiter = '/'): ?string
@@ -57,7 +58,7 @@ class Url
     public static function full(): string
     {
         if (empty(getenv('HTTP_HOST'))) {
-            return app('host_url').self::base();
+            return Config::get('app.host_url').self::base();
         } else {
             return Router::checkProtocol().'://'.getenv('HTTP_HOST').self::base();
         }

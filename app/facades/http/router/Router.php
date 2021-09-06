@@ -5,6 +5,7 @@ namespace App\Facades\Http\Router;
 use App\Controllers\Auth;
 use App\Core\Kernel;
 use App\Events\EventServiceProvider;
+use App\Facades\Config\Config;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Dependency\Container;
 use App\Facades\Dependency\ContainerBuilder;
@@ -14,7 +15,6 @@ use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Facades\Http\View;
 use App\Facades\Log\Log;
-use App\Helpers\Arr;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -218,7 +218,7 @@ final class Router extends Route
 	        ob_flush();
 	        ob_clean();
 	
-	        if (app('dev')) {
+	        if (Config::get('app.dev')) {
 	        	View::set(['devTool' => DevTool::boot()]);
 	        }
 
@@ -249,8 +249,8 @@ final class Router extends Route
 	        if (! empty($class)) {
 		        $reflector = new ReflectionClass($class);
 
-		        if ($reflector->isInterface() && Arr::has((array) config('interfaces'), $reflector->getName())) {
-			        $reflector = new ReflectionClass(Arr::get(config('interfaces'), $reflector->getName()));
+		        if ($reflector->isInterface() && Config::has('interfaces.'.$reflector->getName())) {
+			        $reflector = new ReflectionClass(Config::get('interfaces.'.$reflector->getName()));
 		        } else if ($reflector->isInterface()) {
 			        throw new \LogicException($reflector->getName().' is not register in interfaces.php');
 		        }
@@ -344,8 +344,8 @@ final class Router extends Route
 
     private function parseUrl(): void
     {
-        if ((string) app('url') !== '/') {
-            self::$url = str_replace(app('url'), '', self::url());
+        if ((string) Config::get('app.url') !== '/') {
+            self::$url = str_replace(Config::get('app.url'), '', self::url());
         } else {
             self::$url = self::url();
         }

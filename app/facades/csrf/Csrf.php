@@ -2,6 +2,7 @@
 
 namespace App\Facades\Csrf;
 
+use App\Facades\Config\Config;
 use App\Facades\Faker\Faker;
 use App\Facades\Http\Request;
 use App\Facades\Http\Router\Router;
@@ -17,7 +18,7 @@ class Csrf
 
     public function valid(Request $request): bool
     {
-        if (! $request->has('_csrf') && app('csrf')) {
+        if (! $request->has('_csrf') && Config::get('app.csrf')) {
             return false;
         }
 
@@ -32,7 +33,7 @@ class Csrf
 
     public static function make(string $uri): void
     {
-        if (! Session::has('@csrf.'.$uri) && app('csrf')) {
+        if (! Session::has('@csrf.'.$uri) && Config::get('app.csrf')) {
             Session::set('@csrf.'.$uri, Faker::hash(60));
         }
     }
