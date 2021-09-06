@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Facades\Dependency;
+use App\Helpers\Arr;
 use ReflectionClass;
 
 class ContainerBuilder
@@ -22,6 +23,12 @@ class ContainerBuilder
 			if (! empty($class)) {
 				$reflector = new ReflectionClass($class);
 				
+				if ($reflector->isInterface() && Arr::has((array) config('interfaces'), $reflector->getName())) {
+					$reflector = new ReflectionClass(Arr::get(config('interfaces'), $reflector->getName()));
+				} else if ($reflector->isInterface()) {
+					throw new \LogicException($reflector->getName().' is not register in interfaces.php');
+				}
+				
 				if (! $this->container->has($class)) {
 					if ($reflector->hasMethod('__construct')) {
 						$params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
@@ -30,7 +37,7 @@ class ContainerBuilder
 						$this->container->add($class, new $class());
 					}
 				}
-				
+
 				$combinedParams[$key] = $this->container->get($class);
 				unset($reflector);
 			}

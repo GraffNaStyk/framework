@@ -14,6 +14,7 @@ use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Facades\Http\View;
 use App\Facades\Log\Log;
+use App\Helpers\Arr;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -38,15 +39,15 @@ final class Router extends Route
         if (self::$instance === null) {
             self::$instance = $this;
         }
-
-        $this->builder = new ContainerBuilder(new Container());
-        $this->request   = new Request();
+        
+        $this->request = new Request();
 
         if ($this->request->isOptionsCall()) {
             return;
         }
-
-        $this->csrf = new Csrf();
+	
+	    $this->builder = new ContainerBuilder(new Container());
+        $this->csrf    = new Csrf();
         $this->builder->container->add(Request::class, $this->request);
     }
 
@@ -247,6 +248,12 @@ final class Router extends Route
 
 	        if (! empty($class)) {
 		        $reflector = new ReflectionClass($class);
+
+		        if ($reflector->isInterface() && Arr::has((array) config('interfaces'), $reflector->getName())) {
+			        $reflector = new ReflectionClass(Arr::get(config('interfaces'), $reflector->getName()));
+		        } else if ($reflector->isInterface()) {
+			        throw new \LogicException($reflector->getName().' is not register in interfaces.php');
+		        }
 		
 		        if ($reflector->hasMethod('__construct')) {
 			        $params = $this->builder->reflectConstructorParams($reflector->getConstructor()->getParameters());
