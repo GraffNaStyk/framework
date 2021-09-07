@@ -2,6 +2,7 @@
 
 namespace App\Facades\Http;
 
+use App\Facades\Config\Config;
 use App\Facades\Header\Header;
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
@@ -154,9 +155,12 @@ final class Request
         if (! is_numeric($item)) {
             $item = (string) urldecode($item);
         }
+		
+        if (Config::get('app.security.enabled')) {
+	        $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
+	        $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
+        }
 
-        $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
-        $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
         $item = strtr(
             $item,
             '???????��������������������������������������������������������������',
