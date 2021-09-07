@@ -11,7 +11,7 @@ class Config
 {
 	private static array $memory = [];
 	
-	public static function set(string $key, $value)
+	public static function set(string $key, $value): void
 	{
 		static::$memory = array_merge(static::$memory, Set::set(static::$memory, Type::get($value), $key));
 	}
@@ -21,12 +21,12 @@ class Config
 		return Get::check(static::$memory, $key);
 	}
 	
-	public static function has(string $key)
+	public static function has(string $key): bool
 	{
 		return Has::check(self::$memory, $key);
 	}
 	
-	public static function init()
+	public static function init(): void
 	{
 		foreach (scandir(app_path('app/config')) as $item) {
 			if (pathinfo($item, PATHINFO_EXTENSION) === 'php' && strpos($item, 'example') === false) {

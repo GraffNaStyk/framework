@@ -4,6 +4,7 @@ namespace App\Core;
 
 use App\Facades\Db\Db;
 use App\Facades\Env\Env;
+use App\Facades\Header\Header;
 use App\Facades\Http\Router\Router;
 use App\Helpers\Loader;
 
@@ -23,7 +24,8 @@ final class App
 		if (session_status() === PHP_SESSION_NONE) {
 			session_start();
 		}
-		
+
+		Header::set();
 		Env::set();
 		Db::init();
 		Loader::set();

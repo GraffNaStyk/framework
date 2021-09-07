@@ -1,20 +1,17 @@
 <?php
 
 use App\Facades\Config\Config;
-use App\Facades\Header\Header;
 use App\Facades\Log\Log;
-
-require_once app_path('app/facades/autoload/Autoload.php');
-require_once vendor_path('autoload.php');
-
-spl_autoload_register(fn ($class) => App\Facades\Autoload\Autoload::run($class));
-
-Config::init();
-Log::setDisplayErrors();
 
 register_shutdown_function(fn () => Log::handleError());
 
-Header::set();
+require_once app_path('/app/facades/autoload/Autoload.php');
+require_once vendor_path('/autoload.php');
+
+spl_autoload_register(fn ($class) => App\Facades\Autoload\Autoload::run($class));
+
+Log::setDisplayErrors();
+Config::init();
 
 $app = (new \App\Core\App(new \App\Facades\Http\Router\Router()));
 $app->run();

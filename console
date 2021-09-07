@@ -2,7 +2,7 @@
 
 use App\Facades\Console\Console;
 
-if ((string) php_sapi_name() !== 'cli') {
+if (php_sapi_name() !== 'cli') {
     header('location: index.php');
 }
 
