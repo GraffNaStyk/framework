@@ -46,7 +46,7 @@ class Storage
     {
         self::checkDirectories();
         self::$relativePath = '/storage/public';
-        self::$disk = storage_path('public');
+        self::$disk = storage_path('/public');
 
         return new self();
     }
@@ -54,14 +54,14 @@ class Storage
     public static function private(): Storage
     {
         self::checkDirectories();
-        self::$disk = storage_path('private');
+        self::$disk = storage_path('/private');
         return new self();
     }
 
     private static function checkDirectories()
     {
-        Dir::create(storage_path('public/'));
-        Dir::create(storage_path('private/'));
+        Dir::create(storage_path('/public'));
+        Dir::create(storage_path('/private'));
     }
 
     public function put($file, $content, $replace = false): bool

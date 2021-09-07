@@ -9,7 +9,7 @@ use App\Facades\Property\Has;
 class Cache
 {
 	private static array $memory = [];
-	
+
     public static function remember(int $seconds, callable $query)
     {
         $route = Router::getInstance()->routeParams();
@@ -17,16 +17,16 @@ class Cache
             $route['namespace'].'\\'.$route['controller'].'\\'.$route['action'].'\\'.implode('\\', $route['params'])
         );
 
-        $dateEnd = filemtime(storage_path('private/cache/'.$cacheName.'.json'));
+        $dateEnd = filemtime(storage_path('/private/cache/'.$cacheName.'.json'));
         $dateEnd = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', $dateEnd).'+ '.$seconds.' sec'));
 
-        if (file_exists(storage_path('private/cache/'.$cacheName.'.json'))
+        if (file_exists(storage_path('/private/cache/'.$cacheName.'.json'))
             && $dateEnd > date('Y-m-d H:i:s')
         ) {
             return json_decode(file_get_contents(storage_path('private/cache/'.$cacheName.'.json')));
         } else {
             $result = $query();
-            file_put_contents(storage_path('private/cache/'.$cacheName.'.json'), json_encode($result));
+            file_put_contents(storage_path('/private/cache/'.$cacheName.'.json'), json_encode($result));
         }
 
         return $result;
