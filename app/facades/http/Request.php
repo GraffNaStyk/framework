@@ -179,7 +179,7 @@ final class Request
 
     public function get($item = null)
     {
-        if ($item == null) {
+        if ($item === null) {
             return $this->data;
         }
 
