@@ -4,20 +4,20 @@ namespace App\Facades\Property;
 
 class Remove
 {
-    public static function remove($data, $item): array
+    public static function remove($iterable, $offset): array
     {
-        $item = explode('.', $item);
+	    $offset = explode('.', $offset);
 
         if (isset($item[3])) {
-            unset($data[$item[0]][$item[1]][$item[2]][$item[3]]);
-        } else if (isset($item[2])) {
-            unset($data[$item[0]][$item[1]][$item[2]]);
-        } else if (isset($item[1])) {
-            unset($data[$item[0]][$item[1]]);
+            unset($iterable[$offset[0]][$offset[1]][$offset[2]][$offset[3]]);
+        } else if (isset($offset[2])) {
+            unset($iterable[$offset[0]][$offset[1]][$offset[2]]);
+        } else if (isset($offset[1])) {
+            unset($iterable[$offset[0]][$offset[1]]);
         } else {
-            unset($data[$item[0]]);
+            unset($iterable[$offset[0]]);
         }
 
-        return $data;
+        return $iterable;
     }
 }
