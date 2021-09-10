@@ -119,16 +119,16 @@ class Storage
 			                $closure([
 				                'name' => $pathInfo['filename'],
 				                'hash' => $hash,
-				                'dir' => self::$relativePath.$destination,
-				                'ext' => '.'.$pathInfo['extension'],
+				                'dir'  => self::$relativePath.$destination,
+				                'ext'  => '.'.$pathInfo['extension'],
 				                'sha1' => sha1_file($location)
 			                ]);
 		                } else {
 			                File::insert([
 				                'name' => $pathInfo['filename'],
 				                'hash' => $hash,
-				                'dir' => self::$relativePath.$destination,
-				                'ext' => '.'.$pathInfo['extension'],
+				                'dir'  => self::$relativePath.$destination,
+				                'ext'  => '.'.$pathInfo['extension'],
 				                'sha1' => sha1_file($location)
 			                ])->exec();
 		                }

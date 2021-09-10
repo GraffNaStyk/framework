@@ -21,7 +21,7 @@ trait PropertyFacade
 		return array_merge($data, Set::set($data, Type::get($data), $item));
 	}
 	
-	public function remove($iterable, $offset)
+	public function remove($iterable, $offset): array
 	{
 		return Remove::remove($iterable, $offset);
 	}
