@@ -14,7 +14,7 @@ class Type
             return (bool) $item;
         }
 
-        if (is_null($item) || (string) trim($item) === '') {
+        if ($item === null || (string) trim($item) === '' || $item === 'null') {
             return null;
         } else if (preg_match('/^[+-]?(\d*\.\d+([eE]?[+-]?\d+)?|\d+[eE][+-]?\d+)$/',
 	        str_replace([',', ' '], ['.', ''], $item)
