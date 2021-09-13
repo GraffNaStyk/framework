@@ -250,13 +250,7 @@ final class Router extends Route
 	        $class    = $refParam->getClass()->name;
 
 	        if (! empty($class)) {
-		        $reflector = new ReflectionClass($class);
-
-		        if ($reflector->isInterface() && Config::has('interfaces.'.$reflector->getName())) {
-			        $reflector = new ReflectionClass(Config::get('interfaces.'.$reflector->getName()));
-		        } else if ($reflector->isInterface()) {
-			        throw new \LogicException($reflector->getName().' is not register in interfaces.php');
-		        }
+		        $reflector = $this->builder->checkIsInterface(new ReflectionClass($class));
 		
 		        if ($reflector->hasMethod('__construct')) {
 			        $params = $this->builder->reflectConstructorParams($reflector->getConstructor()->getParameters());
