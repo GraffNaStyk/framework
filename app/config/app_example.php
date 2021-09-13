@@ -63,5 +63,17 @@ return [
         'protection' =>
             "default-src 'self'; style-src 'self' 'unsafe-inline' fonts.googleapis.com; font-src 'self' fonts.gstatic.com; img-src 'self' data:"
 
-    ]
+    ],
+	
+	/**
+	 * @Middlewares namespace for middlewares call
+	 *
+	 **/
+	'middleware_path' => '\\App\\Controllers\\Middleware\\',
+	
+	/**
+	 * @Triggers namespace for database triggers call
+	 *
+	 **/
+	'triggers_path' => '\\App\\Triggers\\'
 ];

@@ -177,7 +177,7 @@ final class Request
         return $this->method;
     }
 
-    public function get($item = null)
+    public function get(string $item = null)
     {
         if ($item === null) {
             return $this->data;
@@ -186,7 +186,7 @@ final class Request
         return Get::check($this->data, $item);
     }
 
-    public function input($item = null)
+    public function input(string $item = null)
     {
         return $this->get($item);
     }
