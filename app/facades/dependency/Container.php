@@ -22,4 +22,9 @@ class Container
 	{
 		return $this->items[$name];
 	}
+	
+	public function replace(string $name, object $object): void
+	{
+		$this->items[$name] = $object;
+	}
 }

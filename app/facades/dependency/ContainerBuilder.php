@@ -22,11 +22,11 @@ class ContainerBuilder
 			
 			if (! empty($class)) {
 				$reflector = $this->checkIsInterface(new ReflectionClass($class));
-
-				if (! class_exists($class)) {
-					throw new \LogicException('Class : '. $class. ' not exist');
+				
+				if (! class_exists($reflector->getName())) {
+					throw new \LogicException('Class : '.$class.' not exist');
 				}
-
+				
 				if (! $this->container->has($class)) {
 					if ($reflector->hasMethod('__construct')) {
 						$params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
@@ -43,7 +43,7 @@ class ContainerBuilder
 		
 		return $combinedParams;
 	}
-	
+
 	public function checkIsInterface(object $reflector): object
 	{
 		if ($reflector->isInterface() && Config::has('interfaces.'.$reflector->getName()) && interface_exists($reflector->getName())) {
@@ -51,7 +51,7 @@ class ContainerBuilder
 		} else if ($reflector->isInterface()) {
 			throw new \LogicException($reflector->getName().' is not register in interfaces.php or not exist');
 		}
-		
+
 		return $reflector;
 	}
 }

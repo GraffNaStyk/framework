@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
 use App\Facades\Cache\Cache;
+use App\Facades\Faker\Faker;
 use App\Facades\Http\Request;
 use App\Filters\UserFilter;
 use App\Helpers\Pagination;
@@ -19,6 +20,18 @@ class ClientsController extends Controller
 
     public function index(Request $request, UserFilter $filter, Client $client, int $page = 1): string
     {
+    	$client::insert([
+    		'name' => Faker::string(4),
+    		'www' => Faker::string(4),
+    		'ftp_server' => Faker::string(4),
+    		'ftp_user' => Faker::string(4),
+    		'ftp_password' => Faker::string(4),
+    		'db_link' => Faker::string(4),
+    		'db_user' => Faker::string(4),
+    		'db_password' => Faker::string(4),
+    		'db_name' => Faker::string(4),
+	    ])->exec();
+    	
         Pagination::make(Client::class, $page, '/clients/page');
 		
         return $this->render([
