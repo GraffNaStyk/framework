@@ -7,6 +7,7 @@ use App\Model\User;
 
 interface UserAuthenticateInterface
 {
-	function __construct(User $user);
-	function authenticate(Request $request);
+	public function __construct(User $user);
+
+	public function authenticate(Request $request);
 }

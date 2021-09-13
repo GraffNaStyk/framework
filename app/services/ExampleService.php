@@ -8,7 +8,7 @@ use App\Rules\LoginValidator;
 
 class ExampleService
 {
-    public function __construct(UserService $service, LoginValidator $validator, ClientValidator $clientValidator, Client $client)
+    public function __construct(LoginValidator $validator, ClientValidator $clientValidator, Client $client)
     {
 
     }

@@ -55,6 +55,11 @@ final class Router extends Route
     {
         return self::$instance;
     }
+    
+    public function getContainer(): ContainerBuilder
+    {
+    	return $this->builder;
+    }
 
     public function boot(): void
     {
@@ -179,7 +184,7 @@ final class Router extends Route
         }
 
         try {
-        	if (substr(self::getAction(), 0, 4) === 'test' && ! app('dev')) {
+        	if (substr(self::getAction(), 0, 4) === 'test' && ! Config::get('app.dev')) {
         		self::abort();
 	        }
 

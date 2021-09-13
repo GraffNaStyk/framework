@@ -3,6 +3,7 @@
 namespace App\Facades\Db;
 
 use App\Core\App;
+use App\Facades\Config\Config;
 use App\Facades\Env\Env;
 use App\Facades\Url\Url;
 use App\Facades\Validator\Type;
@@ -447,10 +448,11 @@ class Db
             $twoValue = $this->prepareValueForWhere($value2);
         }
 	
+        $path         = Config::get('app.model_path');
 	    $object       = explode(' ', $table)[0];
-	    $stringObject = 'App\\Model\\'.$object;
+	    $stringObject = $path.$object;
 	
-	    if (class_exists('App\\Model\\'.$object)) {
+	    if (class_exists($path.$object)) {
 		    $table = str_replace($object, $stringObject::$table, $table);
 	    }
 
