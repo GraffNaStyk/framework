@@ -20,11 +20,7 @@ class Url
 
     public static function base(): string
     {
-        if (Config::get('app.url') === '/') {
-            return '';
-        }
-
-        return Config::get('app.url');
+        return Config::get('app.url') === '/' ? '' : Config::get('app.url');
     }
 
     public static function segment($string, $offset, $delimiter = '/'): ?string

@@ -23,7 +23,7 @@ abstract class Route
 
     public static function middleware(string $middleware, callable $function): void
     {
-        static::$middleware = $middleware;
+        static::$middleware = ucfirst($middleware);
         $function();
         static::$middleware = null;
     }
