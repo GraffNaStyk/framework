@@ -9,13 +9,9 @@ class Url
 {
     public static function get(): string
     {
-        if (Router::getAlias() === 'http') {
-            $url = Url::base().$url;
-        } else {
-            $url = Url::base().'/'.Router::getAlias().$url;
-        }
-
-        return $url;
+    	return Router::getAlias() === 'http'
+		    ? Url::base().$url
+		    : Url::base().'/'.Router::getAlias().$url;
     }
 
     public static function base(): string
@@ -30,12 +26,10 @@ class Url
         if ($offset === 'end' || $offset === 'last') {
             return end($string);
         }
-
-        if (isset($string[$offset])) {
-            return $string[$offset];
-        }
-
-        return false;
+        
+        return isset($string[$offset])
+	        ? $string[$offset]
+			: null;
     }
 
     public static function link(string $link): string
@@ -53,10 +47,8 @@ class Url
 
     public static function full(): string
     {
-        if (empty(getenv('HTTP_HOST'))) {
-            return Config::get('app.host_url').self::base();
-        } else {
-            return Router::checkProtocol().'://'.getenv('HTTP_HOST').self::base();
-        }
+	    return empty(getenv('HTTP_HOST'))
+		    ? Config::get('app.host_url') . self::base()
+		    : Router::checkProtocol() . '://' . getenv('HTTP_HOST') . self::base();
     }
 }

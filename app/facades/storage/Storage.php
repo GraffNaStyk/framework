@@ -58,7 +58,7 @@ class Storage
         return new self();
     }
 
-    private static function checkDirectories()
+    private static function checkDirectories(): void
     {
         Dir::create(storage_path('/public'));
         Dir::create(storage_path('/private'));
