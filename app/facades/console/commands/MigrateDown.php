@@ -2,9 +2,10 @@
 
 namespace App\Facades\Console\Commands;
 
+use App\Facades\Console\Command;
 use App\Facades\Migrations\Migration;
 
-class MigrateDown
+class MigrateDown extends Command
 {
 	public static string $name = 'app:migrate:down';
 	

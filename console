@@ -10,18 +10,5 @@ if (php_sapi_name() !== 'cli') {
 
 require_once __DIR__.'/index.php';
 
-if ($argv[1] === 'serve') {
-    if (isset($argv[2])) {
-        $host = $argv[2];
-    } else {
-        $host = 'localhost';
-    }
-
-    exec("php -S {$host}:8000 index.php");
-}
-
 new ConsoleExt(new ArgvParser($argv));
 exit;
-Console::dispatch($argv);
-
-Console::end();
