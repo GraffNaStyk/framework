@@ -6,23 +6,34 @@ use App\Facades\Validator\Type;
 
 trait PropertyFacade
 {
-	public function has($iterable, $offset): bool
+	private $params;
+	
+	public function setParams($params): void
 	{
-		return Has::check($iterable, $offset);
+		$this->params = $params;
 	}
 	
-	public function get($iterable, $offset)
+	public function has(?string $offset): bool
 	{
-		return Get::check($iterable, $offset);
+		return Has::check($this->params, $offset);
 	}
 	
-	public function set($item, $data): array
+	public function get(?string $offset=null)
 	{
-		return array_merge($data, Set::set($data, Type::get($data), $item));
+		if ($offset === null) {
+			return $this->params;
+		}
+
+		return Get::check($this->params, $offset);
 	}
 	
-	public function remove($iterable, $offset): array
+	public function set($data, ?string $offset): void
 	{
-		return Remove::remove($iterable, $offset);
+		$this->params = array_merge($this->params, Set::set($this->params, Type::get($data), $offset));
+	}
+	
+	public function remove(?string $offset): void
+	{
+		$this->params = Remove::remove($this->params, $offset);
 	}
 }

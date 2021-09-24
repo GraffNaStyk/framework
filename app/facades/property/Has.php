@@ -32,6 +32,7 @@ class Has
             $tmp = $res;
             $i ++;
         }
+        
         return true;
     }
 }

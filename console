@@ -1,10 +1,14 @@
 <?php
 
 use App\Facades\Console\Console;
+use App\Facades\Console\ConsoleExt;
+use App\Facades\Console\ArgvParser;
 
 if (php_sapi_name() !== 'cli') {
     header('location: index.php');
 }
+
+require_once __DIR__.'/index.php';
 
 if ($argv[1] === 'serve') {
     if (isset($argv[2])) {
@@ -16,8 +20,8 @@ if ($argv[1] === 'serve') {
     exec("php -S {$host}:8000 index.php");
 }
 
-require_once __DIR__.'/index.php';
-
+new ConsoleExt(new ArgvParser($argv));
+exit;
 Console::dispatch($argv);
 
 Console::end();
