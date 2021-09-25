@@ -18,7 +18,7 @@ class ClientsController extends Controller
         parent::__construct();
     }
 
-    public function index(Request $request, UserFilter $filter, Client $client, int $page = 1): string
+    public function index(Request $request, Client $client, int $page = 1): string
     {
     	$client::insert([
     		'name' => Faker::string(4),

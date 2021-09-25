@@ -29,42 +29,45 @@ class Console
 
 	private function configure(): void
 	{
-		$objects = [
-			...array_diff(scandir(app_path(self::COMMAND_DIR)), ['.', '..']),
-			...array_diff(scandir(app_path(self::FACADE_COMMAND_DIR)), ['.', '..']),
-		];
+		$showTips = true;
 		
+		if (is_dir(app_path(self::COMMAND_DIR))) {
+			$objects = [
+				...array_diff(scandir(app_path(self::COMMAND_DIR)), ['.', '..']),
+				...array_diff(scandir(app_path(self::FACADE_COMMAND_DIR)), ['.', '..']),
+			];
+		} else {
+			$objects = [
+				...array_diff(scandir(app_path(self::FACADE_COMMAND_DIR)), ['.', '..']),
+			];
+		}
+
 		foreach ($objects as $object) {
 			$object = $this->getObjectName($object);
 
 			if (property_exists($object, 'name') && $this->parser->has($object::$name)) {
 				$this->parser->remove($object::$name);
-
 				$reflector = new ReflectionClass($object);
-
-				if ($reflector->hasMethod('__construct')) {
-					$constructorParams = $this->builder->reflectConstructorParams(
-						$reflector->getConstructor()->getParameters()
-					);
-				}
-
-				call_user_func_array([$reflector, 'newInstance'], $constructorParams ?? []);
+				$showTips  = false;
+				call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector));
 
 				break;
 			}
 		}
 		
-		foreach ($objects as $object) {
-			$object = $this->getObjectName($object);
-			
-			if (property_exists($object, 'name')) {
-				$text = $object::$name;
+		if ($showTips) {
+			foreach ($objects as $object) {
+				$object = $this->getObjectName($object);
 				
-				if (method_exists($object, 'getDescription')) {
-					$text .= '                                        '. $object::getDescription();
+				if (property_exists($object, 'name')) {
+					$text = $object::$name;
+					
+					if (method_exists($object, 'getDescription')) {
+						$text .= '                                        '. $object::getDescription();
+					}
+					
+					echo $text."\n";
 				}
-				
-				echo $text."\n\n";
 			}
 		}
 	}

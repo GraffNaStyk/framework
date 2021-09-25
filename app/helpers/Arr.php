@@ -3,7 +3,6 @@
 
 namespace App\Helpers;
 
-
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
 use App\Facades\Property\Remove;

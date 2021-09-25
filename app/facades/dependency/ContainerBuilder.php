@@ -54,4 +54,17 @@ class ContainerBuilder
 
 		return $reflector;
 	}
+	
+	public function getConstructorParameters(ReflectionClass $reflector): array
+	{
+		$constructorParams = [];
+		
+		if ($reflector->hasMethod('__construct')) {
+			$constructorParams = $this->reflectConstructorParams(
+				$reflector->getConstructor()->getParameters()
+			);
+		}
+		
+		return $constructorParams;
+	}
 }

@@ -90,14 +90,7 @@ final class Router extends Route
 		
         foreach ($events[self::getAction()] as $event) {
 	        $reflector = new ReflectionClass($event);
-
-	        if ($reflector->hasMethod('__construct')) {
-		        $constructorParams = $this->builder->reflectConstructorParams(
-			        $reflector->getConstructor()->getParameters()
-		        );
-	        }
-	
-	        (call_user_func_array([$reflector, 'newInstance'], $constructorParams ?? []))->handle();
+	        (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))->handle();
         }
     }
 
