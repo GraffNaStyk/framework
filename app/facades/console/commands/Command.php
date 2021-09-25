@@ -11,6 +11,11 @@ class Command extends \App\Facades\Console\Command
 		parent::__construct();
 	}
 	
+	public static function getDescription(): string
+	{
+		return 'Create new console command';
+	}
+	
 	public function execute()
 	{
 		$name = $this->input('Please set name for command');

@@ -35,11 +35,7 @@ class Console
 		];
 		
 		foreach ($objects as $object) {
-			if ((bool) strpos($object, 'Command')) {
-				$object = self::COMMAND_NAMESPACE.str_replace('.php', '', $object);
-			} else {
-				$object = self::FACADE_COMMAND_NAMESPACE.str_replace('.php', '', $object);
-			}
+			$object = $this->getObjectName($object);
 
 			if (property_exists($object, 'name') && $this->parser->has($object::$name)) {
 				$this->parser->remove($object::$name);
@@ -56,6 +52,29 @@ class Console
 
 				break;
 			}
+		}
+		
+		foreach ($objects as $object) {
+			$object = $this->getObjectName($object);
+			
+			if (property_exists($object, 'name')) {
+				$text = $object::$name;
+				
+				if (method_exists($object, 'getDescription')) {
+					$text .= '                                        '. $object::getDescription();
+				}
+				
+				echo $text."\n\n";
+			}
+		}
+	}
+	
+	private function getObjectName(string $object): string
+	{
+		if ((bool) strpos($object, 'Command')) {
+			return self::COMMAND_NAMESPACE.str_replace('.php', '', $object);
+		} else {
+			return self::FACADE_COMMAND_NAMESPACE.str_replace('.php', '', $object);
 		}
 	}
 }

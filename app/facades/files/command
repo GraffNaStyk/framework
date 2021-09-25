@@ -15,6 +15,11 @@ class CLASSNAME extends Command
 		parent::__construct();
 	}
 
+    public static function getDescription(): string
+    {
+        return '';
+    }
+
 	public function configure(): void
 	{
 		parent::configure();
