@@ -30,6 +30,9 @@ class Command implements CommandInterface
 	
 	public function configure(): void
 	{
+		ini_set('display_startup_errors', 1);
+		error_reporting(E_ERROR | E_USER_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_PARSE);
+		
 		if (! method_exists($this, 'execute')) {
 			$this->output('Missing execute method!', 'red')->close();
 		}
