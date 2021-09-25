@@ -1,7 +1,6 @@
 <?php
 
 use App\Facades\Console\Console;
-use App\Facades\Console\ConsoleExt;
 use App\Facades\Console\ArgvParser;
 
 if (php_sapi_name() !== 'cli') {
@@ -10,5 +9,5 @@ if (php_sapi_name() !== 'cli') {
 
 require_once __DIR__.'/index.php';
 
-new ConsoleExt(new ArgvParser($argv));
+new Console(new ArgvParser($argv));
 exit;

@@ -6,7 +6,7 @@ use App\Facades\Dependency\Container;
 use App\Facades\Dependency\ContainerBuilder;
 use ReflectionClass;
 
-class ConsoleExt
+class Console
 {
 	const FACADE_COMMAND_DIR       = '/app/facades/console/commands';
 	const COMMAND_DIR              = '/app/commands';
