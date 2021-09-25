@@ -64,10 +64,10 @@ class Console
 					$text = $object::$name;
 					
 					if (method_exists($object, 'getDescription')) {
-						$text .= '                                        ' . $object::getDescription();
+						$text .= '                                        '.$object::getDescription();
 					}
 					
-					echo $text . "\n";
+					echo $text."\n";
 				}
 			}
 		}
@@ -76,10 +76,9 @@ class Console
 	private function getObjectName(string $object): string
 	{
 		if ((bool) strpos($object, 'Command')) {
-			return self::COMMAND_NAMESPACE . str_replace('.php', '', $object);
-		}
-		else {
-			return self::FACADE_COMMAND_NAMESPACE . str_replace('.php', '', $object);
+			return self::COMMAND_NAMESPACE.str_replace('.php', '', $object);
+		} else {
+			return self::FACADE_COMMAND_NAMESPACE.str_replace('.php', '', $object);
 		}
 	}
 }
