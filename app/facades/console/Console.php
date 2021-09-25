@@ -8,13 +8,13 @@ use ReflectionClass;
 
 class Console
 {
-	const FACADE_COMMAND_DIR       = '/app/facades/console/commands';
-	const COMMAND_DIR              = '/app/commands';
-	const COMMAND_NAMESPACE        = 'App\\Commands\\';
+	const FACADE_COMMAND_DIR = '/app/facades/console/commands';
+	const COMMAND_DIR = '/app/commands';
+	const COMMAND_NAMESPACE = 'App\\Commands\\';
 	const FACADE_COMMAND_NAMESPACE = 'App\\Facades\\Console\\Commands\\';
 	
 	private ArgvParser $parser;
-
+	
 	private ContainerBuilder $builder;
 	
 	public function __construct(ArgvParser $argvParser)
@@ -22,11 +22,11 @@ class Console
 		$this->parser  = $argvParser;
 		$this->builder = new ContainerBuilder(new Container());
 		$this->builder->container->add(ArgvParser::class, $this->parser);
-
+		
 		$this->parser->parse();
 		$this->configure();
 	}
-
+	
 	private function configure(): void
 	{
 		$showTips = true;
@@ -36,21 +36,22 @@ class Console
 				...array_diff(scandir(app_path(self::COMMAND_DIR)), ['.', '..']),
 				...array_diff(scandir(app_path(self::FACADE_COMMAND_DIR)), ['.', '..']),
 			];
-		} else {
+		}
+		else {
 			$objects = [
 				...array_diff(scandir(app_path(self::FACADE_COMMAND_DIR)), ['.', '..']),
 			];
 		}
-
+		
 		foreach ($objects as $object) {
 			$object = $this->getObjectName($object);
-
+			
 			if (property_exists($object, 'name') && $this->parser->has($object::$name)) {
 				$this->parser->remove($object::$name);
 				$reflector = new ReflectionClass($object);
 				$showTips  = false;
 				call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector));
-
+				
 				break;
 			}
 		}
@@ -63,10 +64,10 @@ class Console
 					$text = $object::$name;
 					
 					if (method_exists($object, 'getDescription')) {
-						$text .= '                                        '. $object::getDescription();
+						$text .= '                                        ' . $object::getDescription();
 					}
 					
-					echo $text."\n";
+					echo $text . "\n";
 				}
 			}
 		}
@@ -75,9 +76,10 @@ class Console
 	private function getObjectName(string $object): string
 	{
 		if ((bool) strpos($object, 'Command')) {
-			return self::COMMAND_NAMESPACE.str_replace('.php', '', $object);
-		} else {
-			return self::FACADE_COMMAND_NAMESPACE.str_replace('.php', '', $object);
+			return self::COMMAND_NAMESPACE . str_replace('.php', '', $object);
+		}
+		else {
+			return self::FACADE_COMMAND_NAMESPACE . str_replace('.php', '', $object);
 		}
 	}
 }
