@@ -121,20 +121,9 @@ Route::crud('url', 'Controller');
 
 ## Console
 
-php console {args}
-
-| Typ | Opis |
-| ------ | ------ |
-| Crontab | time php path/to/console cron {fileName} run |
-| Controller | php console controller {namespace} {controller} optional:{-v} create with views |
-| Cron | php console cron {fileName} |
-| Model | php console model {fileName} Table |
-| Migrate | php console migrate {method - up,down,make,dump} optional:{fileName table} |
-| Middleware | php console middleware {fileName} |
-| Rule | php console rule {fileName} |
-| Observer | php console observer {fileName} |
-| Services | php console service {fileName} |
-| Commands | php console commands - show all commands in terminal |
+php console - to show all existed commands
+#####
+To create new command use php console app:make:command
 
 ## Model
 
@@ -199,10 +188,10 @@ application directories
 | ------ | ------ |
 | Controller | Kontrollery zarządzające treściami dla użytkownika |
 | Core | Bazowa logika |
-| Cron | Serwisy które mają się wykonać w crontabie |
+| Command | Kod wykonywany przez cli min cron |
 | Events | Eventy wykonywane po danej akcji kontrolera, wyślij maila do użytkownika etc |
 | Facades | Fasady aplikacji |
-| Filters | Filtry dla zapytań do bazy danych |
+| Repostiory |Powtarzające się zapytania sql, przygotowanie zapytań |
 | Helpers | Metody przydatne wszędzie |
 | Migrate | Migracje bazy danych |
 | Model | Modele odpytujące bazę |
