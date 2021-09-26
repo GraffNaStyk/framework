@@ -192,17 +192,10 @@ final class Router extends Route
                 throw new \Exception('Method must have a return type declaration');
             }
 
-            $constructorParams = [];
-
-            if ($reflectionClass->hasMethod('__construct')) {
-                $constructorParams = $this->builder->reflectConstructorParams(
-                    $reflectionClass->getConstructor()->getParameters()
-                );
-            }
-	
-	        $params       = $reflectionMethod->getParameters();
-	        $controller   = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
-	        $methodParams = $this->getMethodParams($params, $controller);
+            $constructorParams = $this->builder->getConstructorParameters($reflectionClass);
+	        $params            = $reflectionMethod->getParameters();
+	        $controller        = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
+	        $methodParams      = $this->getMethodParams($params, $controller);
 
 	        if ($reflectionMethod->getNumberOfRequiredParameters() > count($methodParams)) {
 		        Log::custom('router', ['msg' => 'Not enough params']);

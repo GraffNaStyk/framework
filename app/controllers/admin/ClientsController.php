@@ -10,6 +10,7 @@ use App\Filters\UserFilter;
 use App\Helpers\Pagination;
 use App\Model\Client;
 use App\Rules\ClientValidator;
+use App\Services\UserService;
 
 class ClientsController extends Controller
 {
