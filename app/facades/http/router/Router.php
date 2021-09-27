@@ -98,14 +98,19 @@ final class Router extends Route
     {
         foreach (self::$route->getMiddleware() as $middleware) {
             $middleware = Config::get('app.middleware_path').ucfirst($middleware);
+
             if (method_exists($middleware, $when)) {
-                (new $middleware())->$when($this->request, $this);
+	            $reflector = new ReflectionClass($middleware);
+	            (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
+		            ->$when($this->request, $this);
             }
         }
 
         foreach (Kernel::getEveryMiddleware() as $middleware) {
             if (method_exists($middleware, $when)) {
-                (new $middleware())->$when($this->request, $this);
+	            $reflector = new ReflectionClass($middleware);
+	            (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
+		            ->$when($this->request, $this);
             }
         }
     }
