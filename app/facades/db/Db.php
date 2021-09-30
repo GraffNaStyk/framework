@@ -4,7 +4,6 @@ namespace App\Facades\Db;
 
 use App\Core\App;
 use App\Facades\Config\Config;
-use App\Facades\Env\Env;
 use App\Facades\Url\Url;
 use App\Facades\Validator\Type;
 use App\Helpers\Arr;
@@ -37,7 +36,8 @@ class Db
     {
         $this->table = $model::$table;
 	    $this->model = Url::segment($model, 'end', '\\');
-
+		$this->modelObject = $model;
+		
         if (property_exists($model, 'trigger')) {
             $this->hasTrigger = $model::$trigger;
         }
@@ -45,28 +45,24 @@ class Db
 
     public static function init()
     {
-        self::$env = Env::get();
         self::connect();
     }
 
     private static function connect(): void
     {
-        if (! empty(self::$env)) {
-            try {
-                if (self::$db === null) {
-                    self::$db = new PDO(
-                        'mysql:host='.self::$env['DB_HOST'].';dbname='.self::$env['DB_NAME'],
-                        self::$env['DB_USER'],
-                        self::$env['DB_PASS'],
-                        self::$options
-                    );
-
-                    self::$dbName = self::$env['DB_NAME'];
-                    self::$env = [];
-                }
-            } catch (PDOException $e) {
-                Handle::throwException($e, 'DATABASE CONNECTION ERROR');
+        try {
+            if (self::$db === null) {
+                self::$db = new PDO(
+	                'mysql:host='.Config::get('db.default.host').';dbname='.Config::get('db.default.database'),
+	                Config::get('db.default.user'),
+	                Config::get('db.default.password'),
+                    self::$options
+                );
+                
+                self::$dbName = Config::get('db.default.database');
             }
+        } catch (PDOException $e) {
+            Handle::throwException($e, 'DATABASE CONNECTION ERROR');
         }
     }
 
@@ -495,18 +491,21 @@ class Db
 
                 if ($this->first) {
                     return $pdo->fetch(PDO::FETCH_OBJ);
+//                    return Entity::resolve($pdo->fetch(PDO::FETCH_OBJ), $this->modelObject, true);
                 }
 
                 if ($this->selectGroup) {
                     $this->selectGroup = false;
                     return $pdo->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_OBJ);
                 } else {
-                    return $pdo->fetchAll(PDO::FETCH_OBJ);
+                	return $pdo->fetchAll(PDO::FETCH_OBJ);
+//                    return Entity::resolve($pdo->fetchAll(PDO::FETCH_OBJ), $this->modelObject);
                 }
             } catch (PDOException $e) {
                 Handle::throwException($e, $this->develop(true));
             }
         }
+
         return false;
     }
 

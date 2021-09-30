@@ -1,6 +1,7 @@
 <?php
 
 use App\Facades\Config\Config;
+use App\Facades\Env\Env;
 use App\Facades\Log\Log;
 
 register_shutdown_function(fn () => Log::handleError());
@@ -11,6 +12,7 @@ require_once vendor_path('/autoload.php');
 spl_autoload_register(fn ($class) => App\Facades\Autoload\Autoload::run($class));
 
 Log::setDisplayErrors();
+Env::set();
 Config::init();
 
 $app = (new \App\Core\App(new \App\Facades\Http\Router\Router()));

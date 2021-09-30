@@ -3,7 +3,6 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
-use App\Facades\Cache\Cache;
 use App\Facades\Faker\Faker;
 use App\Facades\Http\Request;
 use App\Filters\UserFilter;
@@ -34,11 +33,9 @@ class ClientsController extends Controller
 	    ])->exec();
     	
         Pagination::make(Client::class, $page, '/clients/page');
-		
+
         return $this->render([
-            'clients' => Cache::remember(50, function () use ($page) {
-                return Client::select()->paginate($page)->get();
-            }),
+            'clients' => Client::select()->paginate($page)->get()
         ]);
     }
 

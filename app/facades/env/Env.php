@@ -21,14 +21,14 @@ class Env
             $item = explode('=', $item);
             $environment[trim($item[0])] = trim($item[1]);
         }
-	
+
 	    static::$env = $environment;
     }
     
-    public static function get(string $item = null)
+    public static function get(string $offset = null)
     {
-    	if ($item) {
-		    return Get::check(static::$env, $item);
+    	if ($offset) {
+		    return Get::check(static::$env, $offset);
 	    }
     	
     	return static::$env;

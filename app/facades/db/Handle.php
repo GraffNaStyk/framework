@@ -2,6 +2,7 @@
 
 namespace App\Facades\Db;
 
+use App\Facades\Config\Config;
 use App\Facades\Http\Router\Router;
 use App\Facades\Log\Log;
 
@@ -9,7 +10,7 @@ abstract class Handle
 {
     public static function throwException($e, $error)
     {
-        if (app('dev')) {
+        if (Config::get('app.dev')) {
             print_r("<b>SQL Error</b>: {$e->getMessage()} <br>");
             pd("<b> Query </b>: {$error}", true);
         }
