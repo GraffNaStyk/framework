@@ -36,11 +36,12 @@ final class Router extends Route
 
     public function __construct()
     {
-        if (self::$instance === null) {
-            self::$instance = $this;
+        if (self::$instance !== null) {
+            throw new \LogicException('Cannot load router two times');
         }
-        
-        $this->request = new Request();
+	
+	    self::$instance = $this;
+        $this->request  = new Request();
 
         if ($this->request->isOptionsCall()) {
             return;
@@ -96,8 +97,10 @@ final class Router extends Route
 
     private function runMiddlewares(string $when): void
     {
+    	$path = Config::get('app.middleware_path');
+
         foreach (self::$route->getMiddleware() as $middleware) {
-            $middleware = Config::get('app.middleware_path').ucfirst($middleware);
+            $middleware = $path.ucfirst($middleware);
 
             if (method_exists($middleware, $when)) {
 	            $reflector = new ReflectionClass($middleware);
@@ -123,13 +126,13 @@ final class Router extends Route
     public function routeParams(): array
     {
         return [
-            'controller' => self::getClass(),
-            'action' => self::getAction(),
-            'namespace' => self::$route->getNamespace(),
-            'rights' => self::$route->getRights(),
+            'controller'  => self::getClass(),
+            'action'      => self::getAction(),
+            'namespace'   => self::$route->getNamespace(),
+            'rights'      => self::$route->getRights(),
             'middlewares' => self::$route->getMiddleware(),
-            'method' => self::$route->getMethod(),
-            'params' => $this->request->getData()
+            'method'      => self::$route->getMethod(),
+            'params'      => $this->request->getData()
         ];
     }
 
@@ -194,7 +197,7 @@ final class Router extends Route
             }
 
             if ($reflectionMethod->getReturnType() === null) {
-                throw new \Exception('Method must have a return type declaration');
+                throw new \LogicException('Method must have a return type declaration');
             }
 
             $constructorParams = $this->builder->getConstructorParameters($reflectionClass);
