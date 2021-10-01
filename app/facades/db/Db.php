@@ -15,14 +15,13 @@ class Db
     use Variables;
     use Builder;
 
-    private static array $env;
-
     /**
      * @var PDO
      */
     private static ?object $db = null;
-    private static ?string $dbName = null;
     public ?string $as = null;
+	private string $connection = 'default';
+	private static array $connections = [];
 
     private static array $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -42,24 +41,36 @@ class Db
             $this->hasTrigger = $model::$trigger;
         }
     }
-
-    public static function init()
+    
+    public function connection(string $connection): Db
     {
-        self::connect();
+    	if (! Config::has('db.'.$connection)) {
+    	    throw new \LogicException('Connection '.$connection. ' is not configured!');
+	    }
+
+        $this->connection = $connection;
+	
+	    return $this;
     }
 
-    private static function connect(): void
+    public function connect(): void
     {
         try {
-            if (self::$db === null) {
+            if (! isset(static::$connections[$this->connection])) {
+            	$conn = Config::get('db.'.$this->connection);
+
                 self::$db = new PDO(
-	                'mysql:host='.Config::get('db.default.host').';dbname='.Config::get('db.default.database'),
-	                Config::get('db.default.user'),
-	                Config::get('db.default.password'),
+	                'mysql:host='.$conn['host'].';dbname='.$conn['database'],
+	                $conn['user'],
+	                $conn['password'],
                     self::$options
                 );
-                
-                self::$dbName = Config::get('db.default.database');
+
+                static::$connections[$this->connection]['driver']   = self::$db;
+                static::$connections[$this->connection]['database'] = $conn['database'];
+                unset($conn);
+            } else {
+            	self::$db = static::$connections[$this->connection]['driver'];
             }
         } catch (PDOException $e) {
             Handle::throwException($e, 'DATABASE CONNECTION ERROR');
@@ -73,7 +84,7 @@ class Db
 
     public function getDbName(): string
     {
-        return self::$dbName;
+	    return static::$connections[$this->connection]['database'];
     }
 
     public function as(string $alias): Db

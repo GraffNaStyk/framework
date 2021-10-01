@@ -20,7 +20,7 @@ class ClientsController extends Controller
 
     public function index(Request $request, Client $client, int $page = 1): string
     {
-    	$client::insert([
+    	$client->insert([
     		'name' => Faker::string(4),
     		'www' => Faker::string(4),
     		'ftp_server' => Faker::string(4),
@@ -31,11 +31,11 @@ class ClientsController extends Controller
     		'db_password' => Faker::string(4),
     		'db_name' => Faker::string(4),
 	    ])->exec();
-    	
+
         Pagination::make(Client::class, $page, '/clients/page');
 
         return $this->render([
-            'clients' => Client::select()->paginate($page)->get()
+            'clients' => $client->select()->paginate($page)->get()
         ]);
     }
 

@@ -5,12 +5,14 @@ namespace App\Facades\Cache;
 use App\Facades\Http\Router\Router;
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
+use App\Facades\Property\Set;
+use App\Facades\Validator\Type;
 
 class Cache
 {
 	private static array $memory = [];
 
-    public static function remember(int $seconds, callable $query)
+    public static function remember(int $seconds, callable $closure)
     {
         $route = Router::getInstance()->routeParams();
         $cacheName = sha1(
@@ -23,9 +25,9 @@ class Cache
         if (file_exists(storage_path('/private/cache/'.$cacheName.'.json'))
             && $dateEnd > date('Y-m-d H:i:s')
         ) {
-            return json_decode(file_get_contents(storage_path('private/cache/'.$cacheName.'.json')));
+            return json_decode(file_get_contents(storage_path('/private/cache/'.$cacheName.'.json')));
         } else {
-            $result = $query();
+            $result = $closure();
             file_put_contents(storage_path('/private/cache/'.$cacheName.'.json'), json_encode($result));
         }
 
@@ -49,7 +51,7 @@ class Cache
     
     public static function saveInMemory(string $key, $value): void
     {
-    	static::$memory[$key] = $value;
+	    static::$memory = array_merge(static::$memory, Set::set(static::$memory, Type::get($value), $key));
     }
     
     public static function inMemory(string $key): bool

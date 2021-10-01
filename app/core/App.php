@@ -2,7 +2,6 @@
 
 namespace App\Core;
 
-use App\Facades\Db\Db;
 use App\Facades\Header\Header;
 use App\Facades\Http\Router\Router;
 use App\Helpers\Loader;
@@ -25,7 +24,6 @@ final class App
 		}
 
 		Header::set();
-		Db::init();
 		Loader::set();
 	}
 }
