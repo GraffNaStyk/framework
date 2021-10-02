@@ -10,7 +10,7 @@ class Handle
 {
     public function before(Request $request, Router $router): void
     {
-    	if ($request->isPost()) {
+    	if ($request->isPost() && ! empty($request->all())) {
 		    Log::custom('request', [
 			    'routeParams' => $router->routeParams(),
 		    ]);
