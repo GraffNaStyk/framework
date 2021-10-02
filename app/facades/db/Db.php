@@ -592,11 +592,16 @@ class Db
 								FROM information_schema.COLUMNS
 								WHERE TABLE_NAME='{$this->table}' AND COLUMN_NAME='{$field}'"
 		);
-		
+
 		if (Arr::has($res, '0.params')) {
 			return explode(',', str_replace(['(', ')', "'"], ['', '', ''], $res[0]->params));
 		}
 		
 		return [];
+	}
+	
+	public function getConnectionName(): string
+	{
+		return $this->connection;
 	}
 }

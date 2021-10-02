@@ -47,6 +47,11 @@ class Blueprint
         $this->table = $this->db->table;
         $this->store = $store;
     }
+    
+    public function connection(string $connection): void
+    {
+    	$this->db->connection($connection);
+    }
 
     public function generate($name, $fnName, $length = null)
     {
@@ -60,6 +65,8 @@ class Blueprint
 
     public function run()
     {
+	    $this->initialize();
+
         if (! empty($this->tableFields)) {
             $fields = implode(', ', $this->tableFields);
             $fields = rtrim($fields, ',');
@@ -114,6 +121,8 @@ class Blueprint
 
     public function drop()
     {
+    	$this->initialize();
+
         if ($this->hasTable($this->table)) {
             $this->db->query('DROP TABLE '.$this->table);
         }
@@ -130,6 +139,8 @@ class Blueprint
 
     public function clear()
     {
+	    $this->initialize();
+
         if ($this->hasTable($this->table)) {
             $this->db->query('TRUNCATE TABLE '.$this->table);
         }
@@ -137,7 +148,7 @@ class Blueprint
 
     protected function storeMigration()
     {
-	    $name = 'dump_'.date('Y_m_d__H_i').'.sql';
+	    $name = $this->db->getConnectionName().'_dump_'.date('Y_m_d__H_i_s').'.sql';
         file_put_contents(app_path('app/migrate/'.$name), $this->sql.';'.PHP_EOL.PHP_EOL, FILE_APPEND);
 
         if (! empty($this->queries)) {
@@ -163,5 +174,15 @@ class Blueprint
                 file_put_contents(app_path('app/migrate/'.$name), $trigger.';'.PHP_EOL, FILE_APPEND);
             }
         }
+    }
+    
+    private function initialize(): void
+    {
+	    $this->db->connect();
+    }
+    
+    public function getConnectionName(): string
+    {
+    	return $this->db->getConnectionName();
     }
 }

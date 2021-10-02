@@ -9,13 +9,12 @@ use App\Helpers\Loader;
 final class App
 {
 	public Router $router;
+	const PER_PAGE = 25;
 	
 	public function __construct(Router $router)
 	{
 		$this->router = $router;
 	}
-	
-	const PER_PAGE = 25;
 	
 	public function run(): void
 	{
