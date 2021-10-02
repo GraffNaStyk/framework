@@ -9,11 +9,7 @@ use Twig;
 
 final class View
 {
-
-    /**
-     * @var Twig\Environment
-     */
-    protected static ?object $twig = null;
+    protected static ?Twig\Environment $twig = null;
 
     private static array $data = [];
 
@@ -30,15 +26,15 @@ final class View
         self::set($data);
         self::register();
         self::$dir = Router::getAlias();
-        self::set(['layout' => 'layouts/'.self::$layout.self::$ext]);
-        self::set(['ajax' => 'layouts/ajax'.self::$ext]);
+        self::set(['layout' => '/layouts/'.self::$layout.self::$ext]);
+        self::set(['ajax' => '/layouts/ajax'.self::$ext]);
         self::setView();
 
         if (is_readable(view_path(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext))) {
             return self::$twig->render(self::$dir.'/'.Router::getClass().'/'.self::$view.self::$ext, self::$data);
         }
 
-        exit(require_once view_path('errors/view-not-found.php'));
+        exit(require_once view_path('/errors/view-not-found.php'));
     }
 
     private static function setView(): void
@@ -83,7 +79,7 @@ final class View
         return self::$twig->render('mail/'.$template.self::$ext, self::$data);
     }
 
-    private static function register()
+    private static function register(): void
     {
         if (! self::$twig instanceof Twig\Environment) {
             if (Config::get('app.cache_view')) {

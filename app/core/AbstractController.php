@@ -68,8 +68,8 @@ abstract class AbstractController
         if (Request::isAjax() || (API && defined('API'))) {
             Session::set('beAjax', true);
             return Response::json([
-                'ok' => true,
-                'msg' => $message ?: 'Dane zostały zapisane',
+                'ok'     => true,
+                'msg'    => $message ?: 'Dane zostały zapisane',
                 'params' => $params,
             ],
                 $status,
@@ -86,10 +86,10 @@ abstract class AbstractController
         if (Request::isAjax() || (API && defined('API'))) {
             Session::set('beAjax', true);
             return Response::json([
-                'ok' => false,
-	            'msg' => $message ?: 'Wystąpił błąd',
+                'ok'     => false,
+	            'msg'    => $message ?: 'Wystąpił błąd',
                 'inputs' => Validator::getErrors(),
-                'csrf' => Session::get('@csrf.'.Router::csrfPath()),
+                'csrf'   => Session::get('@csrf.'.Router::csrfPath()),
                 'params' => $params,
             ],
                 $status,
