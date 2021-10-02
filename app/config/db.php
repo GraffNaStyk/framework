@@ -9,7 +9,7 @@ return [
 		'host'     => Env::get('DEFAULT_DB_HOST'),
 		'database' => Env::get('DEFAULT_DB_NAME'),
 	],
-	
+
 	'gastro' => [
 		'user'     => Env::get('GASTRO_DB_USER'),
 		'password' => Env::get('GASTRO_DB_PASS'),

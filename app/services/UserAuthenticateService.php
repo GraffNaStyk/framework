@@ -18,7 +18,7 @@ class UserAuthenticateService implements UserAuthenticateInterface
     
     public function authenticate(Request $request): bool
     {
-	    $user = $this->user::select()
+	    $user = $this->user->select()
 		    ->where('name', '=', $request->get('name'))
 		    ->exist();
 	
