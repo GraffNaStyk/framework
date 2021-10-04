@@ -7,6 +7,7 @@ use App\Facades\Config\Config;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
+use App\Helpers\Loader;
 
 abstract class Controller extends AbstractController
 {
@@ -14,6 +15,11 @@ abstract class Controller extends AbstractController
     {
         parent::__construct();
         $this->setLayout();
+	
+	    $this->set([
+		    'css' => Loader::css(),
+		    'js'  => Loader::js(),
+	    ]);
     }
 
     private function setLayout(): void

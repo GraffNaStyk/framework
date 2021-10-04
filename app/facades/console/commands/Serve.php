@@ -18,7 +18,12 @@ class Serve extends Command
 		$this->parser = $argvParser;
 		parent::__construct();
 	}
-	
+
+	public static function getDescription(): string
+	{
+		return 'Arguments: -p=port, -h=host {without http://, https://}';
+	}
+
 	public function execute()
 	{
 		if ($this->parser->has('p')) {
@@ -26,7 +31,7 @@ class Serve extends Command
 		}
 		
 		if ($this->parser->has('h')) {
-			$this->host = 'http://'.$this->parser->get('h');
+			$this->host = $this->parser->get('h');
 		}
 		
 		exec("php -S {$this->host}:{$this->port} index.php");

@@ -10,7 +10,6 @@ use App\Facades\Http\Session;
 use App\Facades\Http\View;
 use App\Facades\Storage\Storage;
 use App\Facades\Validator\Validator;
-use App\Helpers\Loader;
 
 abstract class AbstractController
 {
@@ -22,12 +21,6 @@ abstract class AbstractController
     public function boot(): void
     {
         Storage::private()->make('logs')->make('cache');
-
-        $this->set([
-            'css' => Loader::css(),
-            'js' => Loader::js(),
-        ]);
-
         Session::remove('beAjax');
         Session::clearMsg();
     }

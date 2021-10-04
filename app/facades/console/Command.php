@@ -13,14 +13,14 @@ class Command implements CommandInterface
 	protected ArgvParser $parser;
 	
 	private array $backgrounds = [
-		'black' => 40,
-		'red' => 41,
-		'green' => 42,
-		'yellow' => 43,
-		'blue' => 44,
-		'magenta' => 45,
-		'cyan' => 46,
-		'light grey' => 47,
+		'white'      => 97,
+		'red'        => 31,
+		'green'      => 32,
+		'yellow'     => 33,
+		'blue'       => 34,
+		'magenta'    => 35,
+		'cyan'       => 36,
+		'light grey' => 37,
 	];
 	
 	public function __construct()
@@ -40,19 +40,20 @@ class Command implements CommandInterface
 		$this->execute();
 	}
 	
-	protected function input(string $message, string $color='black'): string
+	protected function input(string $message, string $color='white'): string
 	{
-		echo "\033[".$this->backgrounds[mb_strtolower($color)]."m".$message."\n";
+		echo "\033[".$this->backgrounds[mb_strtolower($color)]."m".$message.": \033[0m";
 		$handle = fopen ("php://stdin","r");
 		$result = fgets($handle);
 		fclose($result);
-
-		return str_replace(["\n"], [''], $result);
+		echo "\n";
+		
+		return str_replace(["\n"], [''], mb_strtolower($result));
 	}
 	
-	protected function output(string $message, string $color='black'): Command
+	protected function output(string $message, string $color='white'): Command
 	{
-		echo "\033[".$this->$backgrounds[mb_strtolower($color)]."m".$message."\n";
+		echo "\033[".$this->$backgrounds[mb_strtolower($color)]."m".$message."\033[0m \n";
 		return $this;
 	}
 	
@@ -65,7 +66,7 @@ class Command implements CommandInterface
 	{
 		Dir::create(app_path($path));
 
-		if (file_exists(app_path($path.'/'.$name.'.php'))) {
+		if (file_exists(app_path($path.'/'.ucfirst($name).'.php'))) {
 			$this->output('File '.app_path($path.'/'.$name).' exist', 'red')->close();
 		}
 
@@ -86,6 +87,6 @@ class Command implements CommandInterface
 
 	public function getFile(string $name): string
 	{
-		return file_get_contents(app_path('/app/facades/files/'.$name));
+		return file_get_contents(app_path('/app/facades/console/files/'.$name));
 	}
 }
