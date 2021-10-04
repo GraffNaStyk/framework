@@ -4,6 +4,7 @@ namespace App\Facades\Console;
 
 use App\Facades\Dependency\Container;
 use App\Facades\Dependency\ContainerBuilder;
+use App\Facades\Url\Url;
 use ReflectionClass;
 
 class Console
@@ -17,12 +18,16 @@ class Console
 	
 	private ContainerBuilder $builder;
 	
+	private static ?string $commandName = null;
+	
+	private static bool $createInterface = false;
+	
 	public function __construct(ArgvParser $argvParser)
 	{
 		$this->parser  = $argvParser;
 		$this->builder = new ContainerBuilder(new Container());
 		$this->builder->container->add(ArgvParser::class, $this->parser);
-		
+
 		$this->parser->parse();
 		$this->configure();
 	}
@@ -46,10 +51,22 @@ class Console
 		foreach ($objects as $object) {
 			$object = $this->getObjectName($object);
 			
-			if (property_exists($object, 'name') && $this->parser->has($object::$name)) {
+			if (property_exists($object, 'name')
+				&& $this->parser->has($object::$name)
+				&& (string) $this->parser->get($object::$name) !== ''
+			) {
 				$this->parser->remove($object::$name);
 				$reflector = new ReflectionClass($object);
 				$showTips  = false;
+
+				static::setCommandName($object::$name);
+
+				if ((bool) strpos($reflector->name, self::COMMAND_NAMESPACE) === false
+					&& Url::segment(static::getCommandName(), 'end', ':') !== 'command'
+				) {
+					static::setCanCreateInterface();
+				}
+
 				call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector));
 				
 				break;
@@ -80,5 +97,25 @@ class Console
 		} else {
 			return self::FACADE_COMMAND_NAMESPACE.str_replace('.php', '', $object);
 		}
+	}
+	
+	private static function setCommandName(string $commandName): void
+	{
+		static::$commandName = $commandName;
+	}
+	
+	public static function getCommandName(): ?string
+	{
+		return static::$commandName;
+	}
+	
+	private static function setCanCreateInterface(): void
+	{
+		static::$createInterface = true;
+	}
+	
+	public static function canCreateInterface(): bool
+	{
+		return static::$createInterface;
 	}
 }

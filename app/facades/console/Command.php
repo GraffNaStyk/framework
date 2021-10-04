@@ -2,6 +2,7 @@
 
 namespace App\Facades\Console;
 
+use App\Facades\Url\Url;
 use App\Helpers\Dir;
 
 class Command implements CommandInterface
@@ -47,10 +48,10 @@ class Command implements CommandInterface
 		$result = fgets($handle);
 		fclose($result);
 		echo "\n";
-		
-		return str_replace(["\n"], [''], mb_strtolower($result));
+
+		return str_replace(["\n"], [''], $result);
 	}
-	
+
 	protected function output(string $message, string $color='white'): Command
 	{
 		echo "\033[".$this->$backgrounds[mb_strtolower($color)]."m".$message."\033[0m \n";
@@ -77,6 +78,12 @@ class Command implements CommandInterface
 				'File:'.app_path($path.'/'.ucfirst($name)).' created',
 				'green'
 			);
+
+			if (Console::canCreateInterface()
+				&& $this->input('Do you want to create abstraction interface for this file? Type y/n') === 'y'
+			) {
+				$this->createInterface(app_path($path), ucfirst($name));
+			}
 		} else {
 			$this->output(
 				'Cannot create file: '.app_path($path.'/'.ucfirst($name)).'.php',
@@ -88,5 +95,22 @@ class Command implements CommandInterface
 	public function getFile(string $name): string
 	{
 		return file_get_contents(app_path('/app/facades/console/files/'.$name));
+	}
+	
+	private function createInterface(string $path, string $name)
+	{
+		Dir::create($path.'/abstraction');
+		$interfaceName = Url::segment(Console::getCommandName(), 'end', ':');
+		$content = $this->getFile('interface');
+		$content = str_replace('CLASSNAME', ucfirst($name).ucfirst($interfaceName).'Interface', $content);
+		$content = str_replace('NAMESPACE', ucfirst($interfaceName), $content);
+
+		if (
+			file_put_contents($path.'/abstraction/'.ucfirst($name).ucfirst($interfaceName).'Interface'.'.php', $content)
+		) {
+			$this->output('Interface created')->close();
+		}
+		
+		$this->output('Cannot create interface')->close();
 	}
 }

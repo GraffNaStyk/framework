@@ -7,7 +7,7 @@ use App\Facades\Console\Command;
 
 class CLASSNAME extends Command
 {
-	public static string $name = '';
+	public static string $name = '?';
 
 	public function __construct(ArgvParser $argvParser)
 	{
@@ -27,5 +27,6 @@ class CLASSNAME extends Command
 
 	protected function execute(): int
 	{
+        return Command::SUCCESS;
 	}
 }
