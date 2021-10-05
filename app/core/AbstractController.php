@@ -35,7 +35,7 @@ abstract class AbstractController
         Route::when($when, $then);
     }
 
-    public function set(array $data): void
+    public function setData(array $data): void
     {
         View::set($data);
     }

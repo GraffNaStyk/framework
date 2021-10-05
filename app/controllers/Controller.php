@@ -16,7 +16,7 @@ abstract class Controller extends AbstractController
         parent::__construct();
         $this->setLayout();
 	
-	    $this->set([
+	    $this->setData([
 		    'css' => Loader::css(),
 		    'js'  => Loader::js(),
 	    ]);
@@ -31,7 +31,7 @@ abstract class Controller extends AbstractController
         View::layout($layout);
 
         if ($layout === 'admin') {
-            $this->set(['menu' => Config::get('menu')]);
+            $this->setData(['menu' => Config::get('menu')]);
         }
     }
 }

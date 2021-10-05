@@ -17,7 +17,7 @@ trait PropertyFacade
 	{
 		return Has::check($this->params, $offset);
 	}
-	
+
 	public function get(?string $offset=null)
 	{
 		if ($offset === null) {
@@ -26,7 +26,7 @@ trait PropertyFacade
 
 		return Get::check($this->params, $offset);
 	}
-	
+
 	public function set($data, ?string $offset): void
 	{
 		$this->params = array_merge($this->params, Set::set($this->params, Type::get($data), $offset));

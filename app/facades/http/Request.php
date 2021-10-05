@@ -177,13 +177,13 @@ final class Request
         return $this->method;
     }
 
-    public function get(string $item = null)
+    public function get(string $offset = null)
     {
-        if ($item === null) {
+        if ($offset === null) {
             return $this->data;
         }
 
-        return Get::check($this->data, $item);
+        return Get::check($this->data, $offset);
     }
 
     public function input(string $item = null)
@@ -205,9 +205,9 @@ final class Request
         return $this->file;
     }
 
-    public function has(string $item): bool
+    public function has(string $offset): bool
     {
-        return Has::check($this->data, $item);
+        return Has::check($this->data, $offset);
     }
 
     public function set($item, $data): void
@@ -215,21 +215,23 @@ final class Request
         $this->data = array_merge($this->data, Set::set($this->data, Type::get($data), $item));
     }
 
-    public function remove($item): void
+    public function remove(string $offset): void
     {
-        $this->data = Remove::remove($this->data, $item);
+        $this->data = Remove::remove($this->data, $offset);
     }
-
-    public static function isAjax(): bool
-    {
-        if (isset(getallheaders()['Is-Fetch-Request'])
-            && (string) mb_strtolower(getallheaders()['Is-Fetch-Request']) === 'true'
-        ) {
-            return true;
-        }
-
-        return false;
-    }
+	
+	public static function isAjax(): bool
+	{
+		$headers = getallheaders();
+		
+		if (isset($headers['Is-Fetch-Request'])
+			&& (string) mb_strtolower($headers['Is-Fetch-Request']) === 'true'
+		) {
+			return true;
+		}
+		
+		return false;
+	}
 
     public function __destruct()
     {

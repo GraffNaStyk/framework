@@ -50,12 +50,8 @@ class Console
 		
 		foreach ($objects as $object) {
 			$object = $this->getObjectName($object);
-			
-			if (property_exists($object, 'name')
-				&& $this->parser->has($object::$name)
-				&& (string) $this->parser->get($object::$name) !== ''
-			) {
-				$this->parser->remove($object::$name);
+
+			if (property_exists($object, 'name') && $this->parser->has($object::$name)) {
 				$reflector = new ReflectionClass($object);
 				$showTips  = false;
 

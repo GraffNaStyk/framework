@@ -6,6 +6,10 @@ class Has
 {
     public static function check($iterable, $offset): bool
     {
+	    if (empty($iterable)) {
+		    return false;
+	    }
+
         if (! is_array($offset)) {
             $offset = explode('.', $offset);
         }
