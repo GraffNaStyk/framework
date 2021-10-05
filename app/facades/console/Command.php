@@ -54,7 +54,7 @@ class Command implements CommandInterface
 
 	protected function output(string $message, string $color='white'): Command
 	{
-		echo "\033[".$this->$backgrounds[mb_strtolower($color)]."m".$message."\033[0m \n";
+		echo "\033[".$this->backgrounds[mb_strtolower($color)]."m".$message."\033[0m \n";
 		return $this;
 	}
 	
