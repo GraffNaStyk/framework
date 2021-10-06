@@ -10,7 +10,8 @@ final class Collection
     private string $method;
     private int $rights;
     private array $middlewares = [];
-
+	private string $alias = 'http';
+    
     public function __construct
     (
         string $controller,
@@ -18,7 +19,8 @@ final class Collection
         string $namespace,
         string $method,
         int $rights,
-        ?string $middleware
+        ?string $middleware,
+	    ?string $alias
     )
     {
         $this->controller = $controller;
@@ -26,6 +28,10 @@ final class Collection
         $this->namespace = $namespace;
         $this->method = $method;
         $this->rights = $rights;
+        
+        if ($alias !== null) {
+        	$this->alias = trim(ltrim($alias, '/'));
+        }
 
         if ($middleware) {
             $this->middlewares[] = $middleware;
@@ -65,5 +71,10 @@ final class Collection
     public function middleware(array $middlewares): void
     {
         $this->middlewares = [...$this->middlewares, ...$middlewares];
+    }
+    
+    public function getAlias(): string
+    {
+    	return $this->alias;
     }
 }

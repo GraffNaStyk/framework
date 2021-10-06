@@ -136,6 +136,7 @@ class Loader
 
     private static function getFile($name, $ext): ?string
     {
+    	dump($name);
         $path = $ext === 'css'
             ? css_path($name.'.css')
             : js_path($name.'.js');

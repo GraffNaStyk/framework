@@ -90,7 +90,8 @@ abstract class Route
             self::$namespace,
             $method,
             $rights,
-            self::$middleware
+            self::$middleware,
+	        self::$alias
         );
 
         if (self::$alias === null) {
