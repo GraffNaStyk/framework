@@ -105,9 +105,7 @@ class Command implements CommandInterface
 		$content = str_replace('CLASSNAME', ucfirst($name).ucfirst($interfaceName).'Interface', $content);
 		$content = str_replace('NAMESPACE', ucfirst($interfaceName), $content);
 
-		if (
-			file_put_contents($path.'/abstraction/'.ucfirst($name).'Interface.php', $content)
-		) {
+		if (file_put_contents($path.'/abstraction/'.ucfirst($name).'Interface.php', $content)) {
 			$this->output('Interface created')->close();
 		}
 		

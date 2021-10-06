@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Controllers\Auth;
+use App\Controllers\UserState;
 use App\Facades\Faker\Password;
 use App\Facades\Http\Request;
 use App\Model\User;
@@ -23,7 +23,7 @@ class UserAuthenticateService implements UserAuthenticateInterface
 		    ->exist();
 	
 	    if ($user && Password::verify($request->get('password'), $user->password)) {
-		    Auth::login($user);
+		    UserState::login($user);
 			return true;
 	    }
 	    

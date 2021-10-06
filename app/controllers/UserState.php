@@ -6,7 +6,7 @@ use App\Facades\Http\Session;
 use App\Facades\Log\Log;
 use App\Model\User;
 
-class Auth
+class UserState
 {
     public static function id(): int
     {

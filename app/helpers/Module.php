@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Facades\Config\Config;
 use App\Facades\Http\View;
 
 class Module
@@ -9,11 +10,11 @@ class Module
 	public static function load(string ...$modules): void
 	{
 		$result = [];
-
-		if (app('url') === '/') {
-			$url = app('url');
+		
+		if (Config::get('app.url') === '/') {
+			$url = Config::get('app.url');
 		} else {
-			$url = app('url').'/';
+			$url = Config::get('app.url').'/';
 		}
 
 		foreach ($modules as $module) {

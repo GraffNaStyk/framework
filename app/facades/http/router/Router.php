@@ -2,7 +2,7 @@
 
 namespace App\Facades\Http\Router;
 
-use App\Controllers\Auth;
+use App\Controllers\UserState;
 use App\Core\Kernel;
 use App\Events\EventServiceProvider;
 use App\Facades\Config\Config;
@@ -369,7 +369,7 @@ final class Router extends Route
         Log::custom('aborted', [
             'message' => 'Aborted operation from router, code: '.$code.' '.Header::RESPONSE_CODES[$code],
             'custom_msg' => $message,
-            'user' => Auth::user()
+            'user' => UserState::user()
         ]);
 
         header("HTTP/1.1 {$code} ".Header::RESPONSE_CODES[$code]);

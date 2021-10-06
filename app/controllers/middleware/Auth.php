@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Middleware;
 
+use App\Controllers\UserState;
 use App\Facades\Http\Request;
 use App\Facades\Http\Router\Collection;
 use App\Facades\Http\Router\Route;
@@ -9,7 +10,6 @@ use App\Facades\Http\Router\Router;
 use App\Facades\Http\Session;
 use App\Facades\Log\Log;
 use App\Facades\Url\Url;
-use App\Model\Right;
 use App\Model\User;
 
 final class Auth
@@ -22,7 +22,7 @@ final class Auth
 
     public function before(Request $request, Router $router): void
     {
-        $user = User::select(['id'])->where('id', '=', \App\Controllers\Auth::id())->exist();
+        $user = User::select(['id'])->where('id', '=', UserState::id())->exist();
 
         if (! Session::has('user') || ! $user) {
             if (! $user) {
@@ -41,7 +41,7 @@ final class Auth
         if (! $this->checkRights($router->getCurrentRoute())) {
             Log::custom('unauthorized', [
                 'message' => 'Unauthorized access',
-                'user' => \App\Controllers\Auth::user()
+                'user' => UserState::user()
             ]);
 
             if (Request::isAjax()) {
@@ -75,7 +75,7 @@ final class Auth
             }
 
             $result = Right::select([$controller])
-                ->where('user_id', '=', \App\Controllers\Auth::id())
+                ->where('user_id', '=', UserState::id())
                 ->first();
 
             if (empty($result) || $result->{$controller} < $route->getRights()) {
