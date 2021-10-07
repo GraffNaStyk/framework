@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Triggers;
+namespace App\Triggers\NAMESPACE;
 
 use App\Facades\Db\Db;
 

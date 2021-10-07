@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\Middleware;
+namespace App\Controllers\Middleware\NAMESPACE;
 
 use App\Facades\Http\Request;
 use App\Facades\Http\Router\Router;

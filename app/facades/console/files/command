@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\NAMESPACE;
 
 use App\Facades\Console\ArgvParser;
 use App\Facades\Console\Command;

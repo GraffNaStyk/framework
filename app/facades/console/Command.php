@@ -24,6 +24,8 @@ class Command implements CommandInterface
 		'light grey' => 37,
 	];
 	
+	private string $fileNamespace = '/';
+	
 	public function __construct()
 	{
 		$this->configure();
@@ -65,24 +67,34 @@ class Command implements CommandInterface
 	
 	public function putFile(string $path, string $name, string $content): void
 	{
-		Dir::create(app_path($path));
+		Dir::create(app_path($path).$this->fileNamespace);
 
-		if (file_exists(app_path($path.'/'.ucfirst($name).'.php'))) {
-			$this->output('File '.app_path($path.'/'.$name).' exist', 'red')->close();
+		if (file_exists(app_path($path.$this->fileNamespace.'/'.ucfirst($name).'.php'))) {
+			$this->output('File '.app_path($path.$this->fileNamespace.'/'.$name).' exist', 'red')->close();
 		}
 
 		$content = str_replace('CLASSNAME', ucfirst($name), $content);
+		$tmp     = array_filter(explode('/', $this->fileNamespace));
+		
+		$namespace = '\\';
 
-		if (file_put_contents(app_path($path.'/'.ucfirst($name).'.php'), $content)) {
+		foreach ($tmp as $ns) {
+			$namespace .= ucfirst($ns).'\\';
+		}
+		
+		$namespace = rtrim($namespace, '\\');
+		$content   = str_replace('\\NAMESPACE', $namespace, $content);
+
+		if (file_put_contents(app_path($path.$this->fileNamespace.'/'.ucfirst($name).'.php'), $content)) {
 			$this->output(
-				'File:'.app_path($path.'/'.ucfirst($name)).' created',
+				'File:'.app_path($path.$this->fileNamespace.'/'.ucfirst($name)).' created',
 				'green'
 			);
 
 			if (Console::canCreateInterface()
 				&& $this->input('Do you want to create abstraction interface for this file? Type y/n') === 'y'
 			) {
-				$this->createInterface(app_path($path), ucfirst($name));
+				$this->createInterface(app_path($path), ucfirst($name), $namespace);
 			}
 		} else {
 			$this->output(
@@ -96,19 +108,31 @@ class Command implements CommandInterface
 	{
 		return file_get_contents(app_path('/app/facades/console/files/'.$name));
 	}
-	
-	private function createInterface(string $path, string $name)
+
+	private function createInterface(string $path, string $name, string $namespace)
 	{
-		Dir::create($path.'/abstraction');
+		Dir::create($path.'/abstraction'.$this->fileNamespace);
 		$interfaceName = Url::segment(Console::getCommandName(), 'end', ':');
 		$content = $this->getFile('interface');
-		$content = str_replace('CLASSNAME', ucfirst($name).ucfirst($interfaceName).'Interface', $content);
+		$content = str_replace('CLASSNAME', ucfirst($name).'Interface', $content);
 		$content = str_replace('NAMESPACE', ucfirst($interfaceName), $content);
+		$content = str_replace('NSPATH', $namespace, $content);
+		
+		if (file_exists($path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php')) {
+			$this->output('Cannot create interface')->close();
+		}
 
-		if (file_put_contents($path.'/abstraction/'.ucfirst($name).'Interface.php', $content)) {
+		if (file_put_contents($path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php', $content)) {
 			$this->output('Interface created')->close();
 		}
 		
 		$this->output('Cannot create interface')->close();
+	}
+	
+	protected function setNamespace(ArgvParser $argvParser): void
+	{
+		if ($argvParser->has('ns')) {
+			$this->fileNamespace .= strtolower(trim(ltrim($argvParser->get('ns'), '/')));
+		}
 	}
 }

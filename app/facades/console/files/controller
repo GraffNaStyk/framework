@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\PATH;
+namespace App\Controllers\NAMESPACE;
 
 use App\Facades\Http\Request;
 use App\Controllers\Controller;

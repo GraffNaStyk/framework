@@ -25,20 +25,17 @@ class Controller extends Command
 	
 	public function execute()
 	{
-		$ns = $this->input('Please set namespace:');
-
-		if ((string) $ns === '') {
-			$this->output('Namespace must be not empty')->close();
+		if (! $this->parser->has('ns')) {
+			$this->output('please define namespace using -ns=NAMESPACE')->close();
 		}
 		
-		$name    = $this->input('Please set name of controller');
-		$content = $this->getFile('controller');
-		$content = str_replace('PATH', ucfirst($ns), $content);
-		
-		$this->putFile('/app/controllers/'.$ns, ucfirst($name).'Controller', $content);
+		$this->setNamespace($this->parser);
+		$name = $this->input('Please set name of controller');
+
+		$this->putFile('/app/controllers', ucfirst($name).'Controller', $this->getFile('controller'));
 		
 		if ($this->parser->has('view') && (int) $this->parser->get('view') === 1) {
-			$this->makeViews($ns, $name);
+			$this->makeViews(str_replace($name, '', $this->parser->get('ns')), $name);
 		}
 	}
 	
