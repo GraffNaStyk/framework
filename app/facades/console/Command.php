@@ -68,9 +68,11 @@ class Command implements CommandInterface
 	public function putFile(string $path, string $name, string $content): void
 	{
 		Dir::create(app_path($path).$this->fileNamespace);
+		
+		$fullPath = str_replace('//', '/', app_path($path.$this->fileNamespace.'/'.ucfirst($name).'.php'));
 
-		if (file_exists(app_path($path.$this->fileNamespace.'/'.ucfirst($name).'.php'))) {
-			$this->output('File '.app_path($path.$this->fileNamespace.'/'.$name).' exist', 'red')->close();
+		if (file_exists($fullPath)) {
+			$this->output('File '.$fullPath.' exist', 'red')->close();
 		}
 
 		$content = str_replace('CLASSNAME', ucfirst($name), $content);
@@ -85,9 +87,9 @@ class Command implements CommandInterface
 		$namespace = rtrim($namespace, '\\');
 		$content   = str_replace('\\NAMESPACE', $namespace, $content);
 
-		if (file_put_contents(app_path($path.$this->fileNamespace.'/'.ucfirst($name).'.php'), $content)) {
+		if (file_put_contents($fullPath, $content)) {
 			$this->output(
-				'File:'.app_path($path.$this->fileNamespace.'/'.ucfirst($name)).' created',
+				'File:'.$fullPath.' created',
 				'green'
 			);
 
@@ -112,17 +114,19 @@ class Command implements CommandInterface
 	private function createInterface(string $path, string $name, string $namespace)
 	{
 		Dir::create($path.'/abstraction'.$this->fileNamespace);
-		$interfaceName = Url::segment(Console::getCommandName(), 'end', ':');
+		$interfaceName = Url::segment(Console::getCommandName(), 'end', ':').'s';
 		$content = $this->getFile('interface');
 		$content = str_replace('CLASSNAME', ucfirst($name).'Interface', $content);
 		$content = str_replace('NAMESPACE', ucfirst($interfaceName), $content);
 		$content = str_replace('NSPATH', $namespace, $content);
 		
-		if (file_exists($path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php')) {
+		$fullPath = str_replace('//', '/', $path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php');
+		
+		if (file_exists($fullPath)) {
 			$this->output('Cannot create interface')->close();
 		}
 
-		if (file_put_contents($path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php', $content)) {
+		if (file_put_contents($fullPath, $content)) {
 			$this->output('Interface created')->close();
 		}
 		

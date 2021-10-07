@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Abstraction\User;
 
 use App\Facades\Http\Request;
 use App\Model\User;
 
-interface UserAuthenticateInterface
+interface UserAuthenticateServiceInterface
 {
 	public function __construct(User $user);
-
+	
 	public function authenticate(Request $request);
 }

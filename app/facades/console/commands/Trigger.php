@@ -19,6 +19,6 @@ class Trigger extends Command
 	{
 		$this->setNamespace($this->parser);
 		$name = $this->input('Please set name for trigger');
-		$this->putFile('/app/triggers', $name.'Trigger', $this->getFile('trigger'));
+		$this->putFile('/app/trigger', $name.'Trigger', $this->getFile('trigger'));
 	}
 }

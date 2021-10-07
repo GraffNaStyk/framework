@@ -1,5 +1,5 @@
 <?php
 
 return [
-	\App\Services\UserAuthenticateInterface::class => \App\Services\UserAuthenticateService::class
+	\App\Services\Abstraction\User\UserAuthenticateServiceInterface::class => \App\Services\User\UserAuthenticateService::class
 ];
