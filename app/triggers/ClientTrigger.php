@@ -3,13 +3,12 @@
 namespace App\Triggers;
 
 use App\Facades\Db\Db;
-use App\Services\Abstraction\User\UserAuthenticateServiceInterface;
 
 class ClientTrigger
 {
 	private Db $db;
 	
-	public function __construct(Db $db, UserAuthenticateServiceInterface $userAuthenticate)
+	public function __construct(Db $db)
 	{
 		$this->db = $db;
 	}

@@ -114,10 +114,12 @@ class Command implements CommandInterface
 	private function createInterface(string $path, string $name, string $namespace)
 	{
 		Dir::create($path.'/abstraction'.$this->fileNamespace);
-		$interfaceName = Url::segment(Console::getCommandName(), 'end', ':').'s';
+		$interfaceName = Url::segment(Console::getCommandName(), 'end', ':');
+		$name = str_replace(ucfirst($interfaceName), '', $name);
+
 		$content = $this->getFile('interface');
 		$content = str_replace('CLASSNAME', ucfirst($name).'Interface', $content);
-		$content = str_replace('NAMESPACE', ucfirst($interfaceName), $content);
+		$content = str_replace('NAMESPACE', ucfirst($interfaceName).'s', $content);
 		$content = str_replace('NSPATH', $namespace, $content);
 		
 		$fullPath = str_replace('//', '/', $path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php');
