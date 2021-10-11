@@ -2,20 +2,16 @@
 
 namespace App\Helpers;
 
-use App\Facades\Config\Config;
 use App\Facades\Http\View;
 
 class Module
 {
+	use UrlSetter;
+	
 	public static function load(string ...$modules): void
 	{
 		$result = [];
-		
-		if (Config::get('app.url') === '/') {
-			$url = Config::get('app.url');
-		} else {
-			$url = Config::get('app.url').'/';
-		}
+		$url    = static::setConfigUrl();
 
 		foreach ($modules as $module) {
 			if (is_readable(js_path('modules/'.$module.'.js'))) {

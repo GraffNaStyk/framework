@@ -7,6 +7,8 @@ use App\Facades\Http\Router\Router;
 
 class Loader
 {
+	use UrlSetter;
+	
     protected static array $loaded = [];
 
     private static string $url;
@@ -14,12 +16,7 @@ class Loader
     public static function set(): void
     {
         self::$loaded = Config::get('app.is_loaded');
-
-        if (Config::get('app.url') === '/') {
-            self::$url = Config::get('app.url');
-        } else {
-            self::$url = Config::get('app.url').'/';
-        }
+        self::$url    = static::setConfigUrl();
     }
 
     public static function css(): string
