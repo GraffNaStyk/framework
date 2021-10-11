@@ -48,8 +48,8 @@ final class Router extends Route
         }
 	
 	    $this->builder = new ContainerBuilder(new Container());
-        $this->csrf    = new Csrf();
-        $this->builder->container->add(Request::class, $this->request);
+	    $this->csrf    = new Csrf();
+	    $this->builder->container->add(Request::class, $this->request);
     }
 
     public static function getInstance(): Router
@@ -98,24 +98,24 @@ final class Router extends Route
     private function runMiddlewares(string $when): void
     {
     	$path = Config::get('app.middleware_path');
-
-        foreach (self::$route->getMiddleware() as $middleware) {
-            $middleware = $path.ucfirst($middleware);
-
-            if (method_exists($middleware, $when)) {
-	            $reflector = new ReflectionClass($middleware);
-	            (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
-		            ->$when($this->request, $this);
-            }
-        }
-
-        foreach (Kernel::getEveryMiddleware() as $middleware) {
-            if (method_exists($middleware, $when)) {
-	            $reflector = new ReflectionClass($middleware);
-	            (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
-		            ->$when($this->request, $this);
-            }
-        }
+	
+	    foreach (self::$route->getMiddleware() as $middleware) {
+		    $middleware = $path . ucfirst($middleware);
+		
+		    if (method_exists($middleware, $when)) {
+			    $reflector = new ReflectionClass($middleware);
+			    (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
+				    ->$when($this->request, $this);
+		    }
+	    }
+	
+	    foreach (Kernel::getEveryMiddleware() as $middleware) {
+		    if (method_exists($middleware, $when)) {
+			    $reflector = new ReflectionClass($middleware);
+			    (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
+				    ->$when($this->request, $this);
+		    }
+	    }
     }
 
     public function getCurrentRoute(): Collection
@@ -175,10 +175,10 @@ final class Router extends Route
 
         try {
             $reflectionClass = new ReflectionClass($controller);
-
-            if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
-                self::abort();
-            }
+	
+	        if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
+		        self::abort();
+	        }
         } catch (\ReflectionException $e) {
             Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
             self::abort();
@@ -190,11 +190,11 @@ final class Router extends Route
 	        }
 
             $reflectionMethod = new ReflectionMethod($controller, self::getAction());
-
-            if ($reflectionMethod->isProtected() || $reflectionMethod->isPrivate()) {
-                Log::custom('router', ['msg' => 'Aborted by access to private or protected method']);
-                self::abort();
-            }
+	
+	        if ($reflectionMethod->isProtected() || $reflectionMethod->isPrivate()) {
+		        Log::custom('router', ['msg' => 'Aborted by access to private or protected method']);
+		        self::abort();
+	        }
 
             if ($reflectionMethod->getReturnType() === null) {
                 throw new \LogicException('Method must have a return type declaration');
@@ -216,17 +216,17 @@ final class Router extends Route
 	        ob_clean();
 	
 	        if (Config::get('app.dev')) {
-	        	View::set(['devTool' => DevTool::boot()]);
+		        View::set(['devTool' => DevTool::boot()]);
 	        }
-
+	
 	        echo call_user_func_array(
 		        [$controller, self::getAction()],
 		        $methodParams
 	        );
-
-            ob_end_flush();
-            ob_end_clean();
-            return;
+	
+	        ob_end_flush();
+	        ob_end_clean();
+	        return;
         } catch (\ReflectionException $e) {
             Log::custom('router', ['msg' => $e->getMessage(), 'line' => $e->getLine(), 'file' => $e->getFile()]);
             self::abort();
@@ -261,9 +261,9 @@ final class Router extends Route
 			        $reqParamIterator++;
 			        continue;
 		        }
-
+		
 		        $type = preg_replace(
-			        '/.*?(\w+)\s+\$'.$refParam->name.'.*/',
+			        '/.*?(\w+)\s+\$' . $refParam->name . '.*/',
 			        '\\1',
 			        $refParam->__toString()
 		        );
@@ -277,7 +277,7 @@ final class Router extends Route
 		        }
 		
 		        if (gettype($requestParams[$reqParamIterator]) !== $type) {
-			        self::abort(400, 'Wrong param type, param: '.$requestParams[$reqParamIterator]);
+			        self::abort(400, 'Wrong param type, param: ' . $requestParams[$reqParamIterator]);
 		        }
 		
 		        $combinedParams[$key] = $requestParams[$reqParamIterator];
@@ -322,7 +322,7 @@ final class Router extends Route
 		if (strpos($matches[0][0], '/') !== false) {
 			$matches = explode('/', $matches[0][0]);
 		}
-
+		
 		foreach ($matches as $value) {
 			self::$params[] = $value;
 		}
