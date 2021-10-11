@@ -50,7 +50,7 @@ return [
 		],
 		
 		'js' => [
-			'App', 'bootstrap', 'slim-select',
+			'App', 'lib/bootstrap', 'lib/slim-select',
 		],
 	],
 	

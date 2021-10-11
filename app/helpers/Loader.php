@@ -88,9 +88,9 @@ class Loader
     public static function js(): string
     {
         if (Config::get('app.dev')) {
-            $jsArr = array_diff(scandir(js_path('components')), ['.', '..', '.htaccess']);
+            $jsArr   = array_diff(scandir(js_path('components')), ['.', '..', '.htaccess']);
             $rebuild = false;
-            $mtime = filemtime(js_path('main.js'));
+            $mtime   = filemtime(js_path('main.js'));
 
             foreach ($jsArr as $item) {
                 if (filemtime(js_path('components'.'/'.$item)) > $mtime) {

@@ -16,6 +16,8 @@ abstract class Controller extends AbstractController
         parent::__construct();
         $this->setLayout();
 	
+        Loader::set();
+
 	    $this->setData([
 		    'css' => Loader::css(),
 		    'js'  => Loader::js(),
