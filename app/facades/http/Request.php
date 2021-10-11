@@ -91,15 +91,15 @@ final class Request
     {
         return $this->method === 'put';
     }
-
-    private function setHeaders(): void
-    {
-    	if (function_exists('getallheaders')) {
-		    foreach (getallheaders() as $key => $item) {
-			    $this->headers[mb_strtolower($key)] = $item;
-		    }
-	    }
-    }
+	
+	private function setHeaders(): void
+	{
+		if (function_exists('getallheaders')) {
+			foreach (getallheaders() as $key => $item) {
+				$this->headers[mb_strtolower($key)] = $item;
+			}
+		}
+	}
 
     public function header(string $header)
     {
@@ -125,17 +125,17 @@ final class Request
     {
         return $this->data;
     }
-
-    public function sanitize(): void
-    {
-        foreach ($this->data as $key => $item) {
-            if (is_array($item)) {
-                $this->data[$key] = $this->reSanitize($item);
-            } else {
-                $this->data[$key] = $this->clear($item);
-            }
-        }
-    }
+	
+	public function sanitize(): void
+	{
+		foreach ($this->data as $key => $item) {
+			if (is_array($item)) {
+				$this->data[$key] = $this->reSanitize($item);
+			} else {
+				$this->data[$key] = $this->clear($item);
+			}
+		}
+	}
 
     public function reSanitize(array $data): array
     {
@@ -155,11 +155,11 @@ final class Request
         if (! is_numeric($item)) {
             $item = (string) urldecode($item);
         }
-		
-        if (Config::get('app.security.enabled')) {
-	        $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
-	        $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
-        }
+	
+	    if (Config::get('app.security.enabled')) {
+		    $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
+		    $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
+	    }
 
         $item = strtr(
             $item,
