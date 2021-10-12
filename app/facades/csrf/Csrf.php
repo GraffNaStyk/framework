@@ -33,8 +33,10 @@ class Csrf
 
     public static function make(string $uri): void
     {
+    	session_regenerate_id();
+
         if (! Session::has('@csrf.'.$uri) && Config::get('app.csrf')) {
-            Session::set('@csrf.'.$uri, Faker::hash(60));
+            Session::set('@csrf.'.$uri, session_id().Faker::hash(60));
         }
     }
 }
