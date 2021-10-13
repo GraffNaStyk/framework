@@ -120,6 +120,10 @@ final class Router extends Route
 
     public function getCurrentRoute(): Collection
     {
+    	if (! self::$route instanceof Collection) {
+    		throw new \LogicException('$route must be a instance of '.Collection::class);
+	    }
+    	
         return self::$route;
     }
 

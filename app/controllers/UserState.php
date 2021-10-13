@@ -37,6 +37,6 @@ class UserState
 
     public static function isLogged(): bool
     {
-        return Session::has('user');
+        return Session::has('user') && User::select(['id'])->where('id', '=', static::id())->exist();
     }
 }
