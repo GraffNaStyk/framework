@@ -11,7 +11,7 @@ class Response
         return json_encode($response);
     }
 
-    public static function jsonWithForceExit($response, $status = 200, $headers = []): string
+    public static function jsonWithForceExit($response, $status = 200, $headers = []): void
     {
         echo self::json($response, $status, $headers);
         exit;
