@@ -249,7 +249,7 @@ final class Router extends Route
 
 	        if (! empty($class)) {
 		        $reflector = $this->builder->checkIsInterface(new ReflectionClass($class));
-		
+
 		        if ($reflector->hasMethod('__construct')) {
 			        $params = $this->builder->reflectConstructorParams($reflector->getConstructor()->getParameters());
 			        $this->builder->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));

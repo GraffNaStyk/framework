@@ -119,7 +119,13 @@ class Command implements CommandInterface
 
 		$content = $this->getFile('interface');
 		$content = str_replace('CLASSNAME', ucfirst($name).'Interface', $content);
-		$content = str_replace('NAMESPACE', ucfirst($interfaceName).'s', $content);
+
+		if (substr($interfaceName, -1) === 'y') {
+			$content = str_replace('NAMESPACE', ucfirst($interfaceName), $content);
+		} else {
+			$content = str_replace('NAMESPACE', ucfirst($interfaceName).'s', $content);
+		}
+
 		$content = str_replace('NSPATH', $namespace, $content);
 		
 		$fullPath = str_replace('//', '/', $path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php');
