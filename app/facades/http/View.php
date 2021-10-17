@@ -26,6 +26,11 @@ final class View
         self::set($data);
         self::register();
         self::$dir = Router::getAlias();
+        
+        if (Request::isAjax()) {
+        	self::$layout = 'ajax';
+        }
+        
         self::set(['layout' => '/layouts/'.self::$layout.self::$ext]);
         self::set(['ajax' => '/layouts/ajax'.self::$ext]);
         self::setView();
