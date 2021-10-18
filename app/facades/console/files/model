@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\NAMESPACE;
+namespace App\Models\NAMESPACE;
 
 use App\Facades\Db\Model;
 

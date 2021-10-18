@@ -2,8 +2,8 @@
 
 namespace App\Facades\Db;
 
-use App\Core\App;
 use App\Facades\Config\Config;
+use App\Facades\Http\App;
 use App\Facades\Url\Url;
 use App\Facades\Validator\Type;
 use App\Helpers\Arr;

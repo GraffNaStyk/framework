@@ -23,6 +23,6 @@ class Model extends Command
 		$content = $this->getFile('model');
 		$content = str_replace('TABLE', mb_strtolower($table), $content);
 
-		$this->putFile('/app/model', ucfirst($name), $content);
+		$this->putFile('/app/models', ucfirst($name), $content);
 	}
 }

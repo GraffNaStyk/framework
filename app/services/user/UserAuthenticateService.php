@@ -5,7 +5,7 @@ namespace App\Services\User;
 use App\Controllers\UserState;
 use App\Facades\Faker\Password;
 use App\Facades\Http\Request;
-use App\Model\User;
+use App\Models\User;
 use App\Services\Abstraction\User\UserAuthenticateInterface;
 
 class UserAuthenticateService implements UserAuthenticateInterface

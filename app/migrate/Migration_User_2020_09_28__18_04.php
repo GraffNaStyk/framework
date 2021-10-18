@@ -4,7 +4,7 @@ namespace App\Migrate;
 
 use App\Facades\Faker\Password;
 use App\Facades\Migrations\Schema;
-use App\Model\User;
+use App\Models\User;
 
 class Migration_User_2020_09_28__18_04
 {

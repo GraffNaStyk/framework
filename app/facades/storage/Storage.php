@@ -4,7 +4,7 @@ namespace App\Facades\Storage;
 
 use App\Facades\Faker\Faker;
 use App\Helpers\Dir;
-use App\Model\File;
+use App\Models\File;
 
 class Storage
 {

@@ -19,6 +19,6 @@ class Repository extends Command
 	{
 		$this->setNamespace($this->parser);
 		$name = $this->input('Please set name for repository');
-		$this->putFile('/app/repository', $name.'Repository', $this->getFile('repository'));
+		$this->putFile('/app/repositories', $name.'Repository', $this->getFile('repository'));
 	}
 }

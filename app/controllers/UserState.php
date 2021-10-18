@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Facades\Http\Session;
 use App\Facades\Log\Log;
-use App\Model\User;
+use App\Models\User;
 
 class UserState
 {

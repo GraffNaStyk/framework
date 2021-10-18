@@ -100,7 +100,7 @@ final class Router extends Route
     	$path = Config::get('app.middleware_path');
 	
 	    foreach (self::$route->getMiddleware() as $middleware) {
-		    $middleware = $path . ucfirst($middleware);
+		    $middleware = $path.ucfirst($middleware);
 		
 		    if (method_exists($middleware, $when)) {
 			    $reflector = new ReflectionClass($middleware);
@@ -121,7 +121,7 @@ final class Router extends Route
     public function getCurrentRoute(): Collection
     {
     	if (! self::$route instanceof Collection) {
-    		throw new \LogicException('$route must be a instance of '.Collection::class);
+    		throw new \LogicException('self::$route must be a instance of '.Collection::class);
 	    }
     	
         return self::$route;

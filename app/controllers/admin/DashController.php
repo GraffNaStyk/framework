@@ -6,8 +6,8 @@ use App\Controllers\Controller;
 use App\Facades\Http\Request;
 use App\Facades\Http\View;
 use App\Facades\Storage\Storage;
-use App\Model\File;
-use App\Model\User;
+use App\Models\File;
+use App\Models\User;
 
 class DashController extends Controller
 {

@@ -10,7 +10,7 @@ use App\Facades\Http\Router\Router;
 use App\Facades\Http\Session;
 use App\Facades\Log\Log;
 use App\Facades\Url\Url;
-use App\Model\User;
+use App\Models\User;
 
 final class Auth
 {

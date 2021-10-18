@@ -46,6 +46,10 @@ Route::alias('/admin', function () {
             Route::post('/password/store', 'Password@store');
             
             Route::get('/test', 'Clients@testFunc');
+            
+            Route::get('/houses', 'Houses@index');
+            Route::get('/houses/add', 'Houses@add');
+            Route::post('/houses/store', 'Houses@store');
         });
     });
 });

@@ -7,7 +7,7 @@ use App\Facades\Faker\Faker;
 use App\Facades\Http\Request;
 use App\Filters\UserFilter;
 use App\Helpers\Pagination;
-use App\Model\Client;
+use App\Models\Client;
 use App\Rules\ClientValidator;
 
 class ClientsController extends Controller

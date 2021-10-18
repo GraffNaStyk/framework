@@ -26,6 +26,10 @@ class Command implements CommandInterface
 	
 	private string $fileNamespace = '/';
 	
+	private array $interfaceExceptions = [
+		'repository' => 'repositories'
+	];
+	
 	public function __construct()
 	{
 		$this->configure();
@@ -120,16 +124,16 @@ class Command implements CommandInterface
 		$content = $this->getFile('interface');
 		$content = str_replace('CLASSNAME', ucfirst($name).'Interface', $content);
 
-		if (substr($interfaceName, -1) === 'y') {
-			$content = str_replace('NAMESPACE', ucfirst($interfaceName), $content);
+		if (isset($this->interfaceExceptions[$interfaceName])) {
+			$content = str_replace('NAMESPACE', ucfirst($this->interfaceExceptions[$interfaceName]), $content);
 		} else {
 			$content = str_replace('NAMESPACE', ucfirst($interfaceName).'s', $content);
 		}
 
 		$content = str_replace('NSPATH', $namespace, $content);
-		
+
 		$fullPath = str_replace('//', '/', $path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php');
-		
+
 		if (file_exists($fullPath)) {
 			$this->output('Cannot create interface')->close();
 		}
