@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core;
+namespace App\Facades\Http;
 
 use App\Facades\Header\Header;
 use App\Facades\Http\Router\Router;

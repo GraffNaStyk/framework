@@ -1,9 +1,6 @@
 <?php
 
-namespace App\Services;
-
-
-use App\Facades\Http\Request;
+namespace App\Facades\Http;
 
 abstract class AbstractService
 {

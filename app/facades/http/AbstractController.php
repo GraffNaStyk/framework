@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Core;
+namespace App\Facades\Http;
 
-use App\Facades\Http\Request;
-use App\Facades\Http\Response;
 use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\Router;
-use App\Facades\Http\Session;
-use App\Facades\Http\View;
 use App\Facades\Storage\Storage;
 use App\Facades\Validator\Validator;
 

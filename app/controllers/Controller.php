@@ -2,8 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Core\AbstractController;
 use App\Facades\Config\Config;
+use App\Facades\Http\AbstractController;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;

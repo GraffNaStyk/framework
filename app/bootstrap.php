@@ -15,7 +15,7 @@ Log::setDisplayErrors();
 Env::set();
 Config::init();
 
-$app = (new \App\Core\App(new \App\Facades\Http\Router\Router()));
+$app = (new \App\Facades\Http\App(new \App\Facades\Http\Router\Router()));
 $app->run();
 
 if (php_sapi_name() !== 'cli') {
