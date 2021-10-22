@@ -29,12 +29,15 @@ class LogErrorFormatter
             text-align: justify;
             overflow: hidden;
             font-weight: bold;
-        }</style>';
+        } </style>';
+		
 		echo '<link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">';
 		echo '<p style="line-height: 30px; text-align: justify">'.$this->message.'</p>';
 		echo '<p> Stack trace: </p>';
+
 		pd($this->trace, false);
-		pd('File: &nbsp;'. $this->file.':'.$this->line);
+		pd('File: &nbsp;'. $this->file, false);
+		pd('Line: '.$this->line);
 	}
 	
 	private function parseMessage(): void

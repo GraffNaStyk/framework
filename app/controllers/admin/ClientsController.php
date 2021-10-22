@@ -20,15 +20,15 @@ class ClientsController extends Controller
     public function index(Request $request, Client $client, int $page = 1): string
     {
     	$client->insert([
-    		'name' => Faker::string(4),
-    		'www' => Faker::string(4),
-    		'ftp_server' => Faker::string(4),
-    		'ftp_user' => Faker::string(4),
+    		'name'         => Faker::string(4),
+    		'www'          => Faker::string(4),
+    		'ftp_server'   => Faker::string(4),
+    		'ftp_user'     => Faker::string(4),
     		'ftp_password' => Faker::string(4),
-    		'db_link' => Faker::string(4),
-    		'db_user' => Faker::string(4),
-    		'db_password' => Faker::string(4),
-    		'db_name' => Faker::string(4),
+    		'db_link'      => Faker::string(4),
+    		'db_user'      => Faker::string(4),
+    		'db_password'  => Faker::string(4),
+    		'db_name'      => Faker::string(4),
 	    ])->exec();
 
         Pagination::make(Client::class, $page, '/clients/page');
