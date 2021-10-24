@@ -44,7 +44,6 @@ class LogErrorFormatter
 	{
 		$tmp           = explode('Stack trace:', $this->message);
 		$this->trace   = str_replace('thrown', '', $tmp[1]);
-		$this->message = trim($tmp[0]);
-		$this->message = str_replace('and defined in '.$this->file.':'.$this->line, '', $this->message);
+		$this->message = str_replace('and defined in '.$this->file.':'.$this->line, '', trim($tmp[0]));
 	}
 }
