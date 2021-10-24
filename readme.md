@@ -187,7 +187,6 @@ application directories
 | Nazwa | Opis |
 | ------ | ------ |
 | Controller | Kontrollery zarządzające treściami dla użytkownika |
-| Core | Bazowa logika |
 | Command | Kod wykonywany przez cli min cron |
 | Events | Eventy wykonywane po danej akcji kontrolera, wyślij maila do użytkownika etc |
 | Facades | Fasady aplikacji |
