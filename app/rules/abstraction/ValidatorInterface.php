@@ -4,5 +4,5 @@ namespace App\Rules\Abstraction;
 
 interface ValidatorInterface
 {
-	function getRule(array $optional =[]): array;
+	function getRule(array $optional = []): array;
 }
