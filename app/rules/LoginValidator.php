@@ -2,6 +2,8 @@
 
 namespace App\Rules;
 
+use App\Rules\Abstraction\ValidatorInterface;
+
 class LoginValidator implements ValidatorInterface
 {
     public function getRule(array $optional = []): array

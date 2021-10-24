@@ -2,11 +2,23 @@
 
 namespace App\Rules\NAMESPACE;
 
-class CLASSNAME
+use App\Rules\Abstraction\ValidatorInterface;
+
+class CLASSNAME implements ValidatorInterface
 {
     public function getRule(array $optional = []): array
     {
         return [
+            'example_field' => 'validation_method:value'
+        ];
+    }
+
+    private function getLang(): array
+    {
+        return [
+            'example_field' => [
+                'validation_method' => 'Custom error',
+            ]
         ];
     }
 }
