@@ -144,4 +144,11 @@ class Rules
             return ['msg' => self::$lang[$field][__FUNCTION__] ?? 'Nieprawidłowa wartość', 'field' => $field];
         }
     }
+    
+    public static function boolean($item, $rule, $field)
+    {
+    	if (! ($item === true || $item === false || $item === 1 || $item === 0)) {
+		    return ['msg' => self::$lang[$field][__FUNCTION__] ?? 'Pole powinno być zawierać odpowiedź tak lub nie', 'field' => $field];
+	    }
+    }
 }
