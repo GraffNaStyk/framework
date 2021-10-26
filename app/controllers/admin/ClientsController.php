@@ -5,7 +5,6 @@ namespace App\Controllers\Admin;
 use App\Controllers\Controller;
 use App\Facades\Faker\Faker;
 use App\Facades\Http\Request;
-use App\Filters\UserFilter;
 use App\Helpers\Pagination;
 use App\Models\Client;
 use App\Rules\ClientValidator;
@@ -66,6 +65,7 @@ class ClientsController extends Controller
         $client = Client::select()->where('id', '=', $id)->exist();
 
         if ($client) {
+        	dump($client);
             return $this->render(['client' => $client]);
         } else {
             $this->redirect('/clients');
