@@ -56,6 +56,10 @@ class Db
     public function connect(): void
     {
         try {
+        	if (! Config::has('db.'.$this->connection)) {
+        	    throw new \LogicException('Database connection: "'.$this->connection.'"not exist!');
+	        }
+        	
             if (! isset(static::$connections[$this->connection])) {
             	$conn = Config::get('db.'.$this->connection);
 
