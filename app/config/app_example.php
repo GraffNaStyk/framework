@@ -81,5 +81,5 @@ return [
 	 * @Model namespace for database model call
 	 *
 	 **/
-	'model_path' => '\\App\\Model\\',
+	'model_path' => '\\App\\Models\\',
 ];
