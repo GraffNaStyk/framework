@@ -2,7 +2,6 @@
 
 namespace App\Facades\Http;
 
-use App\Facades\Header\Header;
 use App\Facades\Http\Router\Router;
 
 final class App
@@ -20,7 +19,5 @@ final class App
 		if (session_status() === PHP_SESSION_NONE) {
 			session_start();
 		}
-
-		Header::set();
 	}
 }

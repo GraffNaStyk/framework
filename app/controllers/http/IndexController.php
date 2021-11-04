@@ -3,6 +3,7 @@
 namespace App\Controllers\Http;
 
 use App\Controllers\Controller;
+use App\Facades\Http\Response;
 
 class IndexController extends Controller
 {
@@ -11,7 +12,7 @@ class IndexController extends Controller
         parent::__construct();
     }
 
-    public function index(): string
+    public function index(): Response
     {
         return $this->render();
     }

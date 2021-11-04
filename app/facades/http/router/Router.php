@@ -10,7 +10,6 @@ use App\Facades\Csrf\Csrf;
 use App\Facades\Dependency\Container;
 use App\Facades\Dependency\ContainerBuilder;
 use App\Facades\Devtool\DevTool;
-use App\Facades\Header\Header;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Facades\Http\View;
@@ -201,6 +200,10 @@ final class Router extends Route
             if ($reflectionMethod->getReturnType() === null) {
                 throw new \LogicException('Method must have a return type declaration');
             }
+            
+            if ($reflectionMethod->getReturnType()->getName() !== Response::class) {
+	            throw new \LogicException('Controller return type declaration mus be a instance of '.Response::class);
+            }
 
             $constructorParams = $this->builder->getConstructorParameters($reflectionClass);
 	        $params            = $reflectionMethod->getParameters();
@@ -220,10 +223,12 @@ final class Router extends Route
 		        View::set(['devTool' => DevTool::boot()]);
 	        }
 	
-	        echo call_user_func_array(
+	        $response = call_user_func_array(
 		        [$controller, self::getAction()],
 		        $methodParams
 	        );
+
+	        echo $response->getResponse();
 	
 	        ob_end_flush();
 	        ob_end_clean();
@@ -369,16 +374,17 @@ final class Router extends Route
     public static function abort(int $code = 404, ?string $message = null): void
     {
         Log::custom('aborted', [
-            'message' => 'Aborted operation from router, code: '.$code.' '.Header::RESPONSE_CODES[$code],
+            'message' => 'Aborted operation from router, code: '.$code.' '.Response::RESPONSE_CODES[$code],
             'custom_msg' => $message,
             'user' => UserState::user()
         ]);
 
-        header("HTTP/1.1 {$code} ".Header::RESPONSE_CODES[$code]);
+        header("HTTP/1.1 {$code} ".Response::RESPONSE_CODES[$code]);
         http_response_code($code);
 
         if ((API && defined('API')) || Request::isAjax()) {
-            Response::jsonWithForceExit(['msg' => Header::RESPONSE_CODES[$code]], $code);
+	        echo (new Response())->json()->setData(['msg' => Response::RESPONSE_CODES[$code]])->setCode($code)->getResponse();
+            exit;
         } else {
             exit(require_once(view_path('errors/error.php')));
         }

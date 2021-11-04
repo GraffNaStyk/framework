@@ -36,9 +36,9 @@ abstract class AbstractController
         View::set($data);
     }
 
-    public function render(array $data = []): string
+    public function render(array $data = []): Response
     {
-        return View::render($data);
+    	return (new Response())->setContent(View::render($data))->send();
     }
 	
 	public function validate(array $request, string $rule, array $optional = []): bool
@@ -52,46 +52,45 @@ abstract class AbstractController
 		return $result;
 	}
 
-    public function sendSuccess(string $message = null, array $params = [], int $status = 200): ?string
+    public function sendSuccess(string $message = null, array $params = [], int $status = 200): Response
     {
-        if (Request::isAjax() || (API && defined('API'))) {
-            Session::set('beAjax', true);
-            return Response::json([
-                'ok'     => true,
-                'msg'    => $message ?: 'Dane zostały zapisane',
-                'params' => $params,
-            ],
-                $status,
-                []
-            );
-        } else {
-            Session::msg($message);
-            return null;
-        }
+        Session::set('beAjax', true);
+        return (new Response())
+	        ->json()
+	        ->setCode($status)
+	        ->setData([
+		        'ok'     => true,
+		        'msg'    => $message ?: 'Dane zostały zapisane',
+		        'params' => $params,
+	        ])
+	        ->send();
     }
 
-    public function sendError(string $message = null, array $params = [], int $status = 400): ?string
+    public function sendError(string $message = null, array $params = [], int $status = 400): Response
     {
-        if (Request::isAjax() || (API && defined('API'))) {
-            Session::set('beAjax', true);
-            return Response::json([
-                'ok'     => false,
-	            'msg'    => $message ?: 'Wystąpił błąd',
-                'inputs' => Validator::getErrors(),
-                'csrf'   => Session::get('@csrf.'.Router::csrfPath()),
-                'params' => $params,
-            ],
-                $status,
-                []
-            );
-        } else {
-            Session::msg($message, 'danger');
-            return null;
-        }
+	    Session::set('beAjax', true);
+	    return (new Response())
+		    ->json()
+		    ->setCode($status)
+		    ->setData([
+			    'ok'     => false,
+			    'msg'    => $message ?: 'Wystąpił błąd',
+			    'inputs' => Validator::getErrors(),
+			    'csrf'   => Session::get('@csrf.'.Router::csrfPath()),
+			    'params' => $params,
+		    ])
+		    ->send();
     }
 
-    public function response(array $response = [], int $status = 200, array $headers = []): string
+    public function response(array $data = [], int $status = 200, array $headers = []): Response
     {
-        return Response::json($response, $status, $headers);
+    	$response = new Response();
+    	$response->setData($data)->setCode($status);
+    	
+    	if (! empty($headers)) {
+    		$response->setHeaders($headers);
+	    }
+    	
+        return $response->send();
     }
 }

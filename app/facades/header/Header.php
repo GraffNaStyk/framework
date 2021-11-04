@@ -4,20 +4,11 @@ namespace App\Facades\Header;
 
 use App\Facades\Config\Config;
 
-class Header
+trait Header
 {
-    const RESPONSE_CODES = [
-        400 => 'Bad Request',
-        401 => 'Unauthorized',
-        403 => 'Forbidden',
-        404 => 'Not Found',
-        405 => 'Method Not Allowed',
-        500 => 'Internal Server Error'
-    ];
-
-    public static function set(): void
+    protected function prepareHeaders(): void
     {
-        if (API && defined('API')) {
+        if ((API && defined('API')) || $this->isJsonResponse) {
             header('Content-Type: application/json; charset=utf-8');
         } else {
             header('Content-Type: text/html; charset=utf-8');
