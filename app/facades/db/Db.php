@@ -536,7 +536,7 @@ class Db
         return $this;
     }
 
-    public function query($query): ?array
+    public function query(string $query): ?array
     {
         $pdo = self::$db->prepare($query);
         $pdo->execute();
