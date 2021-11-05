@@ -523,6 +523,17 @@ class Db
 
         return false;
     }
+    
+    public function cursor(): \Traversable
+    {
+	    $pdo = self::$db->prepare($this->query);
+	    $pdo->execute($this->data);
+	
+	    while ($record = $pdo->fetch(PDO::FETCH_OBJ)) {
+	    	yield $record;
+	    	unset($record);
+	    }
+    }
 
     public function lastId(): int
     {
