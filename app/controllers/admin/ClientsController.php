@@ -48,7 +48,7 @@ class ClientsController extends Controller
         if (! $this->validate($request->all(), ClientValidator::class)) {
             return $this->sendError('Formularz nie został wysłany');
         }
-
+        
         Client::create($request->all());
 
         return $this->sendSuccess('Użytkownik dodany', [

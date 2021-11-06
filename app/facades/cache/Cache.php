@@ -3,15 +3,9 @@
 namespace App\Facades\Cache;
 
 use App\Facades\Http\Router\Router;
-use App\Facades\Property\Get;
-use App\Facades\Property\Has;
-use App\Facades\Property\Set;
-use App\Facades\Validator\Type;
 
 class Cache
 {
-	private static array $memory = [];
-
     public static function remember(int $seconds, callable $closure)
     {
         $route = Router::getInstance()->routeParams();
@@ -47,20 +41,5 @@ class Cache
     			unlink($file);
 		    }
 	    }
-    }
-    
-    public static function saveInMemory(string $key, $value): void
-    {
-	    static::$memory = array_merge(static::$memory, Set::set(static::$memory, Type::get($value), $key));
-    }
-    
-    public static function inMemory(string $key): bool
-    {
-    	return Has::check(self::$memory, $key);
-    }
-    
-    public static function getFromMemory(string $key)
-    {
-    	return Get::check(static::$memory, $key);
     }
 }
