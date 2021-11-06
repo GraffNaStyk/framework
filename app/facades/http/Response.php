@@ -23,6 +23,8 @@ class Response
 	
 	private bool $isJsonResponse = false;
 	
+	private bool $isXmlResponse = false;
+	
 	private array $customHeaders = [];
 	
 	private int $responseCode = 200;
@@ -51,6 +53,14 @@ class Response
 	public function json(): self
 	{
 		$this->isJsonResponse = true;
+		
+		return $this;
+	}
+	
+	public function xml(): self
+	{
+		$this->isXmlResponse = true;
+		$this->setHeader('Content-type', 'text/xml;charset=utf-8');
 		
 		return $this;
 	}
@@ -92,12 +102,12 @@ class Response
 			}
 		}
 		
-		if ($this->content !== null) {
+		if ($this->content !== null || $this->isXmlResponse) {
 			return $this->content;
 		} else if ($this->isJsonResponse) {
 			return json_encode($this->data);
 		}
-		
+
 		throw new \LogicException('Wrong response send! Set response content or response data');
 	}
 }
