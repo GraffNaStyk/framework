@@ -162,6 +162,7 @@ final class Request
 		    $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
 		    $item = preg_replace('/<iframe(.*?)>(.+)<\/iframe>/', '', $item);
 		    $item = preg_replace('/<img (.*?)>/is', '', $item);
+		    $item = preg_replace('/<embed (.*?)>/is', '', $item);
 		    $item = preg_replace('/<link (.*?)>/is', '', $item);
 		    $item = preg_replace('/<video(.*?)>(.+)<\/video>/', '', $item);
 	    }
