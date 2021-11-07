@@ -158,7 +158,12 @@ final class Request
 	
 	    if (Config::get('app.security.enabled')) {
 		    $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
+		    $item = preg_replace('/<noscript\b[^>]*>(.*?)<\/noscript>/is', '', $item);
 		    $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
+		    $item = preg_replace('/<iframe(.*?)>(.+)<\/iframe>/', '', $item);
+		    $item = preg_replace('/<img(.*?)>', '', $item);
+		    $item = preg_replace('/<link(.*?)>', '', $item);
+		    $item = preg_replace('/<video(.*?)>(.+)<\/video>/', '', $item);
 	    }
 
         $item = strtr(
@@ -169,6 +174,7 @@ final class Request
 
         $item = preg_replace('/(;|\||`|&|^|{|}|[|]|\)|\()/i', '', $item);
         $item = preg_replace('/(\)|\(|\||&)/', '', $item);
+        
         return Type::get($item);
     }
 

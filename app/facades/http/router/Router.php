@@ -194,7 +194,7 @@ final class Router extends Route
             $reflectionMethod = new ReflectionMethod($controller, self::getAction());
 	
 	        if ($reflectionMethod->isProtected() || $reflectionMethod->isPrivate()) {
-		        throw new \LogicException('Aborted by access to private or protected method');
+		        throw new \LogicException('Cannot make private or protected methods in controller');
 	        }
 
             if ($reflectionMethod->getReturnType() === null) {
@@ -374,9 +374,9 @@ final class Router extends Route
     public static function abort(int $code = 404, ?string $message = null): void
     {
         Log::custom('aborted', [
-            'message' => 'Aborted operation from router, code: '.$code.' '.Response::RESPONSE_CODES[$code],
+            'message'    => 'Aborted operation from router, code: '.$code.' '.Response::RESPONSE_CODES[$code],
             'custom_msg' => $message,
-            'user' => UserState::user()
+            'user'       => UserState::user()
         ]);
 
         header("HTTP/1.1 {$code} ".Response::RESPONSE_CODES[$code]);
