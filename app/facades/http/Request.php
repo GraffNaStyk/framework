@@ -231,6 +231,10 @@ final class Request
 	
 	public static function isAjax(): bool
 	{
+		if (php_sapi_name() === 'cli') {
+			return false;
+		}
+		
 		$headers = getallheaders();
 		
 		if (isset($headers['Is-Fetch-Request'])
