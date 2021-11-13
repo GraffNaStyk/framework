@@ -102,7 +102,7 @@ class Storage
             $location = self::$disk.$destination;
 
             if (class_exists(File::class)) {
-                $hash = Faker::getUniqueStr(File::class, 'hash', 100);
+                $hash = Faker::getUniqueStr(File::class, 'hash', 40);
                 $location .= $hash.'.'.$pathInfo['extension'];
             } else {
                 $location .= $as
