@@ -27,6 +27,14 @@ trait Builder
     {
         $ret   = '';
 	    $value = Type::get($value);
+	
+	    if ((bool) strpos($value, '.') === true) {
+		    $tmp = explode('.', $value);
+		
+		    if ($tmp[0] === $this->trim(str_replace(['`', 'as'], '', $this->as)) && $tmp[1] === '*') {
+			    return '`'.$tmp[0].'`.'.$tmp[1];
+		    }
+	    }
 
         if ((bool) strpos($value, '.') === true && (bool) preg_match('/( as )/', $value)) {
             $value = explode('.', $value);
