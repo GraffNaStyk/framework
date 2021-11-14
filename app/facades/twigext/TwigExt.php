@@ -21,7 +21,8 @@ class TwigExt extends AbstractExtension
             $this->tooltip(),
             $this->options(),
             $this->route(),
-            $this->assets()
+            $this->assets(),
+	        $this->img_url()
         ];
     }
 
@@ -89,4 +90,11 @@ class TwigExt extends AbstractExtension
             echo htmlspecialchars(json_encode($options));
         });
     }
+	
+	public function img_url(): TwigFunction
+	{
+		return new TwigFunction('uri_img', function ($url = null) {
+			echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().$url;
+		});
+	}
 }
