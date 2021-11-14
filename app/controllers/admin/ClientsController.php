@@ -69,7 +69,7 @@ class ClientsController extends Controller
         	dump($client);
             return $this->render(['client' => $client]);
         } else {
-            $this->redirect('/clients');
+            return $this->redirect('/clients');
         }
     }
 

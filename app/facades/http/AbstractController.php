@@ -2,7 +2,6 @@
 
 namespace App\Facades\Http;
 
-use App\Facades\Http\Router\Route;
 use App\Facades\Http\Router\Router;
 use App\Facades\Storage\Storage;
 use App\Facades\Validator\Validator;
@@ -21,14 +20,9 @@ abstract class AbstractController
         Session::clearMsg();
     }
 
-    public function redirect(?string $path, int $code = 302, bool $direct = false): void
+    public function redirect(?string $path, int $code = 302, bool $direct = false): Response
     {
-        Route::redirect($path, $code, $direct);
-    }
-
-    public function redirectWhen(string $when, string $then): void
-    {
-        Route::when($when, $then);
+        return (new Response())->redirect($path, $code, $direct)->send();
     }
 
     public function setData(array $data): void

@@ -3,6 +3,7 @@
 namespace App\Facades\Http;
 
 use App\Facades\Header\Header;
+use App\Facades\Http\Router\Route;
 
 class Response
 {
@@ -25,7 +26,11 @@ class Response
 	
 	private bool $isXmlResponse = false;
 	
+	private bool $isRedirectResponse = false;
+	
 	private array $customHeaders = [];
+	
+	private array $redirectData = [];
 	
 	private int $responseCode = 200;
 	
@@ -65,6 +70,15 @@ class Response
 		return $this;
 	}
 	
+	public function redirect(?string $path, int $code = 302, bool $direct = false): self
+	{
+		$this->isRedirectResponse = true;
+		$this->redirectData       = ['path' => $path, 'code' => $code, 'direct' => $direct];
+		$this->responseCode       = $code;
+		
+		return $this;
+	}
+	
 	public function setData(array $data): self
 	{
 		$this->data	= $data;
@@ -100,6 +114,11 @@ class Response
 			foreach ($this->customHeaders as $name => $value) {
 				\header($name.': '.$value);
 			}
+		}
+		
+		if ($this->isRedirectResponse) {
+			Route::redirect($this->redirectData['path'], $this->redirectData['code'], $this->redirectData['direct']);
+			exit;
 		}
 		
 		if ($this->content !== null || $this->isXmlResponse) {
