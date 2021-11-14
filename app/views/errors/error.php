@@ -1,6 +1,5 @@
 <?php
 
-use App\Facades\Header\Header;
 use App\Facades\Url\Url;
 
 ?>
@@ -56,7 +55,7 @@ use App\Facades\Url\Url;
         <i class="fa fa-chain-broken"></i>
         <span><?= $code ?></span>
     </h2>
-    <p style="text-transform: uppercase; font-weight: 600;"><?= Header::RESPONSE_CODES[$code]; ?></p>
+    <p style="text-transform: uppercase; font-weight: 600;"><?= \App\Facades\Http\Response::RESPONSE_CODES[$code]; ?></p>
     <div>
         <a class="back" href="<?= Url::base() ?: '/'; ?>">Back to main page</a>
     </div>
