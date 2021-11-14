@@ -301,7 +301,7 @@ final class Router extends Route
         $routeExist = false;
 
         foreach (self::$routes as $key => $route) {
-            $pattern = preg_replace('/\/{(.*?)}/', '/(.*?)', $key);
+	        $pattern = preg_replace('/{(.*?)}/', '(.*?)', $key, -1);
 
             if (preg_match('#^'.$pattern.'$#', self::$url, $matches)) {
                 if ((string) $this->request->getMethod() !== (string) $route->getMethod()) {
