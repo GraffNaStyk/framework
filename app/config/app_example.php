@@ -41,20 +41,6 @@ return [
 	],
 	
 	/**
-	 * @Always loaded libraries css / js from main css / js directory
-	 *
-	 **/
-	'is_loaded' => [
-		'css' => [
-			'bootstrap', 'slim-select', 'loader', 'font-awesome.min',
-		],
-		
-		'js' => [
-			'App', 'lib/bootstrap', 'lib/slim-select',
-		],
-	],
-	
-	/**
 	 * @Security used for header Content-Security-Policy
 	 *
 	 **/

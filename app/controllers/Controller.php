@@ -3,25 +3,27 @@
 namespace App\Controllers;
 
 use App\Facades\Config\Config;
+use App\Facades\Helpers\CssLoader;
+use App\Facades\Helpers\JavaScriptLoader;
 use App\Facades\Http\AbstractController;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
-use App\Helpers\Loader;
 
 abstract class Controller extends AbstractController
 {
+	use JavaScriptLoader;
+	use CssLoader;
+	
     public function __construct()
     {
         parent::__construct();
+        
         $this->setLayout();
-	
-        Loader::set();
-
-	    $this->setData([
-		    'css' => Loader::css(),
-		    'js'  => Loader::js(),
-	    ]);
+	    $this->loadJsFromDir('/components');
+	    $this->loadCssFromDir('/lib');
+	    $this->loadCssFromDir('/admin');
+	    $this->loadJs('/admin/admin.js');
     }
 
     private function setLayout(): void

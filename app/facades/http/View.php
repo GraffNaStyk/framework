@@ -61,7 +61,11 @@ final class View
     public static function set(array $data): void
     {
         foreach ($data as $key => $value) {
-            self::$data[$key] = $value;
+        	if (isset(self::$data[$key])) {
+		        self::$data[$key] = array_unique(array_merge(self::$data[$key], $value));
+	        } else {
+		        self::$data[$key] = $value;
+	        }
         }
     }
 
@@ -88,7 +92,7 @@ final class View
     {
         if (! self::$twig instanceof Twig\Environment) {
             if (Config::get('app.cache_view')) {
-                $config['cache'] = storage_path('private/framework/views');
+                $config['cache'] = storage_path('/private/framework/views');
             }
 
             $config['debug'] = true;

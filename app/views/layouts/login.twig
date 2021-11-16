@@ -8,15 +8,17 @@
   <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
   <title>{{ title }}</title>
-  {{ css|raw }}
+  {% for module in css %}
+    {{ module|raw }}
+  {% endfor %}
 </head>
 <body>
 {% block content %}
 
 {% endblock %}
 {% include 'components/modal.twig' %}
-{{ js|raw }}
-{% for module in modules %}
+
+{% for module in js %}
   {{ module|raw }}
 {% endfor %}
 </body>

@@ -9,7 +9,9 @@
   <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
   <title>{{ page.title }}</title>
-  {{ css|raw }}
+  {% for module in css %}
+    {{ module|raw }}
+  {% endfor %}
 </head>
 <body>
 {% if devTool %}
@@ -48,7 +50,7 @@
 
 {% include 'components/modal.twig' %}
 {{ js|raw }}
-{% for module in modules %}
+{% for module in js %}
   {{ module|raw }}
 {% endfor %}
 </body>

@@ -73,13 +73,16 @@ final class Router extends Route
                 self::abort(403);
             }
         }
-
-        $this->create(self::$route->getNamespace().'\\'.self::getClass().'Controller');
-
-        if (in_array(http_response_code(), [200,201], true)) {
-            $this->runMiddlewares('after');
-            $this->dispatchEvents();
-        }
+    }
+    
+    public function resolveRequest(): void
+    {
+	    $this->create(self::$route->getNamespace().'\\'.self::getClass().'Controller');
+	
+	    if (in_array(http_response_code(), [200,201], true)) {
+		    $this->runMiddlewares('after');
+		    $this->dispatchEvents();
+	    }
     }
 
     private function dispatchEvents(): void
