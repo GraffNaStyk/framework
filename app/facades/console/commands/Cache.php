@@ -18,7 +18,9 @@ class Cache extends Command
 	
 	public function execute(): int
 	{
-		Storage::private()->remove('/cache');
+		if (Storage::private()->remove('/cache')) {
+			$this->output('Cache cleared', 'green');
+		}
 		
 		return Command::SUCCESS;
 	}

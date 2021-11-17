@@ -2,6 +2,7 @@
 
 namespace App\Facades\Http\Router;
 
+use App\Facades\Cache\Cache;
 use App\Facades\Config\Config;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Url\Url;
@@ -82,17 +83,24 @@ abstract class Route
 
     private static function match(string $as, string $route, string $method, int $rights): Collection
     {
-        $routes = explode('@', $route);
-
-        $collection = new Collection(
-            ucfirst($routes[0]),
-            $routes[1] ?? 'index',
-            self::$namespace,
-            $method,
-            $rights,
-            self::$middleware,
-	        self::$alias
-        );
+        $routes     = explode('@', $route);
+		$namespace  = self::$namespace;
+		$middleware = self::$middleware;
+	    $alias      = self::$alias;
+	   
+        $collection = Cache::remember(19000, '/routes', 'route_'.$route,
+	        function () use ($routes, $method, $rights, $middleware, $alias, $namespace)
+	        {
+		         return new Collection(
+			         ucfirst($routes[0]),
+			         $routes[1] ?? 'index',
+			         $namespace,
+			         $method,
+			         $rights,
+			         $middleware,
+			         $alias
+		        );
+        });
 
         if (self::$alias === null) {
             $url = self::$alias.$as ?? $routes[0].'/'.$routes[1];
@@ -101,10 +109,6 @@ abstract class Route
         }
 
         self::$routes[$url] = $collection;
-
-        if (! isset(self::$urls[$route])) {
-            self::$urls[$route] = ['url' => $url, 'right' => $rights];
-        }
 
         if ($method !== 'get' && ! defined('API')) {
             Csrf::make($route);

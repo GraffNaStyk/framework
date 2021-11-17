@@ -2,27 +2,30 @@
 
 namespace App\Facades\Cache;
 
-use App\Facades\Http\Router\Router;
+use App\Facades\Config\Config;
+use App\Helpers\Dir;
 
 class Cache
 {
-    public static function remember(int $seconds, callable $closure)
+    public static function remember(int $seconds, string $path, string $key, callable $closure)
     {
-        $route = Router::getInstance()->routeParams();
-        $cacheName = sha1(
-            $route['namespace'].'\\'.$route['controller'].'\\'.$route['action'].'\\'.implode('\\', $route['params'])
-        );
+    	if (Config::get('app.dev')) {
+    		return $closure();
+	    }
+    	
+    	Dir::create(storage_path('/private/cache'.$path));
+        $cacheName = sha1($key);
 
-        $dateEnd = filemtime(storage_path('/private/cache/'.$cacheName.'.json'));
+        $dateEnd = filemtime(storage_path('/private/cache'.$path.'/'.$cacheName));
         $dateEnd = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', $dateEnd).'+ '.$seconds.' sec'));
 
-        if (file_exists(storage_path('/private/cache/'.$cacheName.'.json'))
+        if (file_exists(storage_path('/private/cache'.$path.'/'.$cacheName))
             && $dateEnd > date('Y-m-d H:i:s')
         ) {
-            return json_decode(file_get_contents(storage_path('/private/cache/'.$cacheName.'.json')));
+            return unserialize(file_get_contents(storage_path('/private/cache'.$path.'/'.$cacheName)));
         } else {
             $result = $closure();
-            file_put_contents(storage_path('/private/cache/'.$cacheName.'.json'), json_encode($result));
+            file_put_contents(storage_path('/private/cache'.$path.'/'.$cacheName), serialize($result));
         }
 
         return $result;
