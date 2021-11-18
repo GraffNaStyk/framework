@@ -2,7 +2,6 @@
 
 namespace App\Facades\Http\Router;
 
-use App\Facades\Cache\Cache;
 use App\Facades\Config\Config;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Url\Url;
@@ -83,24 +82,17 @@ abstract class Route
 
     private static function match(string $as, string $route, string $method, int $rights): Collection
     {
-        $routes     = explode('@', $route);
-		$namespace  = self::$namespace;
-		$middleware = self::$middleware;
-	    $alias      = self::$alias;
+        $routes = explode('@', $route);
 	   
-        $collection = Cache::remember(19000, '/routes', 'route_'.$route,
-	        function () use ($routes, $method, $rights, $middleware, $alias, $namespace)
-	        {
-		         return new Collection(
-			         ucfirst($routes[0]),
-			         $routes[1] ?? 'index',
-			         $namespace,
-			         $method,
-			         $rights,
-			         $middleware,
-			         $alias
-		        );
-        });
+        $collection = new Collection(
+		    ucfirst($routes[0]),
+		    $routes[1] ?? 'index',
+		    self::$namespace,
+		    $method,
+		    $rights,
+	        self::$middleware,
+	        self::$alias
+        );
 
         if (self::$alias === null) {
             $url = self::$alias.$as ?? $routes[0].'/'.$routes[1];

@@ -2,20 +2,19 @@
 
 namespace App\Facades\Cache;
 
-use App\Facades\Config\Config;
 use App\Helpers\Dir;
 
 class Cache
 {
-    public static function remember(int $seconds, string $path, string $key, callable $closure)
+    public static function remember(int $seconds, string $path, \Closure $closure)
     {
-    	if (Config::get('app.dev')) {
-    		return $closure();
-	    }
-    	
     	Dir::create(storage_path('/private/cache'.$path));
-        $cacheName = sha1($key);
-
+	
+	    $route     = Router::getInstance()->routeParams();
+	    $cacheName = sha1(
+		    $route['namespace'].'\\'.$route['controller'].'\\'.$route['action'].'\\'.implode('\\', $route['params'])
+	    );
+	    
         $dateEnd = filemtime(storage_path('/private/cache'.$path.'/'.$cacheName));
         $dateEnd = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', $dateEnd).'+ '.$seconds.' sec'));
 
