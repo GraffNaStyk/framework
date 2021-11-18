@@ -2,6 +2,7 @@
 
 namespace App\Facades\Cache;
 
+use App\Facades\Http\Router\Router;
 use App\Helpers\Dir;
 
 class Cache
