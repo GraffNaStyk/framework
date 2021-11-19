@@ -25,7 +25,7 @@ final class Request
         $this->boot();
     }
 
-    public function boot(): void
+    private function boot(): void
     {
         $this->isOptionsCall();
         $this->setHeaders();
@@ -67,7 +67,7 @@ final class Request
                 break;
         }
 
-        if (empty($this->data) && defined('API') && API === true) {
+        if ($this->hasHeader('Content-Type') && mb_strtolower($this->header('Content-Type')) === 'application/json') {
             $this->data = (array) json_decode(file_get_contents('php://input'));
         }
     }
@@ -108,7 +108,7 @@ final class Request
 
     public function hasHeader(string $item): bool
     {
-        return Has::check($this->headers(), $item);
+        return Has::check($this->headers(), mb_strtolower($item));
     }
 
     public function headers(): array

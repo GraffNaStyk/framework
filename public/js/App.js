@@ -55,6 +55,27 @@ class App {
   async post(args) {
     let data;
 
+    if (args.sendAsJson) {
+      return await fetch(this.url + this.prepareFetchUrl(args.url), {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          "Is-Fetch-Request": true,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(args.data)
+      }).then(res => {
+        if ([404, 500, 405, 403, 401].includes(res.status)) {
+          res.msg = this.msgCodes[res.status];
+          res.isError = true;
+          return res;
+        }
+
+        return res;
+      })
+    }
+
     if (args.form) {
       data = new FormData(args.form);
     }
