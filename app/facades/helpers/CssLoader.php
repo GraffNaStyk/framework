@@ -58,7 +58,7 @@ trait CssLoader
 				self::$url.str_replace(
 					app_path(),
 					'',
-					css_path('/'.Router::getClass().'/'.Router::getAction())
+					css_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction())
 				).
 				'.css">'
 			);
