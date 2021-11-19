@@ -21,7 +21,10 @@ abstract class Controller extends AbstractController
         
         $this->setLayout();
 	    $this->loadJsFromDir('/components');
+	    $this->loadJsFromDir('/lib');
 	    $this->loadCssFromDir('/lib');
+	    $this->enableCssAutoload();
+	    $this->enableJsAutoload();
     }
 
     private function setLayout(): void

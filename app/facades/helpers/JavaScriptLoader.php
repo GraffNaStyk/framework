@@ -53,19 +53,19 @@ trait JavaScriptLoader
 	
 	protected function enableJsAutoload(): void
 	{
-		if (is_readable(js_path('/'.Router::getClass().'/'.Router::getAction().'.js'))) {
+		if (is_readable(js_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction().'.js'))) {
 			$loaded = trim('<script type="application/javascript" src="'.
 				self::$url.str_replace(
 					app_path(),
 					'',
-					js_path('/'.Router::getClass().'/'.Router::getAction())
+					js_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction())
 				).
-				'"></script>'
+				'.js"></script>'
 			);
 		}
 		
 		if ($loaded !== null) {
-			View::set(['js' => $loaded]);
+			View::set(['js' => [$loaded]]);
 		}
 	}
 }

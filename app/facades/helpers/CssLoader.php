@@ -53,14 +53,14 @@ trait CssLoader
 	
 	protected function enableCssAutoload(): void
 	{
-		if (is_readable(css_path('/'.Router::getClass().'/'.Router::getAction().'.js'))) {
+		if (is_readable(css_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction().'.js'))) {
 			$loaded = trim('<link rel="stylesheet" href="'.
 				self::$url.str_replace(
 					app_path(),
 					'',
 					css_path('/'.Router::getClass().'/'.Router::getAction())
 				).
-				'">'
+				'.css">'
 			);
 		}
 		

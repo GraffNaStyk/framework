@@ -32,12 +32,10 @@ final class App
 		if (Config::get('loader.autoload_js')) {
 			JavaScriptLoader::bootScriptLoader();
 			$this->loadJs('App.js');
-			$this->enableJsAutoload();
 		}
 		
 		if (Config::get('loader.autoload_css')) {
 			CssLoader::bootCssLoader();
-			$this->enableCssAutoload();
 		}
 	}
 }
