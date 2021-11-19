@@ -65,7 +65,7 @@ trait CssLoader
 		}
 		
 		if ($loaded !== null) {
-			View::set(['css' => $loaded]);
+			View::set(['css' => [$loaded]]);
 		}
 	}
 }
