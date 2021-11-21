@@ -68,4 +68,6 @@ return [
 	 *
 	 **/
 	'model_path' => '\\App\\Models\\',
+	
+	'reporting_levels' => E_ERROR | E_USER_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_PARSE,
 ];

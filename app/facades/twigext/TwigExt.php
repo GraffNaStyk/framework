@@ -22,7 +22,8 @@ class TwigExt extends AbstractExtension
             $this->options(),
             $this->route(),
             $this->assets(),
-	        $this->img_url()
+	        $this->img_url(),
+	        $this->public_path()
         ];
     }
 
@@ -48,6 +49,13 @@ class TwigExt extends AbstractExtension
             echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().'/public/assets'.$url;
         });
     }
+	
+	public function public_path(): TwigFunction
+	{
+		return new TwigFunction('public_path', function ($url) {
+			echo Route::checkProtocol().'://'.getenv('HTTP_HOST').Url::base().'/public/'.$url;
+		});
+	}
 
     public function url(): TwigFunction
     {
