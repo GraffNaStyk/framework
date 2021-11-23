@@ -159,18 +159,12 @@ final class Router extends Route
 
     public static function getNamespace(): ?string
     {
-        if (self::$route instanceof Collection) {
-            return self::$route->getNamespace();
-        }
-
-        return null;
+	    return self::$route instanceof Collection ? self::$route->getNamespace() : null;
     }
 
     public static function getAlias(): string
     {
-        $alias = mb_strtolower(end(explode('\\', self::getNamespace())));
-
-        return $alias === 'http' ? $alias : 'admin';
+        return mb_strtolower(end(explode('\\', self::getNamespace()))) === 'http' ? 'http' : 'admin';
     }
 
     private function create(string $controller)
@@ -178,125 +172,116 @@ final class Router extends Route
         if (! class_exists($controller) || ! method_exists($controller, self::getAction())) {
             self::abort();
         }
-
-        try {
-            $reflectionClass = new ReflectionClass($controller);
 	
-	        if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
-		        self::abort();
-		        throw new \ReflectionException('Controller not exist : '. $controller);
-	        }
-        } catch (\ReflectionException $e) {
+	    $reflectionClass = new ReflectionClass($controller);
+	
+	    if ((string) $reflectionClass->getMethod(self::getAction())->class !== (string) $controller) {
+		    self::abort();
+		    throw new \ReflectionException('Controller not exist : '. $controller);
+	    }
+
+        if (substr(self::getAction(), 0, 4) === 'test' && ! Config::get('app.dev')) {
+            throw new \LogicException('Cannot read test method if env is set to production');
         }
 
-        try {
-        	if (substr(self::getAction(), 0, 4) === 'test' && ! Config::get('app.dev')) {
-        		throw new \LogicException('Cannot read test method if env is set to production');
-	        }
+        $reflectionMethod = new ReflectionMethod($controller, self::getAction());
 
-            $reflectionMethod = new ReflectionMethod($controller, self::getAction());
-	
-	        if ($reflectionMethod->isProtected() || $reflectionMethod->isPrivate()) {
-		        throw new \LogicException('Cannot make private or protected methods in controller');
-	        }
-
-            if ($reflectionMethod->getReturnType() === null) {
-                throw new \LogicException('Method must have a return type declaration');
-            }
-            
-            if ($reflectionMethod->getReturnType()->getName() !== Response::class) {
-	            throw new \LogicException('Controller return type declaration mus be a instance of '.Response::class);
-            }
-
-            $constructorParams = $this->builder->getConstructorParameters($reflectionClass);
-	        $params            = $reflectionMethod->getParameters();
-	        $controller        = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
-	        $methodParams      = $this->getMethodParams($params, $controller);
-
-	        if ($reflectionMethod->getNumberOfRequiredParameters() > count($methodParams)) {
-		        throw new \LogicException('Not enough params');
-	        }
-	
-	        unset($reflectionMethod, $reflectionClass, $params, $constructorParams);
-	
-	        ob_flush();
-	        ob_clean();
-	
-	        if (Config::get('app.dev')) {
-		        View::set(['devTool' => DevTool::boot()]);
-	        }
-	
-	        $response = call_user_func_array(
-		        [$controller, self::getAction()],
-		        $methodParams
-	        );
-
-	        echo $response->getResponse();
-	
-	        ob_end_flush();
-	        ob_end_clean();
-	        return;
-        } catch (\ReflectionException $e) {
+        if ($reflectionMethod->isProtected() || $reflectionMethod->isPrivate()) {
+	        throw new \LogicException('Cannot make private or protected methods in controller');
         }
+
+        if ($reflectionMethod->getReturnType() === null) {
+            throw new \LogicException('Method must have a return type declaration');
+        }
+        
+        if ($reflectionMethod->getReturnType()->getName() !== Response::class) {
+            throw new \LogicException('Controller return type declaration mus be a instance of '.Response::class);
+        }
+
+        $constructorParams = $this->builder->getConstructorParameters($reflectionClass);
+        $params            = $reflectionMethod->getParameters();
+        $controller        = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
+        $methodParams      = $this->getMethodParams($params, $controller);
+
+        if ($reflectionMethod->getNumberOfRequiredParameters() > count($methodParams)) {
+	        throw new \LogicException('Not enough params');
+        }
+
+        unset($reflectionMethod, $reflectionClass, $params, $constructorParams);
+
+        ob_flush();
+        ob_clean();
+
+        if (Config::get('app.dev')) {
+	        View::set(['devTool' => DevTool::boot()]);
+        }
+
+        $response = call_user_func_array(
+	        [$controller, self::getAction()],
+	        $methodParams
+        );
+
+        echo $response->getResponse();
+
+        ob_end_flush();
+        ob_end_clean();
+        return;
     }
 
     private function getMethodParams(array $reflectionParams, object $controller): array
     {
-    	 try {
-		     $combinedParams   = [];
-		     $requestParams    = $this->request->getData();
-		     $reqParamIterator = 0;
+	     $combinedParams   = [];
+	     $requestParams    = $this->request->getData();
+	     $reqParamIterator = 0;
+	     
+	     foreach ($reflectionParams as $key => $param) {
+		     $refParam = new \ReflectionParameter([$controller, self::getAction()], $key);
+		     $class    = $refParam->getClass()->name;
 		
-		     foreach ($reflectionParams as $key => $param) {
-			     $refParam = new \ReflectionParameter([$controller, self::getAction()], $key);
-			     $class    = $refParam->getClass()->name;
+		     if (! empty($class)) {
+			     $reflector = $this->builder->checkIsInterface(new ReflectionClass($class));
 			
-			     if (! empty($class)) {
-				     $reflector = $this->builder->checkIsInterface(new ReflectionClass($class));
-				
-				     if ($reflector->hasMethod('__construct')) {
-					     $params = $this->builder->reflectConstructorParams($reflector->getConstructor()->getParameters());
-					     $this->builder->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
-				     } else {
-					     $this->builder->container->add($class, new $class());
-				     }
-				
-				     $combinedParams[$key] = $this->builder->container->get($class);
-				     unset($reflector, $refParam, $reflectionParams[$key]);
+			     if ($reflector->hasMethod('__construct')) {
+				     $params = $this->builder->reflectConstructorParams($reflector->getConstructor()->getParameters());
+				     $this->builder->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
 			     } else {
-				     if ($refParam->isOptional() && ! isset($requestParams[$reqParamIterator])) {
-					     unset($refParam, $reflector);
-					     $reqParamIterator++;
-					     continue;
-				     }
-				
-				     $type = preg_replace(
-					     '/.*?(\w+)\s+\$' . $refParam->name . '.*/',
-					     '\\1',
-					     $refParam->__toString()
-				     );
-				
-				     if ($type === 'int') {
-					     $type = 'integer';
-				     }
-				
-				     if ($type === 'float') {
-					     $type = 'double';
-				     }
-				
-				     if (gettype($requestParams[$reqParamIterator]) !== $type) {
-					     self::abort(400, 'Wrong param type, param: ' . $requestParams[$reqParamIterator]);
-				     }
-				
-				     $combinedParams[$key] = $requestParams[$reqParamIterator];
-				     $reqParamIterator++;
-				     unset($refParam, $reflector);
+				     $this->builder->container->add($class, new $class());
 			     }
+			
+			     $combinedParams[$key] = $this->builder->container->get($class);
+			     unset($reflector, $refParam, $reflectionParams[$key]);
+		     } else {
+			     if ($refParam->isOptional() && ! isset($requestParams[$reqParamIterator])) {
+				     unset($refParam, $reflector);
+				     $reqParamIterator++;
+				     continue;
+			     }
+			
+			     $type = preg_replace(
+				     '/.*?(\w+)\s+\$' . $refParam->name . '.*/',
+				     '\\1',
+				     $refParam->__toString()
+			     );
+			
+			     if ($type === 'int') {
+				     $type = 'integer';
+			     }
+			
+			     if ($type === 'float') {
+				     $type = 'double';
+			     }
+			
+			     if (gettype($requestParams[$reqParamIterator]) !== $type) {
+				     self::abort(400, 'Wrong param type, param: ' . $requestParams[$reqParamIterator]);
+			     }
+			
+			     $combinedParams[$key] = $requestParams[$reqParamIterator];
+			     $reqParamIterator++;
+			     unset($refParam, $reflector);
 		     }
-		
-		     return $combinedParams;
-	     } catch (\ReflectionException $e) {
 	     }
+	
+	     return $combinedParams;
     }
 
     public function setParams(): void
@@ -381,9 +366,6 @@ final class Router extends Route
             'custom_msg' => $message,
             'user'       => UserState::user()
         ]);
-
-        header("HTTP/1.1 {$code} ".Response::RESPONSE_CODES[$code]);
-        http_response_code($code);
 
         if ((API && defined('API')) || Request::isAjax()) {
 	        echo (new Response())->json()->setData(['msg' => Response::RESPONSE_CODES[$code]])->setCode($code)->getResponse();
