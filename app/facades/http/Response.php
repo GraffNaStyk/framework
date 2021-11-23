@@ -9,7 +9,7 @@ class Response
 {
 	use Header;
 	
-	const RESPONSE_CODES = [
+	public const RESPONSE_CODES = [
 		400 => 'Bad Request',
 		401 => 'Unauthorized',
 		403 => 'Forbidden',
@@ -105,7 +105,7 @@ class Response
 		return $this;
 	}
 	
-	public function getResponse(): string
+	public function getResponse(): ?string
 	{
 		$this->prepareHeaders();
 		http_response_code($this->responseCode);
