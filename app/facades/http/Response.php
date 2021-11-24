@@ -28,6 +28,10 @@ class Response
 	
 	private bool $isRedirectResponse = false;
 	
+	private bool $isFileResponse = false;
+	
+	private bool $isDownloadResponse = false;
+	
 	private array $customHeaders = [];
 	
 	private array $redirectData = [];
@@ -67,6 +71,35 @@ class Response
 		$this->isXmlResponse = true;
 		$this->setHeader('Content-type', 'text/xml;charset=utf-8');
 		
+		return $this;
+	}
+	
+	public function file(string $file): self
+	{
+		$this->setHeader('Content-Type', mime_content_type($file));
+		$this->setHeader('Content-Length', filesize($file));
+
+		$this->isFileResponse = true;
+		$this->content        = $file;
+
+		return $this;
+	}
+	
+	public function download(string $file): self
+	{
+		$this->setHeaders(
+			[
+				'Content-Type'              => 'application/octet-stream',
+				'Cache-Control'             => 'private',
+				'Content-Transfer-Encoding' => 'Binary',
+				'Content-Length'            => filesize($file),
+				'Content-Disposition'       => 'attachment; filename='.basename($file)
+			]
+		);
+
+		$this->isDownloadResponse = true;
+		$this->content            = $file;
+
 		return $this;
 	}
 	
@@ -116,6 +149,10 @@ class Response
 			}
 		}
 		
+		if ($this->isFileResponse || $this->isDownloadResponse) {
+			return readfile($this->content);
+		}
+
 		if ($this->isRedirectResponse) {
 			Route::redirect($this->redirectData['path'], $this->redirectData['code'], $this->redirectData['direct']);
 			exit;

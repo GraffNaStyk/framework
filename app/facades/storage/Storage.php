@@ -8,7 +8,7 @@ use App\Models\File;
 
 class Storage
 {
-    private array $mimes = [
+    public const MIMES = [
         'txt' => 'text/plain',
         'css' => 'text/css',
         'json' => 'application/json',
@@ -154,27 +154,6 @@ class Storage
         return $this;
     }
 
-    public function download(string $file): void
-    {
-        $file = ltrim($file, '/');
-
-        if ($fd = fopen(self::$disk.'/'.$file, 'r')) {
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.basename(self::$disk.'/'.$file).'"');
-            header('Content-Length: '.filesize(self::$disk.'/'.$file));
-            header('Content-Transfer-Encoding: Binary');
-            header('Cache-control: private');
-
-            while (! feof($fd)) {
-                echo fread($fd, 2048);
-            }
-        }
-
-        ob_flush();
-        fclose($fd);
-        exit;
-    }
-
     public function remove($path = null): bool
     {
         $path = ltrim($path, '/');
@@ -200,8 +179,8 @@ class Storage
     {
         $pathInfo = pathinfo($destination);
 
-        if (isset($this->mimes[$pathInfo['extension']])
-            && (string) $this->mimes[$pathInfo['extension']] === (string) mime_content_type($destination)
+        if (isset(self::MIMES[$pathInfo['extension']])
+            && (string) self::MIMES[$pathInfo['extension']] === (string) mime_content_type($destination)
         ) {
             return true;
         }
