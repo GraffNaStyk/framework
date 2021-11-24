@@ -61,6 +61,7 @@ class Response
 	
 	public function json(): self
 	{
+		$this->setHeader('Content-type', 'application/json; charset=utf-8');
 		$this->isJsonResponse = true;
 		
 		return $this;
@@ -160,7 +161,9 @@ class Response
 		
 		if ($this->content !== null || $this->isXmlResponse) {
 			return $this->content;
-		} else if ($this->isJsonResponse) {
+		}
+		
+		if ($this->isJsonResponse) {
 			return json_encode($this->data);
 		}
 

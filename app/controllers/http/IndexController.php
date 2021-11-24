@@ -14,6 +14,6 @@ class IndexController extends Controller
 
     public function index(): Response
     {
-        return (new Response())->file(storage_path('public/tenor.gif'))->send();
+        return $this->render();
     }
 }

@@ -48,7 +48,9 @@ class ContainerBuilder
 	
 	public function checkIsInterface(object $reflector): object
 	{
-		if ($reflector->isInterface() && Config::has('interfaces.' . $reflector->getName()) && interface_exists($reflector->getName())) {
+		if ($reflector->isInterface() && Config::has('interfaces.' . $reflector->getName())
+			&& interface_exists($reflector->getName())
+		) {
 			$reflector = new ReflectionClass(Config::get('interfaces.' . $reflector->getName()));
 		}
 		else {
