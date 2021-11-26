@@ -43,7 +43,8 @@ final class Router extends Route
         $this->request  = new Request();
 
         if ($this->request->isOptionsCall()) {
-            return;
+            echo (new Response())->send()->getResponse();
+            die;
         }
 	
 	    $this->builder = new ContainerBuilder(new Container());
@@ -68,7 +69,7 @@ final class Router extends Route
         $this->request->sanitize();
         $this->runMiddlewares('before');
 
-        if ($this->request->getMethod() === 'post' && ! defined('API')) {
+        if ($this->request->getMethod() === 'post' && ! Config::get('app.enable_api')) {
             if (! $this->csrf->valid($this->request)) {
                 self::abort(403);
             }
@@ -367,7 +368,7 @@ final class Router extends Route
             'user'       => UserState::user()
         ]);
 
-        if ((API && defined('API')) || Request::isAjax()) {
+        if (Config::get('app.enable_api') || Request::isAjax()) {
 	        echo (new Response())->json()->setData(['msg' => Response::RESPONSE_CODES[$code]])->setCode($code)->getResponse();
             exit;
         } else {

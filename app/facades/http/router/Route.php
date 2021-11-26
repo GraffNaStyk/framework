@@ -102,7 +102,7 @@ abstract class Route
 
         self::$routes[$url] = $collection;
 
-        if ($method !== 'get' && ! defined('API')) {
+        if ($method !== 'get' && ! Config::get('app.enable_api')) {
             Csrf::make($route);
         }
 
