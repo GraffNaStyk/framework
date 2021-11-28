@@ -3,6 +3,7 @@
 namespace App\Facades\Console;
 
 use App\Facades\Config\Config;
+use App\Facades\Security\Sanitizer;
 use App\Facades\Url\Url;
 use App\Helpers\Dir;
 
@@ -13,6 +14,8 @@ class Command implements CommandInterface
 	const ABORTED = 2;
 	
 	protected ArgvParser $parser;
+	
+	private Sanitizer $sanitizer;
 	
 	private array $backgrounds = [
 		'white'      => 97,
@@ -45,18 +48,19 @@ class Command implements CommandInterface
 			$this->output('Missing execute method!', 'red')->close();
 		}
 		
+		$this->sanitizer = new Sanitizer();
 		$this->execute();
 	}
 	
 	protected function input(string $message, string $color='white'): string
 	{
 		echo "\033[".$this->backgrounds[mb_strtolower($color)]."m".$message.": \033[0m";
-		$handle = fopen ("php://stdin","r");
+		$handle = fopen('php://stdin','r');
 		$result = fgets($handle);
 		fclose($result);
 		echo "\n";
 
-		return str_replace(["\n"], [''], $result);
+		return str_replace(["\n", "\r"], [''], $this->sanitizer->clear($result));
 	}
 
 	protected function output(string $message, string $color='white'): Command
@@ -76,7 +80,7 @@ class Command implements CommandInterface
 		
 		$fullPath = str_replace('//', '/', app_path($path.$this->fileNamespace.'/'.ucfirst($name).'.php'));
 
-		if (file_exists($fullPath)) {
+		if (is_readable($fullPath)) {
 			$this->output('File '.$fullPath.' exist', 'red')->close();
 		}
 
@@ -97,10 +101,10 @@ class Command implements CommandInterface
 				'File:'.$fullPath.' created',
 				'green'
 			);
+			
+			$check = $this->input('Do you want to create abstraction interface for this file? Type y/n');
 
-			if (Console::canCreateInterface()
-				&& $this->input('Do you want to create abstraction interface for this file? Type y/n') === 'y'
-			) {
+			if (Console::canCreateInterface() && $check === 'y') {
 				$this->createInterface(app_path($path), ucfirst($name), $namespace);
 			}
 		} else {
@@ -113,10 +117,10 @@ class Command implements CommandInterface
 
 	public function getFile(string $name): string
 	{
-		return file_get_contents(app_path('/app/facades/console/files/'.$name));
+		return file_get_contents(app_path('app/facades/console/files/'.$name));
 	}
 
-	private function createInterface(string $path, string $name, string $namespace)
+	private function createInterface(string $path, string $name, string $namespace): void
 	{
 		Dir::create($path.'/abstraction'.$this->fileNamespace);
 		$interfaceName = Url::segment(Console::getCommandName(), 'end', ':');
@@ -135,7 +139,7 @@ class Command implements CommandInterface
 
 		$fullPath = str_replace('//', '/', $path.'/abstraction'.$this->fileNamespace.'/'.ucfirst($name).'Interface.php');
 
-		if (file_exists($fullPath)) {
+		if (is_readable($fullPath)) {
 			$this->output('Cannot create interface')->close();
 		}
 

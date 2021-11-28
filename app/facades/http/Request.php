@@ -2,12 +2,12 @@
 
 namespace App\Facades\Http;
 
-use App\Facades\Config\Config;
 use App\Facades\Header\Header;
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
 use App\Facades\Property\Remove;
 use App\Facades\Property\Set;
+use App\Facades\Security\Sanitizer;
 use App\Facades\Validator\Type;
 
 final class Request
@@ -19,6 +19,8 @@ final class Request
     protected array $data = [];
 
     protected array $headers = [];
+    
+    private Sanitizer $sanitizer;
 
     public function __construct()
     {
@@ -27,6 +29,7 @@ final class Request
 
     private function boot(): void
     {
+    	$this->sanitizer = new Sanitizer();
         $this->isOptionsCall();
         $this->setHeaders();
         $this->setMethod();
@@ -132,7 +135,7 @@ final class Request
 			if (is_array($item)) {
 				$this->data[$key] = $this->reSanitize($item);
 			} else {
-				$this->data[$key] = $this->clear($item);
+				$this->data[$key] = $this->sanitizer->clear($item);
 			}
 		}
 	}
@@ -143,42 +146,11 @@ final class Request
             if (is_array($item)) {
 	            $data[$key] = $this->reSanitize($item);
             } else {
-                $data[$key] = $this->clear($item);
+                $data[$key] = $this->sanitizer->clear($item);
             }
         }
 
         return $data;
-    }
-
-    private function clear($item)
-    {
-        if (! is_numeric($item)) {
-            $item = (string) urldecode($item);
-        }
-	
-	    if (Config::get('app.security.enabled')) {
-		    $item = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $item);
-		    $item = preg_replace('/<noscript\b[^>]*>(.*?)<\/noscript>/is', '', $item);
-		    $item = preg_replace('/<a(.*?)>(.+)<\/a>/', '', $item);
-		    $item = preg_replace('/<iframe(.*?)>(.+)<\/iframe>/', '', $item);
-		    $item = preg_replace('/<img (.*?)>/is', '', $item);
-		    $item = preg_replace('/<embed (.*?)>/is', '', $item);
-		    $item = preg_replace('/<link (.*?)>/is', '', $item);
-		    $item = preg_replace('/<video (.*?)>(.+)<\/video>/', '', $item);
-	    }
-	
-	    $item = filter_var($item, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_HIGH);
-        $item = strtr(
-            $item,
-            '???????��������������������������������������������������������������',
-            'SOZsozYYuAAAAAAACEEEEIIIIDNOOOOOOUUUUYsaaaaaaaceeeeiiiionoooooouuuuyy'
-        );
-
-        $item = preg_replace('/(;|\||`|&|^|{|}|[|]|\)|\()/i', '', $item);
-        $item = preg_replace('/(\)|\(|\||&)/', '', $item);
-	    $item = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $item);
-	    
-        return Type::get($item);
     }
 
     public function getMethod(): string

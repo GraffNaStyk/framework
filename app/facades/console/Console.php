@@ -9,8 +9,8 @@ use ReflectionClass;
 
 class Console
 {
-	const FACADE_COMMAND_DIR = '/app/facades/console/commands';
-	const COMMAND_DIR = '/app/commands';
+	const FACADE_COMMAND_DIR = 'app/facades/console/commands';
+	const COMMAND_DIR = 'app/commands';
 	const COMMAND_NAMESPACE = 'App\\Commands\\';
 	const FACADE_COMMAND_NAMESPACE = 'App\\Facades\\Console\\Commands\\';
 	
@@ -41,8 +41,7 @@ class Console
 				...array_diff(scandir(app_path(self::COMMAND_DIR)), ['.', '..']),
 				...array_diff(scandir(app_path(self::FACADE_COMMAND_DIR)), ['.', '..']),
 			];
-		}
-		else {
+		} else {
 			$objects = [
 				...array_diff(scandir(app_path(self::FACADE_COMMAND_DIR)), ['.', '..']),
 			];
