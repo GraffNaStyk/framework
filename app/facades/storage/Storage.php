@@ -93,7 +93,7 @@ class Storage
         return false;
     }
 
-    public function upload(array $file, string $destination = '/', ?string $as = null, ?callable $closure = null): bool
+    public function upload(array $file, string $destination = '/', ?string $as = null, ?\Closure $closure = null): bool
     {
         if ($file['error'] === UPLOAD_ERR_OK) {
             $this->make($destination);
@@ -110,32 +110,30 @@ class Storage
                     : mb_strtolower($file['name']);
             }
 
-            if (move_uploaded_file($file['tmp_name'], $location)) {
-                if ($this->checkFile($location) === true) {
-	                chmod($location, 0775);
-	
-	                if (class_exists(File::class)) {
-		                if ($closure !== null) {
-			                $closure([
-				                'name' => $pathInfo['filename'],
-				                'hash' => $hash,
-				                'dir'  => self::$relativePath.$destination,
-				                'ext'  => '.'.$pathInfo['extension'],
-				                'sha1' => sha1_file($location)
-			                ]);
-		                } else {
-			                File::insert([
-				                'name' => $pathInfo['filename'],
-				                'hash' => $hash,
-				                'dir'  => self::$relativePath.$destination,
-				                'ext'  => '.'.$pathInfo['extension'],
-				                'sha1' => sha1_file($location)
-			                ])->exec();
-		                }
+            if (move_uploaded_file($file['tmp_name'], $location) && $this->checkFile($location)) {
+                chmod($location, 0775);
+
+                if (class_exists(File::class)) {
+	                if ($closure !== null) {
+		                $closure([
+			                'name' => $pathInfo['filename'],
+			                'hash' => $hash,
+			                'dir'  => self::$relativePath.$destination,
+			                'ext'  => '.'.$pathInfo['extension'],
+			                'sha1' => sha1_file($location)
+		                ]);
+	                } else {
+		                File::insert([
+			                'name' => $pathInfo['filename'],
+			                'hash' => $hash,
+			                'dir'  => self::$relativePath.$destination,
+			                'ext'  => '.'.$pathInfo['extension'],
+			                'sha1' => sha1_file($location)
+		                ])->exec();
 	                }
-	                
-	                return true;
                 }
+	               
+                return true;
             }
         }
 
@@ -154,7 +152,7 @@ class Storage
         return $this;
     }
 
-    public function remove($path = null): bool
+    public function remove(string $path = null): bool
     {
         $path = ltrim($path, '/');
 

@@ -17,8 +17,8 @@ class DashController extends Controller
     public function index(): Response
     {
         return $this->render([
-	        'users' => User::select(['name as value', 'password as text'])->get(),
-	        'img' => File::select([File::selectPath()])->where('id', '=', 5)->first(),
+	        'users'   => User::select(['name as value', 'password as text'])->get(),
+	        'img'     => File::select([File::selectPath()])->where('id', '=', 5)->first(),
 	        'options' => ['test' => 'raz', 'dwa' => 'trzy', 'twoj' => 'stary'],
         ]);
     }
