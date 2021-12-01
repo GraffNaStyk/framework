@@ -2,7 +2,7 @@
 
 namespace App\Facades\Storage;
 
-use App\Facades\Faker\Faker;
+use App\Facades\Helpers\Str;
 use App\Helpers\Dir;
 use App\Models\File;
 
@@ -102,7 +102,7 @@ class Storage
             $location = self::$disk.$destination;
 
             if (class_exists(File::class)) {
-                $hash = Faker::getUniqueStr(File::class, 'hash', 40);
+                $hash = Str::getUniqueStr(File::class, 'hash', 40);
                 $location .= $hash.'.'.$pathInfo['extension'];
             } else {
                 $location .= $as

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Facades\Faker;
+namespace App\Facades\Helpers;
 
 class Password
 {

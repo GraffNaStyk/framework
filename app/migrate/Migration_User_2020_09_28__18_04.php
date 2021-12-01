@@ -2,7 +2,7 @@
 
 namespace App\Migrate;
 
-use App\Facades\Faker\Password;
+use App\Facades\Helpers\Password;
 use App\Facades\Migrations\Schema;
 use App\Models\User;
 

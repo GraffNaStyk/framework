@@ -3,7 +3,7 @@
 namespace App\Facades\Csrf;
 
 use App\Facades\Config\Config;
-use App\Facades\Faker\Faker;
+use App\Facades\Helpers\Str;
 use App\Facades\Http\Request;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\Session;
@@ -36,7 +36,7 @@ class Csrf
     	session_regenerate_id();
 
         if (! Session::has('@csrf.'.$uri) && Config::get('app.csrf')) {
-            Session::set('@csrf.'.$uri, session_id().Faker::hash(60));
+            Session::set('@csrf.'.$uri, session_id().Str::hash(60));
         }
     }
 }
