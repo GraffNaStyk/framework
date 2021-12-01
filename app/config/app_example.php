@@ -42,7 +42,6 @@ return [
 	
 	/**
 	 * @Security used for header Content-Security-Policy
-	 *
 	 **/
 	'security' => [
 		'enabled' => true,
@@ -53,19 +52,16 @@ return [
 	
 	/**
 	 * @Middlewares namespace for middlewares call
-	 *
 	 **/
 	'middleware_path' => '\\App\\Controllers\\Middleware\\',
 	
 	/**
 	 * @Triggers namespace for database triggers call
-	 *
 	 **/
 	'triggers_path' => '\\App\\Triggers\\',
 	
 	/**
 	 * @Model namespace for database model call
-	 *
 	 **/
 	'model_path' => '\\App\\Models\\',
 	
