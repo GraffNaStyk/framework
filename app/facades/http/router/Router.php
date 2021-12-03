@@ -68,7 +68,8 @@ final class Router extends Route
         $this->setParams();
         $this->request->sanitize();
         $this->runMiddlewares('before');
-
+	    $this->dispatchEvents('before');
+	    
         if ($this->request->getMethod() === 'post' && ! Config::get('app.enable_api')) {
             if (! $this->csrf->valid($this->request)) {
                 self::abort(403);
@@ -82,13 +83,14 @@ final class Router extends Route
 	
 	    if (in_array(http_response_code(), [200,201], true)) {
 		    $this->runMiddlewares('after');
-		    $this->dispatchEvents();
+		    $this->dispatchEvents('after');
 	    }
     }
 
-    private function dispatchEvents(): void
+    private function dispatchEvents(string $when): void
     {
         $events = EventServiceProvider::getListener(
+        	$when,
             self::$route->getNamespace().'\\'.self::getClass().'Controller'
         );
 		
