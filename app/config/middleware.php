@@ -1,5 +1,10 @@
 <?php
 
 return [
-	\App\Controllers\Middleware\Handle::class
+	'before' => [
+	
+	],
+	'after' => [
+		\App\Controllers\Middleware\Handle::class
+	]
 ];

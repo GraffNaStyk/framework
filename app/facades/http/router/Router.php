@@ -114,7 +114,7 @@ final class Router extends Route
 		    }
 	    }
 	
-	    foreach (Config::get('middleware') as $middleware) {
+	    foreach (Config::get('middleware.'.$when) as $middleware) {
 		    if (method_exists($middleware, $when)) {
 			    $reflector = new ReflectionClass($middleware);
 			    (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
