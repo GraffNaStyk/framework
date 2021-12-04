@@ -4,12 +4,12 @@ namespace App\Facades\Http\Router;
 
 use App\Controllers\UserState;
 use App\Core\Kernel;
-use App\Events\EventServiceProvider;
 use App\Facades\Config\Config;
 use App\Facades\Csrf\Csrf;
 use App\Facades\Dependency\Container;
 use App\Facades\Dependency\ContainerBuilder;
 use App\Facades\Devtool\DevTool;
+use App\Facades\Http\AbstractEventProvider;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Facades\Http\View;
@@ -89,7 +89,7 @@ final class Router extends Route
 
     private function dispatchEvents(string $when): void
     {
-        $events = EventServiceProvider::getListener(
+        $events = AbstractEventProvider::getListener(
         	$when,
             self::$route->getNamespace().'\\'.self::getClass().'Controller'
         );
