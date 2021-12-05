@@ -69,7 +69,7 @@ final class Router extends Route
         $this->request->sanitize();
         $this->runMiddlewares('before');
 	    $this->dispatchEvents('before');
-	    
+
         if ($this->request->getMethod() === 'post' && ! Config::get('app.enable_api')) {
             if (! $this->csrf->valid($this->request)) {
                 self::abort(403);
@@ -106,20 +106,20 @@ final class Router extends Route
 	
 	    foreach (self::$route->getMiddleware() as $middleware) {
 		    $middleware = $path.ucfirst($middleware);
-		
-		    if (method_exists($middleware, $when)) {
-			    $reflector = new ReflectionClass($middleware);
-			    (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
-				    ->$when($this->request, $this);
-		    }
+		    $this->executeMiddleware($middleware, $when);
 	    }
 	
 	    foreach (Config::get('middleware.'.$when) as $middleware) {
-		    if (method_exists($middleware, $when)) {
-			    $reflector = new ReflectionClass($middleware);
-			    (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
-				    ->$when($this->request, $this);
-		    }
+		    $this->executeMiddleware($middleware, $when);
+	    }
+    }
+    
+    private function executeMiddleware(string $middleware, string $when): void
+    {
+	    if (method_exists($middleware, $when)) {
+		    $reflector = new ReflectionClass($middleware);
+		    (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
+			    ->$when($this->request, $this);
 	    }
     }
 
