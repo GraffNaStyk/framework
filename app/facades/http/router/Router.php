@@ -32,6 +32,8 @@ final class Router extends Route
     private static ?Collection $route = null;
 
     private static ?Router $instance = null;
+    
+    const TEST_METHOD_PREFIX = 'test';
 
     public function __construct()
     {
@@ -67,14 +69,18 @@ final class Router extends Route
         $this->parseUrl();
         $this->setParams();
         $this->request->sanitize();
+	
+	    if ($this->request->getMethod() === Request::METHOD_POST
+		    && ! Config::get('app.enable_api')
+		    && Config::get('app.csrf')
+	    ) {
+		    if (! $this->csrf->valid($this->request)) {
+			    self::abort(403);
+		    }
+	    }
+        
         $this->runMiddlewares('before');
 	    $this->dispatchEvents('before');
-
-        if ($this->request->getMethod() === 'post' && ! Config::get('app.enable_api')) {
-            if (! $this->csrf->valid($this->request)) {
-                self::abort(403);
-            }
-        }
     }
     
     public function resolveRequest(): void
@@ -96,7 +102,8 @@ final class Router extends Route
 		
         foreach ($events[self::getAction()] as $event) {
 	        $reflector = new ReflectionClass($event);
-	        (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))->handle();
+	        (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
+		        ->handle();
         }
     }
 
@@ -183,7 +190,7 @@ final class Router extends Route
 		    throw new \ReflectionException('Controller not exist : '. $controller);
 	    }
 
-        if (substr(self::getAction(), 0, 4) === 'test' && ! Config::get('app.dev')) {
+        if (substr(self::getAction(), 0, 4) === self::TEST_METHOD_PREFIX && ! Config::get('app.dev')) {
             throw new \LogicException('Cannot read test method if env is set to production');
         }
 
@@ -211,9 +218,6 @@ final class Router extends Route
         }
 
         unset($reflectionMethod, $reflectionClass, $params, $constructorParams);
-
-        ob_flush();
-        ob_clean();
 
         if (Config::get('app.dev')) {
 	        View::set(['devTool' => DevTool::boot()]);

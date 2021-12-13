@@ -208,8 +208,10 @@ class App {
 
   loaderStop = () => {
     setTimeout(() => {
-      this.el('.loader__container').remove();
-      this.loaderExist = false;
+      if (this.loaderExist) {
+        this.el('.loader__container').remove();
+        this.loaderExist = false;
+      }
     }, 200)
   }
 

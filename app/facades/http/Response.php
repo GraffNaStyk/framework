@@ -123,6 +123,7 @@ class Response
 	public function setContent(string $content): self
 	{
 		$this->content = $content;
+		$this->setHeader('Content-type', 'text/html;charset=utf-8');
 		
 		return $this;
 	}
@@ -141,14 +142,19 @@ class Response
 	
 	public function getResponse(): ?string
 	{
-		$this->prepareHeaders();
-		http_response_code($this->responseCode);
-		
-		if (! empty($this->customHeaders)) {
-			foreach ($this->customHeaders as $name => $value) {
-				\header($name.': '.$value);
+		if (! headers_sent()) {
+			$this->prepareHeaders();
+			http_response_code($this->responseCode);
+			
+			if (! empty($this->customHeaders)) {
+				foreach ($this->customHeaders as $name => $value) {
+					\header($name.': '.$value);
+				}
 			}
 		}
+
+		ob_flush();
+		ob_clean();
 		
 		if ($this->isFileResponse || $this->isDownloadResponse) {
 			return readfile($this->content);

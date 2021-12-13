@@ -10,12 +10,12 @@ return [
 	'after' => [
 		LoginController::class => [
 			'check' => [
-				UserLoginEvent::class
+				\App\Events\UserLoginEvent::class
 			]
 		],
 		DashController::class => [
 			'index' => [
-				UserLoginEvent::class
+				\App\Events\UserLoginEvent::class
 			]
 		]
 	]

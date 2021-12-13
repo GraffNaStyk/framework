@@ -36,7 +36,7 @@ class Csrf
     	session_regenerate_id();
 
         if (! Session::has('@csrf.'.$uri) && Config::get('app.csrf')) {
-            Session::set('@csrf.'.$uri, session_id().Str::hash(120));
+            Session::set('@csrf.'.$uri, session_id().Str::hash(30));
         }
     }
 }
