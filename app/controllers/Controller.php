@@ -6,7 +6,6 @@ use App\Facades\Config\Config;
 use App\Facades\Helpers\CssLoader;
 use App\Facades\Helpers\JavaScriptLoader;
 use App\Facades\Http\AbstractController;
-use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
 use App\Facades\Url\Url;
 
@@ -30,7 +29,7 @@ abstract class Controller extends AbstractController
     private function setLayout(): void
     {
         $layout = strtolower(
-            Url::segment(Router::getInstance()->getCurrentRoute()->getNamespace(), 2, '\\')
+            Url::segment($this->routeParams('namespace'), 2, '\\')
         );
 
         View::layout($layout);

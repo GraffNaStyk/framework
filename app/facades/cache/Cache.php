@@ -2,30 +2,24 @@
 
 namespace App\Facades\Cache;
 
-use App\Facades\Http\Router\Router;
 use App\Helpers\Dir;
 
 class Cache
 {
-    public static function remember(int $seconds, string $path, \Closure $closure)
+    public static function remember(int $seconds, string $path, string $name, \Closure $closure)
     {
     	Dir::create(storage_path('/private/cache'.$path));
-	
-	    $route     = Router::getInstance()->routeParams();
-	    $cacheName = sha1(
-		    $route['namespace'].'\\'.$route['controller'].'\\'.$route['action'].'\\'.implode('\\', $route['params'])
-	    );
-	    
-        $dateEnd = filemtime(storage_path('/private/cache'.$path.'/'.$cacheName));
+
+        $dateEnd = filemtime(storage_path('/private/cache'.$path.'/'.$name));
         $dateEnd = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s', $dateEnd).'+ '.$seconds.' sec'));
 
-        if (file_exists(storage_path('/private/cache'.$path.'/'.$cacheName))
+        if (file_exists(storage_path('/private/cache'.$path.'/'.$name))
             && $dateEnd > date('Y-m-d H:i:s')
         ) {
-            return unserialize(file_get_contents(storage_path('/private/cache'.$path.'/'.$cacheName)));
+            return unserialize(file_get_contents(storage_path('/private/cache'.$path.'/'.$name)));
         } else {
             $result = $closure();
-            file_put_contents(storage_path('/private/cache'.$path.'/'.$cacheName), serialize($result));
+            file_put_contents(storage_path('/private/cache'.$path.'/'.$name), serialize($result));
         }
 
         return $result;

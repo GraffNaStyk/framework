@@ -8,6 +8,8 @@ use App\Facades\Validator\Validator;
 
 abstract class AbstractController
 {
+	public static array $routeParams = [];
+	
     public function __construct()
     {
         $this->boot();
@@ -86,5 +88,14 @@ abstract class AbstractController
 	    }
     	
         return $response->send();
+    }
+    
+    public function routeParams(?string $param = null)
+    {
+    	if ($param === null) {
+    		return static::$routeParams;
+	    }
+    	
+    	return static::$routeParams[$param];
     }
 }

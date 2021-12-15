@@ -9,6 +9,7 @@ use App\Facades\Csrf\Csrf;
 use App\Facades\Dependency\Container;
 use App\Facades\Dependency\ContainerBuilder;
 use App\Facades\Devtool\DevTool;
+use App\Facades\Http\AbstractController;
 use App\Facades\Http\AbstractEventProvider;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
@@ -48,7 +49,7 @@ final class Router extends Route
             echo (new Response())->send()->getResponse();
             die;
         }
-	
+
 	    $this->builder = new ContainerBuilder(new Container());
 	    $this->csrf    = new Csrf();
 	    $this->builder->container->add(Request::class, $this->request);
@@ -208,13 +209,15 @@ final class Router extends Route
             throw new \LogicException('Controller return type declaration mus be a instance of '.Response::class);
         }
 
+        AbstractController::$routeParams = $this->routeParams();
+        
         $constructorParams = $this->builder->getConstructorParameters($reflectionClass);
         $params            = $reflectionMethod->getParameters();
         $controller        = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
         $methodParams      = $this->getMethodParams($params, $controller);
 
         if ($reflectionMethod->getNumberOfRequiredParameters() > count($methodParams)) {
-	        throw new \LogicException('Not enough params');
+	        throw new \BadMethodCallException('Not enough params');
         }
 
         unset($reflectionMethod, $reflectionClass, $params, $constructorParams);

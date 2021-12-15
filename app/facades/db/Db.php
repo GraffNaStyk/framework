@@ -206,8 +206,8 @@ class Db
     public function update(array $values): Db
     {
         $this->triggerMethod = 'updated';
-        $this->isUpdate = true;
-        $this->query = "UPDATE `{$this->table}` SET ";
+        $this->isUpdate      = true;
+        $this->query         = "UPDATE `{$this->table}` SET ";
 
         foreach ($values as $key => $value) {
             if ((string) $key === 'id') {
@@ -225,7 +225,7 @@ class Db
     public function delete(): Db
     {
         $this->triggerMethod = 'deleted';
-        $this->query = "DELETE FROM `{$this->table}`";
+        $this->query         = "DELETE FROM `{$this->table}`";
 
         return $this;
     }
@@ -378,6 +378,7 @@ class Db
     public function create(array $values)
     {
         $this->insert($values);
+
         return $this->execute();
     }
 

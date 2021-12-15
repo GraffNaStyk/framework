@@ -3,7 +3,6 @@
 namespace App\Facades\Db;
 
 use App\Facades\Config\Config;
-use App\Facades\Http\Router\Router;
 use App\Facades\Log\Log;
 
 abstract class Handle
@@ -15,13 +14,9 @@ abstract class Handle
             pd("<b> Query </b>: {$error}", true);
         }
 
-        $router = Router::getInstance();
-        $router->request->remove('password');
-
         Log::sql([
             'error' => $e->getMessage(),
             'query' => $error,
-            'routeParams' => $router->routeParams()
         ]);
     }
 }
