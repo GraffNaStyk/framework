@@ -32,8 +32,7 @@ class ContainerBuilder
 					if ($reflector->hasMethod('__construct')) {
 						$params = $this->reflectConstructorParams($reflector->getConstructor()->getParameters());
 						$this->container->add($class, call_user_func_array([$reflector, 'newInstance'], $params ?? []));
-					}
-					else {
+					} else {
 						$this->container->add($class, new $class());
 					}
 				}
@@ -52,11 +51,8 @@ class ContainerBuilder
 			&& interface_exists($reflector->getName())
 		) {
 			$reflector = new ReflectionClass(Config::get('interfaces.' . $reflector->getName()));
-		}
-		else {
-			if ($reflector->isInterface()) {
-				throw new \LogicException($reflector->getName() . ' is not register in interfaces.php or not exist');
-			}
+		} else if ($reflector->isInterface()) {
+			throw new \LogicException($reflector->getName() . ' is not register in interfaces.php or not exist');
 		}
 		
 		return $reflector;
