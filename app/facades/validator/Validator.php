@@ -2,72 +2,31 @@
 
 namespace App\Facades\Validator;
 
-use App\Facades\Http\Request;
-use App\Facades\Http\Session;
-
-class Validator
+class Validator implements ValidatorInterface
 {
-    protected static array $rules = [];
-    private static array $validatorErrors = [];
-
-    public static function validate($request, array $rules): bool
-    {
-        static::$validatorErrors = [];
-        static::$rules = [];
-        static::refactorRules($rules);
-        static::run($request);
-
-        if (! empty(static::$validatorErrors = array_filter(static::$validatorErrors))) {
-            if (! Request::isAjax()) {
-                Session::checkIfDataHasBeenProvided($request);
-                Session::msg(static::$validatorErrors, 'danger');
-            }
-
-            return false;
-        }
-
-        return true;
-    }
-
-    private static function refactorRules(array $rules)
-    {
-        if (isset($rules['__lang'])) {
-            Rules::$lang = $rules['__lang'];
-            unset($rules['__lang']);
-        }
-
-        foreach ($rules as $key => $rule) {
-            $eachRule = explode('|', $rule);
-
-            foreach ($eachRule as $rulesValue) {
-                $rulesValue = explode(':', $rulesValue);
-                static::$rules[$key][$rulesValue[0]] = $rulesValue[1] ?? $rulesValue[0];
-            }
-        }
-    }
-
-    private static function run(array $request)
-    {
-        foreach (static::$rules as $key => $item) {
-            foreach ($item as $fnName => $validateRule) {
-                if (method_exists($fnName, $validateRule)) {
-                    static::$validatorErrors[] = $fnName::$validateRule($request[$key], $key);
-                } else {
-                    if (((string) $request[$key] === '' && isset($item['required'])) || (string) $request[$key] !== '') {
-                        static::$validatorErrors[] = Rules::$fnName($request[$key], $validateRule, $key);
-                    }
-                }
-            }
-        }
-    }
-
-    public static function getErrors(): array
-    {
-        return array_values(static::$validatorErrors);
-    }
+	private static array $errors = [];
 	
-	public static function setErrors(array $errors): void
+	public static function validate(array $request, array $rules): bool
 	{
-		static::$validatorErrors = $errors;
+		$errors = [];
+		
+		foreach ($rules as $key => $rule) {
+			foreach ($rule as $eachRule) {
+				$eachRule->setField($request[$key]);
+
+				if (! $eachRule->run()) {
+					$errors[] = ['field' => $key, 'msg' => $eachRule->getErrorMessage()];
+				}
+			}
+		}
+
+		static::$errors = $errors;
+
+		return empty(array_filter(static::$errors));
+	}
+	
+	public static function getErrors(): array
+	{
+		return static::$errors;
 	}
 }

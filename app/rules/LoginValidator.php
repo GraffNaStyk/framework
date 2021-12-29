@@ -2,31 +2,22 @@
 
 namespace App\Rules;
 
-use App\Rules\Abstraction\ValidatorInterface;
+use App\Facades\Validator\Rules\Required;
+use App\Facades\Validator\Rules\Text;
 
-class LoginValidator implements ValidatorInterface
+class LoginValidator
 {
-    public function getRule(array $optional = []): array
-    {
-        return [
-            'name' => 'string|required|min_len:3|'.LoginValidator::class.':example',
-            'password' => 'string|required|min_len:3',
-            '__lang' => $this->getLang()
-        ];
-    }
-
-    private function getLang(): array
-    {
-        return [
-            'name' => [
-                'required' => 'Custom error test',
-	            'min_len' => 'test'
-            ]
-        ];
-    }
-
-    public static function example($item, $field)
-    {
-
-    }
+	public function getRules(): array
+	{
+		return [
+			'name' => [
+				new Text('a'),
+				new Required('Required')
+			],
+			'password' => [
+				new Text('String'),
+				new Required('Required')
+			]
+		];
+	}
 }

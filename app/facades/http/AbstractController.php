@@ -37,15 +37,9 @@ abstract class AbstractController
     	return (new Response())->setContent(View::render($data))->send();
     }
 	
-	public function validate(array $request, string $rule, array $optional = []): bool
+	public function validate(array $request, object $rule): bool
 	{
-		$result = Validator::validate($request, (new $rule())->getRule($optional));
-		
-		if (method_exists($rule, 'afterValidate') && ! $result) {
-			Validator::setErrors($rule::afterValidate(Validator::getErrors()));
-		}
-		
-		return $result;
+		return Validator::validate($request, $rule->getRules());
 	}
 
     public function sendSuccess(string $message = null, array $params = [], int $status = 200): Response

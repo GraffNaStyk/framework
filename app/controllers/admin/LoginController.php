@@ -22,9 +22,9 @@ class LoginController extends Controller
         return $this->render(['title' => 'Panel Administracyjny - logowanie']);
     }
 
-    public function check(Request $request, UserAuthenticateInterface $userAuthenticateService): Response
+    public function check(Request $request, UserAuthenticateInterface $userAuthenticateService, LoginValidator $validator): Response
     {
-        if (! $this->validate($request->all(), LoginValidator::class)) {
+        if (! $this->validate($request->all(), $validator)) {
              return $this->sendError('Formularz nie zostal wysłany');
         }
 

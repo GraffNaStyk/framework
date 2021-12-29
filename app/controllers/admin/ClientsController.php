@@ -43,9 +43,9 @@ class ClientsController extends Controller
         return $this->render();
     }
 
-    public function store(Request $request): Response
+    public function store(Request $request, ClientValidator $validator): Response
     {
-        if (! $this->validate($request->all(), ClientValidator::class)) {
+        if (! $this->validate($request->all(), $validator)) {
             return $this->sendError('Formularz nie został wysłany');
         }
         
