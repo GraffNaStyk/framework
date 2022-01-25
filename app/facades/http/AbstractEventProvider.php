@@ -12,6 +12,6 @@ abstract class AbstractEventProvider
 		    return Config::get('events.'.$when.'.'.$listener);
 	    }
 
-    	return null;
+    	return [];
     }
 }

@@ -10,18 +10,10 @@ class Client extends Model
 	
 	public static bool $trigger = true;
 	
-	/**
-	 * @column=name
-	 */
-	protected string $value;
-	
-	/**
-	 * @column=www
-	 */
-	protected string $testWWW;
-	
-	/**
-	 * @column=db_link
-	 */
-	protected string $myHearthIsBroken;
+	public array $fields = [
+		'www' => [
+			'as' => 'twoooj_stary',
+			'is' => '(int)',
+		]
+	];
 }

@@ -36,15 +36,15 @@ trait Builder
 		    }
 	    }
 
-        if ((bool) strpos($value, '.') === true && (bool) preg_match('/( as )/', $value)) {
+        if (str_contains($value, '.') && (bool) preg_match('/( as )/', $value)) {
             $value = explode('.', $value);
             $ret .= " `{$this->trim($value[0])}`";
             $value = explode(' as ', $value[1]);
             $ret .= ".`{$this->trim($value[0])}` as `{$this->trim($value[1])}`";
-        } else if ((bool) preg_match('/( as )/', $value) && (bool) strpos($value, '.') === false) {
+        } else if ((bool) preg_match('/( as )/', $value) && ! str_contains($value, '.')) {
             $value = explode(' as ', $value);
             $ret .= "`{$this->trim($value[0])}` as `{$this->trim($value[1])}`";
-        } else if (! (bool) preg_match('/( as )/') && (bool) strpos($value, '.') === true) {
+        } else if (! (bool) preg_match('/( as )/', $value) && str_contains($value, '.')) {
             $value = explode('.', $value);
             $ret .= "`{$this->trim($value[0])}`.`{$this->trim($value[1])}`";
         } else {

@@ -4,30 +4,16 @@ namespace App\Facades\Helpers;
 
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\View;
-use App\Helpers\UrlSetter;
+use App\Facades\Url\Url;
 
 trait CssLoader
 {
-	use UrlSetter;
-	
-	protected static ?string $url = null;
-	
-	public static function bootCssLoader()
-	{
-		self::$url = static::setConfigUrl();
-	}
-	
 	public function loadCss(... $scripts): void
 	{
 		$loaded = [];
 		
-		if (self::$url === null) {
-			static::bootScriptLoader();
-		}
-		
 		foreach ($scripts as $item) {
-			$loaded[] = trim('<link rel="stylesheet" href="'.
-				self::$url.str_replace(app_path(), '', css_path($item)).'">');
+			$loaded[] = trim('<link rel="stylesheet" href="'.Url::full().'/'.str_replace(app_path(), '', css_path($item)).'">');
 		}
 		
 		View::set(['css' => $loaded]);
@@ -43,19 +29,20 @@ trait CssLoader
 
 		foreach (new \DirectoryIterator(css_path($dir)) as $item) {
 			if ($item->getExtension() === 'css') {
-				$loaded[] = trim('<link rel="stylesheet" href="'.
-					self::$url.str_replace(app_path(), '', $item->getPathName()).'">');
+				$loaded[] = trim('<link rel="stylesheet" href="'.Url::full().'/'.str_replace(app_path(), '', $item->getPathName()).'">');
 			}
 		}
-		
+
 		View::set(['css' => $loaded]);
 	}
 	
 	protected function enableCssAutoload(): void
 	{
-		if (is_readable(css_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction().'.js'))) {
+		$loaded = null;
+		
+		if (is_readable(css_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction().'.css'))) {
 			$loaded = trim('<link rel="stylesheet" href="'.
-				self::$url.str_replace(
+				Url::full().'/'.str_replace(
 					app_path(),
 					'',
 					css_path(Router::getAlias().'/'.Router::getClass().'/'.Router::getAction())
@@ -63,7 +50,7 @@ trait CssLoader
 				'.css">'
 			);
 		}
-		
+
 		if ($loaded !== null) {
 			View::set(['css' => [$loaded]]);
 		}

@@ -2,9 +2,9 @@
 
 define('APP_START', microtime(true));
 
-require_once __DIR__ . '/app/facades/helpers/Functions.php';
+require_once __DIR__.'/app/facades/helpers/Functions.php';
 
-if (! is_readable(__DIR__ . '/app/config/app.php')) {
+if (! is_readable(__DIR__.'/app/config/app.php')) {
 	exit('No app config file');
 }
 

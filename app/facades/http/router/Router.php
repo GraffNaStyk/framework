@@ -100,7 +100,7 @@ final class Router extends Route
         	$when,
             self::$route->getNamespace().'\\'.self::getClass().'Controller'
         );
-		
+
         foreach ($events[self::getAction()] as $event) {
 	        $reflector = new ReflectionClass($event);
 	        (call_user_func_array([$reflector, 'newInstance'], $this->builder->getConstructorParameters($reflector)))
@@ -116,7 +116,7 @@ final class Router extends Route
 		    $middleware = $path.ucfirst($middleware);
 		    $this->executeMiddleware($middleware, $when);
 	    }
-	
+	    
 	    foreach (Config::get('middleware.'.$when) as $middleware) {
 		    $this->executeMiddleware($middleware, $when);
 	    }
@@ -175,7 +175,8 @@ final class Router extends Route
 
     public static function getAlias(): string
     {
-        return mb_strtolower(end(explode('\\', self::getNamespace()))) === 'http' ? 'http' : 'admin';
+    	$ns = explode('\\', self::getNamespace());
+        return mb_strtolower(end($ns)) === 'http' ? 'http' : 'admin';
     }
 
     private function create(string $controller)
@@ -246,7 +247,7 @@ final class Router extends Route
 	     
 	     foreach ($reflectionParams as $key => $param) {
 		     $refParam = new \ReflectionParameter([$controller, self::getAction()], $key);
-		     $class    = $refParam->getClass()->name;
+		     $class    = $refParam->getType()->getName();
 		
 		     if (! empty($class)) {
 			     $reflector = $this->builder->checkIsInterface(new ReflectionClass($class));

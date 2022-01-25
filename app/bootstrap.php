@@ -2,18 +2,19 @@
 
 use App\Facades\Config\Config;
 use App\Facades\Env\Env;
-use App\Facades\Log\Log;
+use App\Facades\Error\ErrorListener;
 
-register_shutdown_function(fn () => Log::handleError());
+register_shutdown_function(fn () => ErrorListener::listen());
+set_exception_handler(fn ($exception) => ErrorListener::exceptionHandler($exception));
 
 require_once app_path('app/facades/autoload/Autoload.php');
 require_once vendor_path('autoload.php');
 
 spl_autoload_register(fn ($class) => App\Facades\Autoload\Autoload::run($class));
 
-Log::setDisplayErrors();
 Env::set();
 Config::init();
+ErrorListener::setDisplayErrors();
 
 $app = (new \App\Facades\Http\App(new \App\Facades\Http\Router\Router()));
 $app->run();

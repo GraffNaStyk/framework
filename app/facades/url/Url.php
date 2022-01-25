@@ -42,13 +42,11 @@ class Url
 
     public static function isLocalhost(): bool
     {
-        return in_array(getenv('REMOTE_ADDR'), ['127.0.0.1', '::1']);
+        return in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
     }
 
-    public static function full(): string
+    #[Pure] public static function full(): string
     {
-	    return empty(getenv('HTTP_HOST'))
-		    ? Config::get('app.host_url') . self::base()
-		    : Router::checkProtocol() . '://' . getenv('HTTP_HOST') . self::base();
+    	return Router::checkProtocol().'://'.$_SERVER['HTTP_HOST'];
     }
 }

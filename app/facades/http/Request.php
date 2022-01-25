@@ -5,6 +5,7 @@ namespace App\Facades\Http;
 use App\Facades\Header\Header;
 use App\Facades\Property\Get;
 use App\Facades\Property\Has;
+use App\Facades\Property\PropertyFacade;
 use App\Facades\Property\Remove;
 use App\Facades\Property\Set;
 use App\Facades\Security\Sanitizer;
@@ -12,6 +13,8 @@ use App\Facades\Validator\Type;
 
 final class Request
 {
+	use PropertyFacade;
+	
     protected array $file = [];
 
     private string $method = 'post';
@@ -26,6 +29,7 @@ final class Request
     const METHOD_GET = 'get';
     const METHOD_PUT = 'put';
     const METHOD_DELETE = 'delete';
+    const METHOD_OPTIONS = 'OPTIONS';
     
     public function __construct()
     {
@@ -42,7 +46,7 @@ final class Request
 
     public function isOptionsCall(): bool
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+        if ($_SERVER['REQUEST_METHOD'] === self::METHOD_OPTIONS) {
             Header::setAllowedOptions();
             return true;
         }
@@ -75,7 +79,9 @@ final class Request
                 break;
         }
 
-        if ($this->hasHeader('Content-Type') && mb_strtolower($this->header('Content-Type')) === 'application/json') {
+        if ($this->hasHeader('Content-Type')
+	        && mb_strtolower($this->header('Content-Type')) === 'application/json'
+        ) {
             $this->data = (array) json_decode(file_get_contents('php://input'));
         }
     }

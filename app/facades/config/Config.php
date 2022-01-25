@@ -29,7 +29,7 @@ class Config
 	public static function init(): void
 	{
 		foreach (scandir(app_path('/app/config')) as $item) {
-			if (pathinfo($item, PATHINFO_EXTENSION) === 'php' && strpos($item, 'example') === false) {
+			if (pathinfo($item, PATHINFO_EXTENSION) === 'php' && ! str_contains($item, '_example')) {
 				$val = require_once app_path('/app/config/' . $item);
 				static::set(pathinfo($item, PATHINFO_FILENAME), $val);
 			}

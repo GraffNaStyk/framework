@@ -2,8 +2,6 @@
 
 namespace App\Facades\Log;
 
-use App\Facades\Config\Config;
-use App\Facades\Http\Request;
 use App\Facades\Http\Router\Router;
 use App\Facades\Storage\Storage;
 
@@ -37,38 +35,5 @@ class Log
     public static function custom(string $name, array $data): void
     {
         static::make($name, $data);
-    }
-
-    public static function handleError(): void
-    {
-        $lastError = error_get_last();
-
-        if (! empty($lastError) && in_array($lastError['type'], [E_USER_ERROR, E_ERROR, E_PARSE, E_COMPILE_ERROR, E_CORE_ERROR])) {
-            header('HTTP/1.0 500 Internal Server Error');
-            http_response_code(500);
-			
-            if (Config::get('app.dev')) {
-            	if (Request::isAjax()) {
-            		pd($lastError);
-	            } else {
-		            (new LogErrorFormatter($lastError))->format();
-	            }
-            } else {
-            	$code = 500;
-                static::make('php', $lastError);
-                exit (require_once view_path('errors/error.php'));
-            }
-        }
-    }
-
-    public static function setDisplayErrors(): void
-    {
-        if (Config::get('app.dev')) {
-            ini_set('display_startup_errors', 1);
-            error_reporting(Config::get('app.reporting_levels'));
-        } else {
-            ini_set('display_startup_errors', 0);
-            error_reporting(0);
-        }
     }
 }

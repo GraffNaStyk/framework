@@ -68,4 +68,6 @@ return [
 	'reporting_levels' => E_ERROR | E_USER_ERROR | E_COMPILE_ERROR | E_CORE_ERROR | E_PARSE,
 	
 	'enable_api' => false,
+	
+	'error_listener' => false
 ];
