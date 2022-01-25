@@ -216,7 +216,7 @@ final class Router extends Route
         $params            = $reflectionMethod->getParameters();
         $controller        = call_user_func_array([$reflectionClass, 'newInstance'], $constructorParams);
         $methodParams      = $this->getMethodParams($params, $controller);
-
+        
         if ($reflectionMethod->getNumberOfRequiredParameters() > count($methodParams)) {
 	        throw new \BadMethodCallException('Not enough params');
         }
@@ -249,7 +249,7 @@ final class Router extends Route
 		     $refParam = new \ReflectionParameter([$controller, self::getAction()], $key);
 		     $class    = $refParam->getType()->getName();
 		
-		     if (class_exists($class)) {
+		     if (class_exists($class) || interface_exists($class)) {
 			     $reflector = $this->builder->checkIsInterface(new ReflectionClass($class));
 			
 			     if ($reflector->hasMethod('__construct')) {
@@ -313,7 +313,7 @@ final class Router extends Route
                 break;
             }
         }
-
+		
         if (! $routeExist) {
             self::abort();
         }
