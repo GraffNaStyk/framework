@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
+use App\Events\UserLoginEvent;
 use App\Facades\Helpers\Str;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
@@ -12,7 +13,7 @@ use App\Rules\ClientValidator;
 
 class ClientsController extends Controller
 {
-    public function __construct()
+    public function __construct(UserLoginEvent $loginEvent)
     {
         parent::__construct();
     }
