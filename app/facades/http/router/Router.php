@@ -249,7 +249,7 @@ final class Router extends Route
 		     $refParam = new \ReflectionParameter([$controller, self::getAction()], $key);
 		     $class    = $refParam->getType()->getName();
 		
-		     if (! empty($class)) {
+		     if (class_exists($class)) {
 			     $reflector = $this->builder->checkIsInterface(new ReflectionClass($class));
 			
 			     if ($reflector->hasMethod('__construct')) {
