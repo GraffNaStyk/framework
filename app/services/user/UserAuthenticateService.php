@@ -10,12 +10,7 @@ use App\Services\Abstraction\User\UserAuthenticateInterface;
 
 class UserAuthenticateService implements UserAuthenticateInterface
 {
-	private User $user;
-	
-	public function __construct(User $user)
-	{
-		$this->user = $user;
-	}
+	public function __construct(private User $user){}
 	
 	public function authenticate(Request $request): bool
 	{
