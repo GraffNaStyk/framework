@@ -13,7 +13,7 @@ use App\Rules\ClientValidator;
 
 class ClientsController extends Controller
 {
-    public function __construct(UserLoginEvent $loginEvent)
+    public function __construct()
     {
         parent::__construct();
     }
