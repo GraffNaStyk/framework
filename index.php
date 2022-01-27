@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 define('APP_START', microtime(true));
 
 if (! is_readable(__DIR__.'/app/config/app.php')) {
