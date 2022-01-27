@@ -5,6 +5,5 @@ return [
 	
 	],
 	'after' => [
-		\App\Controllers\Middleware\Handle::class
 	]
 ];
