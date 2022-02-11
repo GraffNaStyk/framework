@@ -3,7 +3,7 @@
         <a {% if item.parent is iterable %}
             href="#" class="has__parent"
         {% else %}
-            href="{{ url(item.href) }}"
+            href="{{ route(item.href, item.params) }}"
                 {% endif %}>
             <i class="fa fa-{{ item.ico }}"></i>
             {{ key }}
@@ -14,7 +14,7 @@
                     {% if pItem.attr %}
                         <a class="render" data-el="{{ pItem.el }}" data-url="{{ pItem.url }}" href="#">{{ pKey }}</a>
                     {% else %}
-                        <a href="{{ url(pItem.href) }}">{{ pKey }}</a>
+                        <a href="{{ route(pItem.href, pItem.params) }}">{{ pKey }}</a>
                     {% endif %}
                 {% endfor %}
             </div>

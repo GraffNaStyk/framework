@@ -11,7 +11,7 @@ use App\Facades\Url\Url;
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-    <link rel="stylesheet" href="<?= Url::base(); ?>/public/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?= Url::full(); ?>/public/css/font-awesome.min.css">
     <title> Error - <?= $code ?> </title>
     <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
     <style>
@@ -57,7 +57,7 @@ use App\Facades\Url\Url;
     </h2>
     <p style="text-transform: uppercase; font-weight: 600;"><?= \App\Facades\Http\Response::RESPONSE_CODES[$code]; ?></p>
     <div>
-        <a class="back" href="<?= Url::base() ?: '/'; ?>">Back to main page</a>
+        <a class="back" href="<?= Url::fullWithAlias() ?: '/'; ?>">Back to main page</a>
     </div>
 </div>
 </body>

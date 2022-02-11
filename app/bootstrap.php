@@ -23,6 +23,5 @@ if (php_sapi_name() !== 'cli') {
 	}
 
 	$app->router->boot();
-	$app->load();
 	$app->router->resolveRequest();
 }

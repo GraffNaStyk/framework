@@ -3,7 +3,6 @@ class App {
   constructor() {
     this.events = [];
     this.loader = `<div class="loader__container"><div class="loader"></div></div>`;
-    this.setDocumentUrl();
     this.bindActions();
     this.bindConfirms();
     this.loaderExist = false;
@@ -14,11 +13,6 @@ class App {
       405: 'Brak dostępu do zasobu',
       500: 'Wystąpił nieoczekiwany problem, prosimy spróbować za chwile',
     };
-  }
-
-  setDocumentUrl() {
-    this.url = this.el('meta[name="url"]').content;
-    this.el('meta[name="url"]').remove();
   }
 
   el(el) {
@@ -56,7 +50,7 @@ class App {
     let data;
 
     if (args.sendAsJson) {
-      return await fetch(this.url + this.prepareFetchUrl(args.url), {
+      return await fetch(args.url, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
@@ -93,7 +87,7 @@ class App {
       args.url = args.url.replace('/' + args.id, '');
     }
 
-    return await fetch(this.url + this.prepareFetchUrl(args.url), {
+    return await fetch(args.url, {
       method: 'POST',
       credentials: 'same-origin',
       headers: {
@@ -113,7 +107,7 @@ class App {
   }
 
   async render(args) {
-    return await fetch(this.url + this.prepareFetchUrl(args.url), {
+    return await fetch(args.url, {
       method: 'GET',
       credentials: 'same-origin',
       headers: {
@@ -185,14 +179,6 @@ class App {
     };
 
     return debounced;
-  }
-
-  prepareFetchUrl(url) {
-    if (url.charAt(0) === '/') {
-      return url;
-    }
-
-    return '/' + url;
   }
 
   reloadEvents = () => {

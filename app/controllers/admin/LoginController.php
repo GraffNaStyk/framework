@@ -35,7 +35,7 @@ class LoginController extends Controller
 
         if ($userAuthenticateService->authenticate($request)) {
 	        return $this->sendSuccess('Zalogowano poprawnie', [
-			        'to' => '/dash'
+			        'to' => $this->path('Dash@index')
 		        ]
 	        );
         }

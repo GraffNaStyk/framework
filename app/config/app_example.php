@@ -17,12 +17,6 @@ return [
 	'dev' => true,
 	
 	/**
-	 * @url this is a framework url, default u can set '/' if framework exist
-	 *  in any sub folder need to add this path there to good working
-	 **/
-	'url' => '/',
-	
-	/**
 	 * @cache_view disable or enable view caching
 	 **/
 	'cache_view' => false,

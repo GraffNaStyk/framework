@@ -25,6 +25,11 @@ $.on('submit', 'form', (e) => {
             return false;
           }
 
+          if (res.params.to) {
+            window.location.href = res.params.to;
+            return;
+          }
+
           if (res.params.modal !== undefined) {
             Render({
               target: {

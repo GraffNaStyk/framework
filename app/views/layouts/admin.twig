@@ -18,19 +18,19 @@
   {{ devTool|raw }}
 {% endif %}
 <nav class="navbar navbar-expand-lg top__nav justify-content-between">
-  <a href="{{ url('/dash') }}" class="logo">DASHBOARD</a>
+  <a href="{{ route('Dash@index') }}" class="logo">DASHBOARD</a>
 
   <div class="d-flex align-items-center">
     <a href="#" class="menu__burger"><i class="fa fa-bars"></i></a>
-    <a href="{{ url('/settings') }}" {{ tooltip('settings') }} ><i class="fa fa-cog"></i></a>
+    <a href="{{ route('Dash@index') }}" {{ tooltip('settings') }} ><i class="fa fa-cog"></i></a>
     <a href="#" {{ tooltip('profile') }}><i data-menu="toggle" data-target="#menu" class="fa fa-user"></i></a>
 
     <div class="box__menu flex-column d-none" id="menu">
       <div class="render" data-url="password" data-el="modal">Resetuj hasło</div>
-      <a href="{{ url('/profile') }}">Mój profil</a>
+      <a href="{{ route('Dash@index') }}">Mój profil</a>
     </div>
 
-    <a href="{{ url('/logout') }}" {{ tooltip('logout') }}> <i class="fa fa-power-off"></i> </a>
+    <a href="{{ route('Logout@index') }}" {{ tooltip('logout') }}> <i class="fa fa-power-off"></i> </a>
 
   </div>
 </nav>

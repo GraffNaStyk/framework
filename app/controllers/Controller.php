@@ -18,6 +18,7 @@ abstract class Controller extends AbstractController
     {
         parent::__construct();
         
+	    $this->loadJs('/App');
         $this->setLayout();
 	    $this->loadJsFromDir('/components');
 	    $this->loadJsFromDir('/lib');
@@ -37,7 +38,7 @@ abstract class Controller extends AbstractController
         if ($layout === 'admin') {
             $this->setData(['menu' => Config::get('menu')]);
 	        $this->loadCssFromDir('/admin');
-	        $this->loadJs('/admin/admin.js');
+	        $this->loadJs('/admin/admin');
         } else {
 	        $this->loadCssFromDir('/http');
         }

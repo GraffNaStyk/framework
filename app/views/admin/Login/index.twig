@@ -4,7 +4,7 @@
   {% import 'components/form.twig' as form %}
   <div class="d-flex justify-content-center align-items-center flex-column content">
     <h4 class="text-center custom__title">Graff CRM</h4>
-    <form class="my__form" data-action="/login/check">
+    <form class="my__form" data-action="{{ route('Login@check') }}">
       <label class="mb-3">
         <i class="fa fa-user"></i>
         <input name="name" type="text" placeholder="Podaj login" value="{{ name }}">
