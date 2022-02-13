@@ -8,7 +8,7 @@ use App\Facades\Log\Log;
 
 class Handle
 {
-    public function before(Request $request, Router $router): void
+    public function after(Request $request, Router $router): void
     {
     	if ($request->isPost() && ! empty($request->all())) {
 		    Log::custom('request', [
