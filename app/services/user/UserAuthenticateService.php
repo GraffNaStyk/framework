@@ -10,15 +10,15 @@ use App\Services\Abstraction\User\UserAuthenticateInterface;
 
 class UserAuthenticateService implements UserAuthenticateInterface
 {
-	public function __construct(private User $user){}
+	public function __construct(private User $user, private Request $request){}
 	
-	public function authenticate(Request $request): bool
+	public function authenticate(): bool
 	{
 		$user = $this->user->select()
-			->where('name', '=', $request->get('name'))
+			->where('name', '=', $this->request->get('name'))
 			->exist();
-		
-		if ($user && Password::verify($request->get('password'), $user->password)) {
+
+		if ($user && Password::verify($this->request->get('password'), $user->password)) {
 			UserState::login($user);
 			return true;
 		}

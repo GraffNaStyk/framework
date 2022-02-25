@@ -33,7 +33,7 @@ class ClientsController extends Controller
 	    ])->exec();
 
         Pagination::make(Client::class, $page, '/clients/page');
-
+	
         return $this->render([
             'clients' => $client->select()->paginate($page)->get()
         ]);

@@ -14,9 +14,7 @@
           <tr>
             <td>Name</td>
             <td>city</td>
-            <td>street</td>
             <td>phone</td>
-            <td>email</td>
             <td class="position-sticky">
               {{ button.render({url: route('Houses@index'), ico: 'fa-plus', el: 'modal', type: 'success'}) }}
             </td>
@@ -25,11 +23,9 @@
           <tbody>
           {% for client in clients %}
             <tr>
-              <td>{{ client.name }}</td>
-              <td>{{ client.www }}</td>
-              <td>{{ client.ftp_server }}</td>
-              <td>{{ client.ftp_client }}</td>
-              <td>{{ client.db_client }}</td>
+              <td>{{ client.getName() }}</td>
+              <td>{{ client.getWWW() }}</td>
+              <td>{{ client.getFtpServer() }}</td>
               <td class="position-sticky">
                 {{ button.route({url: 'Clients@index', param: {page: client.id, name: 'hejo', test: 'liber'}, ico: 'fa-eye'}) }}
                 &nbsp;

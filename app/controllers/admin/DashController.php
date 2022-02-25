@@ -18,7 +18,7 @@ class DashController extends Controller
     {
         return $this->render([
 	        'users'   => User::select(['name as value', 'password as text'])->get(),
-	        'img'     => File::select([File::selectPath()])->where('id', '=', 5)->first(),
+	        'img'     => File::select()->where('id', '=', 5)->first(),
 	        'options' => ['test' => 'raz', 'dwa' => 'trzy', 'twoj' => 'stary'],
         ]);
     }

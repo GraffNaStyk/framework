@@ -5,26 +5,6 @@ RewriteEngine on
    allow from all
 </Files>
 
-<Files "console">
-  Order Allow,Deny
-  Deny from all
-</Files>
-
-<Files "composer.json">
-  Order Allow,Deny
-  Deny from all
-</Files>
-
-<Files "readme.md">
-  Order Allow,Deny
-  Deny from all
-</Files>
-
-<Files ".gitignore">
-  Order Allow,Deny
-  Deny from all
-</Files>
-
 #RewriteCond %{HTTPS} !=on
 #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 

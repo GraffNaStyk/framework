@@ -33,7 +33,7 @@ class LoginController extends Controller
              return $this->sendError('Formularz nie zostal wysłany');
         }
 
-        if ($userAuthenticateService->authenticate($request)) {
+        if ($userAuthenticateService->authenticate()) {
 	        return $this->sendSuccess('Zalogowano poprawnie', [
 			        'to' => $this->path('Dash@index')
 		        ]

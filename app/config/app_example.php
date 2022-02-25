@@ -63,5 +63,7 @@ return [
 	
 	'enable_api' => false,
 	
-	'error_listener' => false
+	'error_listener' => false,
+	
+	'use_entity' => false
 ];

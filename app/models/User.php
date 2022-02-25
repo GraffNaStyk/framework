@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
+use App\Attributes\Table\Table;
 use App\Facades\Db\Model;
 
+#[Table(table: 'users', isTriggered: true)]
 class User extends Model
 {
-    public static string $table = 'users';
-
-    public static bool $trigger = true;
 }
