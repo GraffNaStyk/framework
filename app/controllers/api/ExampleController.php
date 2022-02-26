@@ -10,7 +10,10 @@ class ExampleController extends AbstractController
 {
     public function index(Request $request): ?Response
     {
-    	dd($request->all());
+    	if ($request->isJson()) {
+		    dd($request->all());
+	    }
+    	
         return null;
     }
 }

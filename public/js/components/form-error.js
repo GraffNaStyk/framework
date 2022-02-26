@@ -1,4 +1,4 @@
-const throwFormErrors = (res, action) => {
+const FormError = (res, action) => {
   $.elements('span.err')
   .forEach(e => e.remove());
 

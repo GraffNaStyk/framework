@@ -1,0 +1,25 @@
+.alert {
+    min-width: 340px;
+    text-align: center;
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    padding: .6rem 1.25rem !important;
+    font-weight: bold;
+}
+
+span.err {
+    position: absolute;
+    top: 24px;
+    color: #ce2e22;
+    font-size: 11px;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+}
+
+.input_error, .input_error:focus, .input_error:active {
+    border: 1px solid #ce2e22 !important;
+    border-radius: 8px;
+}
