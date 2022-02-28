@@ -30,11 +30,15 @@ const observeForm = (selector = null, config = {}) => {
           RefreshSelects();
         }
 
+        $.loaderStop();
+
+        if (! res.ok) {
+          return false;
+        }
+
         if (config.after !== undefined) {
           config.after(res, e.target);
         }
-
-        $.loaderStop();
       })
     }
   })
