@@ -47,7 +47,7 @@ final class Auth
             if (Request::isAjax()) {
                 Router::abort(401);
             } else {
-                Route::redirect(Url::base());
+	            Route::redirect(Url::fullWithAlias());
             }
         }
     }

@@ -39,6 +39,8 @@ const observeForm = (selector = null, config = {}) => {
         if (config.after !== undefined) {
           config.after(res, e.target);
         }
+
+        e.target.reset();
       })
     }
   })
