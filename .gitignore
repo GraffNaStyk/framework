@@ -1,8 +1,7 @@
 .idea/*
-storage/framework/*
-storage/private/*
+storage/var/cache/*
+storage/var/logs/*
 storage/public/*
-storage/cache/*
 vendor/*
 composer.lock
 app/config/.env
