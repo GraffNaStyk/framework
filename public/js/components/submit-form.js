@@ -41,6 +41,14 @@ const observeForm = (selector = null, config = {}) => {
         }
 
         e.target.reset();
+
+        if (res.params.to) {
+          window.location.href = res.params.to;
+        }
+
+        if (res.params.reload) {
+          window.location.reload();
+        }
       })
     }
   })

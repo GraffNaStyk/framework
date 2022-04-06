@@ -1,4 +1,7 @@
 {% extends layout %}
 {% import '/components/button.twig' as btn %}
 {% block content %}
+  <form data-action="{{ route('Index@find') }}">
+    <input class="test__input" type="text" name="query" data-action="{{ route('Index@find') }}">
+  </form>
 {% endblock %}

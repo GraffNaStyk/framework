@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Attributes\Table\Column;
 use App\Attributes\Table\Table;
 use App\Facades\Db\Model;
 
 #[Table(table: 'clients', isTriggered: false)]
 class Client extends Model
 {
-	private string $ftpServer;
+	#[Column(name: 'ftp_server')]
+	private string $eftepeServer;
 	private int $id;
 	private string $name;
 	private string $www;
@@ -16,17 +18,17 @@ class Client extends Model
 	/**
 	 * @return string
 	 */
-	public function getFtpServer(): string
+	public function geeftepeServer(): string
 	{
-		return $this->ftpServer;
+		return $this->eftepeServer;
 	}
 	
 	/**
 	 * @param string $ftpServer
 	 */
-	public function setFtpServer(string $ftpServer): void
+	public function seteftepeServer(string $ftpServer): void
 	{
-		$this->ftpServer = $ftpServer;
+		$this->eftepeServer = $ftpServer;
 	}
 	
 	/**

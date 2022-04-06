@@ -6,6 +6,7 @@ Route::when('/admin', '/dash');
 
 Route::namespace('App\Controllers\Http', function () {
     Route::get('/', 'Index@index');
+    Route::post('/find', 'Index@find');
 });
 
 Route::alias('/admin', function () {

@@ -40,6 +40,7 @@ abstract class Controller extends AbstractController
 	        $this->loadCssFromDir('/admin/components');
         } else {
 	        $this->loadCssFromDir('/http');
+	        $this->loadJs('/http/http');
         }
     }
 }

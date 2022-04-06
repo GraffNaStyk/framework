@@ -6,6 +6,7 @@ use App\Controllers\UserState;
 use App\Facades\Http\Request;
 use App\Facades\Http\Router\Collection;
 use App\Facades\Http\Router\Route;
+use App\Facades\Http\Router\RouteGenerator;
 use App\Facades\Http\Router\Router;
 use App\Facades\Http\Session;
 use App\Facades\Log\Log;
@@ -25,16 +26,10 @@ final class Auth
         $user = User::select(['id'])->where('id', '=', UserState::id())->exist();
 
         if (! Session::has('user') || ! $user) {
-            if (! $user) {
-                Log::custom('unauthorized', [
-                    'message' => 'Unauthorized access, user not exist',
-                ]);
-            }
-
             if (Request::isAjax()) {
                 Router::abort(401);
             } else {
-                Route::redirect('/login');
+                Route::redirect(RouteGenerator::generate('Login@index'));
             }
         }
 

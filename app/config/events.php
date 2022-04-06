@@ -4,5 +4,10 @@ return [
 	'before' => [
 	],
 	'after' => [
+	],
+	'beforeRequest' => [
+	],
+	'afterRequest' => [
+	
 	]
 ];

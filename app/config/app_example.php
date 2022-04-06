@@ -65,5 +65,7 @@ return [
 	
 	'error_listener' => false,
 	
-	'use_entity' => false
+	'use_entity' => false,
+	
+	'no_photo_assets_img' => '/svg/no-photo.svg'
 ];

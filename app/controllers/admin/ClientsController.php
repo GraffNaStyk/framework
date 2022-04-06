@@ -4,7 +4,6 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\Controller;
 use App\Events\UserLoginEvent;
-use App\Facades\Helpers\Str;
 use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Helpers\Pagination;
@@ -20,18 +19,6 @@ class ClientsController extends Controller
 
     public function index(Request $request, Client $client, int $page = 1): Response
     {
-    	$client->insert([
-    		'name'         => Str::hash(4),
-    		'www'          => Str::hash(4),
-    		'ftp_server'   => Str::hash(4),
-    		'ftp_user'     => Str::hash(4),
-    		'ftp_password' => Str::hash(4),
-    		'db_link'      => Str::hash(4),
-    		'db_user'      => Str::hash(4),
-    		'db_password'  => Str::hash(4),
-    		'db_name'      => Str::hash(4),
-	    ])->exec();
-
         Pagination::make(Client::class, $page, '/clients/page');
 	
         return $this->render([
