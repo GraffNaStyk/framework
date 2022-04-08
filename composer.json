@@ -6,7 +6,7 @@
     "symfony/var-dumper": "^5.1@RC",
     "symfony/polyfill-mbstring": "^1.17",
     "symfony/polyfill-ctype": "^1.17",
-    "swiftmailer/swiftmailer": "^6.0",
+    "symfony/mailer": "^6.0",
     "ext-json": "*",
     "graff-core/facades": "dev-master"
   },
