@@ -8,7 +8,7 @@ use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Helpers\Pagination;
 use App\Models\Client;
-use App\Rules\ClientValidator;
+use App\Validators\ClientValidator;
 
 class ClientsController extends Controller
 {
@@ -19,10 +19,8 @@ class ClientsController extends Controller
 
     public function index(Request $request, Client $client, int $page = 1): Response
     {
-        Pagination::make(Client::class, $page, '/clients/page');
-	
         return $this->render([
-            'clients' => $client->select()->paginate($page)->get()
+            'clients' => $client->select()->get()
         ]);
     }
 

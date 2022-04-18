@@ -7,8 +7,8 @@ use App\Facades\Http\Request;
 use App\Facades\Http\Response;
 use App\Facades\Http\View;
 use App\Models\Client;
-use App\Rules\LoginValidator;
 use App\Services\Abstraction\User\UserAuthenticateInterface;
+use App\Validators\LoginValidator;
 
 class LoginController extends Controller
 {

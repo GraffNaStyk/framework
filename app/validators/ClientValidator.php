@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Rules;
+namespace App\Validators;
 
 use App\Facades\Validator\Rules\Required;
 
