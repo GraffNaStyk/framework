@@ -8,7 +8,7 @@ const FormError = (res, action) => {
   $.elements('.switch__row')
   .forEach(e => e.setAttribute('style', ''));
 
-  if (res.csrf !== undefined && res.csrf !== false) {
+  if (res.csrf !== undefined && res.csrf !== null) {
     $.el(`form[data-action="${action}"] input[name="_csrf"]`).value = res.csrf;
   }
 
