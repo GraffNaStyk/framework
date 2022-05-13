@@ -34,7 +34,7 @@ class App {
       data = new FormData(args.form);
     }
 
-    if (headers['Content-type'] !== undefined && headers['Content-type'] === 'application/json') {
+    if (headers['Content-Type'] !== undefined && headers['Content-Type'] === 'application/json') {
       data = JSON.stringify(args.data);
     } else if (args.data) {
       data = new FormData();
@@ -47,8 +47,40 @@ class App {
       headers: headers,
       body: data
     }).then(res => {
-      return res.json();
-    })
+      let contentType = res.headers.get('Content-Type');
+
+      if (contentType.startsWith('text/html')) {
+        return res.text();
+      }
+
+      if (contentType.startsWith('application/json')) {
+        return res.json();
+      }
+    });
+  }
+
+  async get (args) {
+    let headers = {'Is-Fetch-Request': true};
+
+    if (args.headers) {
+      headers = Object.assign(headers, args.headers);
+    }
+
+    return await fetch(args.url, {
+      method: 'GET',
+      credentials: 'same-origin',
+      headers: headers
+    }).then(res => {
+      let contentType = res.headers.get('Content-Type');
+
+      if (contentType.startsWith('text/html')) {
+        return res.text();
+      }
+
+      if (contentType.startsWith('application/json')) {
+        return res.json();
+      }
+    });
   }
 
   loaderStop = () => {

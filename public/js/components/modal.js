@@ -5,10 +5,11 @@ const modal = (el = null, result, config = {}) => {
 
   let modal = $.el(el);
   modal.classList.add('d-block');
+  modal.classList.add('modal');
   modal.setAttribute('style', 'background: rgba(0,0,0,0.7)');
   const content = $.el('.modal-content');
   content.innerHTML = '';
-  $.append(content, result);
+  $.adjacent(content, result);
 
   if (config.after !== undefined) {
     config.after();
@@ -19,8 +20,8 @@ const modal = (el = null, result, config = {}) => {
 
 const registerClose = () => {
   $.on('click', 'button[data-dismiss="modal"]', () => {
-    $.el('#modal').classList.remove('d-block');
-    $.clear($.el('.modal-content'));
+    $.el('#modal').classList.remove('modal');
+    $.el('.modal-content').innerHTML = '';
     $.el('#modal').setAttribute('style', '');
   });
 };

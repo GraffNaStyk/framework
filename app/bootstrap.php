@@ -13,4 +13,5 @@ Config::init();
 ErrorListener::setDisplayErrors();
 
 $app = (new \App\Facades\Http\App(new \App\Facades\Http\Router\Router()));
+ErrorListener::setRouter($app->router);
 $app->run();
