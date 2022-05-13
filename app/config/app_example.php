@@ -67,5 +67,7 @@ return [
 	
 	'use_entity' => false,
 	
-	'no_photo_assets_img' => '/svg/no-photo.svg'
+	'no_photo_assets_img' => '/svg/no-photo.svg',
+	
+	'no_logged_exceptions' => []
 ];
