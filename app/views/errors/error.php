@@ -54,9 +54,9 @@ use App\Facades\Url\Url;
 <div class="wrapper">
  <h2>
   <i class="fa fa-chain-broken"></i>
-  <span><?= $exception->getCode() ?: 404 ?></span>
+  <span><?= $exception?->getCode() ?: 404 ?></span>
  </h2>
- <p style="text-transform: uppercase; font-weight: 600;"><?= $exception->getMessage(); ?></p>
+ <p style="text-transform: uppercase; font-weight: 600;"><?= $exception?->getMessage(); ?></p>
  <div>
   <a style="font-size: 22px;" class="back" href="<?= Url::full() ?: '/'; ?>">Wróć na stronę główną</a>
  </div>

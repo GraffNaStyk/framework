@@ -9,6 +9,11 @@ Route::namespace('App\Controllers\Http', function () {
     Route::post('/find', 'Index@find');
 });
 
+Route::namespace('App\Controllers\Storage', function() {
+	Route::get('/storage/{hash}', 'Storage@display');
+	Route::get('/storage', 'Storage@display');
+});
+
 Route::alias('/admin', function () {
     Route::namespace('App\Controllers\Admin', function () {
         //@Route login
