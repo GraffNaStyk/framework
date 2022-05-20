@@ -17,11 +17,6 @@ return [
 	'dev' => true,
 	
 	/**
-	 * @cache_view disable or enable view caching
-	 **/
-	'cache_view' => false,
-	
-	/**
 	 * @mail configuration using in framework to send mails.
 	 *  If array values are empty mail are not configured.
 	 **/
