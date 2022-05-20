@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Attributes\Table\Column;
+use App\Attributes\Table\Connection;
 use App\Attributes\Table\Table;
 use App\Facades\Db\Model;
 
 #[Table(table: 'users', isTriggered: true)]
+#[Connection(connection: 'default')]
 class User extends Model
 {
 	#[Column(name: 'name')]

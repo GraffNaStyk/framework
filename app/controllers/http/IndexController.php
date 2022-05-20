@@ -18,6 +18,7 @@ class IndexController extends Controller
 
     public function index(User $user, Request $request, Storage $storage): Response
     {
+    	$user->select()->get();
         return $this->render();
     }
     
