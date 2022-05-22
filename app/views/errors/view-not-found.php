@@ -27,7 +27,7 @@
   Controller-><?= App\Facades\Http\Router\Router::getAction(); ?>()
  </h2>
  <a style="color: rgba(160, 174, 192, 1) !important;text-decoration: none;font-family: 'Nunito', sans-serif;"
-    href="<?= App\Facades\Url\Url::base() ?: '/'; ?>">
+    href="<?= App\Facades\Url\Url::full() ?: '/'; ?>">
   Back to main Page
  </a>
 </div>

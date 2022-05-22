@@ -1,76 +1,46 @@
 {% macro link(data) %}
-    <a {% if data.tip %} {{ tooltip(data.tip) }} {% endif %}
-            class="btn {{ data.class }} btn-outline-{{ data.type ?? 'secondary' }}"
-            href="{{ url(data.url) }}">
-        {% if data.text %}
-            {{ data.text }}
-        {% endif %}
-        {% if data.ico %}
-            <i class="fa {{ data.ico }} text-{{ data.type ?? 'secondary' }}"></i>
-        {% endif %}
-    </a>
+  <a {% if data.tip %} {{ tooltip(data.tip) }} {% endif %}
+   class="btn {{ data.class }} btn-outline-{{ data.type ?? 'secondary' }}"
+   href="{{ route(data.url, data.params) }}">
+    {% if data.text %}
+      {{ data.text }}
+    {% endif %}
+    {% if data.ico %}
+      <i class="fa {{ data.ico }} text-{{ data.type ?? 'secondary' }}"></i>
+    {% endif %}
+  </a>
 {% endmacro link %}
 
-{% macro route(data) %}
-    <a {% if data.tip %} {{ tooltip(data.tip) }} {% endif %}
-            class="btn {{ data.class }} btn-outline-{{ data.type ?? 'secondary' }}"
-            href="{{ route(data.url, data.param) }}">
-        {% if data.text %}
-            {{ data.text }}
-        {% endif %}
-        {% if data.ico %}
-            <i class="fa {{ data.ico }} text-{{ data.type ?? 'secondary' }}"></i>
-        {% endif %}
-    </a>
-{% endmacro route %}
-
-{% macro render(data) %}
-    {% if data.url and data.el %}
-        <button {% if data.tip %} {{ tooltip(data.tip) }} {% endif %}
-                class="btn render {{ data.class }} btn-outline-{{ data.type ?? 'secondary' }}"
-                data-url="{{ data.url }}"
-                data-el="{{ data.el }}">
-            {% if data.text %}
-                {{ data.text }}
-            {% endif %}
-            {% if data.ico %}
-                <i class="fa {{ data.ico }} text-{{ data.type ?? 'secondary' }}"></i>
-            {% endif %}
-        </button>
-    {% endif %}
-{% endmacro render %}
-
-{% macro action(data) %}
-    {% if data.url %}
-        <button {% if data.tip %} {{ tooltip(data.tip) }} {% endif %}
-                class="btn action {{ data.class }} btn-outline-{{ data.type ?? 'secondary' }}"
-                {{ data.attr }}
-                data-csrf="{{ csrf(data.csrf) }}"
-                data-url="{{ data.url }}"
-                data-options="{{ options(data.options) }}">
-            {% if data.text %}
-                {{ data.text|raw }}
-            {% endif %}
-            {% if data.ico %}
-                <i class="fa {{ data.ico }} text-{{ data.type ?? 'secondary' }}"></i>
-            {% endif %}
-        </button>
-    {% endif %}
-{% endmacro action %}
+{% macro modal(data) %}
+  {% if data.url %}
+    <button
+     class="btn btn-modal {{ data.class }} btn-outline-{{ data.type ?? 'secondary' }}"
+     {{ data.attr }}
+     data-url="{{ route(data.url, data.params) }}"
+     data-options="{{ options(data.options) }}">
+      {% if data.text %}
+        {{ data.text|raw }}
+      {% endif %}
+      {% if data.ico %}
+        <i class="fa {{ data.ico }} text-{{ data.type ?? 'secondary' }}"></i>
+      {% endif %}
+    </button>
+  {% endif %}
+{% endmacro modal %}
 
 {% macro confirm(data) %}
-    {% if data.url %}
-        <button {% if data.tip %} {{ tooltip(data.tip) }} {% endif %}
-                class="btn confirm {{ data.class }} btn-outline-{{ data.type ?? 'secondary' }}"
-                data-title="{{ data.title }}"
-                data-body="{{ data.body }}"
-                data-url="{{ data.url }}"
-                data-options="{{ options(data.options) }}"
-                data-csrf="{{ csrf(data.csrf) }}">
-            {{ data.text }}
-            {% if data.ico %}
-                <i class="fa {{ data.ico }} text-{{ data.type ?? 'secondary' }}"></i>
-            {% endif %}
-        </button>
-    {% endif %}
+  {% if data.url %}
+    <button {% if data.tip %} {{ tooltip(data.tip) }} {% endif %}
+     class="btn confirm {{ data.class }} btn-outline-{{ data.type ?? 'secondary' }}"
+     data-title="{{ data.title }}"
+     data-body="{{ data.body }}"
+     data-url="{{ route(data.url, data.params) }}"
+     data-options="{{ options(data.options) }}"
+     data-csrf="{{ csrf(data.csrf) }}">
+      {{ data.text }}
+      {% if data.ico %}
+        <i class="fa {{ data.ico }} text-{{ data.type ?? 'secondary' }}"></i>
+      {% endif %}
+    </button>
+  {% endif %}
 {% endmacro confirm %}
