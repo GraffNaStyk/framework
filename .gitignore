@@ -3,5 +3,4 @@ storage/*
 vendor/*
 composer.lock
 app/config/.env
-app/config/app.php
 app/config/menu.php
